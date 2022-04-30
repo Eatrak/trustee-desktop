@@ -11,3 +11,46 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --neutral-800: #322E38;
+  --neutral-700: #4A4453;
+  --neutral-600: #7D738C;
+  --neutral-500: #B1ABBA;
+  --neutral-100: #E5E3E8;
+  --neutral-50: #FAF9FA;
+  
+  --primary-600: #271278;
+  --primary-500: #6241E3;
+  --primary-400: #866CE9;
+  --primary-300: #AB99F0;
+  --primary-200: #CFC5F6;
+  --primary-100: #ECE9FC;
+  --primary-50: #F8F6FE;
+  
+  --accent-600: #D60050;
+  --accent-500: #FF3C85;
+  --accent-400: #FF70A6;
+  --accent-300: #FFA3C6;
+  --accent-200: #FFD6E5;
+  --accent-100: #FFF0F5;
+  --accent-50: #FFFAFC;
+  
+  --success-600: #298D69;
+  --success-500: #3BC996;
+  --success-400: #89DFC0;
+  --success-100: #D8F4EA;
+  --success-50: #FAFFFD;
+  
+  --warning-600: #CC8D2E;
+  --warning-500: #FFB03A;
+  --warning-400: #FFC875;
+  --warning-100: #FFEFD8;
+  --warning-50: #FFFDFA;
+  
+  --error-600: #CC3752;
+  --error-500: #FF1B44;
+  --error-400: #FF8FA4;
+  --error-100: #FFDAE1;
+  --error-50: #FFFAFB;
+}
