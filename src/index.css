@@ -49,6 +49,14 @@ h6 {
   font-weight: 400;
 }
 
+.bold-text {
+  font-weight: 700;
+}
+
+.super-bold-text {
+  font-weight: 900;
+}
+
 :root {
   --neutral-800: #322E38;
   --neutral-700: #4A4453;
