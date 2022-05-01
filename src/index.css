@@ -15,31 +15,31 @@ code {
 
 h1 {
   font-size: 57.33px;
-  color: var(--neutral-800);
+  color: var(--normal-text-color);
   font-weight: 400;
 }
 
 h2 {
   font-size: 47.78px;
-  color: var(--neutral-800);
+  color: var(--normal-text-color);
   font-weight: 400;
 }
 
 h3 {
   font-size: 39.81px;
-  color: var(--neutral-800);
+  color: var(--normal-text-color);
   font-weight: 400;
 }
 
 h4 {
   font-size: 33.18px;
-  color: var(--neutral-800);
+  color: var(--normal-text-color);
   font-weight: 400;
 }
 
 h5 {
   font-size: 27.65px;
-  color: var(--neutral-800);
+  color: var(--normal-text-color);
   font-weight: 400;
 }
 
@@ -56,6 +56,8 @@ h6 {
 .super-bold-text {
   font-weight: 900;
 }
+
+/* -- */
 
 :root {
   --neutral-800: #322E38;
@@ -98,4 +100,8 @@ h6 {
   --error-400: #FF8FA4;
   --error-100: #FFDAE1;
   --error-50: #FFFAFB;
+}
+
+.light-mode {
+  --normal-text-color: var(--neutral-800);
 }
