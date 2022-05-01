@@ -50,11 +50,11 @@ h6 {
   font-weight: 400;
 }
 
-.bold-text {
+.header--bold {
   font-weight: 700;
 }
 
-.super-bold-text {
+.header--super-bold {
   font-weight: 900;
 }
 
