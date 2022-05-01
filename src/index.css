@@ -59,3 +59,33 @@ h6 {
 }
 
 /* -- */
+
+/* || Paragraphs */
+
+p {
+  margin: 0;
+}
+
+.paragraph--large {
+  font-size: 19.2px;
+  color: var(--normal-text-color);
+  font-weight: 400;
+}
+
+.paragraph--regular {
+  font-size: 16px;
+  color: var(--normal-text-color);
+  font-weight: 400;
+}
+
+.paragraph--small {
+  font-size: 13.33px;
+  color: var(--normal-text-color);
+  font-weight: 400;
+}
+
+.paragraph--bold {
+  font-weight: 700;
+}
+
+/* -- */
