@@ -1,10 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import './styles/themes.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 class App extends React.Component {
+  componentDidMount() {
+    document.body.classList.add("light-mode");
+  }
+
   render() {
     return(
       <div></div>
