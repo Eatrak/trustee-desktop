@@ -46,7 +46,7 @@ h5 {
 
 h6 {
   font-size: 23.04px;
-  color: var(--neutral-800);
+  color: var(--normal-text-color);
   font-weight: 400;
 }
 
