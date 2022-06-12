@@ -1,0 +1,42 @@
+.input-text-field {
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 5px;
+
+  min-width: 100px;
+}
+
+.input-text-field__title {
+  color: var(--neutral-600);
+}
+
+.input-text-field__input {
+  height: 52px;
+
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  box-sizing: border-box;
+  color: var(--normal-text-color);
+  font-size: 16px;
+  font-weight: 400;
+
+  padding: 14px 14px;
+
+  transition: 0.3s all;
+}
+
+.input-text-field__input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--ghost-text-color);
+}
+
+.input-text-field__input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: var(--ghost-text-color);
+}
+
+.input-text-field__input::-ms-input-placeholder { /* Microsoft Edge */
+  color: var(--ghost-text-color);
+}
+
+.input-text-field__input:focus {
+  border-color: var(--primary-500);
+}
