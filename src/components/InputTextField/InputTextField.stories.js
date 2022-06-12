@@ -1,5 +1,5 @@
 import '@styles/themes.css';
-import '../index.css';
+import '../../index.css';
 
 import InputTextField from '@components/InputTextField';
 
