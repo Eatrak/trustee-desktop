@@ -40,5 +40,13 @@
   --error-100: #FFDAE1;
   --error-50: #FFFAFB;
 
+  --background-color: white;
+  --border-color: var(--neutral-100);
+
   --normal-text-color: var(--neutral-800);
+  --ghost-text-color: var(--neutral-500);
+
+  --button-text-color: white;
+
+  --aura-shadow: 0px 0px 0px 3px var(--primary-300);
 }
