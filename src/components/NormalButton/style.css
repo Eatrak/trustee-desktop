@@ -1,0 +1,21 @@
+.button--normal {
+    height: 45px;
+    
+    background-color: var(--primary-500);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 14px;
+  
+    transition: 0.3s all;
+}
+
+.button--normal:hover {
+    opacity: 0.9;
+}
+
+.button--normal:focus {
+    box-shadow: var(--aura-shadow);
+}
