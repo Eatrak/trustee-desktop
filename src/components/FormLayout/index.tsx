@@ -1,6 +1,6 @@
 import "./style.css";
 
-import NormalButton from "../NormalButton";
+import NormalButton from "@components/NormalButton";
 
 interface IProps {
     children: React.ReactNode,
