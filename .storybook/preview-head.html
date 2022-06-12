@@ -1,0 +1,26 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script>
+    let themes = ["light-mode", "dark-mode"];
+    let themeIndex = 0;
+
+    const switchTheme = () => {
+        themes.forEach(theme => {
+            document.body.classList.remove(theme);
+        });
+
+        themeIndex = (themeIndex + 1) % themes.length;
+
+        document.body.classList.add(themes[themeIndex]);
+    };
+
+    setTimeout(() => {
+        document.body.classList.add(themes[themeIndex]);
+    }, 0);
+</script>
+
+<div style="width: 100%; height: max-content; padding: 5px 0px 5px 0px; border-bottom: 1px solid var(--border-color); margin-bottom: 15px;">
+    <button class="button--normal" onclick="switchTheme()">Switch theme</button>
+</div>
