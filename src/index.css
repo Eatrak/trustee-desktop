@@ -11,6 +11,9 @@ code {
     monospace;
 }
 
+body {
+  background-color: var(--background-color);
+}
 
 /* || Headers */
 
