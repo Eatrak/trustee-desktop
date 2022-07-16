@@ -37,6 +37,11 @@
   color: var(--ghost-text-color);
 }
 
+.input-text-field__input:hover {
+  border-color: var(--primary-500);
+}
+
 .input-text-field__input:focus {
   border-color: var(--primary-500);
+  box-shadow: var(--aura-shadow);
 }
