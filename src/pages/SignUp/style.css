@@ -1,0 +1,51 @@
+.page--sign-up {
+  display: grid;
+  grid-template-columns: auto 48%;
+}
+
+.page--sign-up > :nth-child(1) > .form {
+  position: relative;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+
+  width: 95%;
+  max-width: 400px;
+
+  display: grid;
+  grid-auto-flow: row;
+  row-gap: 20px;
+}
+
+.page--sign-up__logo {
+  position: absolute;
+  left: 30px;
+  top: 25px;
+  
+  height: 40px;
+}
+
+.page--sign-up__decoration {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+@media only screen and (max-width: 1300px) {
+  .page--sign-up {
+    grid-template-columns: 100%;
+  }
+
+  .page--sign-up > :nth-child(2) {
+    display: none;
+  }
+  
+  .page--sign-up__logo {
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    transform: translate(-50%);
+    
+    height: 40px;
+  }
+}

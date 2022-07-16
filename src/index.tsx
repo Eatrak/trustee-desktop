@@ -1,20 +1,22 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './styles/themes.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import SignUpPage from './pages/SignUp';
 
-class App extends React.Component {
-  componentDidMount() {
-    document.body.classList.add("light-mode");
-  }
+const App = () => {
+  document.body.classList.add("light-mode");
 
-  render() {
-    return(
-      <div></div>
-    );
-  }
+  return(
+    <Router>
+      <Routes>
+        <Route path="/sign-up" element={<SignUpPage/>}/>
+      </Routes>
+    </Router>
+  );
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
