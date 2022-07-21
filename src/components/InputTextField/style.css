@@ -45,3 +45,16 @@
   border-color: var(--primary-500);
   box-shadow: var(--aura-shadow);
 }
+
+.input-text-field__input--error {
+  border-color: var(--error-400);
+}
+
+.input-text-field__input--error:hover {
+  border-color: var(--error-500);
+}
+
+.input-text-field__input--error:focus {
+  border-color: var(--error-500);
+  box-shadow: var(--error-aura-shadow);
+}

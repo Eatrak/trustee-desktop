@@ -94,6 +94,10 @@ p {
 
 /* -- */
 
+.text--error {
+  color: var(--error-500);
+}
+
 /* || Pages */
 
 .page {
