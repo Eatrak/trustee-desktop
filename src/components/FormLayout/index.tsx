@@ -15,7 +15,7 @@ const FormLayout = ({children, submitText, submitEvent}: IProps) => {
             <div className="form__fields-container">
                 {children}
             </div>
-            <NormalButton className="form__submit-button" text={submitText} />
+            <NormalButton className="form__submit-button" text={submitText} event={submitEvent} />
         </div>
     );
 }
