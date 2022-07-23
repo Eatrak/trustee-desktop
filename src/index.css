@@ -15,6 +15,11 @@ body {
   background-color: var(--background-color);
 }
 
+::selection {
+  color: white;
+  background-color: var(--primary-500);
+}
+
 /* || Headers */
 
 h1 {
