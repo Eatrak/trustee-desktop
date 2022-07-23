@@ -2,8 +2,6 @@ import "./style.css";
 
 import { createRef, RefObject } from "react";
 
-import Validator from "validatorjs";
-
 import FormLayout from '@components/FormLayout';
 import InputTextField from '@components/InputTextField';
 import logo from '@assets/logo.png';
