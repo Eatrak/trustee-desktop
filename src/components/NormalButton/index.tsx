@@ -3,12 +3,13 @@ import "./style.css";
 interface IProps {
     text: string,
     event?: (...p: any) => any,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }
 
-const NormalButton = ({text, event, className}: IProps) => {
+const NormalButton = ({text, event, className, disabled}: IProps) => {
     return(
-        <button className={"button--normal " + className} onClick={event}>{text}</button>
+        <button className={"button--normal " + className + (disabled && " button--disabled")} onClick={event} disabled={disabled}>{text}</button>
     );
 }
 

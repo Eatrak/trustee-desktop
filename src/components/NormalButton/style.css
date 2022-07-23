@@ -19,3 +19,8 @@
 .button--normal:focus {
     box-shadow: var(--aura-shadow);
 }
+
+.button--disabled {
+    cursor: not-allowed;
+    background-color: var(--primary-300);
+}
