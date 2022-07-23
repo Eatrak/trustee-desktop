@@ -1,11 +1,21 @@
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
 
 import './styles/themes.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import SignUpPage from './pages/SignUp';
+
+if (process.env.NODE_ENV === "production") {
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 1.0,
+  });
+}
 
 const App = () => {
   document.body.classList.add("light-mode");
