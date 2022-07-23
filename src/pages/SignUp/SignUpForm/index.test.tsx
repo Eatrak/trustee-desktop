@@ -6,6 +6,7 @@ import SignUpForm from '.';
 
 const emailFieldId = "emailField";
 const passwordFieldId = "passwordField";
+const submitButtonFieldId = "submitButton";
 
 describe("signUpForm", () => {
     it("should disable the submit button for incorrect email", () => {
@@ -14,7 +15,7 @@ describe("signUpForm", () => {
         userEvent.type(getByTestId(emailFieldId), "foobaremail.com");
         userEvent.type(getByTestId(passwordFieldId), "pass1234");
         
-        const submitButton = getByTestId("submitButton").closest("button");
+        const submitButton = getByTestId(submitButtonFieldId).closest("button");
         
         expect(submitButton!.disabled).toBeTruthy();
     });
@@ -25,7 +26,7 @@ describe("signUpForm", () => {
         userEvent.type(getByTestId(emailFieldId), "foobar@email.com");
         userEvent.type(getByTestId(passwordFieldId), "leak");
         
-        const submitButton = getByTestId("submitButton").closest("button");
+        const submitButton = getByTestId(submitButtonFieldId).closest("button");
         
         expect(submitButton!.disabled).toBeTruthy();
     });
@@ -36,7 +37,7 @@ describe("signUpForm", () => {
         userEvent.type(getByTestId(emailFieldId), "foobaremail.com");
         userEvent.type(getByTestId(passwordFieldId), "leak");
         
-        const submitButton = getByTestId("submitButton").closest("button");
+        const submitButton = getByTestId(submitButtonFieldId).closest("button");
         
         expect(submitButton!.disabled).toBeTruthy();
     });
@@ -47,7 +48,7 @@ describe("signUpForm", () => {
         userEvent.type(getByTestId(emailFieldId), "foobar@email.com");
         userEvent.type(getByTestId(passwordFieldId), "pass1234");
         
-        const submitButton = getByTestId("submitButton").closest("button");
+        const submitButton = getByTestId(submitButtonFieldId).closest("button");
         
         expect(submitButton!.disabled).toBeFalsy();
     });
