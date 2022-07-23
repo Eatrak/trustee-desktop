@@ -4,14 +4,15 @@ interface IProps {
     text: string,
     event?: (...p: any) => any,
     className?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    testId?: string
 }
 
-const NormalButton = ({text, event, className, disabled}: IProps) => {
+const NormalButton = ({text, event, className, disabled, testId}: IProps) => {
     const defaultClasses = "button--normal " + (disabled ? " button--disabled " : " ");
 
     return(
-        <button className={defaultClasses + className} onClick={event} disabled={disabled}>{text}</button>
+        <button data-testid={testId} className={defaultClasses + className} onClick={event} disabled={disabled}>{text}</button>
     );
 }
 

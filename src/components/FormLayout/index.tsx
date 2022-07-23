@@ -16,7 +16,7 @@ const FormLayout = ({children, submitText, submitEvent, submitDisabled}: IProps)
             <div className="form__fields-container">
                 {children}
             </div>
-            <NormalButton className="form__submit-button" text={submitText}
+            <NormalButton testId="submitButton" className="form__submit-button" text={submitText}
                 event={submitEvent} disabled={submitDisabled}/>
         </div>
     );
