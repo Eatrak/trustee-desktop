@@ -5,7 +5,7 @@ module.exports = function override(config) {
     '@components': 'src/components',
     '@assets': 'src/assets',
     '@services': 'src/services',
-    '@crudValidators': 'src/crud-validators'
+    '@crudValidators': 'src/crudValidators'
   })(config);
 
   return config;

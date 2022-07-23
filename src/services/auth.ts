@@ -1,6 +1,6 @@
 import Validator from "validatorjs";
 
-import { signUpValidator } from "src/crud-validators/auth";
+import { signUpValidator } from "@crudValidators/auth";
 import { Utils } from "src/utils";
 
 export default class AuthService {
