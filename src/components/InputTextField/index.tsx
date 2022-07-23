@@ -8,7 +8,8 @@ interface IProps {
     title: string,
     placeholder?: string,
     validator: Validator.Rules,
-    validatorAttribute: string
+    validatorAttribute: string,
+    onInput?: (value: string, errors: string[]) => void
 }
 
 class InputTextField extends React.Component<IProps> {
@@ -55,7 +56,8 @@ class InputTextField extends React.Component<IProps> {
         return(
             <div className="input-text-field">
                 <p className="paragraph--small paragraph--bold input-text-field__title">{this.props.title}</p>
-                <input ref={this.inputRef} onBlur={this.checkErrors} className="input-text-field__input" placeholder={this.props.placeholder}/>
+                <input ref={this.inputRef} onInput={() => this.props.onInput && this.props.onInput(this.getValue(), this.state.errors)}
+                    onBlur={this.checkErrors} className="input-text-field__input" placeholder={this.props.placeholder}/>
                 {this.renderErrors()}
             </div>
         );
