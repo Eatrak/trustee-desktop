@@ -26,7 +26,7 @@ const SignUpPage = () => {
     return(
         <div className="page page--sign-up">
             <div>
-                <img className="page--sign-up__logo" src={logo}/>
+                <img className="page--sign-up__logo" src={logo} alt="logo"/>
                 <FormLayout submitText="Sign up" submitEvent={signUp}>
                     {/* Email field */}
                     <InputTextField ref={emailField} validator={signUpValidator} validatorAttribute="email"
