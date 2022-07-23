@@ -8,8 +8,7 @@ interface IProps {
     title: string,
     placeholder?: string,
     validator: Validator.Rules,
-    validatorAttribute: string,
-    errorMessage?: string
+    validatorAttribute: string
 }
 
 class InputTextField extends React.Component<IProps> {
