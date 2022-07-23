@@ -1,4 +1,4 @@
-import { createRef, RefObject, useState } from "react";
+import { createRef, RefObject, useEffect, useState } from "react";
 
 import Validator from "validatorjs";
 
@@ -35,10 +35,10 @@ const SignUpForm = () => {
     return (
         <FormLayout submitText="Sign up" submitEvent={signUp} submitDisabled={submitDisabled}>
             {/* Email field */}
-            <InputTextField ref={emailField} validator={signUpValidator} validatorAttribute="email"
+            <InputTextField testId="emailField" ref={emailField} validator={signUpValidator} validatorAttribute="email"
                 title="Email" placeholder="johndoe@test.com" onInput={checkFieldValidity}/>
             {/* Password field */}
-            <InputTextField ref={passwordField} validator={signUpValidator} validatorAttribute="password"
+            <InputTextField testId="passwordField" ref={passwordField} validator={signUpValidator} validatorAttribute="password"
                 title="Password" onInput={checkFieldValidity}/>
         </FormLayout>
     );
