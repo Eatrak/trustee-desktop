@@ -13,7 +13,7 @@ interface IProps {
 }
 
 class InputTextField extends React.Component<IProps> {
-    state = { error: false };
+    state = { errors: [] };
 
     inputRef: RefObject<HTMLInputElement> = React.createRef();
 
@@ -32,17 +32,24 @@ class InputTextField extends React.Component<IProps> {
         
         const validation = new Validator({ [this.props.validatorAttribute]: value }, this.props.validator);
         validation.check();
+
+        const errors = validation.errors.get(this.props.validatorAttribute);
+        this.setState({ errors });
         
-        const error = validation.errors.has(this.props.validatorAttribute);
-        
-        if (error) {
+        if (errors.length > 0) {
             this.inputRef.current?.classList.add("input-text-field__input--error");
-            this.setState({ error: true });
         }
         else {
             this.inputRef.current?.classList.remove("input-text-field__input--error");
-            this.setState({ error: false });
         }
+    }
+    
+    renderErrors() {
+        let id = 0;
+
+        return this.state.errors.map(error => {
+            return <p key={id++} className="paragraph--small text--error">{error}</p>;
+        });
     }
 
     render() {
@@ -50,7 +57,7 @@ class InputTextField extends React.Component<IProps> {
             <div className="input-text-field">
                 <p className="paragraph--small paragraph--bold input-text-field__title">{this.props.title}</p>
                 <input ref={this.inputRef} onBlur={this.checkErrors} className="input-text-field__input" placeholder={this.props.placeholder}/>
-                {this.state.error && <p className="paragraph--small text--error">{this.props.errorMessage}</p>}
+                {this.renderErrors()}
             </div>
         );
     }
