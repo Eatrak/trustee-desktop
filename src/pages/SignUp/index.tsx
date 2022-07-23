@@ -6,8 +6,8 @@ import FormLayout from '@components/FormLayout';
 import InputTextField from '@components/InputTextField';
 import logo from '@assets/logo.png';
 import { ReactComponent as DotsDecoration } from '@assets/dots-decoration.svg';
-import { signUpValidator } from "src/crud-validators/auth";
-import AuthService from "src/services/auth";
+import { signUpValidator } from "@crudValidators/auth";
+import AuthService from "@services/auth";
 
 const SignUpPage = () => {
     const emailField: RefObject<InputTextField> = createRef();
