@@ -8,8 +8,10 @@ interface IProps {
 }
 
 const NormalButton = ({text, event, className, disabled}: IProps) => {
+    const defaultClasses = "button--normal " + (disabled ? " button--disabled " : " ");
+
     return(
-        <button className={"button--normal " + className + (disabled && " button--disabled")} onClick={event} disabled={disabled}>{text}</button>
+        <button className={defaultClasses + className} onClick={event} disabled={disabled}>{text}</button>
     );
 }
 
