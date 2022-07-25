@@ -10,7 +10,8 @@ interface IProps {
     validator: Validator.Rules,
     validatorAttribute: string,
     onInput?: (value: string, errors: string[]) => void,
-    testId?: string
+    testId?: string,
+    type?: string
 }
 
 class InputTextField extends React.Component<IProps> {
@@ -57,7 +58,8 @@ class InputTextField extends React.Component<IProps> {
         return(
             <div className="input-text-field">
                 <p className="paragraph--small paragraph--bold input-text-field__title">{this.props.title}</p>
-                <input data-testid={this.props.testId} ref={this.inputRef} onInput={() => this.props.onInput && this.props.onInput(this.getValue(), this.state.errors)}
+                <input data-testid={this.props.testId} ref={this.inputRef} type={this.props.type}
+                    onInput={() => this.props.onInput && this.props.onInput(this.getValue(), this.state.errors)}
                     onBlur={this.checkErrors} className="input-text-field__input" placeholder={this.props.placeholder}/>
                 {this.renderErrors()}
             </div>
