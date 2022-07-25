@@ -33,7 +33,7 @@ const SignUpForm = () => {
     };
     
     return (
-        <FormLayout submitText="Sign up" submitEvent={signUp} submitDisabled={submitDisabled}>
+        <FormLayout header="Welcome!" submitText="Sign up" submitEvent={signUp} submitDisabled={submitDisabled}>
             {/* Email field */}
             <InputTextField testId="emailField" ref={emailField} validator={signUpValidator} validatorAttribute="email"
                 title="Email" placeholder="johndoe@test.com" onInput={checkFieldValidity}/>
