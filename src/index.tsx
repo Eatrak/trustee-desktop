@@ -8,6 +8,7 @@ import './styles/themes.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import SignUpPage from './pages/SignUp';
+import SignInPage from './pages/SignIn';
 
 if (process.env.NODE_ENV === "production") {
   Sentry.init({
@@ -24,6 +25,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/sign-up" element={<SignUpPage/>}/>
+        <Route path="/sign-in" element={<SignInPage/>}/>
       </Routes>
     </Router>
   );
