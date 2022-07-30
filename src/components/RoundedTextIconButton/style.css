@@ -1,6 +1,6 @@
 .rounded-text-icon-button {
-    width: 45px;
-    height: 45px;
+    width: 42px;
+    height: 42px;
 
     background-color: var(--background-color);
     border-radius: 50%;
@@ -15,6 +15,10 @@
 
 .rounded-text-icon-button:active {
     background-color: var(--primary-100);
+}
+
+.rounded-text-icon-button:focus {
+    box-shadow: var(--aura-shadow);
 }
 
 .rounded-text-icon-button:focus .rounded-text-icon-button__icon {
