@@ -97,6 +97,12 @@ p {
   font-weight: 700;
 }
 
+.paragraph--sub-title {
+  font-size: 16px;
+  color: var(--neutral-600);
+  font-weight: 700;
+}
+
 /* -- */
 
 .text--error {
