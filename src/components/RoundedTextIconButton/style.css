@@ -1,0 +1,36 @@
+.rounded-text-icon-button {
+    width: 45px;
+    height: 45px;
+
+    background-color: var(--background-color);
+    border-radius: 50%;
+    
+    cursor: pointer;
+    transition: box-shadow 0.2s, background-color 0.2s;
+}
+
+.rounded-text-icon-button:hover .rounded-text-icon-button__icon {
+    color: var(--primary-500);
+}
+
+.rounded-text-icon-button:active {
+    background-color: var(--primary-100);
+}
+
+.rounded-text-icon-button:focus .rounded-text-icon-button__icon {
+    color: var(--primary-500);
+}
+
+.rounded-text-icon-button__icon {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 30px;
+    height: 30px;
+
+    color: var(--neutral-600);
+    
+    transition: color 0.2s;
+}
