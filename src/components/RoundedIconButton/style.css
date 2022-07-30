@@ -1,0 +1,32 @@
+.rounded-icon-button {
+    width: 45px;
+    height: 45px;
+
+    background-color: var(--primary-500);
+    border-radius: 50%;
+    
+    cursor: pointer;
+    transition: box-shadow 0.2s, filter 0.2s;
+}
+
+.rounded-icon-button:hover {
+    filter: brightness(0.9);
+}
+
+.rounded-icon-button:focus {
+    box-shadow: var(--aura-shadow);
+}
+
+.rounded-icon-button__icon {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 25px;
+    height: 25px;
+
+    color: var(--button-text-color);
+    
+    transition: color 0.2s;
+}
