@@ -1,0 +1,58 @@
+.navbar-button {
+    width: 100%;
+    
+    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.navbar__button__container {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 10px;
+    align-items: center;
+    
+    width: max-content;
+}
+
+.navbar__button__container__icon {
+    width: 24px;
+    height: 24px;
+    
+    color: var(--neutral-600);
+
+    transition: color 0.2s;
+}
+
+.navbar__button__container__text {
+    user-select: none;
+    
+    color: var(--neutral-600);
+
+    transition: color 0.2s;
+}
+
+.navbar-button:hover {
+    background-color: var(--primary-50);
+}
+
+.navbar-button:hover .navbar__button__container__icon {
+    color: var(--primary-500);
+}
+
+.navbar-button:hover .navbar__button__container__text {
+    color: var(--primary-500);
+}
+
+.navbar-button--selected .navbar__button__container__icon {
+    color: var(--primary-500);
+}
+
+.navbar-button--selected .navbar__button__container__text {
+    color: var(--primary-500);
+}

@@ -1,0 +1,28 @@
+.navbar {
+    display: grid;
+    grid-template-rows: auto max-content;
+    row-gap: 20px;
+
+    position: relative;
+
+    border-right: 1px solid var(--neutral-50);
+}
+
+.navbar__button-container {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 5px;
+    
+    width: 100%;
+    height: max-content;
+    
+    padding-top: 150px;
+    padding-inline: 10px;
+    box-sizing: border-box;
+}
+
+.navbar__user-badge {
+    height: 70px;
+    
+    border-top: 1px solid var(--neutral-50);
+}
