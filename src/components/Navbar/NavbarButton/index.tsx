@@ -15,7 +15,7 @@ const NavbarButton = ({ Icon, text, path }: IProps) => {
     };
 
     return (
-        <Link to={path} style={{textDecoration: "none"}}>
+        <Link to={path} style={{textDecoration: "none"}} draggable={false}>
             <div className={"navbar-button" + getSelectedStyle()}>
                 <div className="navbar__button__container">
                     <Icon className="navbar__button__container__icon"/>
