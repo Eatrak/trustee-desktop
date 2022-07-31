@@ -25,7 +25,8 @@
       "@styles/*": ["./src/styles/*"],
       "@assets/*": ["./src/assets/*"],
       "@services/*": ["./src/services/*"],
-      "@crudValidators/*": ["src/crudValidators/*"]
+      "@crudValidators/*": ["src/crudValidators/*"],
+      "@sections/*": ["src/sections/*"]
     }
   },
   "include": [
