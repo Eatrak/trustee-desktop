@@ -1,0 +1,11 @@
+.app-layout {
+    display: grid;
+    grid-template-columns: 240px auto 400px;
+
+    --primaryColor: var(--primary-600) !important;
+}
+
+.app-layout__content {
+    padding: 30px;
+    padding-top: 40px;
+}
