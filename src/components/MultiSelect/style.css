@@ -1,0 +1,91 @@
+.multi-select {
+    position: relative;
+
+    display: grid;
+    grid-auto-flow: row;
+
+    width: max-content;
+    height: max-content;
+    
+    cursor: pointer;
+}
+
+.multi-select__body {
+    display: grid;
+    grid-template-columns: auto max-content;
+    column-gap: 15px;
+    align-items: center;
+
+    width: max-content;
+    min-width: 100px;
+    height: 40px;
+    
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px;
+    padding-inline: 10px;
+    box-sizing: border-box;
+    
+    transition: background-color 0.2s;
+}
+
+.multi-select__body__custom-item-container {
+    display: grid;
+    grid-template-columns: max-content auto;
+    column-gap: 15px;
+    align-items: center;
+}
+
+.multi-select__body__icon {
+    width: auto;
+    height: 100%;
+
+    color: var(--neutral-800);
+}
+
+.multi-select__body__row {
+    transition: all 0.4s;
+}
+
+.multi-select__body__row--activated {
+    transform: rotate(-180deg);
+}
+
+.multi-select__body__text {
+    user-select: none;
+}
+
+.multi-select:hover .multi-select__body {
+    background-color: var(--neutral-50);
+}
+
+.multi-select__options-panel {
+    position: absolute;
+    top: 45px;
+
+    height: max-content;
+    max-height: 200px;
+
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: var(--soft-elevation);
+}
+
+.multi-select__option {
+    display: grid;
+    grid-template-columns: max-content auto;
+    column-gap: 10px;
+    align-items: center;
+
+    width: 100%;
+    height: 30px;
+
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.multi-select__option_text {
+    user-select: none;
+}
