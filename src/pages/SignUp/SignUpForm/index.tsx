@@ -39,7 +39,7 @@ const SignUpForm = () => {
                 title="Email" placeholder="johndoe@test.com" onInput={checkFieldValidity}/>
             {/* Password field */}
             <InputTextField testId="passwordField" ref={passwordField} validator={signUpValidator} validatorAttribute="password"
-                title="Password" onInput={checkFieldValidity}/>
+                title="Password" type="password" onInput={checkFieldValidity}/>
         </FormLayout>
     );
 };
