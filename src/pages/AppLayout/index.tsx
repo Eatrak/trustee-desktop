@@ -1,8 +1,9 @@
 import "./style.css";
 
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import Navbar from "@components/Navbar";
+import TransactionsSection from "@sections/TransactionsSection";
 
 const AppLayout = () => {
     return (
@@ -10,9 +11,9 @@ const AppLayout = () => {
             <Navbar/>
             <div className="app-layout__content">
                 <Routes>
+                    <Route path="/" element={<TransactionsSection/>}/>
                 </Routes>
             </div>
-            <div></div>
         </div>
     );
 };
