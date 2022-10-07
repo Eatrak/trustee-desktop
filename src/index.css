@@ -1,6 +1,6 @@
 * {
   margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   outline: 0;
@@ -26,7 +26,6 @@ h1 {
   font-size: 57.33px;
   color: var(--normal-text-color);
   font-weight: 400;
-  font-family: "Montserrat", sans-serif;
 }
 
 h2 {
