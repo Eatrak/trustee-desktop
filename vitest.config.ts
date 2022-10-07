@@ -12,7 +12,8 @@ export default defineConfig({
     alias: {
       "@services": path.resolve(__dirname, "./src/services"),
       "@crudValidators": path.resolve(__dirname, "./src/crudValidators"),
-      "@components": path.resolve(__dirname, "./src/components")
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@models": path.resolve(__dirname, "./src/shared/models")
     },
   },
 });
