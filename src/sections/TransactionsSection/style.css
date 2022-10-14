@@ -6,6 +6,7 @@
 .transactions-section--main {
     display: grid;
     grid-template-rows: max-content auto;
+    row-gap: 40px;
     
     padding: 30px;
     padding-top: 40px;
