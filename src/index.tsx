@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
+import Validator from 'validatorjs';
+//@ts-ignore
+import en from 'validatorjs/src/lang/en';
 
 import './styles/themes.css';
 import './index.css';
@@ -11,6 +14,8 @@ import SignUpPage from './pages/SignUp';
 import SignInPage from './pages/SignIn';
 import AppLayout from './pages/AppLayout';
 import { Utils } from './utils';
+
+Validator.setMessages('en', en);
 
 if (process.env.NODE_ENV === "production") {
   Sentry.init({
