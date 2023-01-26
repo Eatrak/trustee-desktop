@@ -10,10 +10,11 @@ import reportWebVitals from './reportWebVitals';
 import SignUpPage from './pages/SignUp';
 import SignInPage from './pages/SignIn';
 import AppLayout from './pages/AppLayout';
+import { Utils } from './utils';
 
 if (process.env.NODE_ENV === "production") {
   Sentry.init({
-    dsn: process.env.REACT_APP_SENTRY_DSN,
+    dsn: process.env.VITE_APP_SENTRY_DSN,
     integrations: [new BrowserTracing()],
     tracesSampleRate: 1.0,
   });
@@ -21,6 +22,8 @@ if (process.env.NODE_ENV === "production") {
 
 const App = () => {
   document.body.classList.add("light-mode");
+
+  Utils.getInstance().getAPIEndpoint("d");
 
   return(
     <Router>

@@ -8,10 +8,10 @@ export class Utils {
     }
 
     getAPIEndpoint(path: string) {
-        const { REACT_APP_API_BASE_URL, REACT_APP_STAGE } = process.env;
+        const { VITE_APP_API_BASE_URL, VITE_APP_STAGE } = import.meta.env;
 
-        if (!REACT_APP_API_BASE_URL || !REACT_APP_STAGE) return "";
+        if (!VITE_APP_API_BASE_URL || !VITE_APP_STAGE) return "";
 
-        return REACT_APP_API_BASE_URL + REACT_APP_STAGE + path;
+        return VITE_APP_API_BASE_URL + VITE_APP_STAGE + path;
     }
 }
