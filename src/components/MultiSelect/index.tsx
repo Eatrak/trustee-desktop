@@ -58,7 +58,7 @@ const MultiSelect = ({ Icon, text, options, selectedOptions, setSelectedOptions 
             <div className="multi-select__body" onTimeUpdate={e => showPanel(e)} onClick={e => showPanel(e)}>
                 <div className="multi-select__body__custom-item-container">
                     <Icon className="multi-select__body__icon"/>
-                    <p className="multi-select__body__text">{text}</p>
+                    <p className="paragraph--small multi-select__body__text">{text}</p>
                 </div>
                 <MdKeyboardArrowDown className={"multi-select__body__icon multi-select__body__row" + (opened ? " multi-select__body__row--activated" : "")}/>
             </div>

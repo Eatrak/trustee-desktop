@@ -17,7 +17,7 @@ const NavbarUserBadge = ({ firstName, lastName, email }: IProps) => {
                 <p className="navbar__user-badge__image__letters paragraph--small paragraph--bold">{getNameInitials()}</p>
             </div>
             <div className="navbar__user-badge__text-container">
-                <p className="paragraph--regular paragraph--bold">{firstName} {lastName}</p>
+                <p className="paragraph--small paragraph--bold">{firstName} {lastName}</p>
                 <p className="paragraph--small navbar__user-badge__email">{email}</p>
             </div>
         </div>

@@ -13,7 +13,7 @@ const TransactionsHeader = () => {
     return (
         <div className="app-layout__header">
             <div className="app-layout__header__texts-container">
-                <h4 className="header--bold">Monthly transactions</h4>
+                <h5 className="header--bold">Monthly transactions</h5>
                 <p className="paragraph--sub-title">Current month</p>
             </div>
             <div className="app-layout__header__actions-container">

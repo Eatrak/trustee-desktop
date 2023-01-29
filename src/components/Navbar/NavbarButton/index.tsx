@@ -19,7 +19,7 @@ const NavbarButton = ({ Icon, text, path }: IProps) => {
             <div className={"navbar-button" + getSelectedStyle()}>
                 <div className="navbar__button__container">
                     <Icon className="navbar__button__container__icon"/>
-                    <p className="paragraph--regular paragraph--bold navbar__button__container__text">{text}</p>
+                    <p className="paragraph--small paragraph--bold navbar__button__container__text">{text}</p>
                 </div>
             </div>
         </Link>
