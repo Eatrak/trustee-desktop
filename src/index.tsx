@@ -13,7 +13,6 @@ import reportWebVitals from './reportWebVitals';
 import SignUpPage from './pages/SignUp';
 import SignInPage from './pages/SignIn';
 import AppLayout from './pages/AppLayout';
-import { Utils } from './utils';
 
 Validator.setMessages('en', en);
 
