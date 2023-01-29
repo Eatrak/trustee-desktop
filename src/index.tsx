@@ -28,8 +28,6 @@ if (process.env.NODE_ENV === "production") {
 const App = () => {
   document.body.classList.add("light-mode");
 
-  Utils.getInstance().getAPIEndpoint("d");
-
   return(
     <Router>
       <Routes>
