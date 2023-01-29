@@ -1,6 +1,6 @@
 .app-layout {
     display: grid;
-    grid-template-columns: 240px auto;
+    grid-template-columns: 270px auto;
 
     --primaryColor: var(--primary-600) !important;
 }
