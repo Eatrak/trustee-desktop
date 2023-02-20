@@ -1,11 +1,11 @@
 export interface Transaction {
     userId: string,
     walletId: string,
-    creationTimestamp: string,
+    itemCreationTimestamp: string,
     categoryName: string,
     transactionId: string,
     transactionName: string,
     transactionAmount: number,
-    transactionDate: string,
+    transactionTimestamp: string,
     isIncome: boolean,
 }
