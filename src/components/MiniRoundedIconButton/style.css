@@ -1,0 +1,33 @@
+.mini-rounded-icon-button {
+    width: 24px;
+    height: 24px;
+
+    background-color: var(--background-color);
+    border-radius: 50%;
+    
+    cursor: pointer;
+    transition: outline-color 0.2s, background-color 0.2s;
+    outline: 2px solid transparent;
+}
+
+.mini-rounded-icon-button:hover {
+    background-color: var(--neutral-50);
+}
+
+.mini-rounded-icon-button:active {
+    outline-color: var(--neutral-100);
+}
+
+.mini-rounded-icon-button__icon {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 24px;
+    height: 24px;
+
+    color: var(--neutral-600);
+    
+    transition: color 0.2s;
+}
