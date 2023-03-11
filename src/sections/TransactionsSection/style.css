@@ -8,6 +8,8 @@
     grid-template-rows: max-content auto;
     row-gap: 40px;
     
+    align-items: baseline;
+    
     padding: 30px;
     padding-top: 40px;
 }
