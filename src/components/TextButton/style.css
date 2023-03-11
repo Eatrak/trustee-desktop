@@ -5,21 +5,21 @@
     align-items: center;
     justify-content: center;
 
-    height: 38px;
+    height: 36px;
 
     padding: 4px;
     background-color: var(--background-color);
     color: var(--primary-500);
-    border: 2px solid transparent;
+    border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 700;
     
-    transition: border-color 0.1s, box-shadow 0.1s, background-color 0.1s;
+    transition: box-shadow 0.2s, background-color 0.2s, opacity 0.2s;
 }
 
 .text-button:hover {
-    border-color: var(--primary-100);
+    background-color: var(--primary-50);
 }
 
 .text-button:focus {
@@ -29,6 +29,7 @@
 
 .text-button:active {
     background-color: var(--primary-50);
+    opacity: 0.8;
 }
 
 .text-button__icon {
