@@ -48,7 +48,7 @@
 
   --button-text-color: white;
 
-  --aura-shadow: 0px 0px 0px 3px var(--primary-200);
+  --aura-shadow: 0px 0px 0px 3px var(--primary-100);
   --error-aura-shadow: 0px 0px 0px 3px var(--error-100);
   --soft-elevation: 0px 2px 10px 0px var(--neutral-100);
 }
