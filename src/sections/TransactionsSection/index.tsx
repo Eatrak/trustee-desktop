@@ -49,7 +49,7 @@ const TransactionsSection = () => {
                         );
                     })}
                 </div>
-                <TextButton Icon={MdAdd} clickEvent={getNextTransactions} isLoading={isLoadingTransactions}/>
+                {cursor && <TextButton Icon={MdAdd} clickEvent={getNextTransactions} isLoading={isLoadingTransactions}/>}
             </div>
             <div className="transactions-section--details"></div>
         </div>
