@@ -13,6 +13,7 @@ import TransactionsHeader from "./TransactionsHeader";
 const TransactionsSection = () => {
     let [ transactions, changeTransactions ] = useState<Transaction[]>([]);
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
+    let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
 
     useEffect(() => {
         TransactionsService.getInstance().transactions$.subscribe(transactions => {
@@ -28,7 +29,9 @@ const TransactionsSection = () => {
 
     let getNextTransactions = async () => {
         if (cursor) {
+            changeTransactionsLoading(true);
             const newCursor = await TransactionsService.getInstance().getNextTransactionsByCreationRange(cursor);
+            changeTransactionsLoading(false);
             changeCursor(newCursor);
         }
     };
@@ -46,7 +49,7 @@ const TransactionsSection = () => {
                         );
                     })}
                 </div>
-                <TextButton Icon={MdAdd} clickEvent={getNextTransactions}/>
+                <TextButton Icon={MdAdd} clickEvent={getNextTransactions} isLoading={isLoadingTransactions}/>
             </div>
             <div className="transactions-section--details"></div>
         </div>
