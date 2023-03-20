@@ -1,0 +1,61 @@
+.date-picker {
+    width: 270px;
+    height: 320px;
+
+    background-color: var(--background-color);
+    box-shadow: var(--high-elevation);
+    border-radius: 8px;
+}
+
+.date-picker__header {
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+    align-items: center;
+    
+    height: 50px;
+
+    padding-inline: 20px;
+}
+
+.date-picker__header > .date-picker__header__month-name {
+    text-align: center;
+    font-weight: 400;
+}
+
+.date-picker__day-list {
+    display: grid;
+    grid-auto-flow: column;
+
+    width: 100%;
+
+    margin-top: 16px;
+}
+
+.date-picker__day-list__day-name {
+    width: 30px;
+    
+    text-align: center;
+}
+
+.date-picker__content {
+    display: grid;
+    grid-template-columns: repeat(7, auto);
+
+    margin-top: 8px;
+}
+
+.date-picker__content > .date-picker__content__day {
+    display: grid;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+}
+
+.date-picker__content > .date-picker__content__day > .date-picker__content__day__text {
+    align-self: center;
+    text-align: center;
+    font-weight: 600;
+    color: var(--neutral-600);
+}
