@@ -5,6 +5,8 @@
     background-color: var(--background-color);
     box-shadow: var(--high-elevation);
     border-radius: 8px;
+    
+    user-select: none;
 }
 
 .date-picker__header {
