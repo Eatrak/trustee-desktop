@@ -40,6 +40,7 @@
 .date-picker__content {
     display: grid;
     grid-template-columns: repeat(7, auto);
+    row-gap: 6px;
 
     margin-top: 8px;
 }
