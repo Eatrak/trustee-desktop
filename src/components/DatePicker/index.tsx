@@ -10,6 +10,8 @@ const DatePicker = () => {
     const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
     const currentYearAndMonth = dayjs().format("YYYY-MM");
     let [selectedYearAndMonth, changeYearAndMonth] = useState<string>(currentYearAndMonth);
+    let [startDay, changeStartDay] = useState<number | null>(null);
+    let [endDay, changeEndDay] = useState<number | null>(null);
 
     const selectPreviousMonth = () => {
         const previousMonthYear = dayjs(selectedYearAndMonth).subtract(1, "month");
@@ -19,6 +21,16 @@ const DatePicker = () => {
     const selectNextMonth = () => {
         const nextMonthYear = dayjs(selectedYearAndMonth).add(1, "month");
         changeYearAndMonth(nextMonthYear.format());
+    };
+
+    const getMonthDayCSSClass = () => {
+        let cssClass = "date-picker__month-day-list__month-day";
+
+        if (startDay == null) {
+            cssClass += " date-picker__month-day-list__month-day--start-day-candidate";
+        }
+
+        return cssClass;
     };
 
     return (
@@ -47,7 +59,7 @@ const DatePicker = () => {
                     {
                         [...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(day => {
                             return (
-                                <div className="date-picker__month-day-list__month-day">
+                                <div className={getMonthDayCSSClass()}>
                                     <p key={day + 1} className="paragraph--small paragraph--bold date-picker__month-day-list__month-day__text">
                                         {day + 1}
                                     </p>

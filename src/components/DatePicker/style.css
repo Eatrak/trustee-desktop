@@ -64,6 +64,18 @@
     height: 30px;
 
     border-radius: 50%;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s;
+}
+
+.date-picker__month-day-list__month-day--start-day-candidate:hover {
+    background-color: var(--primary-50);
+}
+
+.date-picker__month-day-list__month-day--start-day-candidate:hover > .date-picker__month-day-list__month-day__text {
+    color: var(--primary-400);
 }
 
 .date-picker__month-day-list__month-day__text {
