@@ -11,15 +11,25 @@ const DatePicker = () => {
     const currentYearAndMonth = dayjs().format("YYYY-MM");
     let [selectedYearAndMonth, changeYearAndMonth] = useState<string>(currentYearAndMonth);
 
+    const selectPreviousMonth = () => {
+        const previousMonthYear = dayjs(selectedYearAndMonth).subtract(1, "month");
+        changeYearAndMonth(previousMonthYear.format());
+    };
+
+    const selectNextMonth = () => {
+        const nextMonthYear = dayjs(selectedYearAndMonth).add(1, "month");
+        changeYearAndMonth(nextMonthYear.format());
+    };
+
     return (
         <div className="date-picker">
             <div className="date-picker__header">
-                <MiniRoundedIconButton Icon={MdChevronLeft}/>
+                <MiniRoundedIconButton Icon={MdChevronLeft} clickEvent={selectPreviousMonth}/>
                 <p
                     className="date-picker__header__month-name paragraph--sub-title paragraph--small">
-                    {dayjs(currentYearAndMonth).format("MMMM")} {dayjs(currentYearAndMonth).get("year")}
+                    {dayjs(selectedYearAndMonth).format("MMMM")} {dayjs(selectedYearAndMonth).get("year")}
                 </p>
-                <MiniRoundedIconButton Icon={MdChevronRight}/>
+                <MiniRoundedIconButton Icon={MdChevronRight} clickEvent={selectNextMonth}/>
             </div>
             <div className="date-picker__day-list">
                 {
@@ -34,7 +44,7 @@ const DatePicker = () => {
             </div>
             <div className="date-picker__content">
                 {
-                    [...Array(dayjs(currentYearAndMonth).daysInMonth()).keys()].map(day => {
+                    [...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(day => {
                         return (
                             <div className="date-picker__content__day">
                                 <p key={day + 1} className="paragraph--small paragraph--bold date-picker__content__day__text">
