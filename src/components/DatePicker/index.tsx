@@ -31,29 +31,31 @@ const DatePicker = () => {
                 </p>
                 <MiniRoundedIconButton Icon={MdChevronRight} clickEvent={selectNextMonth}/>
             </div>
-            <div className="date-picker__day-list">
-                {
-                    dayNames.map(dayName => {
-                        return (
-                            <p className="paragraph--small paragraph--bold date-picker__day-list__day-name">
-                                {dayName}
-                            </p>
-                        );
-                    })
-                }
-            </div>
             <div className="date-picker__content">
-                {
-                    [...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(day => {
-                        return (
-                            <div className="date-picker__content__day">
-                                <p key={day + 1} className="paragraph--small paragraph--bold date-picker__content__day__text">
-                                    {day + 1}
+                <div className="date-picker__weekday-list">
+                    {
+                        dayNames.map(dayName => {
+                            return (
+                                <p className="paragraph--small paragraph--bold date-picker__weekday-list__weekday">
+                                    {dayName}
                                 </p>
-                            </div>
-                        );
-                    })
-                }
+                            );
+                        })
+                    }
+                </div>
+                <div className="date-picker__month-day-list">
+                    {
+                        [...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(day => {
+                            return (
+                                <div className="date-picker__month-day-list__month-day">
+                                    <p key={day + 1} className="paragraph--small paragraph--bold date-picker__month-day-list__month-day__text">
+                                        {day + 1}
+                                    </p>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
             </div>
         </div>
     );
