@@ -22,6 +22,10 @@
     font-weight: 400;
 }
 
+.date-picker__content {
+    padding-inline: 10px;
+}
+
 /* || Weekday list */
 
 .date-picker__weekday-list {
