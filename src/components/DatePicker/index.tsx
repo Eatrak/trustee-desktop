@@ -12,6 +12,7 @@ const DatePicker = () => {
     let [selectedYearAndMonth, changeYearAndMonth] = useState<string>(currentYearAndMonth);
     let [startDay, changeStartDay] = useState<number | null>(null);
     let [endDay, changeEndDay] = useState<number | null>(null);
+    let [endDayCandidate, changeEndDayCandidate] = useState<number | null>();
 
     const selectPreviousMonth = () => {
         const previousMonthYear = dayjs(selectedYearAndMonth).subtract(1, "month");
@@ -23,14 +24,52 @@ const DatePicker = () => {
         changeYearAndMonth(nextMonthYear.format());
     };
 
-    const getMonthDayCSSClass = () => {
+    const getMonthDayCSSClass = (day: number) => {
         let cssClass = "date-picker__month-day-list__month-day";
 
-        if (startDay == null) {
+        // If no days have been selected, all the days are start-day candidates
+        if (startDay == null && endDay == null) {
             cssClass += " date-picker__month-day-list__month-day--start-day-candidate";
+        }
+        
+        // If the start-day has been selected
+        if (startDay != null) {
+            // If the days range has been selected, the days out of the range are start-day candidates
+            if (endDay != null && (day < startDay || day > endDay)) {
+                cssClass += " date-picker__month-day-list__month-day--start-day-candidate";
+            }
+
+            const isDayInCandidateRange = day > startDay && endDayCandidate != null && endDay == null && day < endDayCandidate;
+            const isDayInRange = day > startDay && endDay != null && day < endDay;
+            // If the day is in the candidate range or in the selected range
+            if (isDayInCandidateRange || isDayInRange) {
+                cssClass += " date-picker__month-day-list__month-day--selected-range-day";
+            }
+
+            const isDayTheEndDayCandidate = endDayCandidate != null && endDay == null && day == endDayCandidate;
+            const isDayTheStartDay = day == startDay;
+            const isDayTheEndDay = endDay != null && day == endDay;
+            // If the day is an extreme of the candidate range or selected range
+            if (isDayTheStartDay || isDayTheEndDayCandidate || isDayTheEndDay) {
+                cssClass += " date-picker__month-day-list__month-day--selected-range-extreme-day";
+            }
         }
 
         return cssClass;
+    };
+
+    const changeInterval = (day: number) => {
+        if ((startDay == null && endDay == null) || (startDay != null && day < startDay)) {
+            changeStartDay(day);
+        }
+        else if (startDay != null && endDay == null) {
+            changeEndDay(day);
+        }
+
+        if (startDay != null && endDay != null) {
+            changeStartDay(day);
+            changeEndDay(null);
+        }
     };
 
     return (
@@ -59,7 +98,11 @@ const DatePicker = () => {
                     {
                         [...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(day => {
                             return (
-                                <div className={getMonthDayCSSClass()}>
+                                <div
+                                    className={getMonthDayCSSClass(day + 1)}
+                                    onClick={() => changeInterval(day + 1)}
+                                    onMouseEnter={() => changeEndDayCandidate(day + 1)}>
+
                                     <p key={day + 1} className="paragraph--small paragraph--bold date-picker__month-day-list__month-day__text">
                                         {day + 1}
                                     </p>

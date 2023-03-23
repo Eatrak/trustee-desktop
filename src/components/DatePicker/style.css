@@ -85,4 +85,21 @@
     color: var(--neutral-600);
 }
 
+.date-picker__month-day-list__month-day--selected-range-extreme-day {
+    background-color: var(--primary-500);
+}
+
+.date-picker__month-day-list__month-day--selected-range-extreme-day > .date-picker__month-day-list__month-day__text {
+    color: var(--button-text-color);
+}
+
+
+.date-picker__month-day-list__month-day--selected-range-day {
+    background-color: var(--primary-100);
+}
+
+.date-picker__month-day-list__month-day--selected-range-day > .date-picker__month-day-list__month-day__text {
+    color: var(--primary-600);
+}
+
 /* -- */
