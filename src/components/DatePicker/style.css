@@ -86,7 +86,7 @@
 }
 
 .date-picker__month-day-list__month-day--selected-range-extreme-day {
-    background-color: var(--primary-500);
+    background-color: var(--primary-600);
 }
 
 .date-picker__month-day-list__month-day--selected-range-extreme-day > .date-picker__month-day-list__month-day__text {
