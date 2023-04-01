@@ -1,4 +1,7 @@
 .date-picker {
+    position: absolute;
+    z-index: 1000;
+
     width: 270px;
     height: 320px;
 

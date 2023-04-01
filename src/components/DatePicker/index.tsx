@@ -1,12 +1,19 @@
 import "./style.css";
 
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import dayjs from "dayjs";
 
 import MiniRoundedIconButton from "@components/MiniRoundedIconButton";
 
-const DatePicker = () => {
+interface IProps {
+    style: React.CSSProperties,
+    setOpened: Function
+}
+
+const DatePicker = ({ style, setOpened }: IProps) => {
+    let datePickerFrame = useRef<HTMLDivElement>(null);
+
     const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
     const currentYearAndMonth = dayjs().format("YYYY-MM");
     let [selectedYearAndMonth, changeYearAndMonth] = useState<string>(currentYearAndMonth);
@@ -72,8 +79,25 @@ const DatePicker = () => {
         }
     };
 
+    // Event used to close the date picker when touching outside of it
+    const closeDatePickerWhenTouchingOutsideEvent = (e: MouseEvent) => {
+        const hasDatePickerBeenClicked = e.target == datePickerFrame.current;
+        const haveDatePickerChildsBeenClicked = datePickerFrame.current?.contains(e.target as HTMLElement);
+        if (!hasDatePickerBeenClicked && !haveDatePickerChildsBeenClicked) {
+            setOpened(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);
+    }, []);
+
+    useEffect(() => () => {
+        document.removeEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);
+    }, []);
+
     return (
-        <div className="date-picker">
+        <div ref={datePickerFrame} className="date-picker" style={style}>
             <div className="date-picker__header">
                 <MiniRoundedIconButton Icon={MdChevronLeft} clickEvent={selectPreviousMonth}/>
                 <p
