@@ -11,6 +11,8 @@
 }
 
 .app-layout__header__actions-container {
+    position: relative;
+
     display: grid;
     grid-auto-flow: column;
     column-gap: 2px;
