@@ -111,7 +111,7 @@ const DatePicker = ({ style, setOpened }: IProps) => {
                     {
                         dayNames.map(dayName => {
                             return (
-                                <p className="paragraph--small paragraph--bold date-picker__weekday-list__weekday">
+                                <p key={dayName} className="paragraph--small paragraph--bold date-picker__weekday-list__weekday">
                                     {dayName}
                                 </p>
                             );
@@ -125,11 +125,12 @@ const DatePicker = ({ style, setOpened }: IProps) => {
                             
                             return (
                                 <div
+                                    key={date.toString()}
                                     className={getMonthDayCSSClass(date)}
                                     onClick={() => changeInterval(date)}
                                     onMouseEnter={() => changeEndDateCandidate(date)}>
 
-                                    <p key={day + 1} className="paragraph--small paragraph--bold date-picker__month-day-list__month-day__text">
+                                    <p className="paragraph--small paragraph--bold date-picker__month-day-list__month-day__text">
                                         {day + 1}
                                     </p>
                                 </div>
