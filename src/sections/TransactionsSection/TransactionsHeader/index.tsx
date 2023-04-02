@@ -27,7 +27,12 @@ const TransactionsHeader = () => {
                     clickEvent={openDatePicker}/>
                 <DatePicker
                     setOpened={changeIsDatePickerOpened}
-                    style={{ left: "50%", top: "50px", transform: "translate(-50%)", display: isDatePickerOpened ? "unset": "none" }}/>
+                    style={{
+                        left: "50%",
+                        top: "50px",
+                        transform: "translate(-50%)",
+                        display: isDatePickerOpened ? "unset": "none"
+                    }}/>
                 <RoundedIconButton Icon={MdAdd}/>
             </div>
         </div>
