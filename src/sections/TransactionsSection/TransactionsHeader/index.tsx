@@ -25,12 +25,9 @@ const TransactionsHeader = () => {
                 <RoundedTextIconButton
                     Icon={MdDateRange}
                     clickEvent={openDatePicker}/>
-                {
-                    isDatePickerOpened &&
-                    <DatePicker
-                        setOpened={changeIsDatePickerOpened}
-                        style={{ left: "50%", top: "50px", transform: "translate(-50%)" }}/>
-                }
+                <DatePicker
+                    setOpened={changeIsDatePickerOpened}
+                    style={{ left: "50%", top: "50px", transform: "translate(-50%)", display: isDatePickerOpened ? "unset": "none" }}/>
                 <RoundedIconButton Icon={MdAdd}/>
             </div>
         </div>
