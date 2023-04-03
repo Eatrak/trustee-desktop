@@ -3,10 +3,12 @@ import "./style.css";
 import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
+import dayjs, { Dayjs } from "dayjs";
 
 import { Transaction } from "@models/transactions";
 import TransactionsService from "@services/transactions";
 import TextButton from "@components/TextButton";
+import { OnDatePickerRangeChangedEvent } from "@components/DatePicker";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 
@@ -15,15 +17,22 @@ const TransactionsSection = () => {
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
 
+    const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
+    const lastDayOfTheCurrentMonthTimestamp = dayjs().endOf("month");
+
     useEffect(() => {
         TransactionsService.getInstance().transactions$.subscribe(transactions => {
             changeTransactions(transactions);
         });
-        getTransactionsByCreationRange();
+        
+        getTransactionsByCreationRange(firstDayOfTheCurrentMonthTimestamp, lastDayOfTheCurrentMonthTimestamp);
     }, []);
 
-    let getTransactionsByCreationRange = async () => {
-        const newCursor = await TransactionsService.getInstance().getTransactionsByCreationRange();
+    let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
+        const newCursor = await TransactionsService.getInstance().getTransactionsByCreationRange(
+            startDate,
+            endDate
+        );
         changeCursor(newCursor);
     };
 
@@ -36,10 +45,17 @@ const TransactionsSection = () => {
         }
     };
 
+    const changeTimeRangeOfTransactionsToShow = async ({ startDate, endDate }: OnDatePickerRangeChangedEvent) => {
+        await getTransactionsByCreationRange(startDate, endDate);
+    };
+
     return(
         <div className="section transactions-section">
             <div className="transactions-section--main">
-                <TransactionsHeader/>
+                <TransactionsHeader
+                    initialStartDate={firstDayOfTheCurrentMonthTimestamp}
+                    initialEndDate={lastDayOfTheCurrentMonthTimestamp}
+                    onDatePickerRangeChanged={changeTimeRangeOfTransactionsToShow}/>
                 <div className="transactions-section--main--container">
                     {transactions.map(transaction => {
                         return (

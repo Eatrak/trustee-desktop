@@ -1,5 +1,5 @@
 import { BehaviorSubject } from "rxjs";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 import { Transaction } from "@models/transactions";
 import { Utils } from "src/utils";
@@ -20,13 +20,10 @@ export default class TransactionsService {
         return this.instance;
     }
 
-    async getTransactionsByCreationRange() {
-        const nowTimestamp = dayjs().unix().toString();
-        const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month").unix().toString();
-
+    async getTransactionsByCreationRange(startCreationTimestamp: Dayjs, endCreationTimestamp: Dayjs) {
         const queryParams: GetTransactionsInputQueryParams = {
-            startCreationTimestamp: firstDayOfTheCurrentMonthTimestamp,
-            endCreationTimestamp: nowTimestamp
+            startCreationTimestamp: startCreationTimestamp.unix().toString(),
+            endCreationTimestamp: endCreationTimestamp.unix().toString()
         };
         const requestURL =
             Utils.getInstance().getAPIEndpoint("/transactions?") +
