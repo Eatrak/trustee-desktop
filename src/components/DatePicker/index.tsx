@@ -23,12 +23,12 @@ const DatePicker = ({ style, setOpened }: IProps) => {
 
     const selectPreviousMonth = () => {
         const previousMonthYear = dayjs(selectedYearAndMonth).subtract(1, "month");
-        changeYearAndMonth(previousMonthYear.format());
+        changeYearAndMonth(previousMonthYear.format("YYYY-MM"));
     };
 
     const selectNextMonth = () => {
         const nextMonthYear = dayjs(selectedYearAndMonth).add(1, "month");
-        changeYearAndMonth(nextMonthYear.format());
+        changeYearAndMonth(nextMonthYear.format("YYYY-MM"));
     };
 
     const getMonthDayCSSClass = (date: Dayjs) => {
@@ -121,7 +121,7 @@ const DatePicker = ({ style, setOpened }: IProps) => {
                 <div className="date-picker__month-day-list">
                     {
                         [...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(day => {
-                            const date = dayjs(selectedYearAndMonth).set("day", day + 1);
+                            const date = dayjs(`${selectedYearAndMonth}-${day + 1}`);
                             
                             return (
                                 <div
