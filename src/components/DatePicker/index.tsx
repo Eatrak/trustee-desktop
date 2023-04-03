@@ -6,12 +6,20 @@ import dayjs, { Dayjs } from "dayjs";
 
 import MiniRoundedIconButton from "@components/MiniRoundedIconButton";
 
-interface IProps {
-    style: React.CSSProperties,
-    setOpened: Function
+export interface OnDatePickerRangeChangedEvent {
+    startDate: Dayjs,
+    endDate: Dayjs
 }
 
-const DatePicker = ({ style, setOpened }: IProps) => {
+interface IProps {
+    style: React.CSSProperties,
+    setOpened: Function,
+    onRangeChanged: (event: OnDatePickerRangeChangedEvent) => any,
+    initialStartDate?: Dayjs,
+    initialEndDate?: Dayjs
+}
+
+const DatePicker = ({ style, setOpened, onRangeChanged }: IProps) => {
     let datePickerFrame = useRef<HTMLDivElement>(null);
 
     const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
@@ -71,6 +79,7 @@ const DatePicker = ({ style, setOpened }: IProps) => {
         }
         else if (startDate != null && endDate == null) {
             changeEndDate(date);
+            onRangeChanged({ startDate, endDate: date });
         }
 
         if (startDate != null && endDate != null) {
