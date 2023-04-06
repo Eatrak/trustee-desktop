@@ -12,7 +12,12 @@ const NormalButton = ({text, event, className, disabled, testId}: IProps) => {
     const defaultClasses = "button--normal " + (disabled ? " button--disabled " : " ");
 
     return(
-        <button data-testid={testId} className={defaultClasses + className} onClick={event} disabled={disabled}>{text}</button>
+        <button
+            data-testid={testId}
+            className={defaultClasses + className}
+            onClick={event}
+            disabled={disabled}>{text}
+        </button>
     );
 }
 
