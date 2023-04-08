@@ -6,7 +6,7 @@ interface IProps {
     Icon?: IconType,
     iconClass?: string,
     isRightIcon?: boolean,
-    text: string,
+    text?: string,
     event?: (...p: any) => any,
     className?: string,
     disabled?: boolean,
@@ -23,7 +23,7 @@ const NormalButton = ({Icon, iconClass, isRightIcon, text, event, className, dis
             onClick={event}
             disabled={disabled}>
             {Icon && !isRightIcon && <Icon className={"button--normal__icon " + iconClass}/>}
-            <p>{text}</p>
+            {text && <p>{text}</p>}
             {Icon && isRightIcon && <Icon className={"button--normal__icon " + iconClass}/>}
         </button>
     );
