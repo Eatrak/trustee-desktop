@@ -9,6 +9,7 @@ import { Transaction } from "@models/transactions";
 import TransactionsService from "@services/transactions";
 import TextButton from "@components/TextButton";
 import { OnDatePickerRangeChangedEvent } from "@components/DatePicker";
+import MultiSelect, { MultiSelectOption } from "@components/MultiSelect";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 
@@ -16,6 +17,8 @@ const TransactionsSection = () => {
     let [ transactions, changeTransactions ] = useState<Transaction[]>([]);
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
+
+    let [selectedWallets, changeSelectedWallets] = useState<MultiSelectOption[]>([]);
 
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
     const lastDayOfTheCurrentMonthTimestamp = dayjs().endOf("month");
@@ -56,6 +59,12 @@ const TransactionsSection = () => {
                     initialStartDate={firstDayOfTheCurrentMonthTimestamp}
                     initialEndDate={lastDayOfTheCurrentMonthTimestamp}
                     onDatePickerRangeChanged={changeTimeRangeOfTransactionsToShow}/>
+                <MultiSelect
+                    className="transactions-section--main__wallets-multi-select"
+                    text="Wallets"
+                    options={[{name: "a", value: "a"}]}
+                    selectedOptions={selectedWallets}
+                    setSelectedOptions={changeSelectedWallets}/>
                 <div className="transactions-section--main--container">
                     {transactions.map(transaction => {
                         return (
