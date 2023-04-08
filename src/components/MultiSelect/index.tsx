@@ -1,22 +1,22 @@
 import "./style.css";
 
 import React, { useState } from "react";
-import { IconType } from "react-icons";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 import Checkbox from "@components/Checkbox";
+import NormalButton from "@components/NormalButton";
 
-interface MultiSelectOption { name: string, value: string };
+export interface MultiSelectOption { name: string, value: string };
 
 interface IProps {
-    Icon: IconType,
     text: string,
+    className: string,
     options: MultiSelectOption[],
     selectedOptions: MultiSelectOption[],
     setSelectedOptions: (...p: any) => any
 }
 
-const MultiSelect = ({ Icon, text, options, selectedOptions, setSelectedOptions }: IProps) => {
+const MultiSelect = ({ text, className, options, selectedOptions, setSelectedOptions }: IProps) => {
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ checks, setChecks ] = useState<boolean[]>([]);
     
@@ -54,13 +54,13 @@ const MultiSelect = ({ Icon, text, options, selectedOptions, setSelectedOptions 
     };
     
     return (
-        <div className="multi-select" tabIndex={0} onBlur={e => setOpened(false)}>
+        <div className={"multi-select " + className} tabIndex={0} onBlur={e => setOpened(false)}>
             <div className="multi-select__body" onTimeUpdate={e => showPanel(e)} onClick={e => showPanel(e)}>
-                <div className="multi-select__body__custom-item-container">
-                    <Icon className="multi-select__body__icon"/>
-                    <p className="paragraph--small multi-select__body__text">{text}</p>
-                </div>
-                <MdKeyboardArrowDown className={"multi-select__body__icon multi-select__body__row" + (opened ? " multi-select__body__row--activated" : "")}/>
+                <p className="paragraph--small multi-select__body__text">{text}</p>
+                <NormalButton
+                    className="multi-select__body__button"
+                    Icon={MdKeyboardArrowDown}
+                    iconClass={"multi-select__body__row" + (opened ? " multi-select__body__row--activated" : "")}/>
             </div>
             <div className="multi-select__options-panel" style={{display: opened ? "" : "none"}}>
                 {renderRenderCheckbox()}
