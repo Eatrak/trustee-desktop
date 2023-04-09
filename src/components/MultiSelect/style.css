@@ -66,6 +66,9 @@
 }
 
 .multi-select__options-panel {
+    display: grid;
+    grid-template-rows: 40px auto;
+
     position: relative;
     left: 0;
     top: 4px;
@@ -77,8 +80,15 @@
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    padding: 5px;
-    box-shadow: var(--soft-elevation);
+    box-shadow: var(--low-elevation);
+}
+
+.multi-select__options-panel__search-container {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.multi-select__options-panel__options-container {
+    padding: 4px;
 }
 
 .multi-select__option {

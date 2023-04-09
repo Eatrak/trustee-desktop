@@ -64,7 +64,11 @@ const MultiSelect = ({ text, className, options, selectedOptions, setSelectedOpt
                     iconClass={"multi-select__body__row" + (opened ? " multi-select__body__row--activated" : "")}/>
             </div>
             <div className="multi-select__options-panel" style={{display: opened ? "" : "none"}}>
-                {renderOptions()}
+                <div className="multi-select__options-panel__search-container">
+                </div>
+                <div className="multi-select__options-panel__options-container">
+                    {renderOptions()}
+                </div>
             </div>
         </div>
     );
