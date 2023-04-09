@@ -38,7 +38,7 @@ const MultiSelect = ({ text, className, options, selectedOptions, setSelectedOpt
         setChecks(newChecks);
     };
 
-    const renderRenderCheckbox = () => {
+    const renderCheckbox = () => {
         let index = 0;
 
         return options.map(option => {
@@ -63,7 +63,7 @@ const MultiSelect = ({ text, className, options, selectedOptions, setSelectedOpt
                     iconClass={"multi-select__body__row" + (opened ? " multi-select__body__row--activated" : "")}/>
             </div>
             <div className="multi-select__options-panel" style={{display: opened ? "" : "none"}}>
-                {renderRenderCheckbox()}
+                {renderCheckbox()}
             </div>
         </div>
     );
