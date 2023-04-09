@@ -2,7 +2,7 @@
     position: relative;
 
     display: grid;
-    grid-template-columns: auto max-content;
+    grid-template-rows: max-content max-content auto;
 
     min-width: 120px;
     height: 40px;

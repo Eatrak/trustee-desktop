@@ -55,8 +55,9 @@ const MultiSelect = ({ text, className, options, selectedOptions, setSelectedOpt
     
     return (
         <div className={"multi-select " + className} tabIndex={0} onBlur={e => setOpened(false)}>
+            <p className="paragraph--small paragraph--sub-title">{text}</p>
             <div className="multi-select__body" onTimeUpdate={e => showPanel(e)} onClick={e => showPanel(e)}>
-                <p className="paragraph--small multi-select__body__text">{text}</p>
+                <p className="paragraph--small multi-select__body__text"></p>
                 <NormalButton
                     className="multi-select__body__button"
                     Icon={MdKeyboardArrowDown}
