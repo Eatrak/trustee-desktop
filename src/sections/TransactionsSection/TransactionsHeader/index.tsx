@@ -53,12 +53,12 @@ const TransactionsHeader = ({
                     initialStartDate={initialStartDate}
                     initialEndDate={initialEndDate}
                     onRangeChanged={changeTimeRangeOfTransactionsToShow}
+                    isOpened={isDatePickerOpened}
                     setOpened={changeIsDatePickerOpened}
                     style={{
                         left: "50%",
                         top: "50px",
-                        transform: "translate(-50%)",
-                        display: isDatePickerOpened ? "unset": "none"
+                        transform: "translate(-50%)"
                     }}/>
                 <RoundedIconButton Icon={MdAdd}/>
             </div>

@@ -14,6 +14,14 @@
     animation: fade 0.1s forwards;
 }
 
+.date-picker--opened {
+    animation: fade-opening 0.1s forwards;
+}
+
+.date-picker--closed {
+    animation: fade-closing 0.1s forwards;
+}
+
 .date-picker__header {
     display: grid;
     grid-template-columns: max-content auto max-content;
@@ -108,3 +116,25 @@
 }
 
 /* -- */
+
+@keyframes fade-opening {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    100% {
+        opacity: 1;
+        display: unset;
+    }
+}
+
+@keyframes fade-closing {
+    0% {
+        opacity: 1;
+        display: unset;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}

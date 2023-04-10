@@ -13,13 +13,14 @@ export interface OnDatePickerRangeChangedEvent {
 
 interface IProps {
     style: React.CSSProperties,
+    isOpened: boolean,
     setOpened: Function,
     onRangeChanged: (event: OnDatePickerRangeChangedEvent) => any,
     initialStartDate?: Dayjs,
     initialEndDate?: Dayjs
 }
 
-const DatePicker = ({ style, setOpened, onRangeChanged }: IProps) => {
+const DatePicker = ({ style, isOpened, setOpened, onRangeChanged }: IProps) => {
     let datePickerFrame = useRef<HTMLDivElement>(null);
 
     const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
@@ -106,7 +107,7 @@ const DatePicker = ({ style, setOpened, onRangeChanged }: IProps) => {
     }, []);
 
     return (
-        <div ref={datePickerFrame} className="date-picker" style={style}>
+        <div ref={datePickerFrame} className={"date-picker date-picker--" + (isOpened ? "opened" : "closed")} style={style}>
             <div className="date-picker__header">
                 <MiniRoundedIconButton Icon={MdChevronLeft} clickEvent={selectPreviousMonth}/>
                 <p
