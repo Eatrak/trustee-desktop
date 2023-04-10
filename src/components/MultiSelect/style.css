@@ -83,6 +83,14 @@
     box-shadow: var(--low-elevation);
 }
 
+.multi-select__options-panel--opened {
+    animation: fade-opening 0.1s forwards;
+}
+
+.multi-select__options-panel--closed {
+    animation: fade-closing 0.1s forwards;
+}
+
 .multi-select__options-panel__search-container {
     display: grid;
 
@@ -128,4 +136,26 @@
 
 .multi-select__option_text {
     user-select: none;
+}
+
+@keyframes fade-opening {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    100% {
+        opacity: 1;
+        display: grid;
+    }
+}
+
+@keyframes fade-closing {
+    0% {
+        opacity: 1;
+        display: grid;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
 }

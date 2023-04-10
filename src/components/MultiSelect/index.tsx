@@ -1,6 +1,6 @@
 import "./style.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 import Checkbox from "@components/Checkbox";
@@ -25,6 +25,8 @@ const MultiSelect = ({
     setSelectedOptions,
     filterInputPlaceholder
 }: IProps) => {
+    let multiSelectFrame = useRef<HTMLDivElement>(null);
+
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ checks, setChecks ] = useState<boolean[]>([]);
     
@@ -61,8 +63,25 @@ const MultiSelect = ({
         });
     };
     
+    // Event used to close the multi-select when touching outside of it
+    const closeMultiSelectWhenTouchingOutsideEvent = (e: MouseEvent) => {
+        const hasMultiSelectBeenClicked = e.target == multiSelectFrame.current;
+        const haveMultiSelectChildsBeenClicked = multiSelectFrame.current?.contains(e.target as HTMLElement);
+        if (!hasMultiSelectBeenClicked && !haveMultiSelectChildsBeenClicked) {
+            setOpened(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", closeMultiSelectWhenTouchingOutsideEvent);
+    }, []);
+
+    useEffect(() => () => {
+        document.removeEventListener("mousedown", closeMultiSelectWhenTouchingOutsideEvent);
+    }, []);
+    
     return (
-        <div className={"multi-select " + className} tabIndex={0} onBlur={e => setOpened(false)}>
+        <div ref={multiSelectFrame} className={"multi-select " + className} tabIndex={0}>
             <p className="paragraph--small paragraph--sub-title">{text}</p>
             <div className="multi-select__body" onTimeUpdate={e => showPanel(e)} onClick={e => showPanel(e)}>
                 <p className="paragraph--small multi-select__body__text"></p>
@@ -71,7 +90,7 @@ const MultiSelect = ({
                     Icon={MdKeyboardArrowDown}
                     iconClass={"multi-select__body__row" + (opened ? " multi-select__body__row--activated" : "")}/>
             </div>
-            <div className="multi-select__options-panel" style={{display: opened ? "" : "none"}}>
+            <div className={"multi-select__options-panel multi-select__options-panel--" + (opened ? "opened" : "closed")}>
                 <div className="multi-select__options-panel__search-container">
                     <input className="multi-select__options-panel__search-container__search-input" placeholder={filterInputPlaceholder}/>
                 </div>
