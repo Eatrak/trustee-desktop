@@ -62,6 +62,7 @@ const TransactionsSection = () => {
                 <MultiSelect
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
+                    filterInputPlaceholder="Search or create a wallet by typing a name"
                     options={[{name: "a", value: "a"}]}
                     selectedOptions={selectedWallets}
                     setSelectedOptions={changeSelectedWallets}/>

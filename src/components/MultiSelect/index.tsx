@@ -13,10 +13,18 @@ interface IProps {
     className: string,
     options: MultiSelectOption[],
     selectedOptions: MultiSelectOption[],
-    setSelectedOptions: (...p: any) => any
+    setSelectedOptions: (...p: any) => any,
+    filterInputPlaceholder?: string
 }
 
-const MultiSelect = ({ text, className, options, selectedOptions, setSelectedOptions }: IProps) => {
+const MultiSelect = ({
+    text,
+    className,
+    options,
+    selectedOptions,
+    setSelectedOptions,
+    filterInputPlaceholder
+}: IProps) => {
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ checks, setChecks ] = useState<boolean[]>([]);
     
@@ -65,6 +73,7 @@ const MultiSelect = ({ text, className, options, selectedOptions, setSelectedOpt
             </div>
             <div className="multi-select__options-panel" style={{display: opened ? "" : "none"}}>
                 <div className="multi-select__options-panel__search-container">
+                    <input className="multi-select__options-panel__search-container__search-input" placeholder={filterInputPlaceholder}/>
                 </div>
                 <div className="multi-select__options-panel__options-container">
                     {renderOptions()}
