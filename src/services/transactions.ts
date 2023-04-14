@@ -1,19 +1,22 @@
 import { BehaviorSubject } from "rxjs";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Transaction } from "@models/transactions";
+import { Transaction, Wallet } from "@models/transactions";
 import { Utils } from "src/utils";
 import { GetTransactionsInputQueryParams } from "src/shared/bodies/transactions/getTransactions";
 import { GetTransactionsResponse } from "src/shared/requestInterfaces/transactions/getTransactions";
+import { GetWalletsResponse } from "src/shared/requestInterfaces/transactions/getWallets";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
 
     transactions$: BehaviorSubject<Transaction[]>;
+    wallets$: BehaviorSubject<Wallet[]>;
 
     private constructor() {
         this.transactions$ = new BehaviorSubject<Transaction[]>([]);
+        this.wallets$ = new BehaviorSubject<Wallet[]>([]);
     }
     
     static getInstance() {
@@ -62,5 +65,17 @@ export default class TransactionsService {
         this.transactions$.next(this.transactions$.getValue().concat(transactions));
 
         return newCursor;
+    }
+
+    async getWallets() {
+        const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
+        const response = await fetch(requestURL, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("authToken")
+            }
+        });
+        const { wallets }: GetWalletsResponse = await response.json();
+
+        this.wallets$.next(wallets);
     }
 }

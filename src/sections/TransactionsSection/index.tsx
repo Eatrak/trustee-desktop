@@ -5,7 +5,7 @@ import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Transaction } from "@models/transactions";
+import { Transaction, Wallet } from "@models/transactions";
 import TransactionsService from "@services/transactions";
 import TextButton from "@components/TextButton";
 import { OnDatePickerRangeChangedEvent } from "@components/DatePicker";
@@ -15,6 +15,7 @@ import TransactionsHeader from "./TransactionsHeader";
 
 const TransactionsSection = () => {
     let [ transactions, changeTransactions ] = useState<Transaction[]>([]);
+    let [ wallets, changeWallets ] = useState<Wallet[]>([]);
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
 
@@ -27,8 +28,12 @@ const TransactionsSection = () => {
         TransactionsService.getInstance().transactions$.subscribe(transactions => {
             changeTransactions(transactions);
         });
+        TransactionsService.getInstance().wallets$.subscribe(wallets => {
+            changeWallets(wallets);
+        });
         
         getTransactionsByCreationRange(firstDayOfTheCurrentMonthTimestamp, lastDayOfTheCurrentMonthTimestamp);
+        TransactionsService.getInstance().getWallets();
     }, []);
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
@@ -63,7 +68,7 @@ const TransactionsSection = () => {
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
                     filterInputPlaceholder="Search or create a wallet by typing a name"
-                    options={[{name: "a", value: "a"}]}
+                    options={wallets.map(wallet => ({ name: wallet.walletName, value: wallet.walletId }))}
                     selectedOptions={selectedWallets}
                     setSelectedOptions={changeSelectedWallets}/>
                 <div className="transactions-section--main--container">

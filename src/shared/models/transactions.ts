@@ -9,3 +9,9 @@ export interface Transaction {
     transactionTimestamp: string,
     isIncome: boolean,
 }
+
+export interface Wallet {
+    userId: string;
+    walletId: string;
+    walletName: string;
+}
