@@ -67,6 +67,7 @@ const TransactionsSection = () => {
                 <MultiSelect
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
+                    getCreateNewOptionButtonText={(filterValue) => `Create "${filterValue}" wallet`}
                     filterInputPlaceholder="Search or create a wallet by typing a name"
                     options={wallets.map(wallet => ({ name: wallet.walletName, value: wallet.walletId }))}
                     selectedOptions={selectedWallets}
