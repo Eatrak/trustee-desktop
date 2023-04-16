@@ -29,6 +29,8 @@ const MultiSelect = ({
 
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ checks, setChecks ] = useState<{ [optionName: string]: boolean }>({});
+    let [ filteredOptions, changeFilteredOptions ] = useState<MultiSelectOption[]>(options);
+    let [ filterValue, changeFilterValue ] = useState<string>("");
     
     const showPanel = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.FormEvent<HTMLDivElement>) => {
         setOpened(!opened);
@@ -51,7 +53,7 @@ const MultiSelect = ({
     };
 
     const renderOptions = () => {
-        return options.map(option => {
+        return filteredOptions.map(option => {
             return (
                 <div key={option.name} className="multi-select__option">
                     <Checkbox setChecked={(value: boolean) => setChecked(option, value)} checked={checks[option.name]}/>
@@ -69,6 +71,19 @@ const MultiSelect = ({
             setOpened(false);
         }
     };
+
+    const filterOptions = (newFilterValue: string) => {
+        const newFilteredOptions = options.filter(option => {
+            return option.name.toLowerCase().startsWith(newFilterValue.toLowerCase());
+        });
+        changeFilteredOptions(newFilteredOptions);
+        changeFilterValue(newFilterValue);
+    };
+
+    // Change filtered options when options change
+    useEffect(() => {
+        filterOptions(filterValue);
+    }, [options]);
 
     useEffect(() => {
         document.addEventListener("mousedown", closeMultiSelectWhenTouchingOutsideEvent);
@@ -90,7 +105,10 @@ const MultiSelect = ({
             </div>
             <div className={"multi-select__options-panel multi-select__options-panel--" + (opened ? "opened" : "closed")}>
                 <div className="multi-select__options-panel__search-container">
-                    <input className="multi-select__options-panel__search-container__search-input" placeholder={filterInputPlaceholder}/>
+                    <input
+                        className="multi-select__options-panel__search-container__search-input"
+                        onInput={e => filterOptions(e.currentTarget.value)}
+                        placeholder={filterInputPlaceholder}/>
                 </div>
                 <div className="multi-select__options-panel__options-container">
                     {renderOptions()}
