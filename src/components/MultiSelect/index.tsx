@@ -28,35 +28,33 @@ const MultiSelect = ({
     let multiSelectFrame = useRef<HTMLDivElement>(null);
 
     let [ opened, setOpened ] = useState<boolean>(false);
-    let [ checks, setChecks ] = useState<boolean[]>([]);
+    let [ checks, setChecks ] = useState<{ [optionName: string]: boolean }>({});
     
     const showPanel = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.FormEvent<HTMLDivElement>) => {
         setOpened(!opened);
     };
     
-    const setChecked = (index: number, value: boolean) => {
-        let newChecks: boolean[] = [ ...checks ];
-        newChecks[index] = value;
+    const setChecked = (option: MultiSelectOption, value: boolean) => {
+        let newChecks: { [optionName: string]: boolean } = { ...checks };
+        newChecks[option.name] = value;
 
-        let newSelectedOptions: MultiSelectOption[] = [];
-        
-        newChecks.forEach((check, index) => {
-            if (check) newSelectedOptions.push(options[index]);
-        });
+        let newSelectedOptions = selectedOptions;
+        if (value) {
+            newSelectedOptions.push(option);
+        }
+        else {
+            newSelectedOptions.splice(newSelectedOptions.indexOf(option), 1);
+        }
         
         setSelectedOptions(newSelectedOptions);
         setChecks(newChecks);
     };
 
     const renderOptions = () => {
-        let index = 0;
-
         return options.map(option => {
-            const indexCopy = index++;
-            
             return (
-                <div key={indexCopy} className="multi-select__option">
-                    <Checkbox setChecked={(value: boolean) => setChecked(indexCopy, value)} checked={checks[indexCopy]}/>
+                <div key={option.name} className="multi-select__option">
+                    <Checkbox setChecked={(value: boolean) => setChecked(option, value)} checked={checks[option.name]}/>
                     <p className="multi-select__option_text paragraph--small">{option.name}</p>
                 </div>
             );
