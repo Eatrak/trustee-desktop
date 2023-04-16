@@ -1,15 +1,18 @@
 import "./style.css";
 
 import React, { useEffect, useRef, useState } from "react";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
 
 import Checkbox from "@components/Checkbox";
 import NormalButton from "@components/NormalButton";
+import TextButton from "@components/TextButton";
 
 export interface MultiSelectOption { name: string, value: string };
 
 interface IProps {
     text: string,
+    getCreateNewOptionButtonText?: (filterValue: string) => string,
+    createNewOption?: (filterValue: string) => any
     className: string,
     options: MultiSelectOption[],
     selectedOptions: MultiSelectOption[],
@@ -19,6 +22,8 @@ interface IProps {
 
 const MultiSelect = ({
     text,
+    getCreateNewOptionButtonText,
+    createNewOption,
     className,
     options,
     selectedOptions,
@@ -80,6 +85,12 @@ const MultiSelect = ({
         changeFilterValue(newFilterValue);
     };
 
+    const filteredOptionExists = (): boolean => {
+        let filteredOption = options.find(e => e.name == filterValue);
+        
+        return filteredOption != undefined;
+    };
+
     // Change filtered options when options change
     useEffect(() => {
         filterOptions(filterValue);
@@ -112,6 +123,16 @@ const MultiSelect = ({
                 </div>
                 <div className="multi-select__options-panel__options-container">
                     {renderOptions()}
+                </div>
+                <div className="multi-select__options-panel__create-new-option-button-container">
+                    {
+                        filterValue != "" &&
+                        !filteredOptionExists() &&
+                        <TextButton
+                            Icon={MdAdd}
+                            text={getCreateNewOptionButtonText ? getCreateNewOptionButtonText(filterValue) : ""}
+                            clickEvent={() => createNewOption && createNewOption(filterValue)} />
+                    }
                 </div>
             </div>
         </div>
