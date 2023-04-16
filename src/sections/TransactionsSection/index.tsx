@@ -80,7 +80,7 @@ const TransactionsSection = () => {
                         );
                     })}
                 </div>
-                {cursor && <TextButton Icon={MdAdd} clickEvent={getNextTransactions} isLoading={isLoadingTransactions}/>}
+                {cursor && <TextButton Icon={MdAdd} text="Load more" clickEvent={getNextTransactions} isLoading={isLoadingTransactions}/>}
             </div>
             <div className="transactions-section--details"></div>
         </div>

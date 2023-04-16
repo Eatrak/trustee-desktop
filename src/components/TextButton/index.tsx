@@ -6,11 +6,12 @@ import LoadingIcon from "@components/LoadingIcon";
 
 interface IProps {
     Icon: IconType,
+    text: string,
     clickEvent?: (...p: any) => any,
     isLoading?: boolean
 }
 
-const TextButton = ({ Icon, clickEvent, isLoading }: IProps) => {
+const TextButton = ({ Icon, text, clickEvent, isLoading }: IProps) => {
     return (
         <button className="text-button" tabIndex={1} onClick={clickEvent} disabled={isLoading}>
             {
@@ -18,7 +19,7 @@ const TextButton = ({ Icon, clickEvent, isLoading }: IProps) => {
                 <Icon className="text-button__icon"/> :
                 <LoadingIcon/>
             }
-            <p className="paragraph">Load more</p>
+            <p className="paragraph">{text}</p>
         </button>
     );
 };
