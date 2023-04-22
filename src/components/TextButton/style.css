@@ -41,3 +41,9 @@
     width: 28px;
     height: 28px;
 }
+
+.text-button__paragraph {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

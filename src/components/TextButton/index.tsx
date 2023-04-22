@@ -19,7 +19,7 @@ const TextButton = ({ Icon, text, clickEvent, isLoading }: IProps) => {
                 <Icon className="text-button__icon"/> :
                 <LoadingIcon/>
             }
-            <p className="paragraph">{text}</p>
+            <p className="paragraph text-button__paragraph">{text}</p>
         </button>
     );
 };
