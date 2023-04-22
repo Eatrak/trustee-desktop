@@ -6,6 +6,7 @@ import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
 import Checkbox from "@components/Checkbox";
 import NormalButton from "@components/NormalButton";
 import TextButton from "@components/TextButton";
+import Chip from "@components/Chip";
 
 export interface MultiSelectOption { name: string, value: string };
 
@@ -110,7 +111,13 @@ const MultiSelect = ({
         <div ref={multiSelectFrame} className={"multi-select " + className} tabIndex={0}>
             <p className="paragraph--small paragraph--sub-title">{text}</p>
             <div className="multi-select__body" onTimeUpdate={e => showPanel(e)} onClick={e => showPanel(e)}>
-                <p className="paragraph--small multi-select__body__text"></p>
+                <div className="multi-select__body__chip-container">
+                    {
+                        selectedOptions.map(selectedOption => {
+                            return <Chip text={selectedOption.name}/>
+                        })
+                    }
+                </div>
                 <NormalButton
                     className="multi-select__body__button"
                     Icon={MdKeyboardArrowDown}

@@ -61,8 +61,12 @@
     user-select: none;
 }
 
-.multi-select:hover .multi-select__body {
-    background-color: var(--neutral-50);
+.multi-select__body__chip-container {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 8px;
+
+    width: max-content;
 }
 
 .multi-select__options-panel {
