@@ -6,7 +6,9 @@ import { Utils } from "src/utils";
 import { GetTransactionsInputQueryParams } from "src/shared/bodies/transactions/getTransactions";
 import { GetTransactionsResponse } from "src/shared/requestInterfaces/transactions/getTransactions";
 import { GetWalletsResponse } from "src/shared/requestInterfaces/transactions/getWallets";
+import { CreateWalletResponse } from "src/shared/requestInterfaces/transactions/createWallet";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
+import { CreateWalletBody } from "src/shared/bodies/transactions/createWallet";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -77,5 +79,20 @@ export default class TransactionsService {
         const { wallets }: GetWalletsResponse = await response.json();
 
         this.wallets$.next(wallets);
+    }
+
+    async createWallet(createWalletBody: CreateWalletBody) {
+        const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
+        const response = await fetch(requestURL, {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("authToken")
+            },
+            body: JSON.stringify(createWalletBody)
+        });
+        const { createdWallet }: CreateWalletResponse = await response.json();
+        const newWallets = [ createdWallet, ...this.wallets$.getValue() ];
+
+        this.wallets$.next(newWallets);
     }
 }

@@ -18,6 +18,7 @@ const TransactionsSection = () => {
     let [ wallets, changeWallets ] = useState<Wallet[]>([]);
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
+    let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
 
     let [selectedWallets, changeSelectedWallets] = useState<MultiSelectOption[]>([]);
 
@@ -57,6 +58,14 @@ const TransactionsSection = () => {
         await getTransactionsByCreationRange(startDate, endDate);
     };
 
+    const createWallet = async (newWalletName: string) => {
+        setIsCreatingNewWallet(true);
+        await TransactionsService.getInstance().createWallet({
+            walletName: newWalletName
+        });
+        setIsCreatingNewWallet(false);
+    };
+
     return(
         <div className="section transactions-section">
             <div className="transactions-section--main">
@@ -67,6 +76,8 @@ const TransactionsSection = () => {
                 <MultiSelect
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
+                    createNewOption={createWallet}
+                    isCreatingNewOption={isCreatingNewWallet}
                     getCreateNewOptionButtonText={(filterValue) => `Create "${filterValue}" wallet`}
                     filterInputPlaceholder="Search or create a wallet by typing a name"
                     options={wallets.map(wallet => ({ name: wallet.walletName, value: wallet.walletId }))}
