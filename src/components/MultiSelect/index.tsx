@@ -15,9 +15,8 @@ interface IProps {
     getCreateNewOptionButtonText?: (filterValue: string) => string,
     createNewOption?: (filterValue: string) => any
     className: string,
+    onSelect?: (newSelectedOptions: MultiSelectOption[]) => any
     options: MultiSelectOption[],
-    selectedOptions: MultiSelectOption[],
-    setSelectedOptions: (...p: any) => any,
     filterInputPlaceholder?: string,
     isCreatingNewOption?: boolean
 }
@@ -27,9 +26,8 @@ const MultiSelect = ({
     getCreateNewOptionButtonText,
     createNewOption,
     className,
+    onSelect,
     options,
-    selectedOptions,
-    setSelectedOptions,
     filterInputPlaceholder,
     isCreatingNewOption
 }: IProps) => {
@@ -38,6 +36,7 @@ const MultiSelect = ({
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ checks, setChecks ] = useState<{ [optionName: string]: boolean }>({});
     let [ filteredOptions, changeFilteredOptions ] = useState<MultiSelectOption[]>(options);
+    let [ selectedOptions, setSelectedOptions ] = useState<MultiSelectOption[]>([]);
     let [ filterValue, changeFilterValue ] = useState<string>("");
     
     const showPanel = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.FormEvent<HTMLDivElement>) => {
@@ -57,6 +56,7 @@ const MultiSelect = ({
         }
         
         setSelectedOptions(newSelectedOptions);
+        onSelect && onSelect(newSelectedOptions);
         setChecks(newChecks);
     };
 
