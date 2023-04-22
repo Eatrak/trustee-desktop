@@ -17,7 +17,8 @@ interface IProps {
     options: MultiSelectOption[],
     selectedOptions: MultiSelectOption[],
     setSelectedOptions: (...p: any) => any,
-    filterInputPlaceholder?: string
+    filterInputPlaceholder?: string,
+    isCreatingNewOption?: boolean
 }
 
 const MultiSelect = ({
@@ -28,7 +29,8 @@ const MultiSelect = ({
     options,
     selectedOptions,
     setSelectedOptions,
-    filterInputPlaceholder
+    filterInputPlaceholder,
+    isCreatingNewOption
 }: IProps) => {
     let multiSelectFrame = useRef<HTMLDivElement>(null);
 
@@ -131,6 +133,7 @@ const MultiSelect = ({
                         <TextButton
                             Icon={MdAdd}
                             text={getCreateNewOptionButtonText ? getCreateNewOptionButtonText(filterValue) : ""}
+                            isLoading={isCreatingNewOption}
                             clickEvent={() => createNewOption && createNewOption(filterValue)} />
                     }
                 </div>
