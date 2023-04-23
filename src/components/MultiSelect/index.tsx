@@ -114,7 +114,7 @@ const MultiSelect = ({
                 <div className="multi-select__body__chip-container">
                     {
                         selectedOptions.map(selectedOption => {
-                            return <Chip text={selectedOption.name}/>
+                            return <Chip key={selectedOption.name} text={selectedOption.name}/>
                         })
                     }
                 </div>
