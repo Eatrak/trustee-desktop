@@ -1,6 +1,14 @@
 import "./style.css";
 
-import React, { useEffect, useRef, useState } from "react";
+import
+    React,
+    {
+        useEffect,
+        useImperativeHandle,
+        useRef,
+        useState,
+        forwardRef
+    } from "react";
 import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
 
 import Checkbox from "@components/Checkbox";
@@ -21,7 +29,11 @@ interface IProps {
     isCreatingNewOption?: boolean
 }
 
-const MultiSelect = ({
+interface IHandle {
+    setSelectedOptions: (newSelectedOptions: MultiSelectOption[]) => void
+}
+
+const MultiSelect = forwardRef<IHandle, IProps>(({
     text,
     getCreateNewOptionButtonText,
     createNewOption,
@@ -30,7 +42,18 @@ const MultiSelect = ({
     options,
     filterInputPlaceholder,
     isCreatingNewOption
-}: IProps) => {
+}: IProps, ref) => {
+    useImperativeHandle(ref, () => ({
+        setSelectedOptions: (newSelectedOptions: MultiSelectOption[]) => {
+            let newChecks: { [optionName: string]: boolean } = { ...checks };
+            newSelectedOptions.forEach(({ name }) => newChecks[name] = true);
+
+            setSelectedOptions([ ...newSelectedOptions ]);
+            onSelect && onSelect(newSelectedOptions);
+            setChecks(newChecks);
+        }
+    }), []);
+
     let multiSelectFrame = useRef<HTMLDivElement>(null);
 
     let [ opened, setOpened ] = useState<boolean>(false);
@@ -52,7 +75,10 @@ const MultiSelect = ({
             newSelectedOptions.push(option);
         }
         else {
-            newSelectedOptions.splice(newSelectedOptions.indexOf(option), 1);
+            newSelectedOptions.splice(
+                newSelectedOptions.findIndex(({ name }) => name == option.name),
+                1
+            );
         }
         
         setSelectedOptions(newSelectedOptions);
@@ -147,6 +173,6 @@ const MultiSelect = ({
             </div>
         </div>
     );
-};
+});
 
 export default MultiSelect;
