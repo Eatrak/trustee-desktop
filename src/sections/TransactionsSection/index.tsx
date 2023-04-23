@@ -20,7 +20,7 @@ const TransactionsSection = () => {
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
 
-    let [selectedWallets, changeSelectedWallets] = useState<MultiSelectOption[]>([]);
+    let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
 
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
     const lastDayOfTheCurrentMonthTimestamp = dayjs().endOf("month");
@@ -81,16 +81,27 @@ const TransactionsSection = () => {
                     getCreateNewOptionButtonText={(filterValue) => `Create "${filterValue}" wallet`}
                     filterInputPlaceholder="Search or create a wallet by typing a name"
                     options={wallets.map(wallet => ({ name: wallet.walletName, value: wallet.walletId }))}
-                    selectedOptions={selectedWallets}
-                    setSelectedOptions={changeSelectedWallets}/>
+                    onSelect={(newSelectedWallets) => setSelectedWallets([ ...newSelectedWallets ])} />
                 <div className="transactions-section--main--container">
-                    {transactions.map(transaction => {
-                        return (
-                            <TransactionItem
-                                key={transaction.transactionId}
-                                transaction={transaction}/>
-                        );
-                    })}
+                    {
+                        transactions
+                        .filter(transaction => {
+                            for (const selectedWallet of selectedWallets) {
+                                if (transaction.walletId == selectedWallet.value) {
+                                    return true;
+                                }
+                            }
+
+                            return false;
+                        })
+                        .map(transaction => {
+                            return (
+                                <TransactionItem
+                                    key={transaction.transactionId}
+                                    transaction={transaction}/>
+                            );
+                        })
+                    }
                 </div>
                 {cursor && <TextButton Icon={MdAdd} text="Load more" clickEvent={getNextTransactions} isLoading={isLoadingTransactions}/>}
             </div>
