@@ -1,6 +1,6 @@
 import "./style.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
@@ -25,12 +25,20 @@ const TransactionsSection = () => {
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
     const lastDayOfTheCurrentMonthTimestamp = dayjs().endOf("month");
 
+    const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
+
     useEffect(() => {
         TransactionsService.getInstance().transactions$.subscribe(transactions => {
             changeTransactions(transactions);
         });
         TransactionsService.getInstance().wallets$.subscribe(wallets => {
             changeWallets(wallets);
+            
+            const defaultSelectedWallets: MultiSelectOption[] = wallets.map(wallet => ({
+                name: wallet.walletName,
+                value: wallet.walletId
+            }));
+            walletsMultiSelectRef.current?.setSelectedOptions(defaultSelectedWallets);
         });
         
         getTransactionsByCreationRange(firstDayOfTheCurrentMonthTimestamp, lastDayOfTheCurrentMonthTimestamp);
@@ -74,6 +82,7 @@ const TransactionsSection = () => {
                     initialEndDate={lastDayOfTheCurrentMonthTimestamp}
                     onDatePickerRangeChanged={changeTimeRangeOfTransactionsToShow}/>
                 <MultiSelect
+                    ref={walletsMultiSelectRef}
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
                     createNewOption={createWallet}
