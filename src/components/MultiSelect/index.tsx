@@ -139,6 +139,8 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
             <div className="multi-select__body" onTimeUpdate={e => showPanel(e)} onClick={e => showPanel(e)}>
                 <div className="multi-select__body__chip-container">
                     {
+                        selectedOptions.length == options.length ?
+                        <Chip key="" text="All"/> :
                         selectedOptions.map(selectedOption => {
                             return <Chip key={selectedOption.name} text={selectedOption.name}/>
                         })
