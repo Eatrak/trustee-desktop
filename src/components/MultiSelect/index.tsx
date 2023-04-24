@@ -22,7 +22,7 @@ interface IProps {
     text: string,
     getCreateNewOptionButtonText?: (filterValue: string) => string,
     createNewOption?: (filterValue: string) => any
-    className: string,
+    className?: string,
     onSelect?: (newSelectedOptions: MultiSelectOption[]) => any
     options: MultiSelectOption[],
     filterInputPlaceholder?: string,
