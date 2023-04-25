@@ -2,6 +2,7 @@ import { createRef, RefObject, useState } from "react";
 
 import Validator from "validatorjs";
 
+import "./style.css";
 import FormLayout from "@components/FormLayout";
 import InputTextField from "@components/InputTextField";
 import { signInValidator } from "@crudValidators/auth";

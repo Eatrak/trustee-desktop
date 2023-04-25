@@ -1,0 +1,6 @@
+.page--sign-in .form .input-text-field > input {
+    height: 52px;
+
+    border-width: 2px;
+    border-radius: 8px;
+}
