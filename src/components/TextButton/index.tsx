@@ -4,19 +4,27 @@ import { IconType } from "react-icons";
 
 import LoadingIcon from "@components/LoadingIcon";
 
+type Size = "large";
+
 interface IProps {
-    Icon: IconType,
+    Icon?: IconType,
     text: string,
     clickEvent?: (...p: any) => any,
-    isLoading?: boolean
+    isLoading?: boolean,
+    size?: Size
 }
 
-const TextButton = ({ Icon, text, clickEvent, isLoading }: IProps) => {
+const TextButton = ({ Icon, text, clickEvent, isLoading, size }: IProps) => {
     return (
-        <button className="text-button" tabIndex={1} onClick={clickEvent} disabled={isLoading}>
+        <button
+            className={`text-button text-button--${size || ""}`}
+            tabIndex={1}
+            onClick={clickEvent}
+            disabled={isLoading}
+        >
             {
                 !isLoading ?
-                <Icon className="text-button__icon"/> :
+                (Icon && <Icon className="text-button__icon"/>) :
                 <LoadingIcon/>
             }
             <p className="paragraph text-button__paragraph">{text}</p>

@@ -47,3 +47,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+.text-button--large {
+    height: 45px;
+}
