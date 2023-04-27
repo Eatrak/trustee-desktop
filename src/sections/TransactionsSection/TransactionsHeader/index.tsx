@@ -6,12 +6,12 @@ import { Dayjs } from "dayjs";
 
 import RoundedTextIconButton from "@components/RoundedTextIconButton";
 import RoundedIconButton from "@components/RoundedIconButton";
-import DatePicker, { OnDatePickerRangeChangedEvent } from "@components/DatePicker";
+import RangeDatePicker, { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
 
 interface IProps {
     initialStartDate: Dayjs,
     initialEndDate: Dayjs
-    onDatePickerRangeChanged: (event: OnDatePickerRangeChangedEvent) => any
+    onDatePickerRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any
 }
 
 const TransactionsHeader = ({
@@ -29,7 +29,7 @@ const TransactionsHeader = ({
 
     const changeTimeRangeOfTransactionsToShow = ({
         startDate, endDate
-    }: OnDatePickerRangeChangedEvent) => {
+    }: OnRangeDatePickerRangeChangedEvent) => {
         changeStartDate(startDate);
         changeEndDate(endDate);
 
@@ -49,7 +49,7 @@ const TransactionsHeader = ({
                 <RoundedTextIconButton
                     Icon={MdDateRange}
                     clickEvent={openDatePicker}/>
-                <DatePicker
+                <RangeDatePicker
                     initialStartDate={initialStartDate}
                     initialEndDate={initialEndDate}
                     onRangeChanged={changeTimeRangeOfTransactionsToShow}
