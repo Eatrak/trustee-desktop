@@ -56,13 +56,14 @@ const Select = forwardRef<IHandle, IProps>(({
     let [ selectedOption, setSelectedOption ] = useState<SelectOption>();
     let [ filterValue, changeFilterValue ] = useState<string>("");
     
-    const showPanel = () => {
+    const switchPanelStatus = () => {
         setOpened(!opened);
     };
 
     const selectOption = (optionToSelect: SelectOption) => {
         setSelectedOption(optionToSelect);
         onSelect && onSelect(optionToSelect);
+        switchPanelStatus();
     };
 
     const renderOptions = () => {
@@ -118,7 +119,7 @@ const Select = forwardRef<IHandle, IProps>(({
     return (
         <div ref={selectFrame} className={"select " + (className || "")} tabIndex={0}>
             <p className="paragraph--small paragraph--sub-title">{text}</p>
-            <div className="select__body" onTimeUpdate={() => showPanel()} onClick={() => showPanel()}>
+            <div className="select__body" onTimeUpdate={() => switchPanelStatus()} onClick={() => switchPanelStatus()}>
                 <p className="paragraph--small">{selectedOption?.name}</p>
                 <NormalButton
                     className="select__body__button"
