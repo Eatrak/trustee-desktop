@@ -1,4 +1,4 @@
-.range-date-picker {
+.range-date-picker__panel {
     position: absolute;
     z-index: 1000;
 
@@ -14,15 +14,15 @@
     animation: fade 0.1s forwards;
 }
 
-.range-date-picker--opened {
+.range-date-picker__panel--opened {
     animation: fade-opening 0.1s forwards;
 }
 
-.range-date-picker--closed {
+.range-date-picker__panel--closed {
     animation: fade-closing 0.1s forwards;
 }
 
-.range-date-picker__header {
+.range-date-picker__panel__header {
     display: grid;
     grid-template-columns: max-content auto max-content;
     align-items: center;
@@ -32,18 +32,18 @@
     padding-inline: 20px;
 }
 
-.range-date-picker__header > .range-date-picker__header__month-name {
+.range-date-picker__panel__header > .range-date-picker__panel__header__month-name {
     text-align: center;
     font-weight: 400;
 }
 
-.range-date-picker__content {
+.range-date-picker__panel__content {
     padding-inline: 16px;
 }
 
 /* || Weekday list */
 
-.range-date-picker__weekday-list {
+.range-date-picker__panel__weekday-list {
     display: grid;
     grid-auto-flow: column;
 
@@ -52,7 +52,7 @@
     margin-top: 16px;
 }
 
-.range-date-picker__weekday-list__weekday {
+.range-date-picker__panel__weekday-list__weekday {
     width: 30px;
     
     text-align: center;
@@ -62,7 +62,7 @@
 
 /* || Month day list */
 
-.range-date-picker__month-day-list {
+.range-date-picker__panel__month-day-list {
     display: grid;
     grid-template-columns: repeat(7, auto);
     row-gap: 6px;
@@ -70,7 +70,7 @@
     margin-top: 8px;
 }
 
-.range-date-picker__month-day-list__month-day {
+.range-date-picker__panel__month-day-list__month-day {
     display: grid;
 
     width: 30px;
@@ -83,35 +83,35 @@
     transition: background-color 0.2s;
 }
 
-.range-date-picker__month-day-list__month-day--start-day-candidate:hover {
+.range-date-picker__panel__month-day-list__month-day--start-day-candidate:hover {
     background-color: var(--primary-50);
 }
 
-.range-date-picker__month-day-list__month-day--start-day-candidate:hover > .range-date-picker__month-day-list__month-day__text {
+.range-date-picker__panel__month-day-list__month-day--start-day-candidate:hover > .range-date-picker__panel__month-day-list__month-day__text {
     color: var(--primary-400);
 }
 
-.range-date-picker__month-day-list__month-day__text {
+.range-date-picker__panel__month-day-list__month-day__text {
     align-self: center;
     text-align: center;
     font-weight: 600;
     color: var(--neutral-600);
 }
 
-.range-date-picker__month-day-list__month-day--selected-range-extreme-day {
+.range-date-picker__panel__month-day-list__month-day--selected-range-extreme-day {
     background-color: var(--primary-600);
 }
 
-.range-date-picker__month-day-list__month-day--selected-range-extreme-day > .range-date-picker__month-day-list__month-day__text {
+.range-date-picker__panel__month-day-list__month-day--selected-range-extreme-day > .range-date-picker__panel__month-day-list__month-day__text {
     color: var(--button-text-color);
 }
 
 
-.range-date-picker__month-day-list__month-day--selected-range-day {
+.range-date-picker__panel__month-day-list__month-day--selected-range-day {
     background-color: var(--primary-100);
 }
 
-.range-date-picker__month-day-list__month-day--selected-range-day > .range-date-picker__month-day-list__month-day__text {
+.range-date-picker__panel__month-day-list__month-day--selected-range-day > .range-date-picker__panel__month-day-list__month-day__text {
     color: var(--primary-600);
 }
 

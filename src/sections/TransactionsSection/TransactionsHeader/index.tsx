@@ -46,9 +46,6 @@ const TransactionsHeader = ({
             </div>
             <div className="app-layout__header__actions-container">
                 <RoundedTextIconButton Icon={MdRefresh}/>
-                <RoundedTextIconButton
-                    Icon={MdDateRange}
-                    clickEvent={openDatePicker}/>
                 <RangeDatePicker
                     initialStartDate={initialStartDate}
                     initialEndDate={initialEndDate}
