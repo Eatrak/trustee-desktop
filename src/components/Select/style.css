@@ -10,6 +10,19 @@
     cursor: pointer;
 }
 
+.select--error > .select__body {
+    border-color: var(--error-400);
+}
+
+.select--error:hover > .select__body {
+    border-color: var(--error-500);
+}
+
+.select--error:focus > .select__body {
+    border-color: var(--error-500);
+    box-shadow: var(--error-aura-shadow);
+}
+
 .select__body {
     display: grid;
     grid-template-columns: auto max-content;
@@ -25,7 +38,7 @@
     padding-left: 10px;
     box-sizing: border-box;
     
-    transition: background-color 0.2s;
+    transition: all 0.3s;
 }
 
 .select__body__custom-item-container {

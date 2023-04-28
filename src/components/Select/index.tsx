@@ -11,6 +11,7 @@ import
     }
 from "react";
 import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
+import Validator, { Rules, TypeCheckingRule } from "validatorjs";
 
 import NormalButton from "@components/NormalButton";
 import TextButton from "@components/TextButton";
@@ -25,7 +26,9 @@ interface IProps {
     onSelect?: (newSelectedOption: SelectOption) => any
     options: SelectOption[],
     filterInputPlaceholder?: string,
-    isCreatingNewOption?: boolean
+    isCreatingNewOption?: boolean,
+    entityName: string,
+    validatorRule?: string | Array<string | TypeCheckingRule> | Rules
 }
 
 interface IHandle {
@@ -40,7 +43,9 @@ const Select = forwardRef<IHandle, IProps>(({
     onSelect,
     options,
     filterInputPlaceholder,
-    isCreatingNewOption
+    isCreatingNewOption,
+    entityName,
+    validatorRule
 }: IProps, ref) => {
     useImperativeHandle(ref, () => ({
         setSelectedOption: (newSelectedOption: SelectOption) => {
@@ -55,8 +60,13 @@ const Select = forwardRef<IHandle, IProps>(({
     let [ filteredOptions, changeFilteredOptions ] = useState<SelectOption[]>(options);
     let [ selectedOption, setSelectedOption ] = useState<SelectOption>();
     let [ filterValue, changeFilterValue ] = useState<string>("");
+    let [ errors, setErrors ] = useState<string[]>([]);
     
     const switchPanelStatus = () => {
+        if (opened) {
+            checkErrors();
+        }
+
         setOpened(!opened);
     };
 
@@ -65,6 +75,27 @@ const Select = forwardRef<IHandle, IProps>(({
         onSelect && onSelect(optionToSelect);
         switchPanelStatus();
     };
+
+    const checkErrors = () => {
+        if (!validatorRule) return;
+        
+        const validation = new Validator(
+            { [entityName]: selectedOption?.value },
+            { [entityName]: validatorRule }
+        );
+        validation.check();
+
+        const errors = validation.errors.get(entityName);
+        setErrors(errors);
+    }
+    
+    const renderErrors = () => {
+        let id = 0;
+
+        return errors.map(error => {
+            return <p key={id++} className="paragraph--small text--error">{error}</p>;
+        });
+    }
 
     const renderOptions = () => {
         return filteredOptions.map(option => {
@@ -86,6 +117,7 @@ const Select = forwardRef<IHandle, IProps>(({
         const haveSelectChildsBeenClicked = selectFrame.current?.contains(e.target as HTMLElement);
         if (!hasSelectBeenClicked && !haveSelectChildsBeenClicked) {
             setOpened(false);
+            checkErrors();
         }
     };
 
@@ -117,7 +149,11 @@ const Select = forwardRef<IHandle, IProps>(({
     }, []);
     
     return (
-        <div ref={selectFrame} className={"select " + (className || "")} tabIndex={0}>
+        <div
+            ref={selectFrame}
+            className={"select " + (errors.length > 0 ? "select--error" : "") + (className || "")}
+            tabIndex={0}
+        >
             <p className="paragraph--small paragraph--sub-title">{text}</p>
             <div className="select__body" onTimeUpdate={() => switchPanelStatus()} onClick={() => switchPanelStatus()}>
                 <p className="paragraph--small">{selectedOption?.name}</p>
@@ -126,6 +162,7 @@ const Select = forwardRef<IHandle, IProps>(({
                     Icon={MdKeyboardArrowDown}
                     iconClass={"select__body__row" + (opened ? " select__body__row--activated" : "")}/>
             </div>
+            {renderErrors()}
             <div className={"select__options-panel select__options-panel--" + (opened ? "opened" : "closed")}>
                 <div className="select__options-panel__search-container">
                     <input
