@@ -56,6 +56,7 @@ const Select = forwardRef<IHandle, IProps>(({
 
     let selectFrame = useRef<HTMLDivElement>(null);
 
+    const isFirstRender = useRef(true);
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ filteredOptions, changeFilteredOptions ] = useState<SelectOption[]>(options);
     let [ selectedOption, setSelectedOption ] = useState<SelectOption>();
@@ -63,10 +64,6 @@ const Select = forwardRef<IHandle, IProps>(({
     let [ errors, setErrors ] = useState<string[]>([]);
     
     const switchPanelStatus = () => {
-        if (opened) {
-            checkErrors();
-        }
-
         setOpened(!opened);
     };
 
@@ -117,7 +114,6 @@ const Select = forwardRef<IHandle, IProps>(({
         const haveSelectChildsBeenClicked = selectFrame.current?.contains(e.target as HTMLElement);
         if (!hasSelectBeenClicked && !haveSelectChildsBeenClicked) {
             setOpened(false);
-            checkErrors();
         }
     };
 
@@ -147,6 +143,18 @@ const Select = forwardRef<IHandle, IProps>(({
     useEffect(() => () => {
         document.removeEventListener("mousedown", closeSelectWhenTouchingOutsideEvent);
     }, []);
+    
+    useEffect(() => {
+        // Exit if it is the first render
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
+        if (!opened) {
+            checkErrors();
+        }
+    }, [opened]);
     
     return (
         <div
