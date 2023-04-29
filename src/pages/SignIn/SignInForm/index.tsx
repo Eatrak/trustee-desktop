@@ -1,4 +1,4 @@
-import { createRef, RefObject, useState } from "react";
+import { useState, useEffect } from "react";
 
 import Validator from "validatorjs";
 
@@ -10,37 +10,35 @@ import AuthService from "@services/auth";
 
 const SignInForm = () => {
     const [submitDisabled, setSubmitDisabled] = useState(true);
-
-    const emailField: RefObject<InputTextField> = createRef();
-    const passwordField: RefObject<InputTextField> = createRef();
+    const [ email, setEmail ] = useState<string>();
+    const [ password, setPassword ] = useState<string>();
 
     const signIn = async () => {
-        const email = emailField.current!.getValue();
-        const password = passwordField.current!.getValue();
-
-        const successfulSignIn = await AuthService.getInstance().signIn(email, password);
+        const successfulSignIn = await AuthService.getInstance().signIn(email!, password!);
         if (successfulSignIn) document.location.href = "/";
 
         return true;
     };
 
-    const checkFieldValidity = () => {
-        const email = emailField.current!.getValue();
-        const password = passwordField.current!.getValue();
+    const isFormValid = () => {
+        const validator = new Validator({ email, password }, signInValidator);
+        const isFormValid = validator.passes();
 
-        const validation = new Validator({ email, password }, signInValidator);
-
-        validation.fails() ? setSubmitDisabled(true) : setSubmitDisabled(false);
+        return isFormValid;
     };
-    
+
+    useEffect(() => {
+        setSubmitDisabled(!isFormValid());
+    }, [email, password]);
+
     return (
         <FormLayout header="Welcome back!" submitText="Sign in" submitEvent={signIn} submitDisabled={submitDisabled}>
             {/* Email field */}
-            <InputTextField testId="emailField" ref={emailField} validator={signInValidator} validatorAttribute="email"
-                title="Email" placeholder="johndoe@test.com" onInput={checkFieldValidity}/>
+            <InputTextField testId="emailField" validatorRule={signInValidator.email} validatorAttributeName="email"
+                title="Email" placeholder="johndoe@test.com" onInput={setEmail}/>
             {/* Password field */}
-            <InputTextField testId="passwordField" ref={passwordField} validator={signInValidator}
-                validatorAttribute="password" title="Password" type="password" onInput={checkFieldValidity}/>
+            <InputTextField testId="passwordField" validatorRule={signInValidator.password}
+                validatorAttributeName="password" title="Password" type="password" onInput={setPassword}/>
         </FormLayout>
     );
 };

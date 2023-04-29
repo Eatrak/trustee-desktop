@@ -46,15 +46,15 @@
   box-shadow: var(--aura-shadow);
 }
 
-.input-text-field__input--error {
+.input-text-field--in-error .input-text-field__input {
   border-color: var(--error-400);
 }
 
-.input-text-field__input--error:hover {
+.input-text-field--in-error .input-text-field__input:hover {
   border-color: var(--error-500);
 }
 
-.input-text-field__input--error:focus {
+.input-text-field--in-error .input-text-field__input:focus {
   border-color: var(--error-500);
   box-shadow: var(--error-aura-shadow);
 }
