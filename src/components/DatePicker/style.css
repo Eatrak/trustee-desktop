@@ -2,6 +2,20 @@
     position: relative;
 }
 
+.date-picker--in-error .date-picker-selector__body {
+  border-color: var(--error-400);
+}
+
+.date-picker--in-error:hover .date-picker-selector__body {
+  border-color: var(--error-500);
+}
+
+.date-picker--in-error:focus .date-picker-selector__body {
+  border-color: var(--error-500);
+  box-shadow: var(--error-aura-shadow);
+}
+
+
 .date-picker-selector {
     position: relative;
 

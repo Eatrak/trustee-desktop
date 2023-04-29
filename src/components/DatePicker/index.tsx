@@ -3,6 +3,7 @@ import "./style.css";
 import { useEffect, useState, useRef } from "react";
 import { MdChevronLeft, MdChevronRight, MdDateRange } from "react-icons/md";
 import dayjs, { Dayjs } from "dayjs";
+import Validator, { Rules, TypeCheckingRule } from "validatorjs";
 
 import MiniRoundedIconButton from "@components/MiniRoundedIconButton";
 
@@ -12,17 +13,28 @@ interface IProps {
     setOpened: Function,
     onDateChanged?: (selectedDate: Dayjs) => any,
     initialStartDate?: Dayjs,
-    initialEndDate?: Dayjs
+    initialEndDate?: Dayjs,
+    validatorAttributeName: string,
+    validatorRule?: string | Array<string | TypeCheckingRule> | Rules
 }
 
-const DatePicker = ({ style, isOpened, setOpened, onDateChanged }: IProps) => {
+const DatePicker = ({
+    style,
+    isOpened,
+    setOpened,
+    onDateChanged,
+    validatorAttributeName,
+    validatorRule
+}: IProps) => {
     let datePickerFrame = useRef<HTMLDivElement>(null);
 
     const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
     const currentYearAndMonth = dayjs().format("YYYY-MM");
+    const isFirstRender = useRef(true);
     let [canBeOpened, setCanBeOpened] = useState<boolean>(true);
     let [selectedYearAndMonth, setYearAndMonth] = useState<string>(currentYearAndMonth);
     let [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+    let [ errors, setErrors ] = useState<string[]>([]);
 
     const selectPreviousMonth = () => {
         const previousMonthYear = dayjs(selectedYearAndMonth).subtract(1, "month");
@@ -74,6 +86,27 @@ const DatePicker = ({ style, isOpened, setOpened, onDateChanged }: IProps) => {
         }
     };
 
+    const checkErrors = () => {
+        if (!validatorRule) return;
+        
+        const validation = new Validator(
+            { [validatorAttributeName]: selectedDate?.format() },
+            { [validatorAttributeName]: validatorRule }
+        );
+        validation.check();
+
+        const errors = validation.errors.get(validatorAttributeName);
+        setErrors(errors);
+    }
+    
+    const renderErrors = () => {
+        let id = 0;
+
+        return errors.map(error => {
+            return <p key={id++} className="paragraph--small text--error">{error}</p>;
+        });
+    }
+
     useEffect(() => {
         datePickerFrame.current?.addEventListener("animationend", setPanelOpenable);
         document.addEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);
@@ -82,9 +115,21 @@ const DatePicker = ({ style, isOpened, setOpened, onDateChanged }: IProps) => {
     useEffect(() => () => {
         document.removeEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);
     }, []);
+    
+    useEffect(() => {
+        // Exit if it is the first render
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
+        if (!isOpened) {
+            checkErrors();
+        }
+    }, [isOpened]);
 
     return (
-        <div className="date-picker">
+        <div className={`date-picker ${errors.length > 0 ? "date-picker--in-error" : ""}`}>
             <div className="date-picker-selector">
                 <p className="paragraph--small paragraph--sub-title">{"Creation date"}</p>
                 <div className="date-picker-selector__body" onTimeUpdate={() => openPanel()} onClick={() => openPanel()}>
@@ -94,6 +139,7 @@ const DatePicker = ({ style, isOpened, setOpened, onDateChanged }: IProps) => {
                     <MdDateRange className="date-picker-selector__body__icon"/>
                 </div>
             </div>
+            {renderErrors()}
             <div ref={datePickerFrame} className={"date-picker__panel date-picker__panel--" + (isOpened ? "opened" : "closed")} style={style}>
                 <div className="date-picker__panel__header">
                     <MiniRoundedIconButton Icon={MdChevronLeft} clickEvent={selectPreviousMonth}/>
