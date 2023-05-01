@@ -15,3 +15,8 @@ export interface Wallet {
     walletId: string;
     walletName: string;
 }
+
+export interface Currency {
+    currencyCode: string;
+    currencySymbol: string;
+}

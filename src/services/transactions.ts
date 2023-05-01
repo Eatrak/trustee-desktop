@@ -1,7 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Transaction, Wallet } from "@models/transactions";
+import { Currency, Transaction, Wallet } from "@models/transactions";
 import { Utils } from "src/utils";
 import { GetTransactionsInputQueryParams } from "src/shared/bodies/transactions/getTransactions";
 import { GetTransactionsResponse } from "src/shared/requestInterfaces/transactions/getTransactions";
@@ -9,16 +9,19 @@ import { GetWalletsResponse } from "src/shared/requestInterfaces/transactions/ge
 import { CreateWalletResponse } from "src/shared/requestInterfaces/transactions/createWallet";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import { CreateWalletBody } from "src/shared/bodies/transactions/createWallet";
+import { GetCurrenciesResponse } from "src/shared/requestInterfaces/transactions/getCurrencies";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
 
     transactions$: BehaviorSubject<Transaction[]>;
     wallets$: BehaviorSubject<Wallet[]>;
+    currencies$: BehaviorSubject<Currency[]>;
 
     private constructor() {
         this.transactions$ = new BehaviorSubject<Transaction[]>([]);
         this.wallets$ = new BehaviorSubject<Wallet[]>([]);
+        this.currencies$ = new BehaviorSubject<Currency[]>([]);
     }
     
     static getInstance() {
@@ -94,5 +97,17 @@ export default class TransactionsService {
         const newWallets = [ createdWallet, ...this.wallets$.getValue() ];
 
         this.wallets$.next(newWallets);
+    }
+
+    async getCurrencies() {
+        const requestURL = Utils.getInstance().getAPIEndpoint("/currencies");
+        const response = await fetch(requestURL, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("authToken")
+            }
+        });
+        const { currencies }: GetCurrenciesResponse = await response.json();
+
+        this.currencies$.next(currencies);
     }
 }
