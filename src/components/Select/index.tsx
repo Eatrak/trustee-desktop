@@ -28,7 +28,8 @@ interface IProps {
     filterInputPlaceholder?: string,
     isCreatingNewOption?: boolean,
     entityName: string,
-    validatorRule?: string | Array<string | TypeCheckingRule> | Rules
+    validatorRule?: string | Array<string | TypeCheckingRule> | Rules,
+    children?: React.ReactNode
 }
 
 interface IHandle {
@@ -45,7 +46,8 @@ const Select = forwardRef<IHandle, IProps>(({
     filterInputPlaceholder,
     isCreatingNewOption,
     entityName,
-    validatorRule
+    validatorRule,
+    children
 }: IProps, ref) => {
     useImperativeHandle(ref, () => ({
         setSelectedOption: (newSelectedOption: SelectOption) => {
@@ -177,6 +179,11 @@ const Select = forwardRef<IHandle, IProps>(({
                         className="select__options-panel__search-container__search-input"
                         onInput={e => filterOptions(e.currentTarget.value)}
                         placeholder={filterInputPlaceholder}/>
+                    <div>
+                        {
+                            children
+                        }
+                    </div>
                 </div>
                 <div className="select__options-panel__options-container">
                     {renderOptions()}

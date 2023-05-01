@@ -112,6 +112,8 @@
 
 .select__options-panel__search-container {
     display: grid;
+    grid-template-columns: auto max-content;
+    column-gap: 8px;
 
     border-bottom: 1px solid var(--border-color);
     padding: 6px;
