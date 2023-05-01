@@ -14,6 +14,7 @@ export interface Wallet {
     userId: string;
     walletId: string;
     walletName: string;
+    currencyCode: string;
 }
 
 export interface Currency {
