@@ -19,3 +19,7 @@
     display: grid;
     justify-self: right;
 }
+
+.currency-select {
+    width: 80px;
+}
