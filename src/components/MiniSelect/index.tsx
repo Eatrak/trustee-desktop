@@ -9,16 +9,11 @@ import
         forwardRef
     }
 from "react";
-import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
 import Validator, { Rules, TypeCheckingRule } from "validatorjs";
-
-import NormalButton from "@components/NormalButton";
-import TextButton from "@components/TextButton";
 
 export interface SelectOption { name: string, value: string };
 
 interface IProps {
-    text: string,
     getCreateNewOptionButtonText?: (filterValue: string) => string,
     createNewOption?: (filterValue: string) => any
     className?: string,
@@ -27,8 +22,7 @@ interface IProps {
     filterInputPlaceholder?: string,
     isCreatingNewOption?: boolean,
     entityName: string,
-    validatorRule?: string | Array<string | TypeCheckingRule> | Rules,
-    isMini?: boolean
+    validatorRule?: string | Array<string | TypeCheckingRule> | Rules
 }
 
 interface IHandle {
@@ -36,17 +30,11 @@ interface IHandle {
 }
 
 const MiniSelect = forwardRef<IHandle, IProps>(({
-    text,
-    getCreateNewOptionButtonText,
-    createNewOption,
     className,
     onSelect,
     options,
-    filterInputPlaceholder,
-    isCreatingNewOption,
     entityName,
-    validatorRule,
-    isMini
+    validatorRule
 }: IProps, ref) => {
     useImperativeHandle(ref, () => ({
         setSelectedOption: (newSelectedOption: SelectOption) => {
@@ -59,9 +47,7 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
 
     const isFirstRender = useRef(true);
     let [ opened, setOpened ] = useState<boolean>(false);
-    let [ filteredOptions, changeFilteredOptions ] = useState<SelectOption[]>(options);
     let [ selectedOption, setSelectedOption ] = useState<SelectOption>();
-    let [ filterValue, changeFilterValue ] = useState<string>("");
     let [ errors, setErrors ] = useState<string[]>([]);
     
     const switchPanelStatus = () => {
@@ -88,7 +74,7 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
     }
 
     const renderOptions = () => {
-        return filteredOptions.map(option => {
+        return options.map(option => {
             return (
                 <div
                     key={option.name}
@@ -133,7 +119,7 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
     return (
         <div
             ref={selectFrame}
-            className={"mini-select " + (errors.length > 0 ? "mini-select--error " : "") + (isMini ? "mini-select--mini" : "") + (className || "")}
+            className={"mini-select " + (errors.length > 0 ? "mini-select--error " : "") + (className || "")}
             tabIndex={0}
         >
             <div className="mini-select__body" onTimeUpdate={() => switchPanelStatus()} onClick={() => switchPanelStatus()}>
