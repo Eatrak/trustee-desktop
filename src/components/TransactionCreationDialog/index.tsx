@@ -68,6 +68,7 @@ const TransactionCreationDialog = () => {
                 <Select
                     entityName="wallet"
                     text="Wallet"
+                    filterInputPlaceholder="Search or create by typing a name"
                     options={getWalletOptions()}
                     validatorRule="required"
                     onSelect={setWalletOption} />
@@ -75,6 +76,7 @@ const TransactionCreationDialog = () => {
                 <Select
                     entityName="category"
                     text="Category"
+                    filterInputPlaceholder="Search or create by typing a name"
                     options={[{ name: "a", value: "a" }]}
                     validatorRule="required"
                     onSelect={setCategoryOption} />
