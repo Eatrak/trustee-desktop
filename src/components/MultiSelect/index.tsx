@@ -26,7 +26,8 @@ interface IProps {
     onSelect?: (newSelectedOptions: MultiSelectOption[]) => any
     options: MultiSelectOption[],
     filterInputPlaceholder?: string,
-    isCreatingNewOption?: boolean
+    isCreatingNewOption?: boolean,
+    children?: React.ReactNode
 }
 
 interface IHandle {
@@ -41,7 +42,8 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
     onSelect,
     options,
     filterInputPlaceholder,
-    isCreatingNewOption
+    isCreatingNewOption,
+    children
 }: IProps, ref) => {
     useImperativeHandle(ref, () => ({
         setSelectedOptions: (newSelectedOptions: MultiSelectOption[]) => {
@@ -157,6 +159,11 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
                         className="multi-select__options-panel__search-container__search-input"
                         onInput={e => filterOptions(e.currentTarget.value)}
                         placeholder={filterInputPlaceholder}/>
+                    <div>
+                        {
+                            children
+                        }
+                    </div>
                 </div>
                 <div className="multi-select__options-panel__options-container">
                     {renderOptions()}

@@ -5,27 +5,38 @@ import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Transaction, Wallet } from "@models/transactions";
+import { Currency, Transaction, Wallet } from "@models/transactions";
 import TransactionsService from "@services/transactions";
 import TextButton from "@components/TextButton";
-import { OnDatePickerRangeChangedEvent } from "@components/DatePicker";
+import { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
 import MultiSelect, { MultiSelectOption } from "@components/MultiSelect";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
+import MiniSelect, { SelectOption } from "@components/MiniSelect";
 
 const TransactionsSection = () => {
+    let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
     let [ transactions, changeTransactions ] = useState<Transaction[]>([]);
     let [ wallets, changeWallets ] = useState<Wallet[]>([]);
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
+    let [ currencies, setCurrencies ] = useState<Currency[]>([]);
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
+    let [ selectedNewWalletCurrency, setSelectedNewWalletCurrency ] = useState<SelectOption>();
 
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
     const lastDayOfTheCurrentMonthTimestamp = dayjs().endOf("month");
 
     const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
+
+    const getCurrencyOptions = (): SelectOption[] => {
+        return currencies.map(({ currencyCode, currencySymbol }) => ({
+            name: `${currencySymbol} ${currencyCode}`,
+            value: currencyCode
+        }));
+    };
 
     useEffect(() => {
         TransactionsService.getInstance().transactions$.subscribe(transactions => {
@@ -40,9 +51,24 @@ const TransactionsSection = () => {
             }));
             walletsMultiSelectRef.current?.setSelectedOptions(defaultSelectedWallets);
         });
+        TransactionsService.getInstance().currencies$.subscribe((currencies) => {
+            setCurrencies(currencies);
+
+            if (currencies.length == 0) {
+                return;
+            }
+
+            // Set default currency option
+            const { currencyCode, currencySymbol } = currencies[0];
+            currencySelect.current?.setSelectedOption({
+                name: `${currencySymbol} ${currencyCode}`,
+                value: currencyCode
+            });
+        });
         
         getTransactionsByCreationRange(firstDayOfTheCurrentMonthTimestamp, lastDayOfTheCurrentMonthTimestamp);
         TransactionsService.getInstance().getWallets();
+        TransactionsService.getInstance().getCurrencies();
     }, []);
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
@@ -62,14 +88,15 @@ const TransactionsSection = () => {
         }
     };
 
-    const changeTimeRangeOfTransactionsToShow = async ({ startDate, endDate }: OnDatePickerRangeChangedEvent) => {
+    const changeTimeRangeOfTransactionsToShow = async ({ startDate, endDate }: OnRangeDatePickerRangeChangedEvent) => {
         await getTransactionsByCreationRange(startDate, endDate);
     };
 
     const createWallet = async (newWalletName: string) => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
-            walletName: newWalletName
+            walletName: newWalletName,
+            currencyCode: selectedNewWalletCurrency!.value
         });
         setIsCreatingNewWallet(false);
     };
@@ -90,7 +117,15 @@ const TransactionsSection = () => {
                     getCreateNewOptionButtonText={(filterValue) => `Create "${filterValue}" wallet`}
                     filterInputPlaceholder="Search or create a wallet by typing a name"
                     options={wallets.map(wallet => ({ name: wallet.walletName, value: wallet.walletId }))}
-                    onSelect={(newSelectedWallets) => setSelectedWallets([ ...newSelectedWallets ])} />
+                    onSelect={(newSelectedWallets) => setSelectedWallets([ ...newSelectedWallets ])} 
+                >
+                    <MiniSelect
+                        ref={currencySelect}
+                        className="currency-select"
+                        options={getCurrencyOptions()}
+                        entityName="currency"
+                        onSelect={setSelectedNewWalletCurrency} />
+                </MultiSelect>
                 <div className="transactions-section--main--container">
                     {
                         transactions
