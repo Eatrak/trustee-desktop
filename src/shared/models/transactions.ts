@@ -21,3 +21,9 @@ export interface Currency {
     currencyCode: string;
     currencySymbol: string;
 }
+
+export interface TransactionCategory {
+    transactionCategoryId: string,
+    transactionCategoryName: string,
+    userId: string
+}

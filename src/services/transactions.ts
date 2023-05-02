@@ -1,7 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Currency, Transaction, Wallet } from "@models/transactions";
+import { Currency, Transaction, TransactionCategory, Wallet } from "@models/transactions";
 import { Utils } from "src/utils";
 import { GetTransactionsInputQueryParams } from "src/shared/bodies/transactions/getTransactions";
 import { GetTransactionsResponse } from "src/shared/requestInterfaces/transactions/getTransactions";
@@ -10,6 +10,7 @@ import { CreateWalletResponse } from "src/shared/requestInterfaces/transactions/
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import { CreateWalletBody } from "src/shared/bodies/transactions/createWallet";
 import { GetCurrenciesResponse } from "src/shared/requestInterfaces/transactions/getCurrencies";
+import { GetTransactionCategoriesResponse } from "src/shared/requestInterfaces/transactions/getTransactionCategories";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -17,11 +18,13 @@ export default class TransactionsService {
     transactions$: BehaviorSubject<Transaction[]>;
     wallets$: BehaviorSubject<Wallet[]>;
     currencies$: BehaviorSubject<Currency[]>;
+    transactionCategories$: BehaviorSubject<TransactionCategory[]>;
 
     private constructor() {
         this.transactions$ = new BehaviorSubject<Transaction[]>([]);
         this.wallets$ = new BehaviorSubject<Wallet[]>([]);
         this.currencies$ = new BehaviorSubject<Currency[]>([]);
+        this.transactionCategories$ = new BehaviorSubject<TransactionCategory[]>([]);
     }
     
     static getInstance() {
@@ -109,5 +112,17 @@ export default class TransactionsService {
         const { currencies }: GetCurrenciesResponse = await response.json();
 
         this.currencies$.next(currencies);
+    }
+
+    async getTransactionCategories() {
+        const requestURL = Utils.getInstance().getAPIEndpoint("/transaction-categories");
+        const response = await fetch(requestURL, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("authToken")
+            }
+        });
+        const { transactionCategories }: GetTransactionCategoriesResponse = await response.json();
+
+        this.transactionCategories$.next(transactionCategories);
     }
 }

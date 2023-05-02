@@ -6,7 +6,7 @@ import { Dayjs } from "dayjs";
 import "./style.css";
 import Dialog from "@components/Dialog";
 import InputTextField from "@components/InputTextField";
-import { Currency, Wallet } from "@models/transactions";
+import { Currency, TransactionCategory, Wallet } from "@models/transactions";
 import TransactionsService from "@services/transactions";
 import NormalButton from "@components/NormalButton";
 import TextButton from "@components/TextButton";
@@ -20,6 +20,7 @@ const TransactionCreationDialog = () => {
     let [isSubmitEnabled, setIsSubmitEnabled] = useState<boolean>(false);
     let [ wallets, setWallets ] = useState<Wallet[]>([]);
     let [ currencies, setCurrencies ] = useState<Currency[]>([]);
+    let [ transactionCategories, setTransactionCategories ] = useState<TransactionCategory[]>([]);
     let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
 
@@ -42,6 +43,16 @@ const TransactionCreationDialog = () => {
         return currencies.map(({ currencyCode, currencySymbol }) => ({
             name: `${currencySymbol} ${currencyCode}`,
             value: currencyCode
+        }));
+    };
+
+    const getTransactionCategoryOptions = (): SelectOption[] => {
+        return transactionCategories.map(({
+            transactionCategoryId,
+            transactionCategoryName
+        }) => ({
+            name: transactionCategoryName,
+            value: transactionCategoryId
         }));
     };
 
@@ -78,9 +89,11 @@ const TransactionCreationDialog = () => {
                 value: currencyCode
             });
         });
+        TransactionsService.getInstance().transactionCategories$.subscribe(setTransactionCategories);
 
         TransactionsService.getInstance().getWallets();
         TransactionsService.getInstance().getCurrencies();
+        TransactionsService.getInstance().getTransactionCategories();
     }, []);
 
     useEffect(() => {
@@ -120,7 +133,7 @@ const TransactionCreationDialog = () => {
                     entityName="category"
                     text="Category"
                     filterInputPlaceholder="Search or create by typing a name"
-                    options={[{ name: "a", value: "a" }]}
+                    options={getTransactionCategoryOptions()}
                     validatorRule="required"
                     onSelect={setCategoryOption} />
                 {/* Creation date */}
