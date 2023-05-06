@@ -99,6 +99,10 @@ const TransactionCreationDialog = () => {
         TransactionsService.getInstance().currencies$.subscribe((currencies) => {
             setCurrencies(currencies);
 
+            if (currencies.length == 0) {
+                return;
+            }
+
             // Set default currency option
             const { currencyCode, currencySymbol } = currencies[0];
             currencySelect.current?.setSelectedOption({
