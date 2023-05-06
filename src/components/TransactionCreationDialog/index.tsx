@@ -23,6 +23,7 @@ const TransactionCreationDialog = () => {
     let [ transactionCategories, setTransactionCategories ] = useState<TransactionCategory[]>([]);
     let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
+    let [ isCreatingTransactionCategory, setIsCreatingTransactionCategory ] = useState<boolean>(false);
 
     // Form data
     let [ name, setName ] = useState<string>();
@@ -75,6 +76,22 @@ const TransactionCreationDialog = () => {
             currencyCode: selectedNewWalletCurrency!.value
         });
         setIsCreatingNewWallet(false);
+    };
+
+    const createTransactionCategory = async (
+        nameOfTransactionCategoryToCreate: string
+    ) => {
+        setIsCreatingTransactionCategory(true);
+        await TransactionsService.getInstance().createTransactionCategory({
+            transactionCategoryName: nameOfTransactionCategoryToCreate
+        });
+        setIsCreatingTransactionCategory(false);
+    };
+
+    const getCreateTransactionCategoryButtonText = (
+        nameOfTransactionCategoryToCreate: string
+    ) => {
+        return `Create "${nameOfTransactionCategoryToCreate}" wallet`;
     };
 
     useEffect(() => {
@@ -134,6 +151,9 @@ const TransactionCreationDialog = () => {
                     text="Category"
                     filterInputPlaceholder="Search or create by typing a name"
                     options={getTransactionCategoryOptions()}
+                    createNewOption={createTransactionCategory}
+                    isCreatingNewOption={isCreatingTransactionCategory}
+                    getCreateNewOptionButtonText={getCreateTransactionCategoryButtonText}
                     validatorRule="required"
                     onSelect={setCategoryOption} />
                 {/* Creation date */}

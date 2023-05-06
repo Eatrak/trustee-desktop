@@ -5,3 +5,7 @@ export const createTransactionRules = {
     creationDate: "required|string",
     value: "required|string"
 };
+
+export const createTransactionCategoryRules = {
+    transactionCategoryName: "required|string"
+};

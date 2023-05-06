@@ -11,6 +11,8 @@ import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import { CreateWalletBody } from "src/shared/bodies/transactions/createWallet";
 import { GetCurrenciesResponse } from "src/shared/requestInterfaces/transactions/getCurrencies";
 import { GetTransactionCategoriesResponse } from "src/shared/requestInterfaces/transactions/getTransactionCategories";
+import { CreateTransactionCategoryResponse } from "src/shared/requestInterfaces/transactions/createTransactionCategory";
+import { CreateTransactionCategoryBody } from "src/shared/bodies/transactions/createTransactionCategory";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -124,5 +126,22 @@ export default class TransactionsService {
         const { transactionCategories }: GetTransactionCategoriesResponse = await response.json();
 
         this.transactionCategories$.next(transactionCategories);
+    }
+
+    async createTransactionCategory(
+        createTransactionCategoryBody: CreateTransactionCategoryBody
+    ) {
+        const requestURL = Utils.getInstance().getAPIEndpoint("/transaction-categories");
+        const response = await fetch(requestURL, {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("authToken")
+            },
+            body: JSON.stringify(createTransactionCategoryBody)
+        });
+        const { createdTransactionCategory }: CreateTransactionCategoryResponse = await response.json();
+        const newTransactionCategories = [ createdTransactionCategory, ...this.transactionCategories$.getValue() ];
+
+        this.transactionCategories$.next(newTransactionCategories);
     }
 }
