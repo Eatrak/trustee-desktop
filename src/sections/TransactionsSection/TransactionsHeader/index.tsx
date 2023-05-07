@@ -11,13 +11,15 @@ import RangeDatePicker, { OnRangeDatePickerRangeChangedEvent } from "@components
 interface IProps {
     initialStartDate: Dayjs,
     initialEndDate: Dayjs
-    onDatePickerRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any
+    onDatePickerRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any,
+    openTransactionCreationDialog: Function
 }
 
 const TransactionsHeader = ({
     onDatePickerRangeChanged,
     initialStartDate,
-    initialEndDate
+    initialEndDate,
+    openTransactionCreationDialog
 }: IProps) => {
     let [isDatePickerOpened, changeIsDatePickerOpened] = useState<boolean>(false);
     let [startDate, changeStartDate] = useState<Dayjs>(initialStartDate);
@@ -57,7 +59,7 @@ const TransactionsHeader = ({
                         top: "50px",
                         transform: "translate(-50%)"
                     }}/>
-                <RoundedIconButton Icon={MdAdd}/>
+                <RoundedIconButton Icon={MdAdd} clickEvent={() => openTransactionCreationDialog()} />
             </div>
         </div>
     );

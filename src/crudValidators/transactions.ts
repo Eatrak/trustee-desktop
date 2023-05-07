@@ -1,9 +1,10 @@
-export const createTransactionRules = {
-    name: "required|string",
-    wallet: "required|string",
-    category: "required|string",
-    creationDate: "required|string",
-    value: "required|string"
+export const createTransactionBodyRules = {
+    transactionName: "required|string",
+    walletId: "required|string",
+    categoryId: "required|string",
+    transactionTimestamp: "required|integer",
+    transactionAmount: "required|numeric",
+    isIncome: "required|boolean"
 };
 
 export const createTransactionCategoryRules = {

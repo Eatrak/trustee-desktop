@@ -13,6 +13,8 @@ import { GetCurrenciesResponse } from "src/shared/requestInterfaces/transactions
 import { GetTransactionCategoriesResponse } from "src/shared/requestInterfaces/transactions/getTransactionCategories";
 import { CreateTransactionCategoryResponse } from "src/shared/requestInterfaces/transactions/createTransactionCategory";
 import { CreateTransactionCategoryBody } from "src/shared/bodies/transactions/createTransactionCategory";
+import { CreateTransactionBody } from "src/shared/bodies/transactions/createTransaction";
+import { CreateTransactionResponse } from "src/shared/requestInterfaces/transactions/createTransactionResponse";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -31,6 +33,39 @@ export default class TransactionsService {
     
     static getInstance() {
         return this.instance;
+    }
+
+    /**
+     * Create new transaction.
+     * 
+     * @param input Input used to create new transaction.
+     * @returns Is new transaction created.
+     */
+    async createTransaction(input: CreateTransactionBody): Promise<boolean> {
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint("/transactions");
+            const response = await fetch(requestURL, {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("authToken")
+                },
+                body: JSON.stringify(input)
+            });
+
+            if (!response.ok) {
+                return false;
+            }
+
+            const { createdTransaction }: CreateTransactionResponse = await response.json();
+            const updatedTransactions = [ createdTransaction, ...this.transactions$.getValue() ];
+
+            this.transactions$.next(updatedTransactions);
+
+            return true;
+        }
+        catch (err) {
+            return false;
+        }
     }
 
     async getTransactionsByCreationRange(startCreationTimestamp: Dayjs, endCreationTimestamp: Dayjs) {

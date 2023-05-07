@@ -24,7 +24,7 @@ const InputTextField = ({
 }: IProps) => {
     
     let [ errors, setErrors ] = useState<string[]>([]);
-    let [ value, setValue ] = useState<string>();
+    let [ value, setValue ] = useState<string | number>();
 
     const changeValue = (newValue: string) => {
         setValue(newValue);

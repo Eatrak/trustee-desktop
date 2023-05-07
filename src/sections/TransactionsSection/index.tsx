@@ -13,6 +13,7 @@ import MultiSelect, { MultiSelectOption } from "@components/MultiSelect";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
+import TransactionCreationDialog from "@components/TransactionCreationDialog";
 
 const TransactionsSection = () => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
@@ -21,6 +22,7 @@ const TransactionsSection = () => {
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
+    let [ isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened ] = useState<boolean>(false);
     let [ currencies, setCurrencies ] = useState<Currency[]>([]);
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
@@ -103,10 +105,15 @@ const TransactionsSection = () => {
 
     return(
         <div className="section transactions-section">
+            {
+                isTransactionCreationDialogOpened &&
+                <TransactionCreationDialog close={() => setIsTransactionCreationDialogOpened(false)} />
+            }
             <div className="transactions-section--main">
                 <TransactionsHeader
                     initialStartDate={firstDayOfTheCurrentMonthTimestamp}
                     initialEndDate={lastDayOfTheCurrentMonthTimestamp}
+                    openTransactionCreationDialog={() => setIsTransactionCreationDialogOpened(true)}
                     onDatePickerRangeChanged={changeTimeRangeOfTransactionsToShow}/>
                 <MultiSelect
                     ref={walletsMultiSelectRef}

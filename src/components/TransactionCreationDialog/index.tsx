@@ -13,9 +13,15 @@ import TextButton from "@components/TextButton";
 import Select, { SelectOption } from "@components/Select";
 import DatePicker from "@components/DatePicker";
 import MiniSelect from "@components/MiniSelect";
-import { createTransactionRules } from "@crudValidators/transactions";
+import { createTransactionBodyRules } from "@crudValidators/transactions";
+import Checkbox from "@components/Checkbox";
+import { CreateTransactionBody } from "src/shared/bodies/transactions/createTransaction";
 
-const TransactionCreationDialog = () => {
+interface IProps {
+    close: Function
+}
+
+const TransactionCreationDialog = ({ close }: IProps) => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
     let [isSubmitEnabled, setIsSubmitEnabled] = useState<boolean>(false);
     let [ wallets, setWallets ] = useState<Wallet[]>([]);
@@ -24,6 +30,7 @@ const TransactionCreationDialog = () => {
     let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
     let [ isCreatingTransactionCategory, setIsCreatingTransactionCategory ] = useState<boolean>(false);
+    let [ isCreatingTransaction, setIsCreatingTransaction ] = useState<boolean>(false);
 
     // Form data
     let [ name, setName ] = useState<string>();
@@ -31,7 +38,8 @@ const TransactionCreationDialog = () => {
     let [ selectedNewWalletCurrency, setSelectedNewWalletCurrency ] = useState<SelectOption>();
     let [ categoryOption, setCategoryOption ] = useState<SelectOption>();
     let [ creationDate, setCreationDate ] = useState<Dayjs>();
-    let [ value, setValue ] = useState<string>();
+    let [ value, setValue ] = useState<number>();
+    let [ isIncome, setIsIncome ] = useState<boolean>(false);
 
     const getWalletOptions = (): SelectOption[] => {
         return wallets.map(({ walletId, walletName }) => ({
@@ -57,16 +65,34 @@ const TransactionCreationDialog = () => {
         }));
     };
 
-    const isFormValid = (): boolean => {
-        const validator = new Validator({
-            name,
-            wallet: walletOption?.value,
-            category: categoryOption?.value,
-            creationDate: creationDate?.toISOString(),
-            value
-        }, createTransactionRules);
+    const getFormValidator = () => {
+        const formData: CreateTransactionBody = {
+            transactionName: name!,
+            walletId: walletOption?.value!,
+            categoryId: categoryOption?.value!,
+            transactionTimestamp: creationDate?.unix()!,
+            transactionAmount: value!,
+            isIncome
+        };
 
-        return validator.passes() || false;
+        return new Validator(formData, createTransactionBodyRules);
+    };
+
+    const createTransaction = async () => {
+        const formValidator = getFormValidator();
+        if (formValidator.fails()) return;
+        
+        setIsCreatingTransaction(true);
+        const isNewTransactionCreated = await TransactionsService.getInstance().createTransaction(
+            formValidator.input as any // The form data aren't undefined due to the passed validation
+        );
+
+        if (isNewTransactionCreated) {
+            close();
+            return;
+        }
+
+        setIsCreatingTransaction(false);
     };
 
     const createWallet = async (newWalletName: string) => {
@@ -118,7 +144,7 @@ const TransactionCreationDialog = () => {
     }, []);
 
     useEffect(() => {
-        setIsSubmitEnabled(isFormValid());
+        setIsSubmitEnabled(getFormValidator().passes() || false);
     }, [ name, walletOption, selectedNewWalletCurrency, categoryOption, creationDate, value ]);
 
     return (
@@ -173,16 +199,25 @@ const TransactionCreationDialog = () => {
                     type="number"
                     validatorAttributeName="value"
                     validatorRule="required"
-                    onInput={setValue} />
+                    onInput={(value) => setValue(Number.parseFloat(value))} />
+                {/* It's income */}
+                <Checkbox
+                    className="transaction-creation-dialog__content__is-income"
+                    text="It's income"
+                    checked={isIncome}
+                    setChecked={setIsIncome} />
             </div>
             <div className="transaction-creation-dialog__footer">
                 <TextButton
                     text="Exit"
-                    size="large" />
+                    size="large"
+                    clickEvent={() => close()} />
                 <NormalButton
                     className="transaction-creation-dialog__footer__confirmation-button"
                     Icon={MdAdd}
                     text="Create"
+                    isLoading={isCreatingTransaction}
+                    event={createTransaction}
                     disabled={!isSubmitEnabled} />
             </div>
         </Dialog>

@@ -6,6 +6,10 @@
     margin-bottom: 48px;
 }
 
+.transaction-creation-dialog__content__is-income {
+    justify-self: right;
+}
+
 .transaction-creation-dialog__footer {
     display: grid;
     grid-auto-flow: column;
