@@ -84,6 +84,11 @@
     animation: fade-closing 0.1s forwards;
 }
 
+.date-picker__panel--has-never-been-opened {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .date-picker__panel__header {
     display: grid;
     grid-template-columns: max-content auto max-content;

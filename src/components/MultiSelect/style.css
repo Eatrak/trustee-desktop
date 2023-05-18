@@ -97,6 +97,11 @@
     animation: fade-closing 0.1s forwards;
 }
 
+.multi-select__options-panel--has-never-been-opened {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .multi-select__options-panel__search-container {
     display: grid;
     grid-template-columns: auto max-content;

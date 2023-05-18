@@ -31,6 +31,7 @@ const DatePicker = ({
     const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
     const currentYearAndMonth = dayjs().format("YYYY-MM");
     const isFirstRender = useRef(true);
+    let [ hasNeverBeenOpened, setHasNeverBeenOpened ] = useState<boolean>(true);
     let [canBeOpened, setCanBeOpened] = useState<boolean>(true);
     let [selectedYearAndMonth, setYearAndMonth] = useState<string>(currentYearAndMonth);
     let [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
@@ -66,6 +67,7 @@ const DatePicker = ({
 
     const openPanel = () => {
         if (canBeOpened) {
+            setHasNeverBeenOpened(false);
             setOpened(true);
             setCanBeOpened(false);
         }
@@ -140,7 +142,7 @@ const DatePicker = ({
                 </div>
             </div>
             {renderErrors()}
-            <div ref={datePickerFrame} className={"date-picker__panel date-picker__panel--" + (isOpened ? "opened" : "closed")} style={style}>
+            <div ref={datePickerFrame} className={"date-picker__panel date-picker__panel--" + (isOpened ? "opened" : "closed") + (hasNeverBeenOpened ? " date-picker__panel--has-never-been-opened" : "")} style={style}>
                 <div className="date-picker__panel__header">
                     <MiniRoundedIconButton Icon={MdChevronLeft} clickEvent={selectPreviousMonth}/>
                     <p

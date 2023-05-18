@@ -59,12 +59,14 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
     let multiSelectFrame = useRef<HTMLDivElement>(null);
 
     let [ opened, setOpened ] = useState<boolean>(false);
+    let [ hasNeverBeenOpened, setHasNeverBeenOpened ] = useState<boolean>(true);
     let [ checks, setChecks ] = useState<{ [optionName: string]: boolean }>({});
     let [ filteredOptions, changeFilteredOptions ] = useState<MultiSelectOption[]>(options);
     let [ selectedOptions, setSelectedOptions ] = useState<MultiSelectOption[]>([]);
     let [ filterValue, changeFilterValue ] = useState<string>("");
     
     const showPanel = () => {
+        setHasNeverBeenOpened(false);
         setOpened(!opened);
     };
     
@@ -153,7 +155,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
                     Icon={MdKeyboardArrowDown}
                     iconClass={"multi-select__body__row" + (opened ? " multi-select__body__row--activated" : "")}/>
             </div>
-            <div className={"multi-select__options-panel multi-select__options-panel--" + (opened ? "opened" : "closed")}>
+            <div className={"multi-select__options-panel multi-select__options-panel--" + (opened ? "opened" : "closed") + (hasNeverBeenOpened ? " multi-select__options-panel--has-never-been-opened" : "")}>
                 <div className="multi-select__options-panel__search-container">
                     <input
                         className="multi-select__options-panel__search-container__search-input"

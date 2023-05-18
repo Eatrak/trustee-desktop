@@ -26,6 +26,7 @@ const RangeDatePicker = ({ style, isOpened, setOpened, onRangeChanged }: IProps)
 
     const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
     const currentYearAndMonth = dayjs().format("YYYY-MM");
+    let [hasNeverBeenOpened, setHasNeverBeenOpened] = useState<boolean>(true);
     let [canBeOpened, setCanBeOpened] = useState<boolean>(true);
     let [selectedYearAndMonth, changeYearAndMonth] = useState<string>(currentYearAndMonth);
     let [startDate, changeStartDate] = useState<Dayjs | null>(null);
@@ -102,6 +103,7 @@ const RangeDatePicker = ({ style, isOpened, setOpened, onRangeChanged }: IProps)
 
     const openPanel = () => {
         if (canBeOpened) {
+            setHasNeverBeenOpened(false);
             setOpened(true);
             setCanBeOpened(false);
         }
@@ -127,7 +129,7 @@ const RangeDatePicker = ({ style, isOpened, setOpened, onRangeChanged }: IProps)
             <RoundedTextIconButton
                 Icon={MdDateRange}
                 clickEvent={openPanel}/>
-            <div ref={datePickerFrame} className={"range-date-picker__panel range-date-picker__panel--" + (isOpened ? "opened" : "closed")} style={style}>
+            <div ref={datePickerFrame} className={"range-date-picker__panel range-date-picker__panel--" + (isOpened ? "opened" : "closed") + (hasNeverBeenOpened ? " range-date-picker__panel--has-never-been-opened" : "")} style={style}>
                 <div className="range-date-picker__panel__header">
                     <MiniRoundedIconButton Icon={MdChevronLeft} clickEvent={selectPreviousMonth}/>
                     <p

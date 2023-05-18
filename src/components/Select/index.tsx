@@ -59,6 +59,7 @@ const Select = forwardRef<IHandle, IProps>(({
     let selectFrame = useRef<HTMLDivElement>(null);
 
     const isFirstRender = useRef(true);
+    let [ hasNeverBeenOpened, setHasNeverBeenOpened ] = useState<boolean>(true);
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ filteredOptions, changeFilteredOptions ] = useState<SelectOption[]>(options);
     let [ selectedOption, setSelectedOption ] = useState<SelectOption>();
@@ -66,6 +67,7 @@ const Select = forwardRef<IHandle, IProps>(({
     let [ errors, setErrors ] = useState<string[]>([]);
     
     const switchPanelStatus = () => {
+        setHasNeverBeenOpened(false);
         setOpened(!opened);
     };
 
@@ -173,7 +175,7 @@ const Select = forwardRef<IHandle, IProps>(({
                     iconClass={"select__body__row" + (opened ? " select__body__row--activated" : "")}/>
             </div>
             {renderErrors()}
-            <div className={"select__options-panel select__options-panel--" + (opened ? "opened" : "closed")}>
+            <div className={"select__options-panel select__options-panel--" + (opened ? "opened" : "closed") + (hasNeverBeenOpened ? " select__options-panel--has-never-been-opened" : "")}>
                 <div className="select__options-panel__search-container">
                     <input
                         className="select__options-panel__search-container__search-input"

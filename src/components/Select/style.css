@@ -110,6 +110,11 @@
     animation: fade-closing 0.1s forwards;
 }
 
+.select__options-panel--has-never-been-opened {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .select__options-panel__search-container {
     display: grid;
     grid-template-columns: auto max-content;
