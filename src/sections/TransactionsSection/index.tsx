@@ -134,25 +134,27 @@ const TransactionsSection = () => {
                         onSelect={setSelectedNewWalletCurrency} />
                 </MultiSelect>
                 <div className="transactions-section--main--container">
-                    {
-                        transactions
-                        .filter(transaction => {
-                            for (const selectedWallet of selectedWallets) {
-                                if (transaction.walletId == selectedWallet.value) {
-                                    return true;
+                    <div>
+                        {
+                            transactions
+                            .filter(transaction => {
+                                for (const selectedWallet of selectedWallets) {
+                                    if (transaction.walletId == selectedWallet.value) {
+                                        return true;
+                                    }
                                 }
-                            }
 
-                            return false;
-                        })
-                        .map(transaction => {
-                            return (
-                                <TransactionItem
-                                    key={transaction.transactionId}
-                                    transaction={transaction}/>
-                            );
-                        })
-                    }
+                                return false;
+                            })
+                            .map(transaction => {
+                                return (
+                                    <TransactionItem
+                                        key={transaction.transactionId}
+                                        transaction={transaction}/>
+                                );
+                            })
+                        }
+                    </div>
                 </div>
                 {cursor && <TextButton Icon={MdAdd} text="Load more" clickEvent={getNextTransactions} isLoading={isLoadingTransactions}/>}
             </div>
