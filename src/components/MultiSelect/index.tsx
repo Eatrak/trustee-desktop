@@ -64,7 +64,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
     let [ selectedOptions, setSelectedOptions ] = useState<MultiSelectOption[]>([]);
     let [ filterValue, changeFilterValue ] = useState<string>("");
     
-    const showPanel = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.FormEvent<HTMLDivElement>) => {
+    const showPanel = () => {
         setOpened(!opened);
     };
     
@@ -138,7 +138,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
     return (
         <div ref={multiSelectFrame} className={"multi-select " + (className || "")} tabIndex={0}>
             <p className="paragraph--small paragraph--sub-title">{text}</p>
-            <div className="multi-select__body" onTimeUpdate={e => showPanel(e)} onClick={e => showPanel(e)}>
+            <div className="multi-select__body" onTimeUpdate={showPanel} onClick={showPanel}>
                 <div className="multi-select__body__chip-container">
                     {
                         selectedOptions.length == options.length ?
