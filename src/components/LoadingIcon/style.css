@@ -1,4 +1,5 @@
 .loading-icon {
+    color: var(--neutral-800);
     animation: rotate 1s linear infinite;
 }
 
