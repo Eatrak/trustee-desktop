@@ -135,7 +135,13 @@
 }
 
 .multi-select__options-panel__options-container {
+    position: relative;
+
+    height: max-content;
+    max-height: 150px;
+
     padding: 4px;
+    overflow-y: auto;
 }
 
 .multi-select__option {
