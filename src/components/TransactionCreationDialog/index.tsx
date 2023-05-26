@@ -197,6 +197,7 @@ const TransactionCreationDialog = ({ close }: IProps) => {
                 <InputTextField
                     title="Value"
                     type="number"
+                    min={0}
                     validatorAttributeName="value"
                     validatorRule={createTransactionBodyRules.transactionAmount}
                     onInput={(value) => setValue(Number.parseFloat(value))} />
