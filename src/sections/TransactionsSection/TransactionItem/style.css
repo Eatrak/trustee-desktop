@@ -24,3 +24,8 @@
     grid-auto-flow: row;
     row-gap: 5px;
 }
+
+.transaction-item--text-container__transaction-name,
+.transaction-item--text-container__transaction-date {
+    user-select: none;
+}

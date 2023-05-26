@@ -15,10 +15,10 @@ const TransactionItem = ({ transaction }: IProps) => {
     return (
         <div className="transaction-item">
             <div className="transaction-item--text-container">
-                <p className="paragraph--regular paragraph--bold">
+                <p className="paragraph--regular paragraph--bold transaction-item--text-container__transaction-name">
                     {transaction.transactionName}
                 </p>
-                <p className="paragraph--small">
+                <p className="paragraph--small transaction-item--text-container__transaction-date">
                     {dayjs.unix(Number.parseInt(transaction.transactionTimestamp)).format("MM-DD-YYYY")}
                 </p>
             </div>

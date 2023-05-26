@@ -10,6 +10,10 @@
     cursor: pointer;
 }
 
+.select__title {
+    user-select: none;
+}
+
 .select--error > .select__body {
     border-color: var(--error-400);
 }

@@ -28,6 +28,10 @@
     cursor: pointer;
 }
 
+.date-picker-selector__title {
+    user-select: none;
+}
+
 .date-picker-selector__body {
     display: grid;
     grid-template-columns: auto max-content;

@@ -10,6 +10,10 @@
     row-gap: 10px;
 }
 
+.app-layout__header__texts_container__title {
+    user-select: none;
+}
+
 .app-layout__header__actions-container {
     position: relative;
 

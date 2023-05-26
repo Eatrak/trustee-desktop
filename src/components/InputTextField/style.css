@@ -8,6 +8,7 @@
 
 .input-text-field__title {
   color: var(--neutral-600);
+  user-select: none;
 }
 
 .input-text-field__input {

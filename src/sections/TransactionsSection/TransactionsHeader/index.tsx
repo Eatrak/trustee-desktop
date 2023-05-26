@@ -41,7 +41,7 @@ const TransactionsHeader = ({
     return (
         <div className="app-layout__header">
             <div className="app-layout__header__texts-container">
-                <h5 className="header--bold">Monthly transactions</h5>
+                <h5 className="header--bold app-layout__header__texts_container__title">Monthly transactions</h5>
                 <p className="paragraph--sub-title">
                     {startDate.format("MM/DD/YYYY")} - {endDate.format("MM/DD/YYYY")}
                 </p>

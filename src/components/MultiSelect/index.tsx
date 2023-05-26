@@ -139,7 +139,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
     
     return (
         <div ref={multiSelectFrame} className={"multi-select " + (className || "")} tabIndex={0}>
-            <p className="paragraph--small paragraph--sub-title">{text}</p>
+            <p className="paragraph--small paragraph--sub-title multi-select__title">{text}</p>
             <div className="multi-select__body" onTimeUpdate={showPanel} onClick={showPanel}>
                 <div className="multi-select__body__chip-container">
                     {

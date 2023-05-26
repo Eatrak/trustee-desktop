@@ -166,7 +166,7 @@ const Select = forwardRef<IHandle, IProps>(({
             className={"select " + (errors.length > 0 ? "select--error" : "") + (className || "")}
             tabIndex={0}
         >
-            <p className="paragraph--small paragraph--sub-title">{text}</p>
+            <p className="paragraph--small paragraph--sub-title select__title">{text}</p>
             <div className="select__body" onTimeUpdate={() => switchPanelStatus()} onClick={() => switchPanelStatus()}>
                 <p className="paragraph--small">{selectedOption?.name}</p>
                 <NormalButton

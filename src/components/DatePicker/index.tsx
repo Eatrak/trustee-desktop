@@ -133,7 +133,7 @@ const DatePicker = ({
     return (
         <div className={`date-picker ${errors.length > 0 ? "date-picker--in-error" : ""}`}>
             <div className="date-picker-selector">
-                <p className="paragraph--small paragraph--sub-title">{"Creation date"}</p>
+                <p className="paragraph--small paragraph--sub-title date-picker-selector__title">{"Creation date"}</p>
                 <div className="date-picker-selector__body" onTimeUpdate={() => openPanel()} onClick={() => openPanel()}>
                     <p className="paragraph--small date-picker-selector__body__text">
                         {selectedDate?.format("YYYY/MM/DD")}
