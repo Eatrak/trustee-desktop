@@ -154,7 +154,7 @@ const TransactionCreationDialog = ({ close }: IProps) => {
                 <InputTextField
                     title="Name"
                     validatorAttributeName="name"
-                    validatorRule="required"
+                    validatorRule={createTransactionBodyRules.transactionName}
                     onInput={setName} />
                 {/* Wallet */}
                 <Select
@@ -165,7 +165,7 @@ const TransactionCreationDialog = ({ close }: IProps) => {
                     createNewOption={createWallet}
                     isCreatingNewOption={isCreatingNewWallet}
                     getCreateNewOptionButtonText={(nameOfWalletToCreate) => `Create "${nameOfWalletToCreate}" wallet`}
-                    validatorRule="required"
+                    validatorRule={createTransactionBodyRules.walletId}
                     onSelect={setWalletOption}
                 >
                     <MiniSelect
@@ -184,21 +184,21 @@ const TransactionCreationDialog = ({ close }: IProps) => {
                     createNewOption={createTransactionCategory}
                     isCreatingNewOption={isCreatingTransactionCategory}
                     getCreateNewOptionButtonText={getCreateTransactionCategoryButtonText}
-                    validatorRule="required"
+                    validatorRule={createTransactionBodyRules.categoryId}
                     onSelect={setCategoryOption} />
                 {/* Creation date */}
                 <DatePicker
                     isOpened={isDatePickerOpened}
                     setOpened={setIsDatePickerOpened}
                     validatorAttributeName="creation date"
-                    validatorRule="required"
+                    validatorRule={createTransactionBodyRules.transactionTimestamp}
                     onDateChanged={setCreationDate} />
                 {/* Value */}
                 <InputTextField
                     title="Value"
                     type="number"
                     validatorAttributeName="value"
-                    validatorRule="required"
+                    validatorRule={createTransactionBodyRules.transactionAmount}
                     onInput={(value) => setValue(Number.parseFloat(value))} />
                 {/* It's income */}
                 <Checkbox
