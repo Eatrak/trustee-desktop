@@ -23,7 +23,6 @@ interface IProps {
 
 const TransactionCreationDialog = ({ close }: IProps) => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
-    let [isSubmitEnabled, setIsSubmitEnabled] = useState<boolean>(false);
     let [ wallets, setWallets ] = useState<Wallet[]>([]);
     let [ currencies, setCurrencies ] = useState<Currency[]>([]);
     let [ transactionCategories, setTransactionCategories ] = useState<TransactionCategory[]>([]);
@@ -143,10 +142,6 @@ const TransactionCreationDialog = ({ close }: IProps) => {
         TransactionsService.getInstance().getTransactionCategories();
     }, []);
 
-    useEffect(() => {
-        setIsSubmitEnabled(getFormValidator().passes() || false);
-    }, [ name, walletOption, selectedNewWalletCurrency, categoryOption, creationDate, value ]);
-
     return (
         <Dialog title="Transaction creation">
             <div className="transaction-creation-dialog__content">
@@ -219,7 +214,7 @@ const TransactionCreationDialog = ({ close }: IProps) => {
                     text="Create"
                     isLoading={isCreatingTransaction}
                     event={createTransaction}
-                    disabled={!isSubmitEnabled || isCreatingTransaction} />
+                    disabled={!getFormValidator().passes() || isCreatingTransaction} />
             </div>
         </Dialog>
     );
