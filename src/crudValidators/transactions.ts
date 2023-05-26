@@ -3,7 +3,7 @@ export const createTransactionBodyRules = {
     walletId: "required|string",
     categoryId: "required|string",
     transactionTimestamp: "required|integer",
-    transactionAmount: "required|numeric",
+    transactionAmount: "required|numeric|min:0.01",
     isIncome: "required|boolean"
 };
 
