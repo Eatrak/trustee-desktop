@@ -1,9 +1,9 @@
 import "./style.css";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Validator, { Rules, TypeCheckingRule } from "validatorjs";
 
-interface IProps {
+interface IProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onInput"> {
     title: string,
     placeholder?: string,
     validatorAttributeName: string,
@@ -20,7 +20,8 @@ const InputTextField = ({
     validatorRule,
     onInput,
     testId,
-    type
+    type,
+    ...nativeInputProps
 }: IProps) => {
     
     let [ errors, setErrors ] = useState<string[]>([]);
@@ -56,6 +57,7 @@ const InputTextField = ({
         <div className={`input-text-field ${errors.length > 0 ? "input-text-field--in-error" : ""}`}>
             <p className="paragraph--small paragraph--bold input-text-field__title">{title}</p>
             <input data-testid={testId} type={type}
+                {...nativeInputProps}
                 onInput={(e) => changeValue(e.currentTarget.value)}
                 onBlur={checkErrors} className="input-text-field__input" placeholder={placeholder}/>
             {renderErrors()}
