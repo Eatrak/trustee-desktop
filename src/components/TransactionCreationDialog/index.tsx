@@ -219,7 +219,7 @@ const TransactionCreationDialog = ({ close }: IProps) => {
                     text="Create"
                     isLoading={isCreatingTransaction}
                     event={createTransaction}
-                    disabled={!isSubmitEnabled} />
+                    disabled={!isSubmitEnabled || isCreatingTransaction} />
             </div>
         </Dialog>
     );
