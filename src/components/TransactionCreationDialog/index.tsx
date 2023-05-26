@@ -186,7 +186,7 @@ const TransactionCreationDialog = ({ close }: IProps) => {
                     isOpened={isDatePickerOpened}
                     setOpened={setIsDatePickerOpened}
                     validatorAttributeName="creation date"
-                    validatorRule={createTransactionBodyRules.transactionTimestamp}
+                    validatorRule="required"
                     onDateChanged={setCreationDate} />
                 {/* Value */}
                 <InputTextField
