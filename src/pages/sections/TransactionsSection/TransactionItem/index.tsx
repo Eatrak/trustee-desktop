@@ -19,7 +19,7 @@ const TransactionItem = ({ transaction }: IProps) => {
                     {transaction.transactionName}
                 </p>
                 <p className="paragraph--small transaction-item--text-container__transaction-date">
-                    {dayjs.unix(Number.parseInt(transaction.transactionTimestamp)).format("MM-DD-YYYY")}
+                    {dayjs.unix(transaction.transactionTimestamp).format("MM-DD-YYYY")}
                 </p>
             </div>
             <p className="paragraph--regular">
