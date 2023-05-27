@@ -25,13 +25,23 @@ export default class AuthService {
             }
         });
         if (response.ok) {
+            const jsonResponse = await response.json();
+            const decodedAuthToken = jsonResponse.decodedAuthToken;
+
+            console.log(decodedAuthToken);
+
             return true;
         }
 
         return false;
     };
 
-    async signUp(email: string, password: string) {
+    async signUp(
+        name: string,
+        surname: string,
+        email: string,
+        password: string
+    ) {
         try {
             const validation = new Validator({ email, password }, signUpValidator);
             
@@ -44,7 +54,14 @@ export default class AuthService {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ userInfo: { email, password } })
+                body: JSON.stringify({
+                    userInfo: {
+                        name,
+                        surname,
+                        email,
+                        password
+                    }
+                })
             });
             const jsonResponse = await response.json();
     

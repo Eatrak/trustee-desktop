@@ -10,18 +10,30 @@ import AuthService from "@services/auth";
 
 const SignUpForm = () => {
     const [submitDisabled, setSubmitDisabled] = useState(true);
+    const [ name, setName ] = useState<string>();
+    const [ surname, setSurname ] = useState<string>();
     const [ email, setEmail ] = useState<string>();
     const [ password, setPassword ] = useState<string>();
 
     const signUp = async () => {
-        const successfulSignUp = await AuthService.getInstance().signUp(email!, password!);
+        const successfulSignUp = await AuthService.getInstance().signUp(
+            name!,
+            surname!,
+            email!,
+            password!
+        );
         if (successfulSignUp) document.location.href = "/sign-in";
 
         return true;
     };
 
     const isFormValid = () => {
-        const validator = new Validator({ email, password }, signUpValidator);
+        const validator = new Validator({
+            name,
+            surname,
+            email,
+            password
+        }, signUpValidator);
         const isFormValid = validator.passes();
 
         return isFormValid;
@@ -29,10 +41,16 @@ const SignUpForm = () => {
 
     useEffect(() => {
         setSubmitDisabled(!isFormValid());
-    }, [email, password]);
+    }, [name, surname, email, password]);
     
     return (
         <FormLayout header="Welcome!" submitText="Sign up" submitEvent={signUp} submitDisabled={submitDisabled}>
+            {/* Name field */}
+            <InputTextField testId="nameField" validatorRule={signUpValidator.name} validatorAttributeName="name"
+                title="Name" placeholder="John" onInput={setName}/>
+            {/* Surname field */}
+            <InputTextField testId="surnameField" validatorRule={signUpValidator.surname} validatorAttributeName="surname"
+                title="Surname" placeholder="Doe" onInput={setSurname}/>
             {/* Email field */}
             <InputTextField testId="emailField" validatorRule={signUpValidator.email} validatorAttributeName="email"
                 title="Email" placeholder="johndoe@test.com" onInput={setEmail}/>
