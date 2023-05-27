@@ -12,8 +12,6 @@ interface IProps {
     isOpened: boolean,
     setOpened: Function,
     onDateChanged?: (selectedDate: Dayjs) => any,
-    initialStartDate?: Dayjs,
-    initialEndDate?: Dayjs,
     validatorAttributeName: string,
     validatorRule?: string | Array<string | TypeCheckingRule> | Rules
 }
