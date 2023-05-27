@@ -2,6 +2,7 @@ import "./style.css";
 
 import { useState, useEffect } from "react";
 import { MdOutlineCreditCard } from "react-icons/md";
+import { Subscription } from "rxjs";
 
 import NavbarButton from "./NavbarButton";
 import NavbarUserBadge from "./NavbarUserBadge";
@@ -11,14 +12,19 @@ const Navbar = () => {
     const [ name, setName ] = useState<string>("");
     const [ surname, setSurname ] = useState<string>("");
     const [ email, setEmail ] = useState<string>("");
+    let personalInfoSubcription: Subscription;
 
     useEffect(() => {
-        AuthService.getInstance().personalInfo$.subscribe(personalInfo => {
+        personalInfoSubcription = AuthService.getInstance().personalInfo$.subscribe(personalInfo => {
             const { name, surname, email } = personalInfo;
             setName(name);
             setSurname(surname);
             setEmail(email);
         });
+    }, []);
+
+    useEffect(() => () => {
+        personalInfoSubcription.unsubscribe();
     }, []);
 
     return (
