@@ -1,6 +1,6 @@
 import "./style.css";
 
-import logo from '@assets/logo.png';
+import logo from '@assets/logo.jpg';
 import { ReactComponent as DotsDecoration } from '@assets/dots-decoration.svg';
 import SignInForm from "./SignInForm";
 
