@@ -84,6 +84,7 @@ const RangeDatePicker = ({ style, isOpened, setOpened, onRangeChanged }: IProps)
         else if (startDate != null && endDate == null) {
             changeEndDate(date);
             onRangeChanged({ startDate, endDate: date });
+            setOpened(false);
         }
 
         if (startDate != null && endDate != null) {

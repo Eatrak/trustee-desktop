@@ -50,6 +50,7 @@ const DatePicker = ({
     const selectDate = (dateToSelect: Dayjs) => {
         setSelectedDate(dateToSelect);
         onDateChanged && onDateChanged(dateToSelect);
+        setOpened(false);
     };
 
     const getMonthDayCSSClass = (date: Dayjs) => {
