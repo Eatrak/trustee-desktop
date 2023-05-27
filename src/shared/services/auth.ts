@@ -1,13 +1,27 @@
 import Validator from "validatorjs";
+import { BehaviorSubject } from "rxjs";
 
 import { signInValidator, signUpValidator } from "@validatorRules/auth";
 import { Utils } from "@utils/index";
 import { SignUpBody } from "@requestTypes/auth/signUp";
 
+interface PersonalInfo {
+    name: string,
+    surname: string,
+    email: string
+}
+
 export default class AuthService {
     static instance: AuthService = new AuthService();
+    personalInfo$: BehaviorSubject<PersonalInfo>;
 
-    private constructor() {}
+    private constructor() {
+        this.personalInfo$ = new BehaviorSubject({
+            name: "",
+            surname: "",
+            email: ""
+        });
+    }
     
     static getInstance() {
         return this.instance;
@@ -29,7 +43,11 @@ export default class AuthService {
             const jsonResponse = await response.json();
             const decodedAuthToken = jsonResponse.decodedAuthToken;
 
-            console.log(decodedAuthToken);
+            this.personalInfo$.next({
+                name: decodedAuthToken["custom:name"],
+                surname: decodedAuthToken["custom:surname"],
+                email: decodedAuthToken["email"]
+            });
 
             return true;
         }
