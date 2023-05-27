@@ -25,10 +25,6 @@ const TransactionsHeader = ({
     let [startDate, changeStartDate] = useState<Dayjs>(initialStartDate);
     let [endDate, changeEndDate] = useState<Dayjs>(initialEndDate);
 
-    const openDatePicker = () => {
-        changeIsDatePickerOpened(true);
-    };
-
     const changeTimeRangeOfTransactionsToShow = ({
         startDate, endDate
     }: OnRangeDatePickerRangeChangedEvent) => {
