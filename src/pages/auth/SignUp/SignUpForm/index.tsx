@@ -36,10 +36,10 @@ const SignUpForm = () => {
     return (
         <FormLayout header="Welcome!" submitText="Sign up" submitEvent={signUp} submitDisabled={submitDisabled}>
             {/* Email field */}
-            <InputTextField testId="emailField" ref={emailField} validator={signUpValidator} validatorAttribute="email"
+            <InputTextField testId="emailField" ref={emailField} validatorRule={signUpValidator} validatorAttributeName="email"
                 title="Email" placeholder="johndoe@test.com" onInput={checkFieldValidity}/>
             {/* Password field */}
-            <InputTextField testId="passwordField" ref={passwordField} validator={signUpValidator} validatorAttribute="password"
+            <InputTextField testId="passwordField" ref={passwordField} validatorRule={signUpValidator} validatorAttributeName="password"
                 title="Password" type="password" onInput={checkFieldValidity}/>
         </FormLayout>
     );
