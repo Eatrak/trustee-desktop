@@ -1,0 +1,27 @@
+.loading-page__content {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 20px;
+    
+    position: relative;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+
+    width: max-content;
+    height: max-content;
+}
+
+.loading-page__content > :nth-child(1) {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    user-select: none;
+}
+
+.loading-page__content > :nth-child(2) {
+    left: 50%;
+    transform: translate(-50%);
+
+    width: 90px;
+}
