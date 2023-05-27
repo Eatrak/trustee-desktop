@@ -2,6 +2,7 @@ import Validator from "validatorjs";
 
 import { signInValidator, signUpValidator } from "@validatorRules/auth";
 import { Utils } from "@utils/index";
+import { SignUpBody } from "@requestTypes/auth/signUp";
 
 export default class AuthService {
     static instance: AuthService = new AuthService();
@@ -43,7 +44,16 @@ export default class AuthService {
         password: string
     ) {
         try {
-            const validation = new Validator({ email, password }, signUpValidator);
+            const body: SignUpBody = {
+                userInfo: {
+                    name,
+                    surname,
+                    email,
+                    password
+                }
+            };
+
+            const validation = new Validator(body.userInfo, signUpValidator);
             
             if (validation.fails()) {
                 return false;
@@ -54,14 +64,7 @@ export default class AuthService {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    userInfo: {
-                        name,
-                        surname,
-                        email,
-                        password
-                    }
-                })
+                body: JSON.stringify(body)
             });
             const jsonResponse = await response.json();
     
