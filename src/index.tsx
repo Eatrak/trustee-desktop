@@ -13,6 +13,7 @@ import reportWebVitals from './reportWebVitals';
 import SignUpPage from './pages/SignUp';
 import SignInPage from './pages/SignIn';
 import AppLayout from './pages/AppLayout';
+import Authorizer from '@components/Authorizer';
 
 Validator.setMessages('en', en);
 
@@ -30,7 +31,7 @@ const App = () => {
   return(
     <Router>
       <Routes>
-        <Route path="/*" element={<AppLayout/>}/>
+        <Route path="/*" element={<Authorizer><AppLayout/></Authorizer>}/>
         <Route path="/sign-up" element={<SignUpPage/>}/>
         <Route path="/sign-in" element={<SignInPage/>}/>
       </Routes>

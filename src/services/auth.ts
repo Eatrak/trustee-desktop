@@ -12,6 +12,25 @@ export default class AuthService {
         return this.instance;
     }
 
+    async isUserAuthenticated() {
+        const authToken = localStorage.getItem("authToken");
+
+        if (!authToken) {
+            return false;
+        }
+
+        const response = await fetch(Utils.getInstance().getAPIEndpoint("/auth/check"), {
+            headers: {
+                "Authorization": `Bearer ${authToken}`
+            }
+        });
+        if (response.ok) {
+            return true;
+        }
+
+        return false;
+    };
+
     async signUp(email: string, password: string) {
         try {
             const validation = new Validator({ email, password }, signUpValidator);
