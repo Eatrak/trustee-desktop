@@ -25,13 +25,15 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@services/*": ["./src/services/*"],
-      "@crudValidators/*": ["src/crudValidators/*"],
-      "@sections/*": ["src/sections/*"],
-      "@models/*": ["src/shared/models/*"]
+      "@assets/*": ["./src/shared/assets/*"],
+      "@components/*": ["./src/shared/components/*"],
+      "@inputTypes/*": ["./src/shared/inputTypes/*"],
+      "@models/*": ["./src/shared/models/*"],
+      "@requestTypes/*": ["./src/shared/requestTypes/*"],
+      "@services/*": ["./src/shared/services/*"],
+      "@utils/*": ["./src/shared/utils/*"],
+      "@validatorRules/*": ["./src/shared/validatorRules/*"],
+      "@pages/*": ["./src/pages/*"]
     }
   },
   "include": [

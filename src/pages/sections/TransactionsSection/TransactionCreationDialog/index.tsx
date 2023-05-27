@@ -13,9 +13,9 @@ import TextButton from "@components/TextButton";
 import Select, { SelectOption } from "@components/Select";
 import DatePicker from "@components/DatePicker";
 import MiniSelect from "@components/MiniSelect";
-import { createTransactionBodyRules } from "@crudValidators/transactions";
+import { createTransactionBodyRules } from "@validatorRules/transactions";
 import Checkbox from "@components/Checkbox";
-import { CreateTransactionBody } from "src/shared/bodies/transactions/createTransaction";
+import { CreateTransactionBody } from "@inputTypes/transactions/createTransaction";
 
 interface IProps {
     close: Function

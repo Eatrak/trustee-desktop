@@ -2,19 +2,19 @@ import { BehaviorSubject } from "rxjs";
 import dayjs, { Dayjs } from "dayjs";
 
 import { Currency, Transaction, TransactionCategory, Wallet } from "@models/transactions";
-import { Utils } from "src/utils";
-import { GetTransactionsInputQueryParams } from "src/shared/bodies/transactions/getTransactions";
-import { GetTransactionsResponse } from "src/shared/requestInterfaces/transactions/getTransactions";
-import { GetWalletsResponse } from "src/shared/requestInterfaces/transactions/getWallets";
-import { CreateWalletResponse } from "src/shared/requestInterfaces/transactions/createWallet";
+import { Utils } from "@utils/index";
+import { GetTransactionsInputQueryParams } from "@inputTypes/transactions/getTransactions";
+import { GetTransactionsResponse } from "@requestTypes/transactions/getTransactions";
+import { GetWalletsResponse } from "@requestTypes/transactions/getWallets";
+import { CreateWalletResponse } from "@requestTypes/transactions/createWallet";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
-import { CreateWalletBody } from "src/shared/bodies/transactions/createWallet";
-import { GetCurrenciesResponse } from "src/shared/requestInterfaces/transactions/getCurrencies";
-import { GetTransactionCategoriesResponse } from "src/shared/requestInterfaces/transactions/getTransactionCategories";
-import { CreateTransactionCategoryResponse } from "src/shared/requestInterfaces/transactions/createTransactionCategory";
-import { CreateTransactionCategoryBody } from "src/shared/bodies/transactions/createTransactionCategory";
-import { CreateTransactionBody } from "src/shared/bodies/transactions/createTransaction";
-import { CreateTransactionResponse } from "src/shared/requestInterfaces/transactions/createTransactionResponse";
+import { CreateWalletBody } from "@inputTypes/transactions/createWallet";
+import { GetCurrenciesResponse } from "@requestTypes/transactions/getCurrencies";
+import { GetTransactionCategoriesResponse } from "@requestTypes/transactions/getTransactionCategories";
+import { CreateTransactionCategoryResponse } from "@requestTypes/transactions/createTransactionCategory";
+import { CreateTransactionCategoryBody } from "@inputTypes/transactions/createTransactionCategory";
+import { CreateTransactionBody } from "@inputTypes/transactions/createTransaction";
+import { CreateTransactionResponse } from "@requestTypes/transactions/createTransactionResponse";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();

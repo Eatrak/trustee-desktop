@@ -1,7 +1,7 @@
 import Validator from "validatorjs";
 
-import { signInValidator, signUpValidator } from "@crudValidators/auth";
-import { Utils } from "src/utils";
+import { signInValidator, signUpValidator } from "@validatorRules/auth";
+import { Utils } from "@utils/index";
 
 export default class AuthService {
     static instance: AuthService = new AuthService();

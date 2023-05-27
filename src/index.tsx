@@ -7,12 +7,12 @@ import Validator from 'validatorjs';
 //@ts-ignore
 import en from 'validatorjs/src/lang/en';
 
-import './styles/themes.css';
+import './themes.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import SignUpPage from './pages/SignUp';
-import SignInPage from './pages/SignIn';
-import AppLayout from './pages/AppLayout';
+import SignUpPage from '@pages/auth/SignUp';
+import SignInPage from '@pages/auth/SignIn';
+import AppLayout from '@pages/core/AppLayout';
 import Authorizer from '@components/Authorizer';
 
 Validator.setMessages('en', en);

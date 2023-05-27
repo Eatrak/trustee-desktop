@@ -13,7 +13,7 @@ import MultiSelect, { MultiSelectOption } from "@components/MultiSelect";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
-import TransactionCreationDialog from "@components/TransactionCreationDialog";
+import TransactionCreationDialog from "./TransactionCreationDialog";
 
 const TransactionsSection = () => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);

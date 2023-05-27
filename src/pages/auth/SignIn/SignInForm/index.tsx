@@ -5,7 +5,7 @@ import Validator from "validatorjs";
 import "./style.css";
 import FormLayout from "@components/FormLayout";
 import InputTextField from "@components/InputTextField";
-import { signInValidator } from "@crudValidators/auth";
+import { signInValidator } from "@validatorRules/auth";
 import AuthService from "@services/auth";
 
 const SignInForm = () => {

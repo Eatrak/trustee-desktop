@@ -13,12 +13,15 @@ export default defineConfig({
   ],
   resolve: {
     alias: [
-      { find: "@components", replacement: path.resolve(__dirname, "src/components") },
-      { find: "@assets", replacement: path.resolve(__dirname, "src/assets") },
-      { find: "@services", replacement: path.resolve(__dirname, "src/services") },
-      { find: "@crudValidators", replacement: path.resolve(__dirname, "src/crudValidators") },
-      { find: "@sections", replacement: path.resolve(__dirname, "src/sections") },
+      { find: "@assets", replacement: path.resolve(__dirname, "src/shared/assets") },
+      { find: "@components", replacement: path.resolve(__dirname, "src/shared/components") },
+      { find: "@inputTypes", replacement: path.resolve(__dirname, "src/shared/inputTypes") },
       { find: "@models", replacement: path.resolve(__dirname, "src/shared/models") },
+      { find: "@requestTypes", replacement: path.resolve(__dirname, "src/shared/requestTypes") },
+      { find: "@services", replacement: path.resolve(__dirname, "src/shared/services") },
+      { find: "@utils", replacement: path.resolve(__dirname, "src/shared/utils") },
+      { find: "@validatorRules", replacement: path.resolve(__dirname, "src/shared/validatorRules") },
+      { find: "@pages", replacement: path.resolve(__dirname, "src/pages") }
     ],
   },
   server: {

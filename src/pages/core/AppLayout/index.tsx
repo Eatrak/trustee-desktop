@@ -3,7 +3,7 @@ import "./style.css";
 import { Route, Routes } from "react-router-dom";
 
 import Navbar from "@components/Navbar";
-import TransactionsSection from "@sections/TransactionsSection";
+import TransactionsSection from "@pages/sections/TransactionsSection";
 
 const AppLayout = () => {
     return (
