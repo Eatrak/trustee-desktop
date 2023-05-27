@@ -29,7 +29,7 @@ const TransactionsSection = () => {
     let [ selectedNewWalletCurrency, setSelectedNewWalletCurrency ] = useState<SelectOption>();
 
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
-    const lastDayOfTheCurrentMonthTimestamp = dayjs().endOf("month");
+    const lastDayOfTheCurrentMonthTimestamp = dayjs(dayjs().endOf("month").format("YYYY-MM-DD"));
 
     const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
 

@@ -21,7 +21,14 @@ interface IProps {
     initialEndDate?: Dayjs
 }
 
-const RangeDatePicker = ({ style, isOpened, setOpened, onRangeChanged }: IProps) => {
+const RangeDatePicker = ({
+    initialStartDate,
+    initialEndDate,
+    style,
+    isOpened,
+    setOpened,
+    onRangeChanged
+}: IProps) => {
     let datePickerFrame = useRef<HTMLDivElement>(null);
 
     const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
@@ -117,6 +124,15 @@ const RangeDatePicker = ({ style, isOpened, setOpened, onRangeChanged }: IProps)
     };
 
     useEffect(() => {
+        if (initialStartDate && initialEndDate) {
+            changeStartDate(initialStartDate);
+            changeEndDate(initialEndDate);
+            onRangeChanged({
+                startDate: initialStartDate,
+                endDate: initialEndDate
+            });
+        }
+
         datePickerFrame.current?.addEventListener("animationend", setPanelOpenable);
         document.addEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);
     }, []);
