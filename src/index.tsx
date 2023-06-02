@@ -13,7 +13,7 @@ import reportWebVitals from './reportWebVitals';
 import SignUpPage from '@pages/auth/SignUp';
 import SignInPage from '@pages/auth/SignIn';
 import AppLayout from '@pages/core/AppLayout';
-import Authorizer from '@components/Authorizer';
+import Authorizer from '@pages/core/Authorizer';
 
 Validator.setMessages('en', en);
 
