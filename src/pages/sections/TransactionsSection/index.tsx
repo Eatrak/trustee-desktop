@@ -165,6 +165,17 @@ const TransactionsSection = () => {
                             value={`${getSelectedCurrencySymbol()} ${totalExpenseByCurrency[selectedCurrencyCode] || 0}`} />
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
+                        <Statistic
+                            title="Total Balance"
+                            value={`
+                                ${getSelectedCurrencySymbol()} 
+                                ${
+                                    totalIncomeByCurrency[selectedCurrencyCode] -
+                                    totalExpenseByCurrency[selectedCurrencyCode]
+                                    || 0
+                                }`
+                            }
+                            size="large" />
                     </div>
                 </div>
                 <div className="transactions-section--main--container">
