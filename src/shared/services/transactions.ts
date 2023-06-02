@@ -16,7 +16,8 @@ import { CreateTransactionCategoryBody } from "@inputTypes/transactions/createTr
 import { CreateTransactionBody } from "@inputTypes/transactions/createTransaction";
 import { CreateTransactionResponse } from "@requestTypes/transactions/createTransactionResponse";
 import { GetTotalIncomeByCurrencyResponse } from "@requestTypes/transactions/getTotalIncomeByCurrency";
-import { TotalIncomeByCurrency } from "@genericTypes/currencies";
+import { GetTotalExpenseByCurrencyResponse } from "@requestTypes/transactions/getTotalExpenseByCurrency";
+import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@genericTypes/currencies";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -26,6 +27,7 @@ export default class TransactionsService {
     currencies$: BehaviorSubject<Currency[]>;
     transactionCategories$: BehaviorSubject<TransactionCategory[]>;
     totalIncomeByCurrency$: BehaviorSubject<TotalIncomeByCurrency>;
+    totalExpenseByCurrency$: BehaviorSubject<TotalExpenseByCurrency>;
 
     private constructor() {
         this.transactions$ = new BehaviorSubject<Transaction[]>([]);
@@ -33,6 +35,7 @@ export default class TransactionsService {
         this.currencies$ = new BehaviorSubject<Currency[]>([]);
         this.transactionCategories$ = new BehaviorSubject<TransactionCategory[]>([]);
         this.totalIncomeByCurrency$ = new BehaviorSubject<TotalIncomeByCurrency>({});
+        this.totalExpenseByCurrency$ = new BehaviorSubject<TotalExpenseByCurrency>({});
     }
     
     static getInstance() {
@@ -138,6 +141,18 @@ export default class TransactionsService {
         const { totalIncomeByCurrency }: GetTotalIncomeByCurrencyResponse = await response.json();
 
         this.totalIncomeByCurrency$.next(totalIncomeByCurrency);
+    }
+
+    async getTotalExpenseByCurrency() {
+        const requestURL = Utils.getInstance().getAPIEndpoint("/currencies/expense");
+        const response = await fetch(requestURL, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("authToken")
+            }
+        });
+        const { totalExpenseByCurrency }: GetTotalExpenseByCurrencyResponse = await response.json();
+
+        this.totalExpenseByCurrency$.next(totalExpenseByCurrency);
     }
 
     async createWallet(createWalletBody: CreateWalletBody) {

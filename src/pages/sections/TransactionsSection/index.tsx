@@ -11,7 +11,7 @@ import TextButton from "@components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
 import MultiSelect, { MultiSelectOption } from "@components/MultiSelect";
 import Statistic from "@components/Statistic";
-import { TotalIncomeByCurrency } from "@genericTypes/currencies";
+import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@genericTypes/currencies";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
@@ -27,6 +27,7 @@ const TransactionsSection = () => {
     let [ isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened ] = useState<boolean>(false);
     let [ currencies, setCurrencies ] = useState<Currency[]>([]);
     let [ totalIncomeByCurrency, setTotalIncomeByCurrency ] = useState<TotalIncomeByCurrency>({});
+    let [ totalExpenseByCurrency, setTotalExpenseByCurrency ] = useState<TotalExpenseByCurrency>({});
     let [ selectedCurrencyCode, setSelectedCurrencyCode ] = useState<string>("");
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
@@ -59,6 +60,9 @@ const TransactionsSection = () => {
         TransactionsService.getInstance().totalIncomeByCurrency$.subscribe(totalIncomeByCurrency => {
             setTotalIncomeByCurrency(totalIncomeByCurrency);
         });
+        TransactionsService.getInstance().totalExpenseByCurrency$.subscribe(totalExpenseByCurrency => {
+            setTotalExpenseByCurrency(totalExpenseByCurrency);
+        });
         TransactionsService.getInstance().wallets$.subscribe(wallets => {
             changeWallets(wallets);
             
@@ -87,6 +91,7 @@ const TransactionsSection = () => {
         TransactionsService.getInstance().getWallets();
         TransactionsService.getInstance().getCurrencies();
         TransactionsService.getInstance().getTotalIncomeByCurrency();
+        TransactionsService.getInstance().getTotalExpenseByCurrency();
     }, []);
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
@@ -155,6 +160,9 @@ const TransactionsSection = () => {
                         <Statistic
                             title="Total Income"
                             value={`${getSelectedCurrencySymbol()} ${totalIncomeByCurrency[selectedCurrencyCode] || 0}`} />
+                        <Statistic
+                            title="Total Expense"
+                            value={`${getSelectedCurrencySymbol()} ${totalExpenseByCurrency[selectedCurrencyCode] || 0}`} />
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
                     </div>
