@@ -18,6 +18,7 @@ export default defineConfig({
       { find: "@inputTypes", replacement: path.resolve(__dirname, "src/shared/inputTypes") },
       { find: "@models", replacement: path.resolve(__dirname, "src/shared/models") },
       { find: "@requestTypes", replacement: path.resolve(__dirname, "src/shared/requestTypes") },
+      { find: "@genericTypes", replacement: path.resolve(__dirname, "src/shared/genericTypes") },
       { find: "@services", replacement: path.resolve(__dirname, "src/shared/services") },
       { find: "@utils", replacement: path.resolve(__dirname, "src/shared/utils") },
       { find: "@validatorRules", replacement: path.resolve(__dirname, "src/shared/validatorRules") },

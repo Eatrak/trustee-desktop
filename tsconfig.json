@@ -30,6 +30,7 @@
       "@inputTypes/*": ["./src/shared/inputTypes/*"],
       "@models/*": ["./src/shared/models/*"],
       "@requestTypes/*": ["./src/shared/requestTypes/*"],
+      "@genericTypes/*": ["./src/shared/genericTypes/*"],
       "@services/*": ["./src/shared/services/*"],
       "@utils/*": ["./src/shared/utils/*"],
       "@validatorRules/*": ["./src/shared/validatorRules/*"],

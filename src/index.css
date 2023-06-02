@@ -58,6 +58,10 @@ h6 {
   font-weight: 400;
 }
 
+.header--semi-bold {
+  font-weight: 600;
+}
+
 .header--bold {
   font-weight: 700;
 }
@@ -94,6 +98,10 @@ p {
 
 .paragraph--bold {
   font-weight: 700;
+}
+
+.paragraph--semi-bold {
+  font-weight: 600;
 }
 
 .paragraph--sub-title {

@@ -15,6 +15,8 @@ import { CreateTransactionCategoryResponse } from "@requestTypes/transactions/cr
 import { CreateTransactionCategoryBody } from "@inputTypes/transactions/createTransactionCategory";
 import { CreateTransactionBody } from "@inputTypes/transactions/createTransaction";
 import { CreateTransactionResponse } from "@requestTypes/transactions/createTransactionResponse";
+import { GetTotalIncomeByCurrencyResponse } from "@requestTypes/transactions/getTotalIncomeByCurrency";
+import { TotalIncomeByCurrency } from "@genericTypes/currencies";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -23,12 +25,14 @@ export default class TransactionsService {
     wallets$: BehaviorSubject<Wallet[]>;
     currencies$: BehaviorSubject<Currency[]>;
     transactionCategories$: BehaviorSubject<TransactionCategory[]>;
+    totalIncomeByCurrency$: BehaviorSubject<TotalIncomeByCurrency>;
 
     private constructor() {
         this.transactions$ = new BehaviorSubject<Transaction[]>([]);
         this.wallets$ = new BehaviorSubject<Wallet[]>([]);
         this.currencies$ = new BehaviorSubject<Currency[]>([]);
         this.transactionCategories$ = new BehaviorSubject<TransactionCategory[]>([]);
+        this.totalIncomeByCurrency$ = new BehaviorSubject<TotalIncomeByCurrency>({});
     }
     
     static getInstance() {
@@ -122,6 +126,18 @@ export default class TransactionsService {
         const { wallets }: GetWalletsResponse = await response.json();
 
         this.wallets$.next(wallets);
+    }
+
+    async getTotalIncomeByCurrency() {
+        const requestURL = Utils.getInstance().getAPIEndpoint("/currencies/income");
+        const response = await fetch(requestURL, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("authToken")
+            }
+        });
+        const { totalIncomeByCurrency }: GetTotalIncomeByCurrencyResponse = await response.json();
+
+        this.totalIncomeByCurrency$.next(totalIncomeByCurrency);
     }
 
     async createWallet(createWalletBody: CreateWalletBody) {
