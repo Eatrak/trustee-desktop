@@ -79,6 +79,11 @@
     animation: fade-closing 0.1s forwards;
 }
 
+.select__options-panel--has-never-been-opened {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .mini-select__options-panel__options-container {
     padding: 4px;
 }

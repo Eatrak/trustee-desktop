@@ -47,10 +47,12 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
 
     const isFirstRender = useRef(true);
     let [ opened, setOpened ] = useState<boolean>(false);
+    let [ hasNeverBeenOpened, setHasNeverBeenOpened ] = useState<boolean>(true);
     let [ selectedOption, setSelectedOption ] = useState<SelectOption>();
     let [ errors, setErrors ] = useState<string[]>([]);
     
     const switchPanelStatus = () => {
+        setHasNeverBeenOpened(false);
         setOpened(!opened);
     };
 
@@ -125,7 +127,7 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
             <div className="mini-select__body" onTimeUpdate={() => switchPanelStatus()} onClick={() => switchPanelStatus()}>
                 <p className="paragraph--small">{selectedOption?.name}</p>
             </div>
-            <div className={"mini-select__options-panel mini-select__options-panel--" + (opened ? "opened" : "closed")}>
+            <div className={"mini-select__options-panel mini-select__options-panel--" + (opened ? "opened" : "closed") + (hasNeverBeenOpened ? " select__options-panel--has-never-been-opened" : "")}>
                 <div className="mini-select__options-panel__options-container">
                     {renderOptions()}
                 </div>
