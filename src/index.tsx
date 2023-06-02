@@ -14,6 +14,7 @@ import SignUpPage from '@pages/auth/SignUp';
 import SignInPage from '@pages/auth/SignIn';
 import AppLayout from '@pages/core/AppLayout';
 import Authorizer from '@pages/core/Authorizer';
+import TransactionsService from '@services/transactions';
 
 Validator.setMessages('en', en);
 
@@ -28,10 +29,23 @@ if (process.env.NODE_ENV === "production") {
 const App = () => {
   document.body.classList.add("light-mode");
 
+  const loadResources = async () => {
+    await Promise.all([
+      TransactionsService.getInstance().getWallets(),
+      TransactionsService.getInstance().getCurrencies(),
+      TransactionsService.getInstance().getTotalIncomeByCurrency(),
+      TransactionsService.getInstance().getTotalExpenseByCurrency()
+    ]);
+  };
+
   return(
     <Router>
       <Routes>
-        <Route path="/*" element={<Authorizer><AppLayout/></Authorizer>}/>
+        <Route path="/*" element={
+          <Authorizer loadResources={loadResources}>
+              <AppLayout/>
+          </Authorizer>
+        }/>
         <Route path="/sign-up" element={<SignUpPage/>}/>
         <Route path="/sign-in" element={<SignInPage/>}/>
       </Routes>

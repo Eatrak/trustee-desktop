@@ -88,10 +88,6 @@ const TransactionsSection = () => {
         });
         
         getTransactionsByCreationRange(firstDayOfTheCurrentMonthTimestamp, lastDayOfTheCurrentMonthTimestamp);
-        TransactionsService.getInstance().getWallets();
-        TransactionsService.getInstance().getCurrencies();
-        TransactionsService.getInstance().getTotalIncomeByCurrency();
-        TransactionsService.getInstance().getTotalExpenseByCurrency();
     }, []);
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {

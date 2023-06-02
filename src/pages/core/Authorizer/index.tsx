@@ -6,16 +6,19 @@ import AuthService from '@services/auth';
 import LoadingPage from '@pages/core/LoadingPage';
 
 interface IProps {
-    children: JSX.Element
+    children: JSX.Element,
+    loadResources: Function
 }
 
-const Authorizer = ({ children: pageToRender }: IProps) => {
+const Authorizer = ({ children: pageToRender, loadResources }: IProps) => {
     const navigate = useNavigate();
     const [ isChecked, setIsChecked ] = useState<boolean>(false);
 
     const redirectUserIfItIsNotAuthenticated = async () => {
         const isUserAuthenticated = await AuthService.getInstance().isUserAuthenticated();
         if (isUserAuthenticated) {
+            await loadResources();
+
             setIsChecked(isUserAuthenticated);
             return;
         }
