@@ -10,6 +10,8 @@
 
     padding: 10px;
     box-sizing: border-box;
+
+    animation: fade 0.5s forwards;
 }
 
 .transaction-item--icon {
