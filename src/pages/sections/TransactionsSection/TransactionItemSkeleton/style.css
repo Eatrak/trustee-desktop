@@ -1,0 +1,31 @@
+.transaction-item {
+    display: grid;
+    grid-template-columns: auto max-content;
+    column-gap: 40px;
+    align-items: center;
+
+    height: 70px;
+
+    border-bottom: 1px solid var(--neutral-50);
+
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.transaction-item--icon {
+    width: auto;
+    height: 54%;
+    
+    color: var(--primary-400);
+}
+
+.transaction-item--text-container {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 5px;
+}
+
+.transaction-item--text-container__transaction-name,
+.transaction-item--text-container__transaction-date {
+    user-select: none;
+}
