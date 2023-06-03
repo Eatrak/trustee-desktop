@@ -2,7 +2,7 @@
     height: max-content;
 
     border-radius: 8px;
-    animation: skeleton-loading 1s linear infinite alternate;
+    animation: fade 0.5s forwards, skeleton-loading 1s linear infinite alternate;
 }
 
 .text-skeleton > * {
