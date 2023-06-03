@@ -16,6 +16,7 @@ import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
 import TransactionCreationDialog from "./TransactionCreationDialog";
+import TransactionItemSkeleton from "./TransactionItemSkeleton";
 
 const TransactionsSection = () => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
@@ -120,6 +121,34 @@ const TransactionsSection = () => {
         setIsCreatingNewWallet(false);
     };
 
+    const getTransactionItemsToRender = () => {
+        const transactionItemsToRender = transactions
+        .filter(transaction => {
+            for (const selectedWallet of selectedWallets) {
+                if (transaction.walletId == selectedWallet.value) {
+                    return true;
+                }
+            }
+
+            return false;
+        })
+        .map(transaction => {
+            return (
+                <TransactionItem
+                    key={transaction.transactionId}
+                    transaction={transaction}/>
+            );
+        });
+
+        if (transactionItemsToRender.length == 0) {
+            return Array.from(Array(4).keys()).map(index => {
+                return <TransactionItemSkeleton key={index} />;
+            });
+        }
+
+        return transactionItemsToRender;
+    };
+
     return(
         <div className="section transactions-section">
             {
@@ -177,23 +206,7 @@ const TransactionsSection = () => {
                 <div className="transactions-section--main--container">
                     <div>
                         {
-                            transactions
-                            .filter(transaction => {
-                                for (const selectedWallet of selectedWallets) {
-                                    if (transaction.walletId == selectedWallet.value) {
-                                        return true;
-                                    }
-                                }
-
-                                return false;
-                            })
-                            .map(transaction => {
-                                return (
-                                    <TransactionItem
-                                        key={transaction.transactionId}
-                                        transaction={transaction}/>
-                                );
-                            })
+                            getTransactionItemsToRender()
                         }
                     </div>
                 </div>
