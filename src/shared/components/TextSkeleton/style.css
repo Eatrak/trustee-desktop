@@ -4,3 +4,7 @@
     border-radius: 8px;
     animation: skeleton-loading 1s linear infinite alternate;
 }
+
+.text-skeleton > * {
+    margin: 0;
+}
