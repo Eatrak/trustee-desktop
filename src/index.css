@@ -143,3 +143,12 @@ p {
     opacity: 1;
   }
 }
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: var(--neutral-50);
+  }
+  100% {
+    background-color: var(--neutral-100);
+  }
+}

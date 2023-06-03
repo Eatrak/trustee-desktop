@@ -1,0 +1,6 @@
+.text-skeleton {
+    height: max-content;
+
+    border-radius: 8px;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
