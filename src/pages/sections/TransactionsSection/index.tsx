@@ -92,18 +92,18 @@ const TransactionsSection = () => {
     }, []);
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
+        changeTransactionsLoading(true);
         const newCursor = await TransactionsService.getInstance().getTransactionsByCreationRange(
             startDate,
             endDate
         );
+        changeTransactionsLoading(false);
         changeCursor(newCursor);
     };
 
     let getNextTransactions = async () => {
         if (cursor) {
-            changeTransactionsLoading(true);
             const newCursor = await TransactionsService.getInstance().getNextTransactionsByCreationRange(cursor);
-            changeTransactionsLoading(false);
             changeCursor(newCursor);
         }
     };
@@ -140,7 +140,7 @@ const TransactionsSection = () => {
             );
         });
 
-        if (transactionItemsToRender.length == 0) {
+        if (isLoadingTransactions) {
             return Array.from(Array(4).keys()).map(index => {
                 return <TransactionItemSkeleton key={index} />;
             });
