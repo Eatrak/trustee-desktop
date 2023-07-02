@@ -91,14 +91,24 @@ const MultiSelect = forwardRef<IHandle, IProps>(({
     };
 
     const renderOptions = () => {
-        return filteredOptions.map(option => {
-            return (
-                <div key={option.name} className="multi-select__option">
-                    <Checkbox setChecked={(value: boolean) => setChecked(option, value)} checked={checks[option.name]}/>
-                    <p className="multi-select__option_text paragraph--small">{option.name}</p>
-                </div>
-            );
-        });
+        if (filteredOptions.length > 0) {
+            return filteredOptions.map(option => {
+                return (
+                    <div key={option.name} className="multi-select__option">
+                        <Checkbox setChecked={(value: boolean) => setChecked(option, value)} checked={checks[option.name]}/>
+                        <p className="multi-select__option_text paragraph--small">{option.name}</p>
+                    </div>
+                );
+            });
+        }
+
+        return (
+            <div className="multi-select__options-panel__options-container__no-options-container">
+                <p className="paragraph--small multi-select__options-panel__options-container__no-options-container__text">
+                    No options found
+                </p>
+            </div>
+        );
     };
     
     // Event used to close the multi-select when touching outside of it

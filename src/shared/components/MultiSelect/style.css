@@ -142,6 +142,17 @@
 
     padding: 4px;
     overflow-y: auto;
+    cursor: default;
+}
+
+.multi-select__options-panel__options-container__no-options-container {
+    margin: 16px;
+    user-select: none;
+}
+
+.multi-select__options-panel__options-container__no-options-container__text {
+    text-align: center;
+    color: var(--ghost-text-color);
 }
 
 .multi-select__option {
