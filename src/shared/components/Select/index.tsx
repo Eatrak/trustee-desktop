@@ -99,17 +99,27 @@ const Select = forwardRef<IHandle, IProps>(({
     }
 
     const renderOptions = () => {
-        return filteredOptions.map(option => {
-            return (
-                <div
-                    key={option.name}
-                    className={`select__option ${option.name == selectedOption?.name ? "select__option--selected": ""}`}
-                    onClick={() => selectOption(option)}
-                >
-                    <p className="select__option_text paragraph--small">{option.name}</p>
-                </div>
-            );
-        });
+        if (filteredOptions.length > 0) {
+            return filteredOptions.map(option => {
+                return (
+                    <div
+                        key={option.name}
+                        className={`select__option ${option.name == selectedOption?.name ? "select__option--selected": ""}`}
+                        onClick={() => selectOption(option)}
+                    >
+                        <p className="select__option_text paragraph--small">{option.name}</p>
+                    </div>
+                );
+            });
+        }
+
+        return (
+            <div className="select__options-panel__options-container__no-options-container">
+                <p className="paragraph--small select__options-panel__options-container__no-options-container__text">
+                    No options found
+                </p>
+            </div>
+        );
     };
     
     // Event used to close the select when touching outside of it

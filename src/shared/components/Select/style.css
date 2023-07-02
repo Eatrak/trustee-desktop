@@ -155,6 +155,18 @@
 
     padding: 4px;
     overflow-y: auto;
+    cursor: default;
+}
+
+.select__options-panel__options-container__no-options-container {
+    margin: 16px;
+    user-select: none;
+    cursor: default;
+}
+
+.select__options-panel__options-container__no-options-container__text {
+    text-align: center;
+    color: var(--ghost-text-color);
 }
 
 .select__option {
@@ -168,6 +180,7 @@
 
     padding: 5px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .select__option--selected {
