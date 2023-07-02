@@ -80,10 +80,10 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
             return (
                 <div
                     key={option.name}
-                    className={`select__option ${option.name == selectedOption?.name ? "select__option--selected": ""}`}
+                    className={`mini-select__option ${option.name == selectedOption?.name ? "mini-select__option--selected": ""}`}
                     onClick={() => selectOption(option)}
                 >
-                    <p className="select__option_text paragraph--small">{option.name}</p>
+                    <p className="mini-select__option_text paragraph--small">{option.name}</p>
                 </div>
             );
         });
@@ -125,7 +125,7 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
             tabIndex={0}
         >
             <div className="mini-select__body" onTimeUpdate={() => switchPanelStatus()} onClick={() => switchPanelStatus()}>
-                <p className="paragraph--small">{selectedOption?.name}</p>
+                <p className="paragraph--small mini-select__body__text">{selectedOption?.name}</p>
             </div>
             <div className={"mini-select__options-panel mini-select__options-panel--" + (opened ? "opened" : "closed") + (hasNeverBeenOpened ? " select__options-panel--has-never-been-opened" : "")}>
                 <div className="mini-select__options-panel__options-container">
