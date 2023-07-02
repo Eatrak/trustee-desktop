@@ -68,10 +68,52 @@ export default class TransactionsService {
 
             this.transactions$.next(updatedTransactions);
 
+            // Update monthly-wallet-balance locally
+            const { walletId, transactionAmount, isIncome } = createdTransaction;
+            this.updateMonthlyWalletBalanceLocally(
+                walletId,
+                transactionAmount,
+                isIncome
+            );
+
             return true;
         }
         catch (err) {
             return false;
+        }
+    }
+
+    /**
+     * Update amount of a monthly-wallet-income or a monthly-wallet-expense locally.
+     * 
+     * @param walletId ID of the transaction wallet.
+     * @param transactionAmount Amount of the transaction.
+     * @param isIncome Indicates if the transaction amount is an income or an expense.
+     */
+    updateMonthlyWalletBalanceLocally(
+        walletId: string,
+        transactionAmount: number,
+        isIncome: boolean
+    ) {
+        // Get transaction wallet
+        const transactionWallet = this.wallets$.getValue().find(wallet => (
+            wallet.walletId == walletId
+        ));
+
+        if (transactionWallet) {
+            // Get code of the transaction currency
+            const transactionCurrencyCode = transactionWallet.currencyCode;
+
+            if (isIncome) {
+                // Update monthly-wallet-income amount
+                let updatedTotalIncomeByCurrency = this.totalIncomeByCurrency$.getValue();
+                updatedTotalIncomeByCurrency[transactionCurrencyCode] += transactionAmount;
+            }
+            else {
+                // Update monthly-wallet-expense amount
+                let updatedTotalExpenseByCurrency = this.totalExpenseByCurrency$.getValue();
+                updatedTotalExpenseByCurrency[transactionCurrencyCode] += transactionAmount;
+            }
         }
     }
 
