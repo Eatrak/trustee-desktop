@@ -12,8 +12,12 @@ const TransactionItem = ({ transaction }: IProps) => {
         return transaction.isIncome ? "+" : "-";
     };
 
+    const getTransactionItemClasses = () => {
+        return `transaction-item ${transaction.isIncome ? "transaction-item--is-income" : ""}`;
+    };
+
     return (
-        <div className="transaction-item">
+        <div className={getTransactionItemClasses()}>
             <div className="transaction-item--text-container">
                 <p className="paragraph--regular paragraph--bold transaction-item--text-container__transaction-name">
                     {transaction.transactionName}
@@ -22,7 +26,7 @@ const TransactionItem = ({ transaction }: IProps) => {
                     {dayjs.unix(transaction.transactionTimestamp).format("MM-DD-YYYY")}
                 </p>
             </div>
-            <p className="paragraph--regular">
+            <p className="paragraph--regular transaction-item__amount">
                 {getAmountDirectionSymbol()} {transaction.transactionAmount}€
             </p>
         </div>

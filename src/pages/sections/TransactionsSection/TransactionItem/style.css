@@ -31,3 +31,7 @@
 .transaction-item--text-container__transaction-date {
     user-select: none;
 }
+
+.transaction-item--is-income > .transaction-item__amount {
+    color: var(--success-600);
+}
