@@ -36,4 +36,6 @@
 .button--normal__icon {
     width: 24px;
     height: 24px;
+
+    color: var(--button-text-color);
 }

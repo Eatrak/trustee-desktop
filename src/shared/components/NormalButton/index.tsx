@@ -26,9 +26,9 @@ const NormalButton = ({Icon, iconClass, isRightIcon, text, event, className, isL
             disabled={disabled}
         >
             {Icon && !isLoading && !isRightIcon && <Icon className={"button--normal__icon " + iconClass}/>}
-            {isLoading && !isRightIcon && <LoadingIcon />}
+            {isLoading && !isRightIcon && <LoadingIcon className="button--normal__icon" />}
             {text && <p>{text}</p>}
-            {isLoading && isRightIcon && <LoadingIcon />}
+            {isLoading && isRightIcon && <LoadingIcon className="button--normal__icon" />}
             {Icon && !isLoading && isRightIcon && <Icon className={"button--normal__icon " + iconClass}/>}
         </button>
     );

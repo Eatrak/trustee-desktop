@@ -2,9 +2,13 @@ import "./style.css";
 
 import { RiLoader5Fill } from "react-icons/ri";
 
-const LoadingIcon = () => {
+interface IProps {
+    className?: string
+}
+
+const LoadingIcon = ({ className }: IProps) => {
     return (
-        <RiLoader5Fill className="text-button__icon loading-icon"/>
+        <RiLoader5Fill className={`text-button__icon loading-icon ${className}`}/>
     );
 };
 
