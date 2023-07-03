@@ -117,10 +117,15 @@ export default class TransactionsService {
         }
     }
 
-    async getTransactionsByCreationRange(startCreationTimestamp: Dayjs, endCreationTimestamp: Dayjs) {
+    async getTransactionsByCurrencyAndCreationRange(
+        currencyCode: string,
+        startCreationTimestamp: Dayjs,
+        endCreationTimestamp: Dayjs
+    ) {
         const queryParams: GetTransactionsInputQueryParams = {
             startCreationTimestamp: startCreationTimestamp.unix().toString(),
-            endCreationTimestamp: endCreationTimestamp.unix().toString()
+            endCreationTimestamp: endCreationTimestamp.unix().toString(),
+            currencyCode
         };
         const requestURL =
             Utils.getInstance().getAPIEndpoint("/transactions?") +

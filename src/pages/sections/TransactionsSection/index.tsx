@@ -93,7 +93,9 @@ const TransactionsSection = () => {
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
         changeTransactionsLoading(true);
-        const newCursor = await TransactionsService.getInstance().getTransactionsByCreationRange(
+        // Get transactions by both selected currency and creation range
+        const newCursor = await TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
+            selectedCurrencyCode,
             startDate,
             endDate
         );
@@ -148,6 +150,13 @@ const TransactionsSection = () => {
 
         return transactionItemsToRender;
     };
+
+    useEffect(() => {
+        getTransactionsByCreationRange(
+            firstDayOfTheCurrentMonthTimestamp,
+            lastDayOfTheCurrentMonthTimestamp
+        );
+    }, [selectedCurrencyCode]);
 
     return(
         <div className="section transactions-section">
