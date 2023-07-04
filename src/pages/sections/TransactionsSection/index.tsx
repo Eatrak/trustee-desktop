@@ -22,6 +22,7 @@ const TransactionsSection = () => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
     let [ transactions, changeTransactions ] = useState<Transaction[]>([]);
     let [ wallets, changeWallets ] = useState<Wallet[]>([]);
+    let [ walletsWithSameCurrency, setWalletsWithSameCurrency ] = useState<Wallet[]>([]);
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
@@ -152,6 +153,16 @@ const TransactionsSection = () => {
     };
 
     useEffect(() => {
+        const newWalletsWithSameCurrency = wallets.filter(wallet => {
+            return wallet.currencyCode == selectedCurrencyCode;
+        });
+        setWalletsWithSameCurrency(newWalletsWithSameCurrency);
+
+        // Select all wallets with the selected currency
+        walletsMultiSelectRef.current?.setSelectedOptions(newWalletsWithSameCurrency.map(wallet => {
+            return { name: wallet.walletName, value: wallet.walletId };
+        }));
+        
         getTransactionsByCreationRange(
             firstDayOfTheCurrentMonthTimestamp,
             lastDayOfTheCurrentMonthTimestamp
@@ -179,7 +190,7 @@ const TransactionsSection = () => {
                     isCreatingNewOption={isCreatingNewWallet}
                     getCreateNewOptionButtonText={(filterValue) => `Create "${filterValue}" wallet`}
                     filterInputPlaceholder="Search or create a wallet by typing a name"
-                    options={wallets.map(wallet => ({ name: wallet.walletName, value: wallet.walletId }))}
+                    options={walletsWithSameCurrency.map(wallet => ({ name: wallet.walletName, value: wallet.walletId }))}
                     onSelect={(newSelectedWallets) => setSelectedWallets([ ...newSelectedWallets ])} 
                 >
                     <MiniSelect
