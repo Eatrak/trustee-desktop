@@ -18,13 +18,13 @@ import Checkbox from "@components/Checkbox";
 import { CreateTransactionBody } from "@inputTypes/transactions/createTransaction";
 
 interface IProps {
-    close: Function
+    close: Function,
+    currencyCode: string
 }
 
-const TransactionCreationDialog = ({ close }: IProps) => {
+const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
     let [ wallets, setWallets ] = useState<Wallet[]>([]);
-    let [ currencies, setCurrencies ] = useState<Currency[]>([]);
     let [ transactionCategories, setTransactionCategories ] = useState<TransactionCategory[]>([]);
     let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
@@ -34,24 +34,16 @@ const TransactionCreationDialog = ({ close }: IProps) => {
     // Form data
     let [ name, setName ] = useState<string>();
     let [ walletOption, setWalletOption ] = useState<SelectOption>();
-    let [ selectedNewWalletCurrency, setSelectedNewWalletCurrency ] = useState<SelectOption>();
     let [ categoryOption, setCategoryOption ] = useState<SelectOption>();
     let [ creationDate, setCreationDate ] = useState<Dayjs>();
     let [ value, setValue ] = useState<number>();
     let [ isIncome, setIsIncome ] = useState<boolean>(false);
 
-    const getWalletOptions = (): SelectOption[] => {
-        return wallets.map(({ walletId, walletName }) => ({
-            name: walletName,
-            value: walletId
-        }));
-    };
-
-    const getCurrencyOptions = (): SelectOption[] => {
-        return currencies.map(({ currencyCode, currencySymbol }) => ({
-            name: `${currencySymbol} ${currencyCode}`,
-            value: currencyCode
-        }));
+    const getWalletOptions = () => {
+        return TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
+            wallets,
+            currencyCode
+        );
     };
 
     const getTransactionCategoryOptions = (): SelectOption[] => {
@@ -98,7 +90,7 @@ const TransactionCreationDialog = ({ close }: IProps) => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
             walletName: newWalletName,
-            currencyCode: selectedNewWalletCurrency!.value
+            currencyCode
         });
         setIsCreatingNewWallet(false);
     };
@@ -121,24 +113,8 @@ const TransactionCreationDialog = ({ close }: IProps) => {
 
     useEffect(() => {
         TransactionsService.getInstance().wallets$.subscribe(setWallets);
-        TransactionsService.getInstance().currencies$.subscribe((currencies) => {
-            setCurrencies(currencies);
-
-            if (currencies.length == 0) {
-                return;
-            }
-
-            // Set default currency option
-            const { currencyCode, currencySymbol } = currencies[0];
-            currencySelect.current?.setSelectedOption({
-                name: `${currencySymbol} ${currencyCode}`,
-                value: currencyCode
-            });
-        });
         TransactionsService.getInstance().transactionCategories$.subscribe(setTransactionCategories);
 
-        TransactionsService.getInstance().getWallets();
-        TransactionsService.getInstance().getCurrencies();
         TransactionsService.getInstance().getTransactionCategories();
     }, []);
 
@@ -161,15 +137,7 @@ const TransactionCreationDialog = ({ close }: IProps) => {
                     isCreatingNewOption={isCreatingNewWallet}
                     getCreateNewOptionButtonText={(nameOfWalletToCreate) => `Create "${nameOfWalletToCreate}" wallet`}
                     validatorRule={createTransactionBodyRules.walletId}
-                    onSelect={setWalletOption}
-                >
-                    <MiniSelect
-                        ref={currencySelect}
-                        className="currency-select"
-                        options={getCurrencyOptions()}
-                        entityName="currency"
-                        onSelect={setSelectedNewWalletCurrency} />
-                </Select>
+                    onSelect={setWalletOption} />
                 {/* Category */}
                 <Select
                     entityName="category"

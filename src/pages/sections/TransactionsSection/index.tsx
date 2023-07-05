@@ -145,20 +145,6 @@ const TransactionsSection = () => {
         return transactionItemsToRender;
     };
 
-    /**
-     * Get options of the wallets with the selected currency.
-     * 
-     * @returns Options of the wallets with the selected currency.
-     */
-    const getOptionsOfWalletsWithSelectedCurrency = () => {
-        const newWalletsWithSelectedCurrency = wallets.filter(wallet => {
-            return wallet.currencyCode == selectedCurrencyCode;
-        })
-        .map(wallet => ({ name: wallet.walletName, value: wallet.walletId }));
-
-        return newWalletsWithSelectedCurrency;
-    };
-
     const changeCurrencyCodeInstantly = (newSelectedCurrencyCode: string) => {
         // Make sure the new selected currency-code is available instantly
         selectedCurrencyCode = newSelectedCurrencyCode;
@@ -166,10 +152,20 @@ const TransactionsSection = () => {
         setSelectedCurrencyCode(newSelectedCurrencyCode);
     };
 
+    const getWalletOptions = () => {
+        return TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
+            wallets,
+            selectedCurrencyCode
+        );
+    };
+
     useEffect(() => {
         // Select all wallets with the selected currency
         walletsMultiSelectRef.current?.setSelectedOptions(
-            getOptionsOfWalletsWithSelectedCurrency()
+            TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
+                wallets,
+                selectedCurrencyCode
+            )
         );
         
         getTransactionsByCreationRange(
@@ -182,7 +178,9 @@ const TransactionsSection = () => {
         <div className="section transactions-section">
             {
                 isTransactionCreationDialogOpened &&
-                <TransactionCreationDialog close={() => setIsTransactionCreationDialogOpened(false)} />
+                <TransactionCreationDialog
+                    currencyCode={selectedCurrencyCode}
+                    close={() => setIsTransactionCreationDialogOpened(false)} />
             }
             <div className="transactions-section--main">
                 <TransactionsHeader
@@ -199,7 +197,7 @@ const TransactionsSection = () => {
                     isCreatingNewOption={isCreatingNewWallet}
                     getCreateNewOptionButtonText={(filterValue) => `Create "${filterValue}" wallet`}
                     filterInputPlaceholder="Search or create a wallet by typing a name"
-                    options={getOptionsOfWalletsWithSelectedCurrency()}
+                    options={getWalletOptions()}
                     onSelect={(newSelectedWallets) => setSelectedWallets([ ...newSelectedWallets ])} 
                 >
                     <MiniSelect

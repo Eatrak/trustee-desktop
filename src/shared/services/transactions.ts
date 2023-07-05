@@ -257,4 +257,18 @@ export default class TransactionsService {
 
         this.transactionCategories$.next(newTransactionCategories);
     }
+
+    /**
+     * Get options of the wallets with the selected currency.
+     * 
+     * @returns Options of the wallets with the selected currency.
+     */
+    getOptionsOfWalletsWithSelectedCurrency(wallets: Wallet[], selectedCurrencyCode: string) {
+        const newWalletsWithSelectedCurrency = wallets.filter(wallet => {
+            return wallet.currencyCode == selectedCurrencyCode;
+        })
+        .map(wallet => ({ name: wallet.walletName, value: wallet.walletId }));
+
+        return newWalletsWithSelectedCurrency;
+    };
 }
