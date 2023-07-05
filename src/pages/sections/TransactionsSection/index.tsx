@@ -22,7 +22,6 @@ const TransactionsSection = () => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
     let [ transactions, changeTransactions ] = useState<Transaction[]>([]);
     let [ wallets, changeWallets ] = useState<Wallet[]>([]);
-    let [ walletsWithSameCurrency, setWalletsWithSameCurrency ] = useState<Wallet[]>([]);
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
@@ -67,12 +66,6 @@ const TransactionsSection = () => {
         });
         TransactionsService.getInstance().wallets$.subscribe(wallets => {
             changeWallets(wallets);
-            
-            const defaultSelectedWallets: MultiSelectOption[] = wallets.map(wallet => ({
-                name: wallet.walletName,
-                value: wallet.walletId
-            }));
-            walletsMultiSelectRef.current?.setSelectedOptions(defaultSelectedWallets);
         });
         TransactionsService.getInstance().currencies$.subscribe((currencies) => {
             setCurrencies(currencies);
@@ -152,16 +145,32 @@ const TransactionsSection = () => {
         return transactionItemsToRender;
     };
 
-    useEffect(() => {
-        const newWalletsWithSameCurrency = wallets.filter(wallet => {
+    /**
+     * Get options of the wallets with the selected currency.
+     * 
+     * @returns Options of the wallets with the selected currency.
+     */
+    const getOptionsOfWalletsWithSelectedCurrency = () => {
+        const newWalletsWithSelectedCurrency = wallets.filter(wallet => {
             return wallet.currencyCode == selectedCurrencyCode;
-        });
-        setWalletsWithSameCurrency(newWalletsWithSameCurrency);
+        })
+        .map(wallet => ({ name: wallet.walletName, value: wallet.walletId }));
 
+        return newWalletsWithSelectedCurrency;
+    };
+
+    const changeCurrencyCodeInstantly = (newSelectedCurrencyCode: string) => {
+        // Make sure the new selected currency-code is available instantly
+        selectedCurrencyCode = newSelectedCurrencyCode;
+        // Re-render by setting the new state
+        setSelectedCurrencyCode(newSelectedCurrencyCode);
+    };
+
+    useEffect(() => {
         // Select all wallets with the selected currency
-        walletsMultiSelectRef.current?.setSelectedOptions(newWalletsWithSameCurrency.map(wallet => {
-            return { name: wallet.walletName, value: wallet.walletId };
-        }));
+        walletsMultiSelectRef.current?.setSelectedOptions(
+            getOptionsOfWalletsWithSelectedCurrency()
+        );
         
         getTransactionsByCreationRange(
             firstDayOfTheCurrentMonthTimestamp,
@@ -177,7 +186,7 @@ const TransactionsSection = () => {
             }
             <div className="transactions-section--main">
                 <TransactionsHeader
-                    setSelectedCurrencyCode={setSelectedCurrencyCode}
+                    setSelectedCurrencyCode={changeCurrencyCodeInstantly}
                     initialStartDate={firstDayOfTheCurrentMonthTimestamp}
                     initialEndDate={lastDayOfTheCurrentMonthTimestamp}
                     openTransactionCreationDialog={() => setIsTransactionCreationDialogOpened(true)}
@@ -190,7 +199,7 @@ const TransactionsSection = () => {
                     isCreatingNewOption={isCreatingNewWallet}
                     getCreateNewOptionButtonText={(filterValue) => `Create "${filterValue}" wallet`}
                     filterInputPlaceholder="Search or create a wallet by typing a name"
-                    options={walletsWithSameCurrency.map(wallet => ({ name: wallet.walletName, value: wallet.walletId }))}
+                    options={getOptionsOfWalletsWithSelectedCurrency()}
                     onSelect={(newSelectedWallets) => setSelectedWallets([ ...newSelectedWallets ])} 
                 >
                     <MiniSelect
