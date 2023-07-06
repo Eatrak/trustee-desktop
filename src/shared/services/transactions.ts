@@ -108,11 +108,13 @@ export default class TransactionsService {
                 // Update monthly-wallet-income amount
                 let updatedTotalIncomeByCurrency = this.totalIncomeByCurrency$.getValue();
                 updatedTotalIncomeByCurrency[transactionCurrencyCode] += transactionAmount;
+                this.totalIncomeByCurrency$.next(updatedTotalIncomeByCurrency);
             }
             else {
                 // Update monthly-wallet-expense amount
                 let updatedTotalExpenseByCurrency = this.totalExpenseByCurrency$.getValue();
                 updatedTotalExpenseByCurrency[transactionCurrencyCode] += transactionAmount;
+                this.totalExpenseByCurrency$.next(updatedTotalExpenseByCurrency);
             }
         }
     }
