@@ -1,4 +1,4 @@
-.transaction-item {
+.transaction-item-skeleton {
     display: grid;
     grid-template-columns: auto max-content;
     column-gap: 40px;
@@ -12,20 +12,20 @@
     box-sizing: border-box;
 }
 
-.transaction-item--icon {
+.transaction-item-skeleton--icon {
     width: auto;
     height: 54%;
     
     color: var(--primary-400);
 }
 
-.transaction-item--text-container {
+.transaction-item-skeleton--text-container {
     display: grid;
     grid-auto-flow: row;
     row-gap: 5px;
 }
 
-.transaction-item--text-container__transaction-name,
-.transaction-item--text-container__transaction-date {
+.transaction-item-skeleton--text-container__transaction-name,
+.transaction-item-skeleton--text-container__transaction-date {
     user-select: none;
 }

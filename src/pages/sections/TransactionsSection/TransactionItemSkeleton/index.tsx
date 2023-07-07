@@ -3,14 +3,14 @@ import TextSkeleton from "@components/TextSkeleton";
 
 const TransactionItemSkeleton = () => {
     return (
-        <div className="transaction-item">
-            <div className="transaction-item--text-container">
+        <div className="transaction-item-skeleton">
+            <div className="transaction-item-skeleton--text-container">
                 <TextSkeleton
-                    className="transaction-item--text-container__transaction-name"
+                    className="transaction-item-skeleton--text-container__transaction-name"
                     width="30%"
                     size="regular-paragraph" />
                 <TextSkeleton
-                    className="transaction-item--text-container__transaction-date"
+                    className="transaction-item-skeleton--text-container__transaction-date"
                     width="100px"
                     size="small-paragraph" />
             </div>
