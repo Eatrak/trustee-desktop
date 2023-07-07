@@ -1,3 +1,5 @@
+import RoundedTextIconButton from "@components/RoundedTextIconButton";
+import { MdDeleteOutline } from "react-icons/md";
 import "./style.css";
 
 import { Transaction } from '@models/transactions';
@@ -29,6 +31,7 @@ const TransactionItem = ({ transaction }: IProps) => {
             <p className="paragraph--regular transaction-item__amount">
                 {getAmountDirectionSymbol()} {transaction.transactionAmount}€
             </p>
+            <RoundedTextIconButton Icon={MdDeleteOutline} danger />
         </div>
     );
 };
