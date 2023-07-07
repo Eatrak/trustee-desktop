@@ -38,3 +38,26 @@
     
     transition: color 0.2s;
 }
+
+/* -- Danger */
+
+.rounded-text-icon-button--danger:active {
+    background-color: var(--error-50);
+}
+
+.rounded-text-icon-button--danger:focus {
+    box-shadow: var(--error-aura-shadow);
+}
+
+
+.rounded-text-icon-button--danger:hover .rounded-text-icon-button__icon {
+    color: var(--error-600);
+}
+
+.rounded-text-icon-button--danger:focus .rounded-text-icon-button__icon {
+    color: var(--error-600);
+}
+
+.rounded-text-icon-button--danger .rounded-text-icon-button__icon {
+    color: var(--error-400);
+}
