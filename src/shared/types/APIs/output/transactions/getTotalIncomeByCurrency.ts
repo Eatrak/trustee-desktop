@@ -1,4 +1,4 @@
-import { TotalIncomeByCurrency } from "@genericTypes/currencies";
+import { TotalIncomeByCurrency } from "@ts-types/generic/currencies";
 
 export interface GetTotalIncomeByCurrencyResponse {
     totalIncomeByCurrency: TotalIncomeByCurrency

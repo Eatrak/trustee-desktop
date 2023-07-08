@@ -1,4 +1,4 @@
-import { Transaction } from "@models/transactions";
+import { Transaction } from "@ts-types/models/transactions";
 
 export interface CreateTransactionResponse {
     createdTransaction: Transaction

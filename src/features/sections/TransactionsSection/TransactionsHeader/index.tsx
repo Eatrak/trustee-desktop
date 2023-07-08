@@ -8,7 +8,7 @@ import RoundedTextIconButton from "@components/RoundedTextIconButton";
 import RoundedIconButton from "@components/RoundedIconButton";
 import RangeDatePicker, { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
-import { Currency } from "@models/transactions";
+import { Currency } from "@ts-types/models/transactions";
 import TransactionsService from "@services/transactions";
 
 interface IProps {

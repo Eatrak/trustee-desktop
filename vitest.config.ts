@@ -10,10 +10,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@services": path.resolve(__dirname, "./src/services"),
-      "@crudValidators": path.resolve(__dirname, "./src/crudValidators"),
-      "@components": path.resolve(__dirname, "./src/components"),
-      "@models": path.resolve(__dirname, "./src/shared/models")
+      "@assets": path.resolve(__dirname, "./src/shared/assets"),
+      "@components": path.resolve(__dirname, "./src/shared/components"),
+      "@ts-types": path.resolve(__dirname, "./src/shared/types"),
+      "@services": path.resolve(__dirname, "./src/shared/services"),
+      "@utils": path.resolve(__dirname, "./src/shared/utils"),
+      "@validatorRules": path.resolve(__dirname, "./src/shared/validatorRules"),
+      "@features": path.resolve(__dirname, "./src/features")
     },
   },
 });

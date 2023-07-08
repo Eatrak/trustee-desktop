@@ -6,7 +6,7 @@ import { Dayjs } from "dayjs";
 import "./style.css";
 import Dialog from "@components/Dialog";
 import InputTextField from "@components/InputTextField";
-import { Currency, TransactionCategory, Wallet } from "@models/transactions";
+import { Currency, TransactionCategory, Wallet } from "@ts-types/models/transactions";
 import TransactionsService from "@services/transactions";
 import NormalButton from "@components/NormalButton";
 import TextButton from "@components/TextButton";
@@ -15,7 +15,7 @@ import DatePicker from "@components/DatePicker";
 import MiniSelect from "@components/MiniSelect";
 import { createTransactionBodyRules } from "@validatorRules/transactions";
 import Checkbox from "@components/Checkbox";
-import { CreateTransactionBody } from "@inputTypes/transactions/createTransaction";
+import { CreateTransactionBody } from "@ts-types/APIs/input/transactions/createTransaction";
 
 interface IProps {
     close: Function,

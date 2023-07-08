@@ -1,6 +1,6 @@
 import { DocumentClientTypes } from "@typedorm/document-client";
 
-import { Transaction } from "@models/transactions";
+import { Transaction } from "@ts-types/models/transactions";
 
 export interface GetTransactionsResponse {
     transactions: Transaction[],

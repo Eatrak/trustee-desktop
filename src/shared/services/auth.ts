@@ -2,8 +2,8 @@ import Validator from "validatorjs";
 import { BehaviorSubject } from "rxjs";
 
 import { signInValidator, signUpValidator } from "@validatorRules/auth";
-import { Utils } from "@utils/index";
-import { SignUpBody } from "@requestTypes/auth/signUp";
+import { Utils } from "@services/utils";
+import { SignUpBody } from "@ts-types/APIs/output/auth/signUp";
 
 interface PersonalInfo {
     name: string,

@@ -1,8 +1,8 @@
 import { BehaviorSubject } from "rxjs";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Currency, Transaction, TransactionCategory, Wallet } from "@models/transactions";
-import { Utils } from "@utils/index";
+import { Currency, Transaction, TransactionCategory, Wallet } from "@ts-types/models/transactions";
+import { Utils } from "@services/utils";
 import { GetTransactionsInputQueryParams } from "@inputTypes/transactions/getTransactions";
 import { GetTransactionsResponse } from "@requestTypes/transactions/getTransactions";
 import { GetWalletsResponse } from "@requestTypes/transactions/getWallets";

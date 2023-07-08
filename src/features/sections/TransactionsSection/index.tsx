@@ -5,13 +5,13 @@ import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Currency, Transaction, Wallet } from "@models/transactions";
+import { Currency, Transaction, Wallet } from "@ts-types/models/transactions";
 import TransactionsService from "@services/transactions";
 import TextButton from "@components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
 import MultiSelect, { MultiSelectOption } from "@components/MultiSelect";
 import Statistic from "@components/Statistic";
-import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@genericTypes/currencies";
+import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@ts-types/generic/currencies";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";

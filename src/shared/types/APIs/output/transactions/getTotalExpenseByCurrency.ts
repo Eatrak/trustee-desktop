@@ -1,4 +1,4 @@
-import { TotalExpenseByCurrency } from "@genericTypes/currencies";
+import { TotalExpenseByCurrency } from "@ts-types/generic/currencies";
 
 export interface GetTotalExpenseByCurrencyResponse {
     totalExpenseByCurrency: TotalExpenseByCurrency
