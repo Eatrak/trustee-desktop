@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
 
 import AuthService from '@services/auth';
-import LoadingPage from '@pages/core/LoadingPage';
+import LoadingPage from '@customComponents/LoadingPage';
 
 interface IProps {
     children: JSX.Element,

@@ -22,7 +22,7 @@ export default defineConfig({
       { find: "@services", replacement: path.resolve(__dirname, "src/shared/services") },
       { find: "@utils", replacement: path.resolve(__dirname, "src/shared/utils") },
       { find: "@validatorRules", replacement: path.resolve(__dirname, "src/shared/validatorRules") },
-      { find: "@pages", replacement: path.resolve(__dirname, "src/pages") }
+      { find: "@features", replacement: path.resolve(__dirname, "src/features") }
     ],
   },
   server: {

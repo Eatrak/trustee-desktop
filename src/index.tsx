@@ -7,13 +7,13 @@ import Validator from 'validatorjs';
 //@ts-ignore
 import en from 'validatorjs/src/lang/en';
 
-import './themes.css';
+import './themes/light.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import SignUpPage from '@pages/auth/SignUp';
-import SignInPage from '@pages/auth/SignIn';
-import AppLayout from '@pages/core/AppLayout';
-import Authorizer from '@pages/core/Authorizer';
+import SignUpPage from '@features/core/auth/SignUp';
+import SignInPage from '@features/core/auth/SignIn';
+import AppLayout from '@customComponents/AppLayout';
+import Authorizer from '@customComponents/Authorizer';
 import TransactionsService from '@services/transactions';
 
 Validator.setMessages('en', en);
