@@ -36,7 +36,6 @@ const TransactionsSection = () => {
     let idOfTransactionToDelete = useRef<string | null>(null);
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
-    let [ selectedNewWalletCurrency, setSelectedNewWalletCurrency ] = useState<SelectOption>();
 
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
     const lastDayOfTheCurrentMonthTimestamp = dayjs(dayjs().endOf("month").format("YYYY-MM-DD"));
@@ -116,7 +115,7 @@ const TransactionsSection = () => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
             walletName: newWalletName,
-            currencyCode: selectedNewWalletCurrency!.value
+            currencyCode: selectedCurrencyCode
         });
         setIsCreatingNewWallet(false);
     };
@@ -265,14 +264,7 @@ const TransactionsSection = () => {
                     filterInputPlaceholder="Search or create a wallet by typing a name"
                     options={getWalletOptions()}
                     onSelect={(newSelectedWallets) => setSelectedWallets([ ...newSelectedWallets ])} 
-                >
-                    <MiniSelect
-                        ref={currencySelect}
-                        className="currency-select"
-                        options={getCurrencyOptions()}
-                        entityName="currency"
-                        onSelect={setSelectedNewWalletCurrency} />
-                </MultiSelect>
+                />
                 <div className="transactions-section--main__statistic-container">
                     <div className="transactions-section--main__statistic-container__left">
                         <Statistic
