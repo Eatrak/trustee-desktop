@@ -119,72 +119,77 @@ const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
     }, []);
 
     return (
-        <Dialog title="Transaction creation">
-            <div className="transaction-creation-dialog__content">
-                {/* Name */}
-                <InputTextField
-                    title="Name"
-                    validatorAttributeName="name"
-                    validatorRule={createTransactionBodyRules.transactionName}
-                    onInput={setName} />
-                {/* Wallet */}
-                <Select
-                    entityName="wallet"
-                    text="Wallet"
-                    filterInputPlaceholder="Search or create by typing a name"
-                    options={getWalletOptions()}
-                    createNewOption={createWallet}
-                    isCreatingNewOption={isCreatingNewWallet}
-                    getCreateNewOptionButtonText={(nameOfWalletToCreate) => `Create "${nameOfWalletToCreate}" wallet`}
-                    validatorRule={createTransactionBodyRules.walletId}
-                    onSelect={setWalletOption} />
-                {/* Category */}
-                <Select
-                    entityName="category"
-                    text="Category"
-                    filterInputPlaceholder="Search or create by typing a name"
-                    options={getTransactionCategoryOptions()}
-                    createNewOption={createTransactionCategory}
-                    isCreatingNewOption={isCreatingTransactionCategory}
-                    getCreateNewOptionButtonText={getCreateTransactionCategoryButtonText}
-                    validatorRule={createTransactionBodyRules.categoryId}
-                    onSelect={setCategoryOption} />
-                {/* Creation date */}
-                <DatePicker
-                    isOpened={isDatePickerOpened}
-                    setOpened={setIsDatePickerOpened}
-                    validatorAttributeName="creation date"
-                    validatorRule="required"
-                    onDateChanged={setCreationDate} />
-                {/* Value */}
-                <InputTextField
-                    title="Value"
-                    type="number"
-                    min={0}
-                    validatorAttributeName="value"
-                    validatorRule={createTransactionBodyRules.transactionAmount}
-                    onInput={(value) => setValue(Number.parseFloat(value))} />
-                {/* It's income */}
-                <Checkbox
-                    className="transaction-creation-dialog__content__is-income"
-                    text="It's income"
-                    checked={isIncome}
-                    setChecked={setIsIncome} />
-            </div>
-            <div className="transaction-creation-dialog__footer">
-                <TextButton
-                    text="Exit"
-                    size="large"
-                    clickEvent={() => close()} />
-                <NormalButton
-                    className="transaction-creation-dialog__footer__confirmation-button"
-                    Icon={MdAdd}
-                    text="Create"
-                    isLoading={isCreatingTransaction}
-                    event={createTransaction}
-                    disabled={!getFormValidator().passes() || isCreatingTransaction} />
-            </div>
-        </Dialog>
+        <Dialog
+            title="Transaction creation"
+            content={
+                <div className="transaction-creation-dialog__content">
+                    {/* Name */}
+                    <InputTextField
+                        title="Name"
+                        validatorAttributeName="name"
+                        validatorRule={createTransactionBodyRules.transactionName}
+                        onInput={setName} />
+                    {/* Wallet */}
+                    <Select
+                        entityName="wallet"
+                        text="Wallet"
+                        filterInputPlaceholder="Search or create by typing a name"
+                        options={getWalletOptions()}
+                        createNewOption={createWallet}
+                        isCreatingNewOption={isCreatingNewWallet}
+                        getCreateNewOptionButtonText={(nameOfWalletToCreate) => `Create "${nameOfWalletToCreate}" wallet`}
+                        validatorRule={createTransactionBodyRules.walletId}
+                        onSelect={setWalletOption} />
+                    {/* Category */}
+                    <Select
+                        entityName="category"
+                        text="Category"
+                        filterInputPlaceholder="Search or create by typing a name"
+                        options={getTransactionCategoryOptions()}
+                        createNewOption={createTransactionCategory}
+                        isCreatingNewOption={isCreatingTransactionCategory}
+                        getCreateNewOptionButtonText={getCreateTransactionCategoryButtonText}
+                        validatorRule={createTransactionBodyRules.categoryId}
+                        onSelect={setCategoryOption} />
+                    {/* Creation date */}
+                    <DatePicker
+                        isOpened={isDatePickerOpened}
+                        setOpened={setIsDatePickerOpened}
+                        validatorAttributeName="creation date"
+                        validatorRule="required"
+                        onDateChanged={setCreationDate} />
+                    {/* Value */}
+                    <InputTextField
+                        title="Value"
+                        type="number"
+                        min={0}
+                        validatorAttributeName="value"
+                        validatorRule={createTransactionBodyRules.transactionAmount}
+                        onInput={(value) => setValue(Number.parseFloat(value))} />
+                    {/* It's income */}
+                    <Checkbox
+                        className="transaction-creation-dialog__content__is-income"
+                        text="It's income"
+                        checked={isIncome}
+                        setChecked={setIsIncome} />
+                </div>
+            }
+            footer={
+                <div className="transaction-creation-dialog__footer">
+                    <TextButton
+                        text="Exit"
+                        size="large"
+                        clickEvent={() => close()} />
+                    <NormalButton
+                        className="transaction-creation-dialog__footer__confirmation-button"
+                        Icon={MdAdd}
+                        text="Create"
+                        isLoading={isCreatingTransaction}
+                        event={createTransaction}
+                        disabled={!getFormValidator().passes() || isCreatingTransaction} />
+                </div>
+            }
+        />
     );
 };
 

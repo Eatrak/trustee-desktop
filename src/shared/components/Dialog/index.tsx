@@ -3,16 +3,20 @@ import DialogHeader from "./DialogHeader";
 
 interface IProps {
     title: string,
-    children?: React.ReactNode
+    content?: React.ReactNode,
+    footer?: React.ReactNode
 }
 
-const Dialog = ({ title, children }: IProps) => {
+const Dialog = ({ title, content, footer }: IProps) => {
     return (
         <>
             <div className="dialog">
                 <DialogHeader title={title} />
                 <div className="dialog__content">
-                    {children}
+                    {content}
+                </div>
+                <div className="dialog__footer">
+                    {footer}
                 </div>
             </div>
             <div className="dialog-cover"></div>
