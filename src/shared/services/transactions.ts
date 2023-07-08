@@ -18,6 +18,7 @@ import { CreateTransactionResponse } from "@requestTypes/transactions/createTran
 import { GetTotalIncomeByCurrencyResponse } from "@requestTypes/transactions/getTotalIncomeByCurrency";
 import { GetTotalExpenseByCurrencyResponse } from "@requestTypes/transactions/getTotalExpenseByCurrency";
 import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@genericTypes/currencies";
+import { DeleteTransactionQueryParameters } from "@inputTypes/transactions/deleteTransaction";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -260,6 +261,52 @@ export default class TransactionsService {
         this.transactionCategories$.next(newTransactionCategories);
     }
 
+    async deleteTransaction(
+        walletId: string,
+        currencyCode: string,
+        transactionId: string,
+        transactionTimestamp: string,
+        transactionAmount: number,
+        isIncome: boolean
+    ): Promise<boolean> {
+        // Initialize query parameters
+        const queryParams: DeleteTransactionQueryParameters = {
+            walletId,
+            currencyCode,
+            transactionId,
+            transactionTimestamp
+        };
+
+        // Initialize request URL
+        const requestURL =
+            Utils.getInstance().getAPIEndpoint("/transactions?") +
+            new URLSearchParams({ ...queryParams });
+
+        // Send request
+        const response = await fetch(requestURL, {
+            method: "DELETE",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("authToken")
+            }
+        });
+
+        if (!response.ok) {
+            return false;
+        }
+
+        // Delete transaction locally
+        this.deleteTransactionLocally(transactionId);
+
+        // Update monthly-wallet-balance locally
+        this.updateMonthlyWalletBalanceLocally(
+            walletId,
+            transactionAmount,
+            isIncome
+        );
+
+        return true;
+    }
+
     /**
      * Get options of the wallets with the selected currency.
      * 
@@ -273,4 +320,16 @@ export default class TransactionsService {
 
         return newWalletsWithSelectedCurrency;
     };
+
+    /**
+     * Delete transaction by its ID locally.
+     * 
+     * @param idOfTransactionToDeleteLocally ID of the transaction to delete locally.
+     */
+    deleteTransactionLocally(idOfTransactionToDeleteLocally: string) {
+        const transactionsWithoutDeletedTransaction = this.transactions$.getValue().filter(
+            ({ transactionId }) => (transactionId != idOfTransactionToDeleteLocally)
+        );
+        this.transactions$.next([ ...transactionsWithoutDeletedTransaction ]);
+    }
 }

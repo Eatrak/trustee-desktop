@@ -17,6 +17,7 @@ import TransactionsHeader from "./TransactionsHeader";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
 import TransactionCreationDialog from "./TransactionCreationDialog";
 import TransactionItemSkeleton from "./TransactionItemSkeleton";
+import ConfirmationDialog from "@components/ConfirmationDialog";
 
 const TransactionsSection = () => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
@@ -25,11 +26,14 @@ const TransactionsSection = () => {
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
     let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
+    let [ isDeletingTransaction, setIsDeletingTransaction ] = useState<boolean>(false);
     let [ isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened ] = useState<boolean>(false);
+    let [ isTransactionDeletionDialogOpened, setIsTransactionDeletionDialogOpened ] = useState(false);
     let [ currencies, setCurrencies ] = useState<Currency[]>([]);
     let [ totalIncomeByCurrency, setTotalIncomeByCurrency ] = useState<TotalIncomeByCurrency>({});
     let [ totalExpenseByCurrency, setTotalExpenseByCurrency ] = useState<TotalExpenseByCurrency>({});
     let [ selectedCurrencyCode, setSelectedCurrencyCode ] = useState<string>("");
+    let idOfTransactionToDelete = useRef<string | null>(null);
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
     let [ selectedNewWalletCurrency, setSelectedNewWalletCurrency ] = useState<SelectOption>();
@@ -117,6 +121,56 @@ const TransactionsSection = () => {
         setIsCreatingNewWallet(false);
     };
 
+    const openTransactionDeletionDialog = (transactionId: string) => {
+        setIsTransactionDeletionDialogOpened(true);
+        idOfTransactionToDelete.current = transactionId;
+    };
+
+    const deleteTransaction = async () => {
+        setIsDeletingTransaction(true);
+
+        try {
+            const transactionToDelete = TransactionsService
+                .getInstance()
+                .transactions$.getValue()
+                .find(transaction => {
+                    console.log(transaction.transactionId, idOfTransactionToDelete.current);
+                    return transaction.transactionId == idOfTransactionToDelete.current
+                });
+
+            if (!transactionToDelete) {
+                // TODO: Give feedback to the user
+                return;
+            }
+
+            const {
+                walletId,
+                transactionId,
+                transactionTimestamp,
+                transactionAmount,
+                isIncome
+            } = transactionToDelete;
+
+            const transactionHasBeenDeleted = await TransactionsService
+                .getInstance()
+                .deleteTransaction(
+                    walletId,
+                    selectedCurrencyCode,
+                    transactionId,
+                    transactionTimestamp.toString(),
+                    -transactionAmount,
+                    isIncome
+                );
+
+            if (transactionHasBeenDeleted) {
+                setIsTransactionDeletionDialogOpened(false);
+            }
+        }
+        catch (err) {}
+
+        setIsDeletingTransaction(false);
+    };
+
     const getTransactionItemsToRender = () => {
         const transactionItemsToRender = transactions
         .filter(transaction => {
@@ -132,6 +186,7 @@ const TransactionsSection = () => {
             return (
                 <TransactionItem
                     key={transaction.transactionId}
+                    onDeleteButtonClicked={() => openTransactionDeletionDialog(transaction.transactionId)}
                     transaction={transaction}/>
             );
         });
@@ -176,6 +231,17 @@ const TransactionsSection = () => {
 
     return(
         <div className="section transactions-section">
+            {
+                // Transaction deletion dialog
+                isTransactionDeletionDialogOpened &&
+                <ConfirmationDialog
+                    title="Transaction deletion"
+                    description={<p>Are you sure to delete the transaction?</p>}
+                    isConfirming={isDeletingTransaction}
+                    confirm={() => deleteTransaction()}
+                    close={() => setIsTransactionDeletionDialogOpened(false)}
+                />
+            }
             {
                 isTransactionCreationDialogOpened &&
                 <TransactionCreationDialog
