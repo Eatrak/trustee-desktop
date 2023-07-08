@@ -66,6 +66,7 @@ const TransactionsSection = () => {
         });
         TransactionsService.getInstance().totalExpenseByCurrency$.subscribe(totalExpenseByCurrency => {
             setTotalExpenseByCurrency(totalExpenseByCurrency);
+            console.log(totalExpenseByCurrency);
         });
         TransactionsService.getInstance().wallets$.subscribe(wallets => {
             changeWallets(wallets);

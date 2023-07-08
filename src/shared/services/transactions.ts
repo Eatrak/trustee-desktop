@@ -106,15 +106,25 @@ export default class TransactionsService {
             const transactionCurrencyCode = transactionWallet.currencyCode;
 
             if (isIncome) {
+                const previousTotalIncomeByCurrency = this.totalIncomeByCurrency$.getValue();
+                const previousCurrencyTotalIncome = previousTotalIncomeByCurrency[transactionCurrencyCode] || 0;
+
                 // Update monthly-wallet-income amount
-                let updatedTotalIncomeByCurrency = this.totalIncomeByCurrency$.getValue();
-                updatedTotalIncomeByCurrency[transactionCurrencyCode] += transactionAmount;
+                const updatedTotalIncomeByCurrency = {
+                    ...previousTotalIncomeByCurrency,
+                    [transactionCurrencyCode]: previousCurrencyTotalIncome + transactionAmount
+                };
                 this.totalIncomeByCurrency$.next(updatedTotalIncomeByCurrency);
             }
             else {
+                const previousTotalExpenseByCurrency = this.totalExpenseByCurrency$.getValue();
+                const previousCurrencyTotalExpense = previousTotalExpenseByCurrency[transactionCurrencyCode] || 0;
+
                 // Update monthly-wallet-expense amount
-                let updatedTotalExpenseByCurrency = this.totalExpenseByCurrency$.getValue();
-                updatedTotalExpenseByCurrency[transactionCurrencyCode] += transactionAmount;
+                const updatedTotalExpenseByCurrency = {
+                    ...previousTotalExpenseByCurrency,
+                    [transactionCurrencyCode]: previousCurrencyTotalExpense + transactionAmount
+                };
                 this.totalExpenseByCurrency$.next(updatedTotalExpenseByCurrency);
             }
         }
