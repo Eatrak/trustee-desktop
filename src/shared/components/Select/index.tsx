@@ -24,7 +24,7 @@ interface IProps {
     createNewOption?: (filterValue: string) => any
     className?: string,
     onSelect?: (newSelectedOption: SelectOption) => any
-    selectedOption?: SelectOption,
+    selectedOption: SelectOption | null,
     options: SelectOption[],
     filterInputPlaceholder?: string,
     isCreatingNewOption?: boolean,
