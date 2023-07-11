@@ -98,6 +98,8 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
         setIsCreatingTransaction(false);
     };
 
+    const updateTransaction = async () => {};
+
     const createWallet = async (newWalletName: string) => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
@@ -242,10 +244,10 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
                         clickEvent={() => close()} />
                     <NormalButton
                         className="transaction-creation-dialog__footer__confirmation-button"
-                        Icon={MdAdd}
-                        text="Create"
+                        Icon={isCreationMode ? MdAdd : undefined}
+                        text={isCreationMode ? "Create" : "Update"}
                         isLoading={isCreatingTransaction}
-                        event={createTransaction}
+                        event={() => isCreationMode ? createTransaction() : updateTransaction()}
                         disabled={!getFormValidator().passes() || isCreatingTransaction} />
                 </div>
             }
