@@ -1,43 +1,55 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import Validator from "validatorjs";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 import "./style.css";
 import Dialog from "@components/Dialog";
 import InputTextField from "@components/InputTextField";
-import { Currency, TransactionCategory, Wallet } from "@ts-types/models/transactions";
 import TransactionsService from "@services/transactions";
 import NormalButton from "@components/NormalButton";
 import TextButton from "@components/TextButton";
 import Select, { SelectOption } from "@components/Select";
 import DatePicker from "@components/DatePicker";
-import MiniSelect from "@components/MiniSelect";
-import { createTransactionBodyRules } from "@validatorRules/transactions";
 import Checkbox from "@components/Checkbox";
+import { createTransactionBodyRules } from "@validatorRules/transactions";
+import { Transaction, TransactionCategory, Wallet } from "@ts-types/models/transactions";
 import { CreateTransactionBody } from "@ts-types/APIs/input/transactions/createTransaction";
 
 interface IProps {
     close: Function,
-    currencyCode: string
+    currencyCode: string,
+    isCreationMode: boolean,
+    openedTransaction?: Transaction
 }
 
-const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
-    let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
+const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransaction }: IProps) => {
+    if (!isCreationMode && !openedTransaction) {
+        throw new Error("The transaction dialog in update mode must receive a transaction to open");
+    }
+
     let [ wallets, setWallets ] = useState<Wallet[]>([]);
     let [ transactionCategories, setTransactionCategories ] = useState<TransactionCategory[]>([]);
-    let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
+    let [ isDatePickerOpened, setIsDatePickerOpened ] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
     let [ isCreatingTransactionCategory, setIsCreatingTransactionCategory ] = useState<boolean>(false);
     let [ isCreatingTransaction, setIsCreatingTransaction ] = useState<boolean>(false);
 
     // Form data
-    let [ name, setName ] = useState<string>();
-    let [ walletOption, setWalletOption ] = useState<SelectOption>();
-    let [ categoryOption, setCategoryOption ] = useState<SelectOption>();
-    let [ creationDate, setCreationDate ] = useState<Dayjs>();
-    let [ value, setValue ] = useState<number>();
-    let [ isIncome, setIsIncome ] = useState<boolean>(false);
+    let [ name, setName ] = useState<string>(
+        isCreationMode ? "" : openedTransaction!.transactionName
+    );
+    let [ walletOption, setWalletOption ] = useState<SelectOption | null>(null);
+    let [ categoryOption, setCategoryOption ] = useState<SelectOption | null>(null);
+    let [ creationDate, setCreationDate ] = useState<Dayjs>(
+        isCreationMode ? dayjs() : dayjs.unix(openedTransaction!.transactionTimestamp)
+    );
+    let [ value, setValue ] = useState<number>(
+        isCreationMode ? 0 : openedTransaction!.transactionAmount
+    );
+    let [ isIncome, setIsIncome ] = useState<boolean>(
+        isCreationMode ? false : openedTransaction!.isIncome
+    );
 
     const getWalletOptions = () => {
         return TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
@@ -112,20 +124,64 @@ const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
     };
 
     useEffect(() => {
-        TransactionsService.getInstance().wallets$.subscribe(setWallets);
-        TransactionsService.getInstance().transactionCategories$.subscribe(setTransactionCategories);
+        TransactionsService.getInstance().wallets$.subscribe(wallets => {
+            setWallets(wallets);
+
+            // When in update mode, set the wallet of the opened transaction as selected wallet
+            if (!isCreationMode) {
+                const openedTransactionWallet = wallets.find(wallet => wallet.walletId == openedTransaction!.walletId);
+                if (openedTransactionWallet) {
+                    setWalletOption({
+                        name: openedTransactionWallet.walletName,
+                        value: openedTransactionWallet.walletId
+                    });
+                }
+                else {
+                    // Show to the user that the wallet of the transaction doesn't exist
+                    setWalletOption({
+                        name: "Unexisting wallet",
+                        value: ""
+                    });
+                }
+            }
+        });
+        TransactionsService.getInstance().transactionCategories$.subscribe(transactionCategories => {
+            setTransactionCategories(transactionCategories);
+
+            // When in update mode, set the transaction-category of the
+            // opened transaction as selected transaction-category
+            if (!isCreationMode) {
+                const categoryOfOpenedTransaction = transactionCategories.find(transactionCategory => {
+                    return transactionCategory.transactionCategoryId == openedTransaction!.categoryId;
+                });
+                if (categoryOfOpenedTransaction) {
+                    setCategoryOption({
+                        name: categoryOfOpenedTransaction.transactionCategoryName,
+                        value: categoryOfOpenedTransaction.transactionCategoryId
+                    });
+                }
+                else {
+                    // Show to the user that the wallet of the transaction doesn't exist
+                    setWalletOption({
+                        name: "Unexisting category",
+                        value: ""
+                    });
+                }
+            }
+        });
 
         TransactionsService.getInstance().getTransactionCategories();
     }, []);
 
     return (
         <Dialog
-            title="Transaction creation"
+            title={isCreationMode ? "Transaction creation" : `"${openedTransaction!.transactionName}" transaction` }
             content={
                 <div className="transaction-creation-dialog__content">
                     {/* Name */}
                     <InputTextField
                         title="Name"
+                        value={name}
                         validatorAttributeName="name"
                         validatorRule={createTransactionBodyRules.transactionName}
                         onInput={setName} />
@@ -139,6 +195,7 @@ const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
                         isCreatingNewOption={isCreatingNewWallet}
                         getCreateNewOptionButtonText={(nameOfWalletToCreate) => `Create "${nameOfWalletToCreate}" wallet`}
                         validatorRule={createTransactionBodyRules.walletId}
+                        selectedOption={walletOption}
                         onSelect={setWalletOption} />
                     {/* Category */}
                     <Select
@@ -150,6 +207,7 @@ const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
                         isCreatingNewOption={isCreatingTransactionCategory}
                         getCreateNewOptionButtonText={getCreateTransactionCategoryButtonText}
                         validatorRule={createTransactionBodyRules.categoryId}
+                        selectedOption={categoryOption}
                         onSelect={setCategoryOption} />
                     {/* Creation date */}
                     <DatePicker
@@ -157,6 +215,7 @@ const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
                         setOpened={setIsDatePickerOpened}
                         validatorAttributeName="creation date"
                         validatorRule="required"
+                        selectedDate={creationDate}
                         onDateChanged={setCreationDate} />
                     {/* Value */}
                     <InputTextField
@@ -165,6 +224,7 @@ const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
                         min={0}
                         validatorAttributeName="value"
                         validatorRule={createTransactionBodyRules.transactionAmount}
+                        value={value}
                         onInput={(value) => setValue(Number.parseFloat(value))} />
                     {/* It's income */}
                     <Checkbox
@@ -193,4 +253,4 @@ const TransactionCreationDialog = ({ close, currencyCode }: IProps) => {
     );
 };
 
-export default TransactionCreationDialog;
+export default TransactionDialog;
