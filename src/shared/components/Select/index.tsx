@@ -24,6 +24,7 @@ interface IProps {
     createNewOption?: (filterValue: string) => any
     className?: string,
     onSelect?: (newSelectedOption: SelectOption) => any
+    selectedOption?: SelectOption,
     options: SelectOption[],
     filterInputPlaceholder?: string,
     isCreatingNewOption?: boolean,
@@ -42,6 +43,7 @@ const Select = forwardRef<IHandle, IProps>(({
     createNewOption,
     className,
     onSelect,
+    selectedOption,
     options,
     filterInputPlaceholder,
     isCreatingNewOption,
@@ -51,7 +53,6 @@ const Select = forwardRef<IHandle, IProps>(({
 }: IProps, ref) => {
     useImperativeHandle(ref, () => ({
         setSelectedOption: (newSelectedOption: SelectOption) => {
-            setSelectedOption(newSelectedOption);
             onSelect && onSelect(newSelectedOption);
         }
     }), []);
@@ -62,7 +63,6 @@ const Select = forwardRef<IHandle, IProps>(({
     let [ hasNeverBeenOpened, setHasNeverBeenOpened ] = useState<boolean>(true);
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ filteredOptions, changeFilteredOptions ] = useState<SelectOption[]>(options);
-    let [ selectedOption, setSelectedOption ] = useState<SelectOption>();
     let [ filterValue, changeFilterValue ] = useState<string>("");
     let [ errors, setErrors ] = useState<string[]>([]);
     
@@ -72,7 +72,6 @@ const Select = forwardRef<IHandle, IProps>(({
     };
 
     const selectOption = (optionToSelect: SelectOption) => {
-        setSelectedOption(optionToSelect);
         onSelect && onSelect(optionToSelect);
         switchPanelStatus();
     };
