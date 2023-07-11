@@ -7,10 +7,11 @@ import dayjs from "dayjs";
 
 interface IProps {
     transaction: Transaction,
-    onDeleteButtonClicked: Function
+    onDeleteButtonClicked: Function,
+    onClick: Function
 }
 
-const TransactionItem = ({ transaction, onDeleteButtonClicked }: IProps) => {
+const TransactionItem = ({ transaction, onDeleteButtonClicked, onClick }: IProps) => {
     const getAmountDirectionSymbol = () => {
         return transaction.isIncome ? "+" : "-";
     };
@@ -20,7 +21,7 @@ const TransactionItem = ({ transaction, onDeleteButtonClicked }: IProps) => {
     };
 
     return (
-        <div className={getTransactionItemClasses()}>
+        <div className={getTransactionItemClasses()} onClick={() => onClick()}>
             <div className="transaction-item--text-container">
                 <p className="paragraph--regular paragraph--bold transaction-item--text-container__transaction-name">
                     {transaction.transactionName}

@@ -15,7 +15,7 @@ import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@ts-types/generic
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
-import TransactionCreationDialog from "./TransactionCreationDialog";
+import TransactionDialog from "./TransactionDialog";
 import TransactionItemSkeleton from "./TransactionItemSkeleton";
 import ConfirmationDialog from "@components/ConfirmationDialog";
 
@@ -29,10 +29,12 @@ const TransactionsSection = () => {
     let [ isDeletingTransaction, setIsDeletingTransaction ] = useState<boolean>(false);
     let [ isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened ] = useState<boolean>(false);
     let [ isTransactionDeletionDialogOpened, setIsTransactionDeletionDialogOpened ] = useState(false);
+    let [ isTransactionUpdateDialogOpened, setIsTransactionUpdateDialogOpened ] = useState(false);
     let [ currencies, setCurrencies ] = useState<Currency[]>([]);
     let [ totalIncomeByCurrency, setTotalIncomeByCurrency ] = useState<TotalIncomeByCurrency>({});
     let [ totalExpenseByCurrency, setTotalExpenseByCurrency ] = useState<TotalExpenseByCurrency>({});
     let [ selectedCurrencyCode, setSelectedCurrencyCode ] = useState<string>("");
+    let openedTransaction = useRef<Transaction>();
     let idOfTransactionToDelete = useRef<string | null>(null);
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
@@ -171,6 +173,11 @@ const TransactionsSection = () => {
         setIsDeletingTransaction(false);
     };
 
+    const openTransaction = (transactionToOpen: Transaction) => {
+        openedTransaction.current = transactionToOpen;
+        setIsTransactionUpdateDialogOpened(true);
+    };
+
     const getTransactionItemsToRender = () => {
         const transactionItemsToRender = transactions
         .filter(transaction => {
@@ -186,6 +193,7 @@ const TransactionsSection = () => {
             return (
                 <TransactionItem
                     key={transaction.transactionId}
+                    onClick={() => openTransaction(transaction)}
                     onDeleteButtonClicked={() => openTransactionDeletionDialog(transaction.transactionId)}
                     transaction={transaction}/>
             );
@@ -244,9 +252,18 @@ const TransactionsSection = () => {
             }
             {
                 isTransactionCreationDialogOpened &&
-                <TransactionCreationDialog
+                <TransactionDialog
+                    isCreationMode
                     currencyCode={selectedCurrencyCode}
                     close={() => setIsTransactionCreationDialogOpened(false)} />
+            }
+            {
+                isTransactionUpdateDialogOpened &&
+                <TransactionDialog
+                    isCreationMode={false}
+                    openedTransaction={openedTransaction.current}
+                    currencyCode={selectedCurrencyCode}
+                    close={() => setIsTransactionUpdateDialogOpened(false)} />
             }
             <div className="transactions-section--main">
                 <TransactionsHeader
