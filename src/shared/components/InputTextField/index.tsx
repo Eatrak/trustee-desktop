@@ -8,7 +8,7 @@ interface IProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onIn
     placeholder?: string,
     validatorAttributeName: string,
     validatorRule?: string | Array<string | TypeCheckingRule> | Rules,
-    value: string | number | readonly string[] | undefined,
+    value: string | number | readonly string[],
     onInput?: (value: string) => void,
     testId?: string,
     type?: string
