@@ -35,10 +35,10 @@ const SignInForm = () => {
         <FormLayout header="Welcome back!" submitText="Sign in" submitEvent={signIn} submitDisabled={submitDisabled}>
             {/* Email field */}
             <InputTextField testId="emailField" validatorRule={signInValidator.email} validatorAttributeName="email"
-                title="Email" placeholder="johndoe@test.com" onInput={setEmail}/>
+                title="Email" placeholder="johndoe@test.com" value={email} onInput={setEmail}/>
             {/* Password field */}
             <InputTextField testId="passwordField" validatorRule={signInValidator.password}
-                validatorAttributeName="password" title="Password" type="password" onInput={setPassword}/>
+                validatorAttributeName="password" title="Password" type="password" value={password} onInput={setPassword}/>
         </FormLayout>
     );
 };
