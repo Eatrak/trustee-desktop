@@ -12,6 +12,7 @@ interface IProps {
     isOpened: boolean,
     setOpened: Function,
     onDateChanged?: (selectedDate: Dayjs) => any,
+    selectedDate: Dayjs,
     validatorAttributeName: string,
     validatorRule?: string | Array<string | TypeCheckingRule> | Rules
 }
@@ -21,6 +22,7 @@ const DatePicker = ({
     isOpened,
     setOpened,
     onDateChanged,
+    selectedDate,
     validatorAttributeName,
     validatorRule
 }: IProps) => {
@@ -32,7 +34,6 @@ const DatePicker = ({
     let [ hasNeverBeenOpened, setHasNeverBeenOpened ] = useState<boolean>(true);
     let [canBeOpened, setCanBeOpened] = useState<boolean>(true);
     let [selectedYearAndMonth, setYearAndMonth] = useState<string>(currentYearAndMonth);
-    let [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
     let [ errors, setErrors ] = useState<string[]>([]);
 
     const selectPreviousMonth = () => {
@@ -46,7 +47,6 @@ const DatePicker = ({
     };
 
     const selectDate = (dateToSelect: Dayjs) => {
-        setSelectedDate(dateToSelect);
         onDateChanged && onDateChanged(dateToSelect);
         setOpened(false);
     };
