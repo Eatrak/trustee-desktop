@@ -21,14 +21,13 @@ const InputTextField = ({
     onInput,
     testId,
     type,
+    value,
     ...nativeInputProps
 }: IProps) => {
     
     let [ errors, setErrors ] = useState<string[]>([]);
-    let [ value, setValue ] = useState<string | number>();
 
     const changeValue = (newValue: string) => {
-        setValue(newValue);
         onInput && onInput(newValue);
     };
 
@@ -58,6 +57,7 @@ const InputTextField = ({
             <p className="paragraph--small paragraph--bold input-text-field__title">{title}</p>
             <input data-testid={testId} type={type}
                 {...nativeInputProps}
+                value={value}
                 onInput={(e) => changeValue(e.currentTarget.value)}
                 onBlur={checkErrors} className="input-text-field__input" placeholder={placeholder}/>
             {renderErrors()}
