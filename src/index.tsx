@@ -32,6 +32,7 @@ const App = () => {
   const loadResources = async () => {
     await Promise.all([
       TransactionsService.getInstance().getWallets(),
+      TransactionsService.getInstance().getTransactionCategories(),
       TransactionsService.getInstance().getCurrencies(),
       TransactionsService.getInstance().getTotalIncomeByCurrency(),
       TransactionsService.getInstance().getTotalExpenseByCurrency()
