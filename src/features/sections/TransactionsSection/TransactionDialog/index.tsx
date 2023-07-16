@@ -13,17 +13,17 @@ import Select, { SelectOption } from "@components/Select";
 import DatePicker from "@components/DatePicker";
 import Checkbox from "@components/Checkbox";
 import { createTransactionBodyRules } from "@validatorRules/transactions";
-import { Transaction, TransactionCategory, Wallet } from "@ts-types/models/transactions";
+import { Transaction, TransactionCategory, Wallet } from "@ts-types/schema";
 import { CreateTransactionBody } from "@ts-types/APIs/input/transactions/createTransaction";
 
 interface IProps {
     close: Function,
-    currencyCode: string,
+    currencyId: string,
     isCreationMode: boolean,
     openedTransaction?: Transaction
 }
 
-const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransaction }: IProps) => {
+const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransaction }: IProps) => {
     if (!isCreationMode && !openedTransaction) {
         throw new Error("The transaction dialog in update mode must receive a transaction to open");
     }
@@ -37,15 +37,15 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
 
     // Form data
     let [ name, setName ] = useState<string>(
-        isCreationMode ? "" : openedTransaction!.transactionName
+        isCreationMode ? "" : openedTransaction!.name
     );
     let [ walletOption, setWalletOption ] = useState<SelectOption | null>(null);
     let [ categoryOption, setCategoryOption ] = useState<SelectOption | null>(null);
     let [ creationDate, setCreationDate ] = useState<Dayjs>(
-        isCreationMode ? dayjs() : dayjs.unix(openedTransaction!.transactionTimestamp)
+        isCreationMode ? dayjs() : dayjs.unix(openedTransaction!.carriedOut)
     );
     let [ value, setValue ] = useState<number>(
-        isCreationMode ? 0 : openedTransaction!.transactionAmount
+        isCreationMode ? 0 : openedTransaction!.amount
     );
     let [ isIncome, setIsIncome ] = useState<boolean>(
         isCreationMode ? false : openedTransaction!.isIncome
@@ -54,27 +54,27 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
     const getWalletOptions = () => {
         return TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
             wallets,
-            currencyCode
+            currencyId
         );
     };
 
     const getTransactionCategoryOptions = (): SelectOption[] => {
         return transactionCategories.map(({
-            transactionCategoryId,
-            transactionCategoryName
+            id,
+            name
         }) => ({
-            name: transactionCategoryName,
-            value: transactionCategoryId
+            name: name,
+            value: id
         }));
     };
 
     const getFormValidator = () => {
         const formData: CreateTransactionBody = {
-            transactionName: name!,
+            name,
             walletId: walletOption?.value!,
             categoryId: categoryOption?.value!,
-            transactionTimestamp: creationDate?.unix()!,
-            transactionAmount: value!,
+            carriedOut: creationDate?.unix()!,
+            amount: value!,
             isIncome
         };
 
@@ -98,36 +98,11 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
         setIsSubmittingTransaction(false);
     };
 
-    const updateTransaction = async () => {
-        const formValidator = getFormValidator();
-        if (formValidator.fails()) return;
-
-        setIsSubmittingTransaction(true);
-
-        const hasTransactionBeenUpdated = await TransactionsService.getInstance().updateTransaction({
-            attributesForSearching: {
-                transactionId: openedTransaction!.transactionId,
-                transactionTimestamp: openedTransaction!.transactionTimestamp,
-                walletId: openedTransaction!.walletId
-            },
-            updatedAttributes: {
-                ...formValidator.input
-            }
-        });
-
-        if (hasTransactionBeenUpdated) {
-            close();
-            return;
-        }
-
-        setIsSubmittingTransaction(false);
-    };
-
     const createWallet = async (newWalletName: string) => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
-            walletName: newWalletName,
-            currencyCode
+            name: newWalletName,
+            currencyId
         });
         setIsCreatingNewWallet(false);
     };
@@ -137,7 +112,7 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
     ) => {
         setIsCreatingTransactionCategory(true);
         await TransactionsService.getInstance().createTransactionCategory({
-            transactionCategoryName: nameOfTransactionCategoryToCreate
+            name: nameOfTransactionCategoryToCreate
         });
         setIsCreatingTransactionCategory(false);
     };
@@ -154,11 +129,11 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
 
             // When in update mode, set the wallet of the opened transaction as selected wallet
             if (!isCreationMode) {
-                const openedTransactionWallet = wallets.find(wallet => wallet.walletId == openedTransaction!.walletId);
+                const openedTransactionWallet = wallets.find(wallet => wallet.id == openedTransaction!.walletId);
                 if (openedTransactionWallet) {
                     setWalletOption({
-                        name: openedTransactionWallet.walletName,
-                        value: openedTransactionWallet.walletId
+                        name: openedTransactionWallet.name,
+                        value: openedTransactionWallet.id
                     });
                 }
                 else {
@@ -177,12 +152,12 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
             // opened transaction as selected transaction-category
             if (!isCreationMode) {
                 const categoryOfOpenedTransaction = transactionCategories.find(transactionCategory => {
-                    return transactionCategory.transactionCategoryId == openedTransaction!.categoryId;
+                    return transactionCategory.id == openedTransaction!.categoryId;
                 });
                 if (categoryOfOpenedTransaction) {
                     setCategoryOption({
-                        name: categoryOfOpenedTransaction.transactionCategoryName,
-                        value: categoryOfOpenedTransaction.transactionCategoryId
+                        name: categoryOfOpenedTransaction.name,
+                        value: categoryOfOpenedTransaction.id
                     });
                 }
                 else {
@@ -200,7 +175,7 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
 
     return (
         <Dialog
-            title={isCreationMode ? "Transaction creation" : `"${openedTransaction!.transactionName}" transaction` }
+            title={isCreationMode ? "Transaction creation" : `"${openedTransaction!.name}" transaction` }
             content={
                 <div className="transaction-creation-dialog__content">
                     {/* Name */}
@@ -270,7 +245,7 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
                         Icon={isCreationMode ? MdAdd : undefined}
                         text={isCreationMode ? "Create" : "Update"}
                         isLoading={isSubmittingTransaction}
-                        event={() => isCreationMode ? createTransaction() : updateTransaction()}
+                        event={() => isCreationMode && createTransaction()}
                         disabled={!getFormValidator().passes() || isSubmittingTransaction} />
                 </div>
             }

@@ -5,7 +5,7 @@ import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Currency, Transaction, Wallet } from "@ts-types/models/transactions";
+import { Currency, Transaction, Wallet } from "@ts-types/schema";
 import TransactionsService from "@services/transactions";
 import TextButton from "@components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
@@ -33,7 +33,7 @@ const TransactionsSection = () => {
     let [ currencies, setCurrencies ] = useState<Currency[]>([]);
     let [ totalIncomeByCurrency, setTotalIncomeByCurrency ] = useState<TotalIncomeByCurrency>({});
     let [ totalExpenseByCurrency, setTotalExpenseByCurrency ] = useState<TotalExpenseByCurrency>({});
-    let [ selectedCurrencyCode, setSelectedCurrencyCode ] = useState<string>("");
+    let [ selectedCurrency, setSelectedCurrency ] = useState<string>("");
     let openedTransaction = useRef<Transaction>();
     let idOfTransactionToDelete = useRef<string | null>(null);
 
@@ -44,17 +44,10 @@ const TransactionsSection = () => {
 
     const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
 
-    const getCurrencyOptions = (): SelectOption[] => {
-        return currencies.map(({ currencyCode, currencySymbol }) => ({
-            name: `${currencySymbol} ${currencyCode}`,
-            value: currencyCode
-        }));
-    };
-
     const getSelectedCurrencySymbol = (): string => {
-        const currencySymbol = currencies.find(({ currencyCode }) => (
-            currencyCode == selectedCurrencyCode
-        ))?.currencySymbol;
+        const currencySymbol = currencies.find(({ id }) => (
+            id == selectedCurrency
+        ))?.symbol;
 
         return currencySymbol ? currencySymbol : "";
     };
@@ -81,10 +74,10 @@ const TransactionsSection = () => {
             }
 
             // Set default currency option
-            const { currencyCode, currencySymbol } = currencies[0];
+            const { id, code, symbol } = currencies[0];
             currencySelect.current?.setSelectedOption({
-                name: `${currencySymbol} ${currencyCode}`,
-                value: currencyCode
+                name: `${symbol} ${code}`,
+                value: id
             });
         });
         
@@ -94,20 +87,12 @@ const TransactionsSection = () => {
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
         changeTransactionsLoading(true);
         // Get transactions by both selected currency and creation range
-        const newCursor = await TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
-            selectedCurrencyCode,
+        await TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
+            selectedCurrency,
             startDate,
             endDate
         );
         changeTransactionsLoading(false);
-        changeCursor(newCursor);
-    };
-
-    let getNextTransactions = async () => {
-        if (cursor) {
-            const newCursor = await TransactionsService.getInstance().getNextTransactionsByCreationRange(cursor);
-            changeCursor(newCursor);
-        }
     };
 
     const changeTimeRangeOfTransactionsToShow = async ({ startDate, endDate }: OnRangeDatePickerRangeChangedEvent) => {
@@ -117,8 +102,8 @@ const TransactionsSection = () => {
     const createWallet = async (newWalletName: string) => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
-            walletName: newWalletName,
-            currencyCode: selectedCurrencyCode
+            name: newWalletName,
+            currencyId: selectedCurrency
         });
         setIsCreatingNewWallet(false);
     };
@@ -132,37 +117,14 @@ const TransactionsSection = () => {
         setIsDeletingTransaction(true);
 
         try {
-            const transactionToDelete = TransactionsService
-                .getInstance()
-                .transactions$.getValue()
-                .find(transaction => {
-                    console.log(transaction.transactionId, idOfTransactionToDelete.current);
-                    return transaction.transactionId == idOfTransactionToDelete.current
-                });
-
-            if (!transactionToDelete) {
+            if (!idOfTransactionToDelete.current) {
                 // TODO: Give feedback to the user
                 return;
             }
 
-            const {
-                walletId,
-                transactionId,
-                transactionTimestamp,
-                transactionAmount,
-                isIncome
-            } = transactionToDelete;
-
             const transactionHasBeenDeleted = await TransactionsService
                 .getInstance()
-                .deleteTransaction(
-                    walletId,
-                    selectedCurrencyCode,
-                    transactionId,
-                    transactionTimestamp.toString(),
-                    -transactionAmount,
-                    isIncome
-                );
+                .deleteTransaction(idOfTransactionToDelete.current);
 
             if (transactionHasBeenDeleted) {
                 setIsTransactionDeletionDialogOpened(false);
@@ -192,9 +154,9 @@ const TransactionsSection = () => {
         .map(transaction => {
             return (
                 <TransactionItem
-                    key={transaction.transactionId}
+                    key={transaction.id}
                     onClick={() => openTransaction(transaction)}
-                    onDeleteButtonClicked={() => openTransactionDeletionDialog(transaction.transactionId)}
+                    onDeleteButtonClicked={() => openTransactionDeletionDialog(transaction.id)}
                     transaction={transaction}/>
             );
         });
@@ -208,17 +170,17 @@ const TransactionsSection = () => {
         return transactionItemsToRender;
     };
 
-    const changeCurrencyCodeInstantly = (newSelectedCurrencyCode: string) => {
+    const changeCurrencyCodeInstantly = (newSelectedCurrency: string) => {
         // Make sure the new selected currency-code is available instantly
-        selectedCurrencyCode = newSelectedCurrencyCode;
+        selectedCurrency = newSelectedCurrency;
         // Re-render by setting the new state
-        setSelectedCurrencyCode(newSelectedCurrencyCode);
+        setSelectedCurrency(newSelectedCurrency);
     };
 
     const getWalletOptions = () => {
         return TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
             wallets,
-            selectedCurrencyCode
+            selectedCurrency
         );
     };
 
@@ -227,7 +189,7 @@ const TransactionsSection = () => {
         walletsMultiSelectRef.current?.setSelectedOptions(
             TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
                 wallets,
-                selectedCurrencyCode
+                selectedCurrency
             )
         );
         
@@ -235,7 +197,7 @@ const TransactionsSection = () => {
             firstDayOfTheCurrentMonthTimestamp,
             lastDayOfTheCurrentMonthTimestamp
         );
-    }, [selectedCurrencyCode]);
+    }, [selectedCurrency]);
 
     return(
         <div className="section transactions-section">
@@ -254,7 +216,7 @@ const TransactionsSection = () => {
                 isTransactionCreationDialogOpened &&
                 <TransactionDialog
                     isCreationMode
-                    currencyCode={selectedCurrencyCode}
+                    currencyId={selectedCurrency}
                     close={() => setIsTransactionCreationDialogOpened(false)} />
             }
             {
@@ -262,7 +224,7 @@ const TransactionsSection = () => {
                 <TransactionDialog
                     isCreationMode={false}
                     openedTransaction={openedTransaction.current}
-                    currencyCode={selectedCurrencyCode}
+                    currencyId={selectedCurrency}
                     close={() => setIsTransactionUpdateDialogOpened(false)} />
             }
             <div className="transactions-section--main">
@@ -287,10 +249,10 @@ const TransactionsSection = () => {
                     <div className="transactions-section--main__statistic-container__left">
                         <Statistic
                             title="Total Income"
-                            value={`${getSelectedCurrencySymbol()} ${totalIncomeByCurrency[selectedCurrencyCode] || 0}`} />
+                            value={`${getSelectedCurrencySymbol()} ${totalIncomeByCurrency[selectedCurrency] || 0}`} />
                         <Statistic
                             title="Total Expense"
-                            value={`${getSelectedCurrencySymbol()} ${totalExpenseByCurrency[selectedCurrencyCode] || 0}`} />
+                            value={`${getSelectedCurrencySymbol()} ${totalExpenseByCurrency[selectedCurrency] || 0}`} />
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
                         <Statistic
@@ -298,8 +260,8 @@ const TransactionsSection = () => {
                             value={`
                                 ${getSelectedCurrencySymbol()} 
                                 ${
-                                    totalIncomeByCurrency[selectedCurrencyCode] -
-                                    totalExpenseByCurrency[selectedCurrencyCode]
+                                    totalIncomeByCurrency[selectedCurrency] -
+                                    totalExpenseByCurrency[selectedCurrency]
                                     || 0
                                 }`
                             }
@@ -313,7 +275,7 @@ const TransactionsSection = () => {
                         }
                     </div>
                 </div>
-                {cursor && <TextButton Icon={MdAdd} text="Load more" clickEvent={getNextTransactions} isLoading={isLoadingTransactions}/>}
+                {cursor && <TextButton Icon={MdAdd} text="Load more" isLoading={isLoadingTransactions}/>}
             </div>
             <div className="transactions-section--details"></div>
         </div>

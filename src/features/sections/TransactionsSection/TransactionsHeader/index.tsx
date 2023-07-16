@@ -1,14 +1,14 @@
 import "./style.css";
 
 import { useEffect, useRef, useState } from "react";
-import { MdAdd, MdDateRange, MdRefresh } from "react-icons/md";
+import { MdAdd, MdRefresh } from "react-icons/md";
 import { Dayjs } from "dayjs";
 
 import RoundedTextIconButton from "@components/RoundedTextIconButton";
 import RoundedIconButton from "@components/RoundedIconButton";
 import RangeDatePicker, { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
-import { Currency } from "@ts-types/models/transactions";
+import { Currency } from "@ts-types/schema";
 import TransactionsService from "@services/transactions";
 
 interface IProps {
@@ -42,9 +42,9 @@ const TransactionsHeader = ({
     };
 
     const getCurrencyOptions = (): SelectOption[] => {
-        return currencies.map(({ currencyCode, currencySymbol }) => ({
-            name: `${currencySymbol} ${currencyCode}`,
-            value: currencyCode
+        return currencies.map(({ id, symbol }) => ({
+            name: `${symbol} ${id}`,
+            value: id
         }));
     };
 
@@ -58,10 +58,10 @@ const TransactionsHeader = ({
             }
 
             // Set default currency option
-            const { currencyCode, currencySymbol } = currencies[0];
+            const { id, code, symbol } = currencies[0];
             currencySelect.current?.setSelectedOption({
-                name: `${currencySymbol} ${currencyCode}`,
-                value: currencyCode
+                name: `${symbol} ${code}`,
+                value: id
             });
         });
     }, []);
