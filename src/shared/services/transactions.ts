@@ -1,24 +1,25 @@
 import { BehaviorSubject } from "rxjs";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Currency, Transaction, TransactionCategory, Wallet } from "@ts-types/models/transactions";
+import { Currency, Transaction, TransactionCategory, Wallet } from "@ts-types/schema";
 import { Utils } from "@services/utils";
-import { GetTransactionsInputQueryParams } from "@inputTypes/transactions/getTransactions";
-import { GetTransactionsResponse } from "@requestTypes/transactions/getTransactions";
-import { GetWalletsResponse } from "@requestTypes/transactions/getWallets";
-import { CreateWalletResponse } from "@requestTypes/transactions/createWallet";
+import { GetTransactionsInputQueryParams } from "@ts-types/APIs/input/transactions/getTransactions";
+import { GetTransactionsResponse } from "@ts-types/APIs/output/transactions/getTransactions";
+import { GetWalletsResponse } from "@ts-types/APIs/output/transactions/getWallets";
+import { CreateWalletResponse } from "@ts-types/APIs/output/transactions/createWallet";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
-import { CreateWalletBody } from "@inputTypes/transactions/createWallet";
-import { GetCurrenciesResponse } from "@requestTypes/transactions/getCurrencies";
-import { GetTransactionCategoriesResponse } from "@requestTypes/transactions/getTransactionCategories";
-import { CreateTransactionCategoryResponse } from "@requestTypes/transactions/createTransactionCategory";
-import { CreateTransactionCategoryBody } from "@inputTypes/transactions/createTransactionCategory";
-import { CreateTransactionBody } from "@inputTypes/transactions/createTransaction";
-import { CreateTransactionResponse } from "@requestTypes/transactions/createTransactionResponse";
-import { GetTotalIncomeByCurrencyResponse } from "@requestTypes/transactions/getTotalIncomeByCurrency";
-import { GetTotalExpenseByCurrencyResponse } from "@requestTypes/transactions/getTotalExpenseByCurrency";
-import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@genericTypes/currencies";
-import { DeleteTransactionQueryParameters } from "@inputTypes/transactions/deleteTransaction";
+import { CreateWalletBody } from "@ts-types/APIs/input/transactions/createWallet";
+import { GetCurrenciesResponse } from "@ts-types/APIs/output/transactions/getCurrencies";
+import { GetTransactionCategoriesResponse } from "@ts-types/APIs/output/transactions/getTransactionCategories";
+import { CreateTransactionCategoryResponse } from "@ts-types/APIs/output/transactions/createTransactionCategory";
+import { CreateTransactionCategoryBody } from "@ts-types/APIs/input/transactions/createTransactionCategory";
+import { CreateTransactionBody } from "@ts-types/APIs/input/transactions/createTransaction";
+import { CreateTransactionResponse } from "@ts-types/APIs/output/transactions/createTransactionResponse";
+import { GetTotalIncomeByCurrencyResponse } from "@ts-types/APIs/output/transactions/getTotalIncomeByCurrency";
+import { GetTotalExpenseByCurrencyResponse } from "@ts-types/APIs/output/transactions/getTotalExpenseByCurrency";
+import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@ts-types/generic/currencies";
+import { DeleteTransactionQueryParameters } from "@ts-types/APIs/input/transactions/deleteTransaction";
+import { UpdateTransactionBody } from "@ts-types/APIs/input/transactions/updateTransaction";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -76,6 +77,42 @@ export default class TransactionsService {
                 transactionAmount,
                 isIncome
             );
+
+            return true;
+        }
+        catch (err) {
+            return false;
+        }
+    }
+
+    /**
+     * Update transaction.
+     * 
+     * @param input Input used to update transaction.
+     * @returns The transaction has been updated.
+     */
+    async updateTransaction(input: UpdateTransactionBody): Promise<boolean> {
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint("/transactions");
+            const response = await fetch(requestURL, {
+                method: "PUT",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("authToken")
+                },
+                body: JSON.stringify(input)
+            });
+
+            if (!response.ok) {
+                return false;
+            }
+
+            // Update monthly-wallet-balance locally
+            // const { walletId, transactionAmount, isIncome } = updatedTransaction;
+            // this.updateMonthlyWalletBalanceLocally(
+            //     walletId,
+            //     transactionAmount,
+            //     isIncome
+            // );
 
             return true;
         }

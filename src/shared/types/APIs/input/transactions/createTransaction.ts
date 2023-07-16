@@ -1,8 +1,8 @@
 export interface CreateTransactionBody {
-    transactionName: string,
+    name: string,
     walletId: string,
     categoryId: string,
-    transactionTimestamp: number,
-    transactionAmount: number,
+    carriedOut: number,
+    amount: number,
     isIncome: boolean
 }

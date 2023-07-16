@@ -1,3 +1,3 @@
 export interface CreateTransactionCategoryBody {
-    transactionCategoryName: string
+    name: string
 }

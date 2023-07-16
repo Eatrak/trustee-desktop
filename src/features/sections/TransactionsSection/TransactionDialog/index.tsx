@@ -33,7 +33,7 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
     let [ isDatePickerOpened, setIsDatePickerOpened ] = useState<boolean>(false);
     let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
     let [ isCreatingTransactionCategory, setIsCreatingTransactionCategory ] = useState<boolean>(false);
-    let [ isCreatingTransaction, setIsCreatingTransaction ] = useState<boolean>(false);
+    let [ isSubmittingTransaction, setIsSubmittingTransaction ] = useState<boolean>(false);
 
     // Form data
     let [ name, setName ] = useState<string>(
@@ -85,7 +85,7 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
         const formValidator = getFormValidator();
         if (formValidator.fails()) return;
         
-        setIsCreatingTransaction(true);
+        setIsSubmittingTransaction(true);
         const isNewTransactionCreated = await TransactionsService.getInstance().createTransaction(
             formValidator.input as any // The form data aren't undefined due to the passed validation
         );
@@ -95,10 +95,33 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
             return;
         }
 
-        setIsCreatingTransaction(false);
+        setIsSubmittingTransaction(false);
     };
 
-    const updateTransaction = async () => {};
+    const updateTransaction = async () => {
+        const formValidator = getFormValidator();
+        if (formValidator.fails()) return;
+
+        setIsSubmittingTransaction(true);
+
+        const hasTransactionBeenUpdated = await TransactionsService.getInstance().updateTransaction({
+            attributesForSearching: {
+                transactionId: openedTransaction!.transactionId,
+                transactionTimestamp: openedTransaction!.transactionTimestamp,
+                walletId: openedTransaction!.walletId
+            },
+            updatedAttributes: {
+                ...formValidator.input
+            }
+        });
+
+        if (hasTransactionBeenUpdated) {
+            close();
+            return;
+        }
+
+        setIsSubmittingTransaction(false);
+    };
 
     const createWallet = async (newWalletName: string) => {
         setIsCreatingNewWallet(true);
@@ -246,9 +269,9 @@ const TransactionDialog = ({ close, currencyCode, isCreationMode, openedTransact
                         className="transaction-creation-dialog__footer__confirmation-button"
                         Icon={isCreationMode ? MdAdd : undefined}
                         text={isCreationMode ? "Create" : "Update"}
-                        isLoading={isCreatingTransaction}
+                        isLoading={isSubmittingTransaction}
                         event={() => isCreationMode ? createTransaction() : updateTransaction()}
-                        disabled={!getFormValidator().passes() || isCreatingTransaction} />
+                        disabled={!getFormValidator().passes() || isSubmittingTransaction} />
                 </div>
             }
         />
