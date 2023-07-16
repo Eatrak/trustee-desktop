@@ -17,7 +17,8 @@ interface IProps {
     getCreateNewOptionButtonText?: (filterValue: string) => string,
     createNewOption?: (filterValue: string) => any
     className?: string,
-    onSelect?: (newSelectedOption: SelectOption) => any
+    onSelect?: (newSelectedOption: SelectOption) => any,
+    selectedOption: SelectOption,
     options: SelectOption[],
     filterInputPlaceholder?: string,
     isCreatingNewOption?: boolean,
@@ -32,13 +33,13 @@ interface IHandle {
 const MiniSelect = forwardRef<IHandle, IProps>(({
     className,
     onSelect,
+    selectedOption,
     options,
     entityName,
     validatorRule
 }: IProps, ref) => {
     useImperativeHandle(ref, () => ({
         setSelectedOption: (newSelectedOption: SelectOption) => {
-            setSelectedOption(newSelectedOption);
             onSelect && onSelect(newSelectedOption);
         }
     }), []);
@@ -48,7 +49,6 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
     const isFirstRender = useRef(true);
     let [ opened, setOpened ] = useState<boolean>(false);
     let [ hasNeverBeenOpened, setHasNeverBeenOpened ] = useState<boolean>(true);
-    let [ selectedOption, setSelectedOption ] = useState<SelectOption>();
     let [ errors, setErrors ] = useState<string[]>([]);
     
     const switchPanelStatus = () => {
@@ -57,7 +57,6 @@ const MiniSelect = forwardRef<IHandle, IProps>(({
     };
 
     const selectOption = (optionToSelect: SelectOption) => {
-        setSelectedOption(optionToSelect);
         onSelect && onSelect(optionToSelect);
         switchPanelStatus();
     };

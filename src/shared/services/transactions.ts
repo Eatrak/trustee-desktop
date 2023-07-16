@@ -7,7 +7,6 @@ import { GetTransactionsByCurrencyAndCreationRangeInput } from "@ts-types/APIs/i
 import { GetTransactionsResponse } from "@ts-types/APIs/output/transactions/getTransactions";
 import { GetWalletsResponse } from "@ts-types/APIs/output/transactions/getWallets";
 import { CreateWalletResponse } from "@ts-types/APIs/output/transactions/createWallet";
-import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import { CreateWalletBody } from "@ts-types/APIs/input/transactions/createWallet";
 import { GetCurrenciesResponse } from "@ts-types/APIs/output/transactions/getCurrencies";
 import { GetTransactionCategoriesResponse } from "@ts-types/APIs/output/transactions/getTransactionCategories";
@@ -15,7 +14,6 @@ import { CreateTransactionCategoryResponse } from "@ts-types/APIs/output/transac
 import { CreateTransactionCategoryBody } from "@ts-types/APIs/input/transactions/createTransactionCategory";
 import { CreateTransactionBody } from "@ts-types/APIs/input/transactions/createTransaction";
 import { CreateTransactionResponse } from "@ts-types/APIs/output/transactions/createTransactionResponse";
-import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@ts-types/generic/currencies";
 import { DeleteTransactionQueryParameters } from "@ts-types/APIs/input/transactions/deleteTransaction";
 import { UpdateTransactionBody } from "@ts-types/APIs/input/transactions/updateTransaction";
 
@@ -26,16 +24,12 @@ export default class TransactionsService {
     wallets$: BehaviorSubject<Wallet[]>;
     currencies$: BehaviorSubject<Currency[]>;
     transactionCategories$: BehaviorSubject<TransactionCategory[]>;
-    totalIncomeByCurrency$: BehaviorSubject<TotalIncomeByCurrency>;
-    totalExpenseByCurrency$: BehaviorSubject<TotalExpenseByCurrency>;
 
     private constructor() {
         this.transactions$ = new BehaviorSubject<Transaction[]>([]);
         this.wallets$ = new BehaviorSubject<Wallet[]>([]);
         this.currencies$ = new BehaviorSubject<Currency[]>([]);
         this.transactionCategories$ = new BehaviorSubject<TransactionCategory[]>([]);
-        this.totalIncomeByCurrency$ = new BehaviorSubject<TotalIncomeByCurrency>({});
-        this.totalExpenseByCurrency$ = new BehaviorSubject<TotalExpenseByCurrency>({});
     }
     
     static getInstance() {

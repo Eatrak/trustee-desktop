@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BehaviorSubject } from 'rxjs';
 
 import AuthService from '@services/auth';
 import LoadingPage from '@customComponents/LoadingPage';

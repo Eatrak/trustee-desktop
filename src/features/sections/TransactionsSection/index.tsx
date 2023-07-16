@@ -11,16 +11,13 @@ import TextButton from "@components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
 import MultiSelect, { MultiSelectOption } from "@components/MultiSelect";
 import Statistic from "@components/Statistic";
-import { TotalExpenseByCurrency, TotalIncomeByCurrency } from "@ts-types/generic/currencies";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
-import MiniSelect, { SelectOption } from "@components/MiniSelect";
 import TransactionDialog from "./TransactionDialog";
 import TransactionItemSkeleton from "./TransactionItemSkeleton";
 import ConfirmationDialog from "@components/ConfirmationDialog";
 
 const TransactionsSection = () => {
-    let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
     let [ transactions, changeTransactions ] = useState<Transaction[]>([]);
     let [ wallets, changeWallets ] = useState<Wallet[]>([]);
     let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
@@ -31,8 +28,6 @@ const TransactionsSection = () => {
     let [ isTransactionDeletionDialogOpened, setIsTransactionDeletionDialogOpened ] = useState(false);
     let [ isTransactionUpdateDialogOpened, setIsTransactionUpdateDialogOpened ] = useState(false);
     let [ currencies, setCurrencies ] = useState<Currency[]>([]);
-    let [ totalIncomeByCurrency, setTotalIncomeByCurrency ] = useState<TotalIncomeByCurrency>({});
-    let [ totalExpenseByCurrency, setTotalExpenseByCurrency ] = useState<TotalExpenseByCurrency>({});
     let [ selectedCurrency, setSelectedCurrency ] = useState<string>("");
     let openedTransaction = useRef<Transaction>();
     let idOfTransactionToDelete = useRef<string | null>(null);
@@ -56,13 +51,6 @@ const TransactionsSection = () => {
         TransactionsService.getInstance().transactions$.subscribe(transactions => {
             changeTransactions(transactions);
         });
-        TransactionsService.getInstance().totalIncomeByCurrency$.subscribe(totalIncomeByCurrency => {
-            setTotalIncomeByCurrency(totalIncomeByCurrency);
-        });
-        TransactionsService.getInstance().totalExpenseByCurrency$.subscribe(totalExpenseByCurrency => {
-            setTotalExpenseByCurrency(totalExpenseByCurrency);
-            console.log(totalExpenseByCurrency);
-        });
         TransactionsService.getInstance().wallets$.subscribe(wallets => {
             changeWallets(wallets);
         });
@@ -74,14 +62,9 @@ const TransactionsSection = () => {
             }
 
             // Set default currency option
-            const { id, code, symbol } = currencies[0];
-            currencySelect.current?.setSelectedOption({
-                name: `${symbol} ${code}`,
-                value: id
-            });
+            const { id } = currencies[0];
+            changeCurrencyCodeInstantly(id);
         });
-        
-        getTransactionsByCreationRange(firstDayOfTheCurrentMonthTimestamp, lastDayOfTheCurrentMonthTimestamp);
     }, []);
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
@@ -96,6 +79,7 @@ const TransactionsSection = () => {
     };
 
     const changeTimeRangeOfTransactionsToShow = async ({ startDate, endDate }: OnRangeDatePickerRangeChangedEvent) => {
+        if (!selectedCurrency) return;
         await getTransactionsByCreationRange(startDate, endDate);
     };
 
@@ -185,6 +169,8 @@ const TransactionsSection = () => {
     };
 
     useEffect(() => {
+        if (!selectedCurrency) return;
+
         // Select all wallets with the selected currency
         walletsMultiSelectRef.current?.setSelectedOptions(
             TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
@@ -229,6 +215,7 @@ const TransactionsSection = () => {
             }
             <div className="transactions-section--main">
                 <TransactionsHeader
+                    selectedCurrency={selectedCurrency}
                     setSelectedCurrencyCode={changeCurrencyCodeInstantly}
                     initialStartDate={firstDayOfTheCurrentMonthTimestamp}
                     initialEndDate={lastDayOfTheCurrentMonthTimestamp}
@@ -249,21 +236,17 @@ const TransactionsSection = () => {
                     <div className="transactions-section--main__statistic-container__left">
                         <Statistic
                             title="Total Income"
-                            value={`${getSelectedCurrencySymbol()} ${totalIncomeByCurrency[selectedCurrency] || 0}`} />
+                            value={`${getSelectedCurrencySymbol()} ${0}`} />
                         <Statistic
                             title="Total Expense"
-                            value={`${getSelectedCurrencySymbol()} ${totalExpenseByCurrency[selectedCurrency] || 0}`} />
+                            value={`${getSelectedCurrencySymbol()} ${0}`} />
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
                         <Statistic
                             title="Total Balance"
                             value={`
                                 ${getSelectedCurrencySymbol()} 
-                                ${
-                                    totalIncomeByCurrency[selectedCurrency] -
-                                    totalExpenseByCurrency[selectedCurrency]
-                                    || 0
-                                }`
+                                ${0}`
                             }
                             size="large" />
                     </div>

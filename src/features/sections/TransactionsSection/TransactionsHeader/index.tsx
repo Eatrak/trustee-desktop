@@ -16,6 +16,7 @@ interface IProps {
     initialEndDate: Dayjs
     onDatePickerRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any,
     openTransactionCreationDialog: Function,
+    selectedCurrency: string,
     setSelectedCurrencyCode: (selectedCurrencyCode: string) => any
 }
 
@@ -24,6 +25,7 @@ const TransactionsHeader = ({
     initialStartDate,
     initialEndDate,
     openTransactionCreationDialog,
+    selectedCurrency,
     setSelectedCurrencyCode: setSelectedCurrency
 }: IProps) => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
@@ -42,8 +44,8 @@ const TransactionsHeader = ({
     };
 
     const getCurrencyOptions = (): SelectOption[] => {
-        return currencies.map(({ id, symbol }) => ({
-            name: `${symbol} ${id}`,
+        return currencies.map(({ id, code, symbol }) => ({
+            name: `${symbol} ${code}`,
             value: id
         }));
     };
@@ -80,6 +82,7 @@ const TransactionsHeader = ({
                     className="currency-select"
                     options={getCurrencyOptions()}
                     entityName="currency"
+                    selectedOption={getCurrencyOptions().find(currency => currency.value == selectedCurrency)!}
                     onSelect={({ value }) => setSelectedCurrency(value)} />
                 <RoundedTextIconButton Icon={MdRefresh}/>
                 <RangeDatePicker

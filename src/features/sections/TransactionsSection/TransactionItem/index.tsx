@@ -2,7 +2,7 @@ import RoundedTextIconButton from "@components/RoundedTextIconButton";
 import { MdDeleteOutline } from "react-icons/md";
 import "./style.css";
 
-import { Transaction } from '@ts-types/models/transactions';
+import { Transaction } from '@ts-types/schema';
 import dayjs from "dayjs";
 
 interface IProps {
@@ -24,14 +24,14 @@ const TransactionItem = ({ transaction, onDeleteButtonClicked, onClick }: IProps
         <div className={getTransactionItemClasses()} onClick={() => onClick()}>
             <div className="transaction-item--text-container">
                 <p className="paragraph--regular paragraph--bold transaction-item--text-container__transaction-name">
-                    {transaction.transactionName}
+                    {transaction.name}
                 </p>
                 <p className="paragraph--small transaction-item--text-container__transaction-date">
-                    {dayjs.unix(transaction.transactionTimestamp).format("MM-DD-YYYY")}
+                    {dayjs.unix(transaction.carriedOut).format("MM-DD-YYYY")}
                 </p>
             </div>
             <p className="paragraph--regular transaction-item__amount">
-                {getAmountDirectionSymbol()} {transaction.transactionAmount}€
+                {getAmountDirectionSymbol()} {transaction.amount}€
             </p>
             <RoundedTextIconButton
                 Icon={MdDeleteOutline}
