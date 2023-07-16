@@ -1,4 +1,4 @@
-import { TransactionCategory } from "@ts-types/models/transactions";
+import { TransactionCategory } from "@ts-types/schema";
 
 export interface GetTransactionCategoriesResponse {
     transactionCategories: TransactionCategory[]

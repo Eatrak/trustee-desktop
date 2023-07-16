@@ -1,4 +1,4 @@
-import { Currency } from "@ts-types/models/transactions";
+import { Currency } from "@ts-types/schema";
 
 export interface GetCurrenciesResponse {
     currencies: Currency[]
