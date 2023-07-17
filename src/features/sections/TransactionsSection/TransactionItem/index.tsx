@@ -31,7 +31,7 @@ const TransactionItem = ({ transaction, onDeleteButtonClicked, onClick }: IProps
                 </p>
             </div>
             <p className="paragraph--regular transaction-item__amount">
-                {getAmountDirectionSymbol()} {transaction.amount}€
+                {getAmountDirectionSymbol()} {transaction.amount}
             </p>
             <RoundedTextIconButton
                 Icon={MdDeleteOutline}
