@@ -10,10 +10,10 @@ import AuthService from "@services/auth";
 
 const SignUpForm = () => {
     const [submitDisabled, setSubmitDisabled] = useState(true);
-    const [ name, setName ] = useState<string>();
-    const [ surname, setSurname ] = useState<string>();
-    const [ email, setEmail ] = useState<string>();
-    const [ password, setPassword ] = useState<string>();
+    const [ name, setName ] = useState<string>("");
+    const [ surname, setSurname ] = useState<string>("");
+    const [ email, setEmail ] = useState<string>("");
+    const [ password, setPassword ] = useState<string>("");
 
     const signUp = async () => {
         const successfulSignUp = await AuthService.getInstance().signUp(
@@ -46,16 +46,16 @@ const SignUpForm = () => {
     return (
         <FormLayout header="Welcome!" submitText="Sign up" submitEvent={signUp} submitDisabled={submitDisabled}>
             {/* Name field */}
-            <InputTextField testId="nameField" validatorRule={signUpValidator.name} validatorAttributeName="name"
+            <InputTextField testId="nameField" value={name} validatorRule={signUpValidator.name} validatorAttributeName="name"
                 title="Name" placeholder="John" onInput={setName}/>
             {/* Surname field */}
-            <InputTextField testId="surnameField" validatorRule={signUpValidator.surname} validatorAttributeName="surname"
+            <InputTextField testId="surnameField" value={surname} validatorRule={signUpValidator.surname} validatorAttributeName="surname"
                 title="Surname" placeholder="Doe" onInput={setSurname}/>
             {/* Email field */}
-            <InputTextField testId="emailField" validatorRule={signUpValidator.email} validatorAttributeName="email"
+            <InputTextField testId="emailField" value={email} validatorRule={signUpValidator.email} validatorAttributeName="email"
                 title="Email" placeholder="johndoe@test.com" onInput={setEmail}/>
             {/* Password field */}
-            <InputTextField testId="passwordField" validatorRule={signUpValidator.password} validatorAttributeName="password"
+            <InputTextField testId="passwordField" value={password} validatorRule={signUpValidator.password} validatorAttributeName="password"
                 title="Password" type="password" onInput={setPassword}/>
         </FormLayout>
     );
