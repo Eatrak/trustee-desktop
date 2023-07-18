@@ -1,40 +1,31 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "types": [
-      "vite/client",
-      "vite-plugin-svgr/client"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "./",
-    "paths": {
-      "@assets/*": ["./src/shared/assets/*"],
-      "@components/*": ["./src/shared/components/*"],
-      "@customComponents/*": ["./src/shared/customComponents/*"],
-      "@services/*": ["./src/shared/services/*"],
-      "@validatorRules/*": ["./src/shared/validatorRules/*"],
-      "@ts-types/*": ["./src/shared/types/*"],
-      "@features/*": ["./src/features/*"]
-    }
-  },
-  "include": [
-    "src"
-  ]
+    "compilerOptions": {
+        "target": "ESNext",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "types": ["vite/client", "vite-plugin-svgr/client"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "baseUrl": "./",
+        "paths": {
+            "@assets/*": ["./src/shared/assets/*"],
+            "@components/*": ["./src/shared/components/*"],
+            "@customComponents/*": ["./src/shared/customComponents/*"],
+            "@services/*": ["./src/shared/services/*"],
+            "@validatorRules/*": ["./src/shared/validatorRules/*"],
+            "@ts-types/*": ["./src/shared/types/*"],
+            "@features/*": ["./src/features/*"]
+        }
+    },
+    "include": ["src"]
 }

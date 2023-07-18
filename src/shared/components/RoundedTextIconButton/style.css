@@ -4,7 +4,7 @@
 
     background-color: var(--background-color);
     border-radius: 50%;
-    
+
     cursor: pointer;
     transition: box-shadow 0.2s, background-color 0.2s;
 }
@@ -35,7 +35,7 @@
     height: 25px;
 
     color: var(--neutral-600);
-    
+
     transition: color 0.2s;
 }
 
@@ -48,7 +48,6 @@
 .rounded-text-icon-button--danger:focus {
     box-shadow: var(--error-aura-shadow);
 }
-
 
 .rounded-text-icon-button--danger:hover .rounded-text-icon-button__icon {
     color: var(--error-600);

@@ -6,9 +6,9 @@ import { Utils } from "@services/utils";
 import { SignUpBody } from "@ts-types/APIs/output/auth/signUp";
 
 interface PersonalInfo {
-    name: string,
-    surname: string,
-    email: string
+    name: string;
+    surname: string;
+    email: string;
 }
 
 export default class AuthService {
@@ -19,10 +19,10 @@ export default class AuthService {
         this.personalInfo$ = new BehaviorSubject({
             name: "",
             surname: "",
-            email: ""
+            email: "",
         });
     }
-    
+
     static getInstance() {
         return this.instance;
     }
@@ -36,8 +36,8 @@ export default class AuthService {
 
         const response = await fetch(Utils.getInstance().getAPIEndpoint("/auth/check"), {
             headers: {
-                "Authorization": `Bearer ${authToken}`
-            }
+                Authorization: `Bearer ${authToken}`,
+            },
         });
         if (response.ok) {
             const jsonResponse = await response.json();
@@ -46,33 +46,28 @@ export default class AuthService {
             this.personalInfo$.next({
                 name: decodedAuthToken["custom:name"],
                 surname: decodedAuthToken["custom:surname"],
-                email: decodedAuthToken["email"]
+                email: decodedAuthToken["email"],
             });
 
             return true;
         }
 
         return false;
-    };
+    }
 
-    async signUp(
-        name: string,
-        surname: string,
-        email: string,
-        password: string
-    ) {
+    async signUp(name: string, surname: string, email: string, password: string) {
         try {
             const body: SignUpBody = {
                 userInfo: {
                     name,
                     surname,
                     email,
-                    password
-                }
+                    password,
+                },
             };
 
             const validation = new Validator(body.userInfo, signUpValidator);
-            
+
             if (validation.fails()) {
                 return false;
             }
@@ -80,29 +75,28 @@ export default class AuthService {
             const response = await fetch(Utils.getInstance().getAPIEndpoint("/sign-up"), {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(body)
+                body: JSON.stringify(body),
             });
             const jsonResponse = await response.json();
-    
+
             if (response.ok) {
                 localStorage.setItem("authToken", jsonResponse.authToken);
 
                 return true;
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
 
         return false;
     }
-    
+
     async signIn(email: string, password: string) {
         try {
             const validation = new Validator({ email, password }, signInValidator);
-            
+
             if (validation.fails()) {
                 return false;
             }
@@ -110,19 +104,18 @@ export default class AuthService {
             const response = await fetch(Utils.getInstance().getAPIEndpoint("/sign-in"), {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ userInfo: { email, password } })
+                body: JSON.stringify({ userInfo: { email, password } }),
             });
             const jsonResponse = await response.json();
-    
+
             if (response.ok) {
                 localStorage.setItem("authToken", jsonResponse.authToken);
 
                 return true;
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
 

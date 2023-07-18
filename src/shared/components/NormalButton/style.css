@@ -6,7 +6,7 @@
     justify-content: center;
 
     height: 45px;
-    
+
     background-color: var(--primary-500);
     color: var(--button-text-color);
     border: none;
@@ -15,7 +15,7 @@
     font-weight: 700;
     padding-inline: 10px;
     user-select: none;
-  
+
     transition: 0.3s all;
 }
 
@@ -31,7 +31,6 @@
     cursor: not-allowed;
     background-color: var(--primary-300);
 }
-
 
 .button--normal__icon {
     width: 24px;

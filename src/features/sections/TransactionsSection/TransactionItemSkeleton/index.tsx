@@ -8,11 +8,13 @@ const TransactionItemSkeleton = () => {
                 <TextSkeleton
                     className="transaction-item-skeleton--text-container__transaction-name"
                     width="30%"
-                    size="regular-paragraph" />
+                    size="regular-paragraph"
+                />
                 <TextSkeleton
                     className="transaction-item-skeleton--text-container__transaction-date"
                     width="100px"
-                    size="small-paragraph" />
+                    size="small-paragraph"
+                />
             </div>
             <TextSkeleton width="100px" size="regular-paragraph" />
         </div>

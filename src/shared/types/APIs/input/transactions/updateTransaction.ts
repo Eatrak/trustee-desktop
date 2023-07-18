@@ -1,15 +1,15 @@
 export interface UpdateTransactionBody {
     attributesForSearching: {
-        transactionId: string,
-        transactionTimestamp: number,
-        walletId: string
-    },
+        transactionId: string;
+        transactionTimestamp: number;
+        walletId: string;
+    };
     updatedAttributes: {
-        transactionName: string,
-        walletId: string,
-        categoryId: string,
-        transactionTimestamp: number,
-        transactionAmount: number,
-        isIncome: boolean
-    }
+        transactionName: string;
+        walletId: string;
+        categoryId: string;
+        transactionTimestamp: number;
+        transactionAmount: number;
+        isIncome: boolean;
+    };
 }

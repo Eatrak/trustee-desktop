@@ -10,11 +10,14 @@ import AuthService from "@services/auth";
 
 const SignInForm = () => {
     const [submitDisabled, setSubmitDisabled] = useState(true);
-    const [ email, setEmail ] = useState<string>("");
-    const [ password, setPassword ] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     const signIn = async () => {
-        const successfulSignIn = await AuthService.getInstance().signIn(email!, password!);
+        const successfulSignIn = await AuthService.getInstance().signIn(
+            email!,
+            password!,
+        );
         if (successfulSignIn) document.location.href = "/";
 
         return true;
@@ -32,13 +35,32 @@ const SignInForm = () => {
     }, [email, password]);
 
     return (
-        <FormLayout header="Welcome back!" submitText="Sign in" submitEvent={signIn} submitDisabled={submitDisabled}>
+        <FormLayout
+            header="Welcome back!"
+            submitText="Sign in"
+            submitEvent={signIn}
+            submitDisabled={submitDisabled}
+        >
             {/* Email field */}
-            <InputTextField testId="emailField" validatorRule={signInValidator.email} validatorAttributeName="email"
-                title="Email" placeholder="johndoe@test.com" value={email} onInput={setEmail}/>
+            <InputTextField
+                testId="emailField"
+                validatorRule={signInValidator.email}
+                validatorAttributeName="email"
+                title="Email"
+                placeholder="johndoe@test.com"
+                value={email}
+                onInput={setEmail}
+            />
             {/* Password field */}
-            <InputTextField testId="passwordField" validatorRule={signInValidator.password}
-                validatorAttributeName="password" title="Password" type="password" value={password} onInput={setPassword}/>
+            <InputTextField
+                testId="passwordField"
+                validatorRule={signInValidator.password}
+                validatorAttributeName="password"
+                title="Password"
+                type="password"
+                value={password}
+                onInput={setPassword}
+            />
         </FormLayout>
     );
 };

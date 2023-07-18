@@ -18,40 +18,45 @@ import TransactionItemSkeleton from "./TransactionItemSkeleton";
 import ConfirmationDialog from "@components/ConfirmationDialog";
 
 const TransactionsSection = () => {
-    let [ transactions, changeTransactions ] = useState<Transaction[]>([]);
-    let [ wallets, changeWallets ] = useState<Wallet[]>([]);
-    let [ cursor, changeCursor ] = useState<DocumentClientTypes.Key | undefined>();
-    let [ isLoadingTransactions, changeTransactionsLoading ] = useState<boolean>(false);
-    let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
-    let [ isDeletingTransaction, setIsDeletingTransaction ] = useState<boolean>(false);
-    let [ isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened ] = useState<boolean>(false);
-    let [ isTransactionDeletionDialogOpened, setIsTransactionDeletionDialogOpened ] = useState(false);
-    let [ isTransactionUpdateDialogOpened, setIsTransactionUpdateDialogOpened ] = useState(false);
-    let [ currencies, setCurrencies ] = useState<Currency[]>([]);
-    let [ selectedCurrency, setSelectedCurrency ] = useState<string>("");
+    let [transactions, changeTransactions] = useState<Transaction[]>([]);
+    let [wallets, changeWallets] = useState<Wallet[]>([]);
+    let [cursor, changeCursor] = useState<DocumentClientTypes.Key | undefined>();
+    let [isLoadingTransactions, changeTransactionsLoading] = useState<boolean>(false);
+    let [isCreatingNewWallet, setIsCreatingNewWallet] = useState<boolean>(false);
+    let [isDeletingTransaction, setIsDeletingTransaction] = useState<boolean>(false);
+    let [isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened] =
+        useState<boolean>(false);
+    let [isTransactionDeletionDialogOpened, setIsTransactionDeletionDialogOpened] =
+        useState(false);
+    let [isTransactionUpdateDialogOpened, setIsTransactionUpdateDialogOpened] =
+        useState(false);
+    let [currencies, setCurrencies] = useState<Currency[]>([]);
+    let [selectedCurrency, setSelectedCurrency] = useState<string>("");
     let openedTransaction = useRef<Transaction>();
     let idOfTransactionToDelete = useRef<string | null>(null);
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
 
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
-    const lastDayOfTheCurrentMonthTimestamp = dayjs(dayjs().endOf("month").format("YYYY-MM-DD"));
+    const lastDayOfTheCurrentMonthTimestamp = dayjs(
+        dayjs().endOf("month").format("YYYY-MM-DD"),
+    );
 
     const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
 
     const getSelectedCurrencySymbol = (): string => {
-        const currencySymbol = currencies.find(({ id }) => (
-            id == selectedCurrency
-        ))?.symbol;
+        const currencySymbol = currencies.find(
+            ({ id }) => id == selectedCurrency,
+        )?.symbol;
 
         return currencySymbol ? currencySymbol : "";
     };
 
     useEffect(() => {
-        TransactionsService.getInstance().transactions$.subscribe(transactions => {
+        TransactionsService.getInstance().transactions$.subscribe((transactions) => {
             changeTransactions(transactions);
         });
-        TransactionsService.getInstance().wallets$.subscribe(wallets => {
+        TransactionsService.getInstance().wallets$.subscribe((wallets) => {
             changeWallets(wallets);
         });
         TransactionsService.getInstance().currencies$.subscribe((currencies) => {
@@ -73,12 +78,15 @@ const TransactionsSection = () => {
         await TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
             selectedCurrency,
             startDate,
-            endDate
+            endDate,
         );
         changeTransactionsLoading(false);
     };
 
-    const changeTimeRangeOfTransactionsToShow = async ({ startDate, endDate }: OnRangeDatePickerRangeChangedEvent) => {
+    const changeTimeRangeOfTransactionsToShow = async ({
+        startDate,
+        endDate,
+    }: OnRangeDatePickerRangeChangedEvent) => {
         if (!selectedCurrency) return;
         await getTransactionsByCreationRange(startDate, endDate);
     };
@@ -87,7 +95,7 @@ const TransactionsSection = () => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
             name: newWalletName,
-            currencyId: selectedCurrency
+            currencyId: selectedCurrency,
         });
         setIsCreatingNewWallet(false);
     };
@@ -106,15 +114,15 @@ const TransactionsSection = () => {
                 return;
             }
 
-            const transactionHasBeenDeleted = await TransactionsService
-                .getInstance()
-                .deleteTransaction(idOfTransactionToDelete.current);
+            const transactionHasBeenDeleted =
+                await TransactionsService.getInstance().deleteTransaction(
+                    idOfTransactionToDelete.current,
+                );
 
             if (transactionHasBeenDeleted) {
                 setIsTransactionDeletionDialogOpened(false);
             }
-        }
-        catch (err) {}
+        } catch (err) {}
 
         setIsDeletingTransaction(false);
     };
@@ -126,27 +134,30 @@ const TransactionsSection = () => {
 
     const getTransactionItemsToRender = () => {
         const transactionItemsToRender = transactions
-        .filter(transaction => {
-            for (const selectedWallet of selectedWallets) {
-                if (transaction.walletId == selectedWallet.value) {
-                    return true;
+            .filter((transaction) => {
+                for (const selectedWallet of selectedWallets) {
+                    if (transaction.walletId == selectedWallet.value) {
+                        return true;
+                    }
                 }
-            }
 
-            return false;
-        })
-        .map(transaction => {
-            return (
-                <TransactionItem
-                    key={transaction.id}
-                    onClick={() => openTransaction(transaction)}
-                    onDeleteButtonClicked={() => openTransactionDeletionDialog(transaction.id)}
-                    transaction={transaction}/>
-            );
-        });
+                return false;
+            })
+            .map((transaction) => {
+                return (
+                    <TransactionItem
+                        key={transaction.id}
+                        onClick={() => openTransaction(transaction)}
+                        onDeleteButtonClicked={() =>
+                            openTransactionDeletionDialog(transaction.id)
+                        }
+                        transaction={transaction}
+                    />
+                );
+            });
 
         if (isLoadingTransactions) {
-            return Array.from(Array(4).keys()).map(index => {
+            return Array.from(Array(4).keys()).map((index) => {
                 return <TransactionItemSkeleton key={index} />;
             });
         }
@@ -164,7 +175,7 @@ const TransactionsSection = () => {
     const getWalletOptions = () => {
         return TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
             wallets,
-            selectedCurrency
+            selectedCurrency,
         );
     };
 
@@ -175,90 +186,102 @@ const TransactionsSection = () => {
         walletsMultiSelectRef.current?.setSelectedOptions(
             TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
                 wallets,
-                selectedCurrency
-            )
+                selectedCurrency,
+            ),
         );
-        
+
         getTransactionsByCreationRange(
             firstDayOfTheCurrentMonthTimestamp,
-            lastDayOfTheCurrentMonthTimestamp
+            lastDayOfTheCurrentMonthTimestamp,
         );
     }, [selectedCurrency]);
 
-    return(
+    return (
         <div className="section transactions-section">
             {
                 // Transaction deletion dialog
-                isTransactionDeletionDialogOpened &&
-                <ConfirmationDialog
-                    title="Transaction deletion"
-                    description={<p>Are you sure to delete the transaction?</p>}
-                    isConfirming={isDeletingTransaction}
-                    confirm={() => deleteTransaction()}
-                    close={() => setIsTransactionDeletionDialogOpened(false)}
-                />
+                isTransactionDeletionDialogOpened && (
+                    <ConfirmationDialog
+                        title="Transaction deletion"
+                        description={<p>Are you sure to delete the transaction?</p>}
+                        isConfirming={isDeletingTransaction}
+                        confirm={() => deleteTransaction()}
+                        close={() => setIsTransactionDeletionDialogOpened(false)}
+                    />
+                )
             }
-            {
-                isTransactionCreationDialogOpened &&
+            {isTransactionCreationDialogOpened && (
                 <TransactionDialog
                     isCreationMode
                     currencyId={selectedCurrency}
-                    close={() => setIsTransactionCreationDialogOpened(false)} />
-            }
-            {
-                isTransactionUpdateDialogOpened &&
+                    close={() => setIsTransactionCreationDialogOpened(false)}
+                />
+            )}
+            {isTransactionUpdateDialogOpened && (
                 <TransactionDialog
                     isCreationMode={false}
                     openedTransaction={openedTransaction.current}
                     currencyId={selectedCurrency}
-                    close={() => setIsTransactionUpdateDialogOpened(false)} />
-            }
+                    close={() => setIsTransactionUpdateDialogOpened(false)}
+                />
+            )}
             <div className="transactions-section--main">
                 <TransactionsHeader
                     selectedCurrency={selectedCurrency}
                     setSelectedCurrencyCode={changeCurrencyCodeInstantly}
                     initialStartDate={firstDayOfTheCurrentMonthTimestamp}
                     initialEndDate={lastDayOfTheCurrentMonthTimestamp}
-                    openTransactionCreationDialog={() => setIsTransactionCreationDialogOpened(true)}
-                    onDatePickerRangeChanged={changeTimeRangeOfTransactionsToShow}/>
+                    openTransactionCreationDialog={() =>
+                        setIsTransactionCreationDialogOpened(true)
+                    }
+                    onDatePickerRangeChanged={changeTimeRangeOfTransactionsToShow}
+                />
                 <MultiSelect
                     ref={walletsMultiSelectRef}
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
                     createNewOption={createWallet}
                     isCreatingNewOption={isCreatingNewWallet}
-                    getCreateNewOptionButtonText={(filterValue) => `Create "${filterValue}" wallet`}
+                    getCreateNewOptionButtonText={(filterValue) =>
+                        `Create "${filterValue}" wallet`
+                    }
                     filterInputPlaceholder="Search or create a wallet by typing a name"
                     options={getWalletOptions()}
-                    onSelect={(newSelectedWallets) => setSelectedWallets([ ...newSelectedWallets ])} 
+                    onSelect={(newSelectedWallets) =>
+                        setSelectedWallets([...newSelectedWallets])
+                    }
                 />
                 <div className="transactions-section--main__statistic-container">
                     <div className="transactions-section--main__statistic-container__left">
                         <Statistic
                             title="Total Income"
-                            value={`${getSelectedCurrencySymbol()} ${0}`} />
+                            value={`${getSelectedCurrencySymbol()} ${0}`}
+                        />
                         <Statistic
                             title="Total Expense"
-                            value={`${getSelectedCurrencySymbol()} ${0}`} />
+                            value={`${getSelectedCurrencySymbol()} ${0}`}
+                        />
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
                         <Statistic
                             title="Total Balance"
                             value={`
                                 ${getSelectedCurrencySymbol()} 
-                                ${0}`
-                            }
-                            size="large" />
+                                ${0}`}
+                            size="large"
+                        />
                     </div>
                 </div>
                 <div className="transactions-section--main--container">
-                    <div>
-                        {
-                            getTransactionItemsToRender()
-                        }
-                    </div>
+                    <div>{getTransactionItemsToRender()}</div>
                 </div>
-                {cursor && <TextButton Icon={MdAdd} text="Load more" isLoading={isLoadingTransactions}/>}
+                {cursor && (
+                    <TextButton
+                        Icon={MdAdd}
+                        text="Load more"
+                        isLoading={isLoadingTransactions}
+                    />
+                )}
             </div>
             <div className="transactions-section--details"></div>
         </div>

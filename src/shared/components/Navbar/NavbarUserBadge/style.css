@@ -3,7 +3,7 @@
     grid-template-columns: max-content auto;
     column-gap: 15px;
     align-items: center;
-    
+
     height: 80px;
 
     padding: 15px;
@@ -29,7 +29,7 @@
     width: max-content;
 
     color: var(--button-text-color);
-    
+
     user-select: none;
 }
 

@@ -8,10 +8,10 @@ import TransactionsSection from "@features/sections/TransactionsSection";
 const AppLayout = () => {
     return (
         <div className="page app-layout">
-            <Navbar/>
+            <Navbar />
             <div className="app-layout__content">
                 <Routes>
-                    <Route path="/" element={<TransactionsSection/>}/>
+                    <Route path="/" element={<TransactionsSection />} />
                 </Routes>
             </div>
         </div>

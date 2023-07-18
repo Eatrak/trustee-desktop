@@ -4,11 +4,11 @@ import NormalButton from "@components/NormalButton";
 import TextButton from "@components/TextButton";
 
 interface IProps {
-    title: string,
-    description?: JSX.Element,
-    confirm: Function,
-    close: Function,
-    isConfirming?: boolean
+    title: string;
+    description?: JSX.Element;
+    confirm: Function;
+    close: Function;
+    isConfirming?: boolean;
 }
 
 const ConfirmationDialog = ({
@@ -16,7 +16,7 @@ const ConfirmationDialog = ({
     description,
     confirm,
     close,
-    isConfirming
+    isConfirming,
 }: IProps) => {
     return (
         <Dialog
@@ -24,14 +24,13 @@ const ConfirmationDialog = ({
             content={description}
             footer={
                 <div className="transaction-deletion-dialog__footer">
-                    <TextButton
-                        text="Close"
-                        clickEvent={() => close()} />
+                    <TextButton text="Close" clickEvent={() => close()} />
                     <NormalButton
                         text="Confirm"
                         disabled={isConfirming}
                         event={() => confirm()}
-                        isLoading={isConfirming} />
+                        isLoading={isConfirming}
+                    />
                 </div>
             }
         />

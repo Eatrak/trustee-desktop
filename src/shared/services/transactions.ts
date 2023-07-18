@@ -31,14 +31,14 @@ export default class TransactionsService {
         this.currencies$ = new BehaviorSubject<Currency[]>([]);
         this.transactionCategories$ = new BehaviorSubject<TransactionCategory[]>([]);
     }
-    
+
     static getInstance() {
         return this.instance;
     }
 
     /**
      * Create new transaction.
-     * 
+     *
      * @param input Input used to create new transaction.
      * @returns Is new transaction created.
      */
@@ -48,30 +48,33 @@ export default class TransactionsService {
             const response = await fetch(requestURL, {
                 method: "POST",
                 headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("authToken")
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
                 },
-                body: JSON.stringify(input)
+                body: JSON.stringify(input),
             });
 
             if (!response.ok) {
                 return false;
             }
 
-            const { createdTransaction }: CreateTransactionResponse = await response.json();
-            const updatedTransactions = [ createdTransaction, ...this.transactions$.getValue() ];
+            const { createdTransaction }: CreateTransactionResponse =
+                await response.json();
+            const updatedTransactions = [
+                createdTransaction,
+                ...this.transactions$.getValue(),
+            ];
 
             this.transactions$.next(updatedTransactions);
 
             return true;
-        }
-        catch (err) {
+        } catch (err) {
             return false;
         }
     }
 
     /**
      * Update transaction.
-     * 
+     *
      * @param input Input used to update transaction.
      * @returns The transaction has been updated.
      */
@@ -81,9 +84,9 @@ export default class TransactionsService {
             const response = await fetch(requestURL, {
                 method: "PUT",
                 headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("authToken")
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
                 },
-                body: JSON.stringify(input)
+                body: JSON.stringify(input),
             });
 
             if (!response.ok) {
@@ -91,8 +94,7 @@ export default class TransactionsService {
             }
 
             return true;
-        }
-        catch (err) {
+        } catch (err) {
             return false;
         }
     }
@@ -100,20 +102,20 @@ export default class TransactionsService {
     async getTransactionsByCurrencyAndCreationRange(
         currencyId: string,
         startCreationTimestamp: Dayjs,
-        endCreationTimestamp: Dayjs
+        endCreationTimestamp: Dayjs,
     ) {
         const queryParams: GetTransactionsByCurrencyAndCreationRangeInput = {
             startCarriedOut: startCreationTimestamp.unix().toString(),
             endCarriedOut: endCreationTimestamp.unix().toString(),
-            currencyId
+            currencyId,
         };
         const requestURL =
             Utils.getInstance().getAPIEndpoint("/transactions?") +
             new URLSearchParams({ ...queryParams });
         const response = await fetch(requestURL, {
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem("authToken")
-            }
+                Authorization: "Bearer " + localStorage.getItem("authToken"),
+            },
         });
         const { transactions }: GetTransactionsResponse = await response.json();
 
@@ -124,8 +126,8 @@ export default class TransactionsService {
         const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
         const response = await fetch(requestURL, {
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem("authToken")
-            }
+                Authorization: "Bearer " + localStorage.getItem("authToken"),
+            },
         });
         const { wallets }: GetWalletsResponse = await response.json();
 
@@ -137,12 +139,12 @@ export default class TransactionsService {
         const response = await fetch(requestURL, {
             method: "POST",
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem("authToken")
+                Authorization: "Bearer " + localStorage.getItem("authToken"),
             },
-            body: JSON.stringify(createWalletBody)
+            body: JSON.stringify(createWalletBody),
         });
         const { createdWallet }: CreateWalletResponse = await response.json();
-        const newWallets = [ createdWallet, ...this.wallets$.getValue() ];
+        const newWallets = [createdWallet, ...this.wallets$.getValue()];
 
         this.wallets$.next(newWallets);
     }
@@ -151,8 +153,8 @@ export default class TransactionsService {
         const requestURL = Utils.getInstance().getAPIEndpoint("/currencies");
         const response = await fetch(requestURL, {
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem("authToken")
-            }
+                Authorization: "Bearer " + localStorage.getItem("authToken"),
+            },
         });
         const { currencies }: GetCurrenciesResponse = await response.json();
 
@@ -163,37 +165,40 @@ export default class TransactionsService {
         const requestURL = Utils.getInstance().getAPIEndpoint("/transaction-categories");
         const response = await fetch(requestURL, {
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem("authToken")
-            }
+                Authorization: "Bearer " + localStorage.getItem("authToken"),
+            },
         });
-        const { transactionCategories }: GetTransactionCategoriesResponse = await response.json();
+        const { transactionCategories }: GetTransactionCategoriesResponse =
+            await response.json();
 
         this.transactionCategories$.next(transactionCategories);
     }
 
     async createTransactionCategory(
-        createTransactionCategoryBody: CreateTransactionCategoryBody
+        createTransactionCategoryBody: CreateTransactionCategoryBody,
     ) {
         const requestURL = Utils.getInstance().getAPIEndpoint("/transaction-categories");
         const response = await fetch(requestURL, {
             method: "POST",
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem("authToken")
+                Authorization: "Bearer " + localStorage.getItem("authToken"),
             },
-            body: JSON.stringify(createTransactionCategoryBody)
+            body: JSON.stringify(createTransactionCategoryBody),
         });
-        const { createdTransactionCategory }: CreateTransactionCategoryResponse = await response.json();
-        const newTransactionCategories = [ createdTransactionCategory, ...this.transactionCategories$.getValue() ];
+        const { createdTransactionCategory }: CreateTransactionCategoryResponse =
+            await response.json();
+        const newTransactionCategories = [
+            createdTransactionCategory,
+            ...this.transactionCategories$.getValue(),
+        ];
 
         this.transactionCategories$.next(newTransactionCategories);
     }
 
-    async deleteTransaction(
-        id: string
-    ): Promise<boolean> {
+    async deleteTransaction(id: string): Promise<boolean> {
         // Initialize query parameters
         const queryParams: DeleteTransactionQueryParameters = {
-            id
+            id,
         };
 
         // Initialize request URL
@@ -205,8 +210,8 @@ export default class TransactionsService {
         const response = await fetch(requestURL, {
             method: "DELETE",
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem("authToken")
-            }
+                Authorization: "Bearer " + localStorage.getItem("authToken"),
+            },
         });
 
         if (!response.ok) {
@@ -221,27 +226,31 @@ export default class TransactionsService {
 
     /**
      * Get options of the wallets with the selected currency.
-     * 
+     *
      * @returns Options of the wallets with the selected currency.
      */
-    getOptionsOfWalletsWithSelectedCurrency(wallets: Wallet[], selectedCurrencyId: string) {
-        const newWalletsWithSelectedCurrency = wallets.filter(wallet => {
-            return wallet.currencyId == selectedCurrencyId;
-        })
-        .map(wallet => ({ name: wallet.name, value: wallet.id }));
+    getOptionsOfWalletsWithSelectedCurrency(
+        wallets: Wallet[],
+        selectedCurrencyId: string,
+    ) {
+        const newWalletsWithSelectedCurrency = wallets
+            .filter((wallet) => {
+                return wallet.currencyId == selectedCurrencyId;
+            })
+            .map((wallet) => ({ name: wallet.name, value: wallet.id }));
 
         return newWalletsWithSelectedCurrency;
-    };
+    }
 
     /**
      * Delete transaction by its ID locally.
-     * 
+     *
      * @param idOfTransactionToDeleteLocally ID of the transaction to delete locally.
      */
     deleteTransactionLocally(idOfTransactionToDeleteLocally: string) {
-        const transactionsWithoutDeletedTransaction = this.transactions$.getValue().filter(
-            ({ id }) => (id != idOfTransactionToDeleteLocally)
-        );
-        this.transactions$.next([ ...transactionsWithoutDeletedTransaction ]);
+        const transactionsWithoutDeletedTransaction = this.transactions$
+            .getValue()
+            .filter(({ id }) => id != idOfTransactionToDeleteLocally);
+        this.transactions$.next([...transactionsWithoutDeletedTransaction]);
     }
 }

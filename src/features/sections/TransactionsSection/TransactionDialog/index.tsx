@@ -17,54 +17,59 @@ import { Transaction, TransactionCategory, Wallet } from "@ts-types/schema";
 import { CreateTransactionBody } from "@ts-types/APIs/input/transactions/createTransaction";
 
 interface IProps {
-    close: Function,
-    currencyId: string,
-    isCreationMode: boolean,
-    openedTransaction?: Transaction
+    close: Function;
+    currencyId: string;
+    isCreationMode: boolean;
+    openedTransaction?: Transaction;
 }
 
-const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransaction }: IProps) => {
+const TransactionDialog = ({
+    close,
+    currencyId,
+    isCreationMode,
+    openedTransaction,
+}: IProps) => {
     if (!isCreationMode && !openedTransaction) {
-        throw new Error("The transaction dialog in update mode must receive a transaction to open");
+        throw new Error(
+            "The transaction dialog in update mode must receive a transaction to open",
+        );
     }
 
-    let [ wallets, setWallets ] = useState<Wallet[]>([]);
-    let [ transactionCategories, setTransactionCategories ] = useState<TransactionCategory[]>([]);
-    let [ isDatePickerOpened, setIsDatePickerOpened ] = useState<boolean>(false);
-    let [ isCreatingNewWallet, setIsCreatingNewWallet ] = useState<boolean>(false);
-    let [ isCreatingTransactionCategory, setIsCreatingTransactionCategory ] = useState<boolean>(false);
-    let [ isSubmittingTransaction, setIsSubmittingTransaction ] = useState<boolean>(false);
+    let [wallets, setWallets] = useState<Wallet[]>([]);
+    let [transactionCategories, setTransactionCategories] = useState<
+        TransactionCategory[]
+    >([]);
+    let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
+    let [isCreatingNewWallet, setIsCreatingNewWallet] = useState<boolean>(false);
+    let [isCreatingTransactionCategory, setIsCreatingTransactionCategory] =
+        useState<boolean>(false);
+    let [isSubmittingTransaction, setIsSubmittingTransaction] = useState<boolean>(false);
 
     // Form data
-    let [ name, setName ] = useState<string>(
-        isCreationMode ? "" : openedTransaction!.name
+    let [name, setName] = useState<string>(isCreationMode ? "" : openedTransaction!.name);
+    let [walletOption, setWalletOption] = useState<SelectOption | null>(null);
+    let [categoryOption, setCategoryOption] = useState<SelectOption | null>(null);
+    let [creationDate, setCreationDate] = useState<Dayjs>(
+        isCreationMode ? dayjs() : dayjs.unix(openedTransaction!.carriedOut),
     );
-    let [ walletOption, setWalletOption ] = useState<SelectOption | null>(null);
-    let [ categoryOption, setCategoryOption ] = useState<SelectOption | null>(null);
-    let [ creationDate, setCreationDate ] = useState<Dayjs>(
-        isCreationMode ? dayjs() : dayjs.unix(openedTransaction!.carriedOut)
+    let [value, setValue] = useState<number>(
+        isCreationMode ? 0 : openedTransaction!.amount,
     );
-    let [ value, setValue ] = useState<number>(
-        isCreationMode ? 0 : openedTransaction!.amount
-    );
-    let [ isIncome, setIsIncome ] = useState<boolean>(
-        isCreationMode ? false : openedTransaction!.isIncome
+    let [isIncome, setIsIncome] = useState<boolean>(
+        isCreationMode ? false : openedTransaction!.isIncome,
     );
 
     const getWalletOptions = () => {
         return TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
             wallets,
-            currencyId
+            currencyId,
         );
     };
 
     const getTransactionCategoryOptions = (): SelectOption[] => {
-        return transactionCategories.map(({
-            id,
-            name
-        }) => ({
+        return transactionCategories.map(({ id, name }) => ({
             name: name,
-            value: id
+            value: id,
         }));
     };
 
@@ -75,7 +80,7 @@ const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransactio
             categoryId: categoryOption?.value!,
             carriedOut: creationDate?.unix()!,
             amount: value!,
-            isIncome
+            isIncome,
         };
 
         return new Validator(formData, createTransactionBodyRules);
@@ -84,11 +89,12 @@ const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransactio
     const createTransaction = async () => {
         const formValidator = getFormValidator();
         if (formValidator.fails()) return;
-        
+
         setIsSubmittingTransaction(true);
-        const isNewTransactionCreated = await TransactionsService.getInstance().createTransaction(
-            formValidator.input as any // The form data aren't undefined due to the passed validation
-        );
+        const isNewTransactionCreated =
+            await TransactionsService.getInstance().createTransaction(
+                formValidator.input as any, // The form data aren't undefined due to the passed validation
+            );
 
         if (isNewTransactionCreated) {
             close();
@@ -102,80 +108,90 @@ const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransactio
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
             name: newWalletName,
-            currencyId
+            currencyId,
         });
         setIsCreatingNewWallet(false);
     };
 
     const createTransactionCategory = async (
-        nameOfTransactionCategoryToCreate: string
+        nameOfTransactionCategoryToCreate: string,
     ) => {
         setIsCreatingTransactionCategory(true);
         await TransactionsService.getInstance().createTransactionCategory({
-            name: nameOfTransactionCategoryToCreate
+            name: nameOfTransactionCategoryToCreate,
         });
         setIsCreatingTransactionCategory(false);
     };
 
     const getCreateTransactionCategoryButtonText = (
-        nameOfTransactionCategoryToCreate: string
+        nameOfTransactionCategoryToCreate: string,
     ) => {
         return `Create "${nameOfTransactionCategoryToCreate}" wallet`;
     };
 
     useEffect(() => {
-        TransactionsService.getInstance().wallets$.subscribe(wallets => {
+        TransactionsService.getInstance().wallets$.subscribe((wallets) => {
             setWallets(wallets);
 
             // When in update mode, set the wallet of the opened transaction as selected wallet
             if (!isCreationMode) {
-                const openedTransactionWallet = wallets.find(wallet => wallet.id == openedTransaction!.walletId);
+                const openedTransactionWallet = wallets.find(
+                    (wallet) => wallet.id == openedTransaction!.walletId,
+                );
                 if (openedTransactionWallet) {
                     setWalletOption({
                         name: openedTransactionWallet.name,
-                        value: openedTransactionWallet.id
+                        value: openedTransactionWallet.id,
                     });
-                }
-                else {
+                } else {
                     // Show to the user that the wallet of the transaction doesn't exist
                     setWalletOption({
                         name: "Unexisting wallet",
-                        value: ""
+                        value: "",
                     });
                 }
             }
         });
-        TransactionsService.getInstance().transactionCategories$.subscribe(transactionCategories => {
-            setTransactionCategories(transactionCategories);
+        TransactionsService.getInstance().transactionCategories$.subscribe(
+            (transactionCategories) => {
+                setTransactionCategories(transactionCategories);
 
-            // When in update mode, set the transaction-category of the
-            // opened transaction as selected transaction-category
-            if (!isCreationMode) {
-                const categoryOfOpenedTransaction = transactionCategories.find(transactionCategory => {
-                    return transactionCategory.id == openedTransaction!.categoryId;
-                });
-                if (categoryOfOpenedTransaction) {
-                    setCategoryOption({
-                        name: categoryOfOpenedTransaction.name,
-                        value: categoryOfOpenedTransaction.id
-                    });
+                // When in update mode, set the transaction-category of the
+                // opened transaction as selected transaction-category
+                if (!isCreationMode) {
+                    const categoryOfOpenedTransaction = transactionCategories.find(
+                        (transactionCategory) => {
+                            return (
+                                transactionCategory.id == openedTransaction!.categoryId
+                            );
+                        },
+                    );
+                    if (categoryOfOpenedTransaction) {
+                        setCategoryOption({
+                            name: categoryOfOpenedTransaction.name,
+                            value: categoryOfOpenedTransaction.id,
+                        });
+                    } else {
+                        // Show to the user that the wallet of the transaction doesn't exist
+                        setWalletOption({
+                            name: "Unexisting category",
+                            value: "",
+                        });
+                    }
                 }
-                else {
-                    // Show to the user that the wallet of the transaction doesn't exist
-                    setWalletOption({
-                        name: "Unexisting category",
-                        value: ""
-                    });
-                }
-            }
-        });
+            },
+        );
 
         TransactionsService.getInstance().getTransactionCategories();
     }, []);
 
     return (
         <Dialog
-            title={isCreationMode ? "Transaction creation" : `"${openedTransaction!.name}" transaction` }
+            title={
+                isCreationMode
+                    ? "Transaction creation"
+                    : `"${openedTransaction!.name}" transaction`
+            }
             content={
                 <div className="transaction-creation-dialog__content">
                     {/* Name */}
@@ -184,7 +200,8 @@ const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransactio
                         value={name}
                         validatorAttributeName="name"
                         validatorRule={createTransactionBodyRules.transactionName}
-                        onInput={setName} />
+                        onInput={setName}
+                    />
                     {/* Wallet */}
                     <Select
                         entityName="wallet"
@@ -193,10 +210,13 @@ const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransactio
                         options={getWalletOptions()}
                         createNewOption={createWallet}
                         isCreatingNewOption={isCreatingNewWallet}
-                        getCreateNewOptionButtonText={(nameOfWalletToCreate) => `Create "${nameOfWalletToCreate}" wallet`}
+                        getCreateNewOptionButtonText={(nameOfWalletToCreate) =>
+                            `Create "${nameOfWalletToCreate}" wallet`
+                        }
                         validatorRule={createTransactionBodyRules.walletId}
                         selectedOption={walletOption}
-                        onSelect={setWalletOption} />
+                        onSelect={setWalletOption}
+                    />
                     {/* Category */}
                     <Select
                         entityName="category"
@@ -205,10 +225,13 @@ const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransactio
                         options={getTransactionCategoryOptions()}
                         createNewOption={createTransactionCategory}
                         isCreatingNewOption={isCreatingTransactionCategory}
-                        getCreateNewOptionButtonText={getCreateTransactionCategoryButtonText}
+                        getCreateNewOptionButtonText={
+                            getCreateTransactionCategoryButtonText
+                        }
                         validatorRule={createTransactionBodyRules.categoryId}
                         selectedOption={categoryOption}
-                        onSelect={setCategoryOption} />
+                        onSelect={setCategoryOption}
+                    />
                     {/* Creation date */}
                     <DatePicker
                         isOpened={isDatePickerOpened}
@@ -216,7 +239,8 @@ const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransactio
                         validatorAttributeName="creation date"
                         validatorRule="required"
                         selectedDate={creationDate}
-                        onDateChanged={setCreationDate} />
+                        onDateChanged={setCreationDate}
+                    />
                     {/* Value */}
                     <InputTextField
                         title="Value"
@@ -225,28 +249,28 @@ const TransactionDialog = ({ close, currencyId, isCreationMode, openedTransactio
                         validatorAttributeName="value"
                         validatorRule={createTransactionBodyRules.transactionAmount}
                         value={value}
-                        onInput={(value) => setValue(Number.parseFloat(value))} />
+                        onInput={(value) => setValue(Number.parseFloat(value))}
+                    />
                     {/* It's income */}
                     <Checkbox
                         className="transaction-creation-dialog__content__is-income"
                         text="It's income"
                         checked={isIncome}
-                        setChecked={setIsIncome} />
+                        setChecked={setIsIncome}
+                    />
                 </div>
             }
             footer={
                 <div className="transaction-creation-dialog__footer">
-                    <TextButton
-                        text="Exit"
-                        size="large"
-                        clickEvent={() => close()} />
+                    <TextButton text="Exit" size="large" clickEvent={() => close()} />
                     <NormalButton
                         className="transaction-creation-dialog__footer__confirmation-button"
                         Icon={isCreationMode ? MdAdd : undefined}
                         text={isCreationMode ? "Create" : "Update"}
                         isLoading={isSubmittingTransaction}
                         event={() => isCreationMode && createTransaction()}
-                        disabled={!getFormValidator().passes() || isSubmittingTransaction} />
+                        disabled={!getFormValidator().passes() || isSubmittingTransaction}
+                    />
                 </div>
             }
         />

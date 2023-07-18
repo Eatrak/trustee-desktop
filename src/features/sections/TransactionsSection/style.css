@@ -7,9 +7,9 @@
     display: grid;
     grid-template-rows: max-content max-content max-content auto max-content;
     row-gap: 40px;
-    
+
     align-items: baseline;
-    
+
     padding: 30px;
     padding-top: 40px;
     padding-bottom: 40px;
@@ -22,7 +22,7 @@
 .transactions-section--main__statistic-container {
     display: grid;
     grid-auto-flow: column;
-    
+
     padding-bottom: 8px;
     border-bottom: 1px solid var(--neutral-50);
 }

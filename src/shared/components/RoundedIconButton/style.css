@@ -4,7 +4,7 @@
 
     background-color: var(--primary-500);
     border-radius: 50%;
-    
+
     cursor: pointer;
     transition: box-shadow 0.2s, filter 0.2s;
 }
@@ -27,6 +27,6 @@
     height: 25px;
 
     color: var(--button-text-color);
-    
+
     transition: color 0.2s;
 }

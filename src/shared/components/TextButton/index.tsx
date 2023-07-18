@@ -7,11 +7,11 @@ import LoadingIcon from "@components/LoadingIcon";
 type Size = "large";
 
 interface IProps {
-    Icon?: IconType,
-    text: string,
-    clickEvent?: (...p: any) => any,
-    isLoading?: boolean,
-    size?: Size
+    Icon?: IconType;
+    text: string;
+    clickEvent?: (...p: any) => any;
+    isLoading?: boolean;
+    size?: Size;
 }
 
 const TextButton = ({ Icon, text, clickEvent, isLoading, size }: IProps) => {
@@ -22,11 +22,11 @@ const TextButton = ({ Icon, text, clickEvent, isLoading, size }: IProps) => {
             onClick={clickEvent}
             disabled={isLoading}
         >
-            {
-                !isLoading ?
-                (Icon && <Icon className="text-button__icon"/>) :
-                <LoadingIcon/>
-            }
+            {!isLoading ? (
+                Icon && <Icon className="text-button__icon" />
+            ) : (
+                <LoadingIcon />
+            )}
             <p className="paragraph text-button__paragraph">{text}</p>
         </button>
     );

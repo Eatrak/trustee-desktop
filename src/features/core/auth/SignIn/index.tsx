@@ -1,15 +1,15 @@
 import "./style.css";
 
-import logo from '@assets/logo.jpg';
-import { ReactComponent as DotsDecoration } from '@assets/dots-decoration.svg';
+import logo from "@assets/logo.jpg";
+import { ReactComponent as DotsDecoration } from "@assets/dots-decoration.svg";
 import SignInForm from "./SignInForm";
 
 const SignInPage = () => {
-    return(
+    return (
         <div className="page page--sign-in">
             <div>
-                <img className="page--sign-in__logo" src={logo} alt="logo"/>
-                <SignInForm/>
+                <img className="page--sign-in__logo" src={logo} alt="logo" />
+                <SignInForm />
             </div>
             <div>
                 <DotsDecoration className="page--sign-in__decoration"></DotsDecoration>

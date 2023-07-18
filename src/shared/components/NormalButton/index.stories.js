@@ -1,16 +1,16 @@
-import '@styles/themes.css';
-import '../../index.css';
+import "@styles/themes.css";
+import "../../index.css";
 
-import NormalButton from '@components/NormalButton';
+import NormalButton from "@components/NormalButton";
 
 export default {
     title: "NormalButton",
-    component: NormalButton
+    component: NormalButton,
 };
 
-const Template = args => <NormalButton {...args}/>;
+const Template = (args) => <NormalButton {...args} />;
 
 export const Normal = Template.bind({});
 Normal.args = {
-    text: "Click me!"
+    text: "Click me!",
 };

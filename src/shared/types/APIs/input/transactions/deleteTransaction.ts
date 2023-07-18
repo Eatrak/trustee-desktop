@@ -1,3 +1,3 @@
 export interface DeleteTransactionQueryParameters {
-    id: string
+    id: string;
 }

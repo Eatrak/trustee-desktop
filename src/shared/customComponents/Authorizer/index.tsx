@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import AuthService from '@services/auth';
-import LoadingPage from '@customComponents/LoadingPage';
+import AuthService from "@services/auth";
+import LoadingPage from "@customComponents/LoadingPage";
 
 interface IProps {
-    children: JSX.Element,
-    loadResources: Function
+    children: JSX.Element;
+    loadResources: Function;
 }
 
 const Authorizer = ({ children: pageToRender, loadResources }: IProps) => {
     const navigate = useNavigate();
-    const [ isChecked, setIsChecked ] = useState<boolean>(false);
+    const [isChecked, setIsChecked] = useState<boolean>(false);
 
     const redirectUserIfItIsNotAuthenticated = async () => {
         const isUserAuthenticated = await AuthService.getInstance().isUserAuthenticated();
@@ -32,11 +32,7 @@ const Authorizer = ({ children: pageToRender, loadResources }: IProps) => {
         }, 500);
     }, []);
 
-    return (
-        <>
-            {isChecked ? pageToRender : <LoadingPage />}
-        </>
-    );
+    return <>{isChecked ? pageToRender : <LoadingPage />}</>;
 };
 
 export default Authorizer;

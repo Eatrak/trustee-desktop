@@ -1,7 +1,7 @@
 export class Utils {
     private static instance = new Utils();
 
-    protected constructor() { }
+    protected constructor() {}
 
     static getInstance() {
         return this.instance;

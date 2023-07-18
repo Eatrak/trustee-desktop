@@ -6,18 +6,20 @@ import { Dayjs } from "dayjs";
 
 import RoundedTextIconButton from "@components/RoundedTextIconButton";
 import RoundedIconButton from "@components/RoundedIconButton";
-import RangeDatePicker, { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
+import RangeDatePicker, {
+    OnRangeDatePickerRangeChangedEvent,
+} from "@components/RangeDatePicker";
 import MiniSelect, { SelectOption } from "@components/MiniSelect";
 import { Currency } from "@ts-types/schema";
 import TransactionsService from "@services/transactions";
 
 interface IProps {
-    initialStartDate: Dayjs,
-    initialEndDate: Dayjs
-    onDatePickerRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any,
-    openTransactionCreationDialog: Function,
-    selectedCurrency: string,
-    setSelectedCurrencyCode: (selectedCurrencyCode: string) => any
+    initialStartDate: Dayjs;
+    initialEndDate: Dayjs;
+    onDatePickerRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any;
+    openTransactionCreationDialog: Function;
+    selectedCurrency: string;
+    setSelectedCurrencyCode: (selectedCurrencyCode: string) => any;
 }
 
 const TransactionsHeader = ({
@@ -26,16 +28,17 @@ const TransactionsHeader = ({
     initialEndDate,
     openTransactionCreationDialog,
     selectedCurrency,
-    setSelectedCurrencyCode: setSelectedCurrency
+    setSelectedCurrencyCode: setSelectedCurrency,
 }: IProps) => {
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
-    let [ currencies, setCurrencies ] = useState<Currency[]>([]);
+    let [currencies, setCurrencies] = useState<Currency[]>([]);
     let [isDatePickerOpened, changeIsDatePickerOpened] = useState<boolean>(false);
     let [startDate, changeStartDate] = useState<Dayjs>(initialStartDate);
     let [endDate, changeEndDate] = useState<Dayjs>(initialEndDate);
 
     const changeTimeRangeOfTransactionsToShow = ({
-        startDate, endDate
+        startDate,
+        endDate,
     }: OnRangeDatePickerRangeChangedEvent) => {
         changeStartDate(startDate);
         changeEndDate(endDate);
@@ -46,7 +49,7 @@ const TransactionsHeader = ({
     const getCurrencyOptions = (): SelectOption[] => {
         return currencies.map(({ id, code, symbol }) => ({
             name: `${symbol} ${code}`,
-            value: id
+            value: id,
         }));
     };
 
@@ -63,7 +66,7 @@ const TransactionsHeader = ({
             const { id, code, symbol } = currencies[0];
             currencySelect.current?.setSelectedOption({
                 name: `${symbol} ${code}`,
-                value: id
+                value: id,
             });
         });
     }, []);
@@ -71,7 +74,9 @@ const TransactionsHeader = ({
     return (
         <div className="app-layout__header">
             <div className="app-layout__header__texts-container">
-                <h5 className="header--bold app-layout__header__texts_container__title">Transactions</h5>
+                <h5 className="header--bold app-layout__header__texts_container__title">
+                    Transactions
+                </h5>
                 <p className="paragraph--sub-title">
                     {startDate.format("MM/DD/YYYY")} - {endDate.format("MM/DD/YYYY")}
                 </p>
@@ -82,9 +87,14 @@ const TransactionsHeader = ({
                     className="currency-select"
                     options={getCurrencyOptions()}
                     entityName="currency"
-                    selectedOption={getCurrencyOptions().find(currency => currency.value == selectedCurrency)!}
-                    onSelect={({ value }) => setSelectedCurrency(value)} />
-                <RoundedTextIconButton Icon={MdRefresh}/>
+                    selectedOption={
+                        getCurrencyOptions().find(
+                            (currency) => currency.value == selectedCurrency,
+                        )!
+                    }
+                    onSelect={({ value }) => setSelectedCurrency(value)}
+                />
+                <RoundedTextIconButton Icon={MdRefresh} />
                 <RangeDatePicker
                     initialStartDate={initialStartDate}
                     initialEndDate={initialEndDate}
@@ -94,9 +104,13 @@ const TransactionsHeader = ({
                     style={{
                         left: "50%",
                         top: "50px",
-                        transform: "translate(-50%)"
-                    }}/>
-                <RoundedIconButton Icon={MdAdd} clickEvent={() => openTransactionCreationDialog()} />
+                        transform: "translate(-50%)",
+                    }}
+                />
+                <RoundedIconButton
+                    Icon={MdAdd}
+                    clickEvent={() => openTransactionCreationDialog()}
+                />
             </div>
         </div>
     );

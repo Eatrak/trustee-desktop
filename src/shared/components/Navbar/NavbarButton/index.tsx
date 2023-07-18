@@ -4,9 +4,9 @@ import { IconType } from "react-icons";
 import { Link } from "react-router-dom";
 
 interface IProps {
-    Icon: IconType,
-    text: string,
-    path: string
+    Icon: IconType;
+    text: string;
+    path: string;
 }
 
 const NavbarButton = ({ Icon, text, path }: IProps) => {
@@ -15,11 +15,13 @@ const NavbarButton = ({ Icon, text, path }: IProps) => {
     };
 
     return (
-        <Link to={path} style={{textDecoration: "none"}} draggable={false}>
+        <Link to={path} style={{ textDecoration: "none" }} draggable={false}>
             <div className={"navbar-button" + getSelectedStyle()}>
                 <div className="navbar__button__container">
-                    <Icon className="navbar__button__container__icon"/>
-                    <p className="paragraph--small paragraph--bold navbar__button__container__text">{text}</p>
+                    <Icon className="navbar__button__container__icon" />
+                    <p className="paragraph--small paragraph--bold navbar__button__container__text">
+                        {text}
+                    </p>
                 </div>
             </div>
         </Link>

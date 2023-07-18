@@ -14,10 +14,14 @@ const NavbarUserBadge = ({ firstName, lastName, email }: IProps) => {
     return (
         <div className="navbar__user-badge">
             <div className="navbar__user-badge__image">
-                <p className="navbar__user-badge__image__letters paragraph--small paragraph--bold">{getNameInitials()}</p>
+                <p className="navbar__user-badge__image__letters paragraph--small paragraph--bold">
+                    {getNameInitials()}
+                </p>
             </div>
             <div className="navbar__user-badge__text-container">
-                <p className="paragraph--small paragraph--bold">{firstName} {lastName}</p>
+                <p className="paragraph--small paragraph--bold">
+                    {firstName} {lastName}
+                </p>
                 <p className="paragraph--small navbar__user-badge__email">{email}</p>
             </div>
         </div>

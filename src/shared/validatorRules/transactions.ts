@@ -1,5 +1,5 @@
 export const createTransactionCategoryRules = {
-    name: "required|string"
+    name: "required|string",
 };
 
 export const createTransactionBodyRules = {
@@ -8,9 +8,9 @@ export const createTransactionBodyRules = {
     categoryId: "required|string",
     carriedOut: "required|integer",
     amount: "required|numeric|min:0.01",
-    isIncome: "required|boolean"
+    isIncome: "required|boolean",
 };
 
 export const deleteTransactionBodyRules = {
-    id: "required|string"
+    id: "required|string",
 };

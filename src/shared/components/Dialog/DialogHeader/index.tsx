@@ -1,7 +1,7 @@
 import "./style.css";
 
 interface IProps {
-    title: string
+    title: string;
 }
 
 const DialogHeader = ({ title }: IProps) => {

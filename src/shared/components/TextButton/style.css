@@ -15,7 +15,7 @@
     cursor: pointer;
     font-weight: 700;
     user-select: none;
-    
+
     transition: box-shadow 0.2s, background-color 0.2s, opacity 0.2s;
 }
 
@@ -48,7 +48,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 
 .text-button--large {
     height: 45px;

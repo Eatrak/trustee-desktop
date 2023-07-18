@@ -2,13 +2,13 @@ import RoundedTextIconButton from "@components/RoundedTextIconButton";
 import { MdDeleteOutline } from "react-icons/md";
 import "./style.css";
 
-import { Transaction } from '@ts-types/schema';
+import { Transaction } from "@ts-types/schema";
 import dayjs from "dayjs";
 
 interface IProps {
-    transaction: Transaction,
-    onDeleteButtonClicked: Function,
-    onClick: Function
+    transaction: Transaction;
+    onDeleteButtonClicked: Function;
+    onClick: Function;
 }
 
 const TransactionItem = ({ transaction, onDeleteButtonClicked, onClick }: IProps) => {
@@ -17,7 +17,9 @@ const TransactionItem = ({ transaction, onDeleteButtonClicked, onClick }: IProps
     };
 
     const getTransactionItemClasses = () => {
-        return `transaction-item ${transaction.isIncome ? "transaction-item--is-income" : ""}`;
+        return `transaction-item ${
+            transaction.isIncome ? "transaction-item--is-income" : ""
+        }`;
     };
 
     return (
@@ -36,7 +38,8 @@ const TransactionItem = ({ transaction, onDeleteButtonClicked, onClick }: IProps
             <RoundedTextIconButton
                 Icon={MdDeleteOutline}
                 danger
-                clickEvent={() => onDeleteButtonClicked()} />
+                clickEvent={() => onDeleteButtonClicked()}
+            />
         </div>
     );
 };

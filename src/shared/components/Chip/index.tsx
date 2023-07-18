@@ -1,7 +1,7 @@
 import "./style.css";
 
 interface IProps {
-    text: string
+    text: string;
 }
 
 const Chip = ({ text }: IProps) => {

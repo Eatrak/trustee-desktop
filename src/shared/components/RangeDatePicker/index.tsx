@@ -8,17 +8,17 @@ import MiniRoundedIconButton from "@components/MiniRoundedIconButton";
 import RoundedTextIconButton from "@components/RoundedTextIconButton";
 
 export interface OnRangeDatePickerRangeChangedEvent {
-    startDate: Dayjs,
-    endDate: Dayjs
+    startDate: Dayjs;
+    endDate: Dayjs;
 }
 
 interface IProps {
-    style: React.CSSProperties,
-    isOpened: boolean,
-    setOpened: Function,
-    onRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any,
-    initialStartDate?: Dayjs,
-    initialEndDate?: Dayjs
+    style: React.CSSProperties;
+    isOpened: boolean;
+    setOpened: Function;
+    onRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any;
+    initialStartDate?: Dayjs;
+    initialEndDate?: Dayjs;
 }
 
 const RangeDatePicker = ({
@@ -27,7 +27,7 @@ const RangeDatePicker = ({
     style,
     isOpened,
     setOpened,
-    onRangeChanged
+    onRangeChanged,
 }: IProps) => {
     let datePickerFrame = useRef<HTMLDivElement>(null);
 
@@ -35,7 +35,8 @@ const RangeDatePicker = ({
     const currentYearAndMonth = dayjs().format("YYYY-MM");
     let [hasNeverBeenOpened, setHasNeverBeenOpened] = useState<boolean>(true);
     let [canBeOpened, setCanBeOpened] = useState<boolean>(true);
-    let [selectedYearAndMonth, changeYearAndMonth] = useState<string>(currentYearAndMonth);
+    let [selectedYearAndMonth, changeYearAndMonth] =
+        useState<string>(currentYearAndMonth);
     let [startDate, changeStartDate] = useState<Dayjs | null>(null);
     let [endDate, changeEndDate] = useState<Dayjs | null>(null);
     let [endDateCandidate, changeEndDateCandidate] = useState<Dayjs | null>();
@@ -55,29 +56,41 @@ const RangeDatePicker = ({
 
         // If no days have been selected, all the days are start-day candidates
         if (startDate == null && endDate == null) {
-            cssClass += " range-date-picker__panel__month-day-list__month-day--start-day-candidate";
+            cssClass +=
+                " range-date-picker__panel__month-day-list__month-day--start-day-candidate";
         }
-        
+
         // If the start-day has been selected
         if (startDate != null) {
             // If the days range has been selected, the days out of the range are start-day candidates
             if (endDate != null && (date.isBefore(startDate) || date.isAfter(endDate))) {
-                cssClass += " range-date-picker__panel__month-day-list__month-day--start-day-candidate";
+                cssClass +=
+                    " range-date-picker__panel__month-day-list__month-day--start-day-candidate";
             }
 
-            const isDateInCandidateRange = date.isAfter(startDate) && endDateCandidate != null && endDate == null && date.isBefore(endDateCandidate);
-            const isDateInRange = date.isAfter(startDate) && endDate != null && date.isBefore(endDate);
+            const isDateInCandidateRange =
+                date.isAfter(startDate) &&
+                endDateCandidate != null &&
+                endDate == null &&
+                date.isBefore(endDateCandidate);
+            const isDateInRange =
+                date.isAfter(startDate) && endDate != null && date.isBefore(endDate);
             // If the day is in the candidate range or in the selected range
             if (isDateInCandidateRange || isDateInRange) {
-                cssClass += " range-date-picker__panel__month-day-list__month-day--selected-range-day";
+                cssClass +=
+                    " range-date-picker__panel__month-day-list__month-day--selected-range-day";
             }
 
-            const isDateTheEndDateCandidate = endDateCandidate != null && endDate == null && date.isSame(endDateCandidate);
+            const isDateTheEndDateCandidate =
+                endDateCandidate != null &&
+                endDate == null &&
+                date.isSame(endDateCandidate);
             const isDateTheStartDate = date.isSame(startDate);
             const isDateTheEndDate = endDate != null && date.isSame(endDate);
             // If the day is an extreme of the candidate range or selected range
             if (isDateTheStartDate || isDateTheEndDateCandidate || isDateTheEndDate) {
-                cssClass += " range-date-picker__panel__month-day-list__month-day--selected-range-extreme-day";
+                cssClass +=
+                    " range-date-picker__panel__month-day-list__month-day--selected-range-extreme-day";
             }
         }
 
@@ -85,10 +98,12 @@ const RangeDatePicker = ({
     };
 
     const changeInterval = (date: Dayjs) => {
-        if ((startDate == null && endDate == null) || (startDate != null && date.isBefore(startDate))) {
+        if (
+            (startDate == null && endDate == null) ||
+            (startDate != null && date.isBefore(startDate))
+        ) {
             changeStartDate(date);
-        }
-        else if (startDate != null && endDate == null) {
+        } else if (startDate != null && endDate == null) {
             changeEndDate(date);
             onRangeChanged({ startDate, endDate: date });
             setOpened(false);
@@ -103,7 +118,9 @@ const RangeDatePicker = ({
     // Event used to close the date picker when touching outside of it
     const closeDatePickerWhenTouchingOutsideEvent = (e: MouseEvent) => {
         const hasDatePickerBeenClicked = e.target == datePickerFrame.current;
-        const haveDatePickerChildsBeenClicked = datePickerFrame.current?.contains(e.target as HTMLElement);
+        const haveDatePickerChildsBeenClicked = datePickerFrame.current?.contains(
+            e.target as HTMLElement,
+        );
         if (!hasDatePickerBeenClicked && !haveDatePickerChildsBeenClicked) {
             setOpened(false);
         }
@@ -129,7 +146,7 @@ const RangeDatePicker = ({
             changeEndDate(initialEndDate);
             onRangeChanged({
                 startDate: initialStartDate,
-                endDate: initialEndDate
+                endDate: initialEndDate,
             });
         }
 
@@ -137,55 +154,76 @@ const RangeDatePicker = ({
         document.addEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);
     }, []);
 
-    useEffect(() => () => {
-        document.removeEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);
-    }, []);
+    useEffect(
+        () => () => {
+            document.removeEventListener(
+                "mousedown",
+                closeDatePickerWhenTouchingOutsideEvent,
+            );
+        },
+        [],
+    );
 
     return (
         <div className="range-date-picker">
-            <RoundedTextIconButton
-                Icon={MdDateRange}
-                clickEvent={openPanel}/>
-            <div ref={datePickerFrame} className={"range-date-picker__panel range-date-picker__panel--" + (isOpened ? "opened" : "closed") + (hasNeverBeenOpened ? " range-date-picker__panel--has-never-been-opened" : "")} style={style}>
+            <RoundedTextIconButton Icon={MdDateRange} clickEvent={openPanel} />
+            <div
+                ref={datePickerFrame}
+                className={
+                    "range-date-picker__panel range-date-picker__panel--" +
+                    (isOpened ? "opened" : "closed") +
+                    (hasNeverBeenOpened
+                        ? " range-date-picker__panel--has-never-been-opened"
+                        : "")
+                }
+                style={style}
+            >
                 <div className="range-date-picker__panel__header">
-                    <MiniRoundedIconButton Icon={MdChevronLeft} clickEvent={selectPreviousMonth}/>
-                    <p
-                        className="range-date-picker__panel__header__month-name paragraph--sub-title paragraph--small">
-                        {dayjs(selectedYearAndMonth).format("MMMM")} {dayjs(selectedYearAndMonth).get("year")}
+                    <MiniRoundedIconButton
+                        Icon={MdChevronLeft}
+                        clickEvent={selectPreviousMonth}
+                    />
+                    <p className="range-date-picker__panel__header__month-name paragraph--sub-title paragraph--small">
+                        {dayjs(selectedYearAndMonth).format("MMMM")}{" "}
+                        {dayjs(selectedYearAndMonth).get("year")}
                     </p>
-                    <MiniRoundedIconButton Icon={MdChevronRight} clickEvent={selectNextMonth}/>
+                    <MiniRoundedIconButton
+                        Icon={MdChevronRight}
+                        clickEvent={selectNextMonth}
+                    />
                 </div>
                 <div className="range-date-picker__panel__content">
                     <div className="range-date-picker__panel__weekday-list">
-                        {
-                            dayNames.map(dayName => {
-                                return (
-                                    <p key={dayName} className="paragraph--small paragraph--bold range-date-picker__panel__weekday-list__weekday">
-                                        {dayName}
-                                    </p>
-                                );
-                            })
-                        }
+                        {dayNames.map((dayName) => {
+                            return (
+                                <p
+                                    key={dayName}
+                                    className="paragraph--small paragraph--bold range-date-picker__panel__weekday-list__weekday"
+                                >
+                                    {dayName}
+                                </p>
+                            );
+                        })}
                     </div>
                     <div className="range-date-picker__panel__month-day-list">
-                        {
-                            [...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(day => {
+                        {[...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(
+                            (day) => {
                                 const date = dayjs(`${selectedYearAndMonth}-${day + 1}`);
-                                
+
                                 return (
                                     <div
                                         key={date.toString()}
                                         className={getMonthDayCSSClass(date)}
                                         onClick={() => changeInterval(date)}
-                                        onMouseEnter={() => changeEndDateCandidate(date)}>
-
+                                        onMouseEnter={() => changeEndDateCandidate(date)}
+                                    >
                                         <p className="paragraph--small paragraph--bold range-date-picker__panel__month-day-list__month-day__text">
                                             {day + 1}
                                         </p>
                                     </div>
                                 );
-                            })
-                        }
+                            },
+                        )}
                     </div>
                 </div>
             </div>
