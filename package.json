@@ -35,7 +35,8 @@
     "test": "vitest",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "eslintConfig": {
     "extends": [
