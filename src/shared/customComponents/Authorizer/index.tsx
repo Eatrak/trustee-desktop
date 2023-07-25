@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import AuthService from "@services/auth";
-import LoadingPage from "@customComponents/LoadingPage";
+import AuthService from "@shared/services/auth";
+import LoadingPage from "@shared/customComponents/LoadingPage";
 
 interface IProps {
     children: JSX.Element;

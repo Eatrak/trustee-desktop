@@ -1,6 +1,6 @@
 import "./style.css";
 
-import NormalButton from "@components/NormalButton";
+import NormalButton from "@shared/components/NormalButton";
 
 interface IProps {
     header?: string;

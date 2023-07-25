@@ -1,7 +1,7 @@
 import "@styles/themes.css";
 import "../../index.css";
 
-import NormalButton from "@components/NormalButton";
+import NormalButton from "@shared/components/NormalButton";
 
 export default {
     title: "NormalButton",

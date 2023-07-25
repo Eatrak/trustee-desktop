@@ -5,7 +5,7 @@ import { MdChevronLeft, MdChevronRight, MdDateRange } from "react-icons/md";
 import dayjs, { Dayjs } from "dayjs";
 import Validator, { Rules, TypeCheckingRule } from "validatorjs";
 
-import MiniRoundedIconButton from "@components/MiniRoundedIconButton";
+import MiniRoundedIconButton from "@shared/components/MiniRoundedIconButton";
 
 interface IProps {
     style?: React.CSSProperties;

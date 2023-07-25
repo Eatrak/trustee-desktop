@@ -6,7 +6,7 @@ import { Subscription } from "rxjs";
 
 import NavbarButton from "./NavbarButton";
 import NavbarUserBadge from "./NavbarUserBadge";
-import AuthService from "@services/auth";
+import AuthService from "@shared/services/auth";
 
 const Navbar = () => {
     const [name, setName] = useState<string>("");

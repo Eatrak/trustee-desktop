@@ -1,7 +1,7 @@
 import "@styles/themes.css";
 import "../../index.css";
 
-import Checkbox from "@components/Checkbox";
+import Checkbox from "@shared/components/Checkbox";
 
 export default {
     title: "Checkbox",

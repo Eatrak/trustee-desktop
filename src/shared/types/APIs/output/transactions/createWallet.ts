@@ -1,5 +1,8 @@
-import { Wallet } from "@ts-types/schema";
+import { Wallet } from "@shared/schema";
+import { Response } from "@shared/errors/types";
 
-export interface CreateWalletResponse {
+export interface CreateWalletResponseData {
     createdWallet: Wallet;
 }
+
+export type CreateWalletResponse = Response<CreateWalletResponseData>;

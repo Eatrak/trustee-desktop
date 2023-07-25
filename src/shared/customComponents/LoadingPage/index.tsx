@@ -1,6 +1,6 @@
 import "./style.css";
-import logo from "@assets/logo.jpg";
-import LoadingBar from "@components/LoadingBar";
+import logo from "@shared/assets/logo.jpg";
+import LoadingBar from "@shared/components/LoadingBar";
 
 const LoadingPage = () => {
     return (

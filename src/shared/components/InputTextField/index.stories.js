@@ -1,7 +1,7 @@
 import "@styles/themes.css";
 import "../../index.css";
 
-import InputTextField from "@components/InputTextField";
+import InputTextField from "@shared/components/InputTextField";
 
 export default {
     title: "InputTextField",

@@ -4,17 +4,17 @@ import Validator from "validatorjs";
 import dayjs, { Dayjs } from "dayjs";
 
 import "./style.css";
-import Dialog from "@components/Dialog";
-import InputTextField from "@components/InputTextField";
-import TransactionsService from "@services/transactions";
-import NormalButton from "@components/NormalButton";
-import TextButton from "@components/TextButton";
-import Select, { SelectOption } from "@components/Select";
-import DatePicker from "@components/DatePicker";
-import Checkbox from "@components/Checkbox";
-import { createTransactionBodyRules } from "@validatorRules/transactions";
-import { Transaction, TransactionCategory, Wallet } from "@ts-types/schema";
-import { CreateTransactionBody } from "@ts-types/APIs/input/transactions/createTransaction";
+import Dialog from "@shared/components/Dialog";
+import InputTextField from "@shared/components/InputTextField";
+import TransactionsService from "@shared/services/transactions";
+import NormalButton from "@shared/components/NormalButton";
+import TextButton from "@shared/components/TextButton";
+import Select, { SelectOption } from "@shared/components/Select";
+import DatePicker from "@shared/components/DatePicker";
+import Checkbox from "@shared/components/Checkbox";
+import { createTransactionBodyRules } from "@shared/validatorRules/transactions";
+import { Transaction, TransactionCategory, Wallet } from "@shared/ts-types/schema";
+import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
 
 interface IProps {
     close: Function;

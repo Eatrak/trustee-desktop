@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { MdAdd, MdRefresh } from "react-icons/md";
 import { Dayjs } from "dayjs";
 
-import RoundedTextIconButton from "@components/RoundedTextIconButton";
-import RoundedIconButton from "@components/RoundedIconButton";
+import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
+import RoundedIconButton from "@shared/components/RoundedIconButton";
 import RangeDatePicker, {
     OnRangeDatePickerRangeChangedEvent,
-} from "@components/RangeDatePicker";
-import MiniSelect, { SelectOption } from "@components/MiniSelect";
-import { Currency } from "@ts-types/schema";
-import TransactionsService from "@services/transactions";
+} from "@shared/components/RangeDatePicker";
+import MiniSelect, { SelectOption } from "@shared/components/MiniSelect";
+import { Currency } from "@shared/ts-types/schema";
+import TransactionsService from "@shared/services/transactions";
 
 interface IProps {
     initialStartDate: Dayjs;

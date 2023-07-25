@@ -1,7 +1,7 @@
 import "./style.css";
 
-import logo from "@assets/logo.jpg";
-import { ReactComponent as DotsDecoration } from "@assets/dots-decoration.svg";
+import logo from "@shared/assets/logo.jpg";
+import { ReactComponent as DotsDecoration } from "@shared/assets/dots-decoration.svg";
 import SignInForm from "./SignInForm";
 
 const SignInPage = () => {

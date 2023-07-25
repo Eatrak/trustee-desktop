@@ -1,21 +1,26 @@
 import { BehaviorSubject } from "rxjs";
 import { Dayjs } from "dayjs";
 
-import { Currency, Transaction, TransactionCategory, Wallet } from "@ts-types/schema";
-import { Utils } from "@services/utils";
-import { GetTransactionsByCurrencyAndCreationRangeInput } from "@ts-types/APIs/input/transactions/getTransactions";
-import { GetTransactionsResponse } from "@ts-types/APIs/output/transactions/getTransactions";
-import { GetWalletsResponse } from "@ts-types/APIs/output/transactions/getWallets";
-import { CreateWalletResponse } from "@ts-types/APIs/output/transactions/createWallet";
-import { CreateWalletBody } from "@ts-types/APIs/input/transactions/createWallet";
-import { GetCurrenciesResponse } from "@ts-types/APIs/output/transactions/getCurrencies";
-import { GetTransactionCategoriesResponse } from "@ts-types/APIs/output/transactions/getTransactionCategories";
-import { CreateTransactionCategoryResponse } from "@ts-types/APIs/output/transactions/createTransactionCategory";
-import { CreateTransactionCategoryBody } from "@ts-types/APIs/input/transactions/createTransactionCategory";
-import { CreateTransactionBody } from "@ts-types/APIs/input/transactions/createTransaction";
-import { CreateTransactionResponse } from "@ts-types/APIs/output/transactions/createTransactionResponse";
-import { DeleteTransactionQueryParameters } from "@ts-types/APIs/input/transactions/deleteTransaction";
-import { UpdateTransactionBody } from "@ts-types/APIs/input/transactions/updateTransaction";
+import {
+    Currency,
+    Transaction,
+    TransactionCategory,
+    Wallet,
+} from "@shared/ts-types/schema";
+import { Utils } from "@shared/services/utils";
+import { GetTransactionsByCurrencyAndCreationRangeInput } from "@shared/ts-types/APIs/input/transactions/getTransactions";
+import { GetTransactionsResponse } from "@shared/ts-types/APIs/output/transactions/getTransactions";
+import { GetWalletsResponse } from "@shared/ts-types/APIs/output/transactions/getWallets";
+import { CreateWalletResponse } from "@shared/ts-types/APIs/output/transactions/createWallet";
+import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
+import { GetCurrenciesResponse } from "@shared/ts-types/APIs/output/transactions/getCurrencies";
+import { GetTransactionCategoriesResponse } from "@shared/ts-types/APIs/output/transactions/getTransactionCategories";
+import { CreateTransactionCategoryResponse } from "@shared/ts-types/APIs/output/transactions/createTransactionCategory";
+import { CreateTransactionCategoryBody } from "@shared/ts-types/APIs/input/transactions/createTransactionCategory";
+import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
+import { CreateTransactionResponse } from "@shared/ts-types/APIs/output/transactions/createTransactionResponse";
+import { DeleteTransactionQueryParameters } from "@shared/ts-types/APIs/input/transactions/deleteTransaction";
+import { UpdateTransactionBody } from "@shared/ts-types/APIs/input/transactions/updateTransaction";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();

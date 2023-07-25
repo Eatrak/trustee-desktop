@@ -10,25 +10,8 @@ export default defineConfig({
     resolve: {
         alias: [
             {
-                find: "@assets",
-                replacement: path.resolve(__dirname, "src/shared/assets"),
-            },
-            {
-                find: "@components",
-                replacement: path.resolve(__dirname, "src/shared/components"),
-            },
-            {
-                find: "@ts-types",
-                replacement: path.resolve(__dirname, "src/shared/types"),
-            },
-            {
-                find: "@services",
-                replacement: path.resolve(__dirname, "src/shared/services"),
-            },
-            { find: "@utils", replacement: path.resolve(__dirname, "src/shared/utils") },
-            {
-                find: "@validatorRules",
-                replacement: path.resolve(__dirname, "src/shared/validatorRules"),
+                find: "@shared",
+                replacement: path.resolve(__dirname, "src/shared"),
             },
             { find: "@features", replacement: path.resolve(__dirname, "src/features") },
         ],

@@ -5,17 +5,17 @@ import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Currency, Transaction, Wallet } from "@ts-types/schema";
-import TransactionsService from "@services/transactions";
-import TextButton from "@components/TextButton";
-import { OnRangeDatePickerRangeChangedEvent } from "@components/RangeDatePicker";
-import MultiSelect, { MultiSelectOption } from "@components/MultiSelect";
-import Statistic from "@components/Statistic";
+import { Currency, Transaction, Wallet } from "@shared/ts-types/schema";
+import TransactionsService from "@shared/services/transactions";
+import TextButton from "@shared/components/TextButton";
+import { OnRangeDatePickerRangeChangedEvent } from "@shared/components/RangeDatePicker";
+import MultiSelect, { MultiSelectOption } from "@shared/components/MultiSelect";
+import Statistic from "@shared/components/Statistic";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import TransactionDialog from "./TransactionDialog";
 import TransactionItemSkeleton from "./TransactionItemSkeleton";
-import ConfirmationDialog from "@components/ConfirmationDialog";
+import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 
 const TransactionsSection = () => {
     let [transactions, changeTransactions] = useState<Transaction[]>([]);

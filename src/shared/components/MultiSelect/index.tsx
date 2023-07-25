@@ -9,10 +9,10 @@ import React, {
 } from "react";
 import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
 
-import Checkbox from "@components/Checkbox";
-import NormalButton from "@components/NormalButton";
-import TextButton from "@components/TextButton";
-import Chip from "@components/Chip";
+import Checkbox from "@shared/components/Checkbox";
+import NormalButton from "@shared/components/NormalButton";
+import TextButton from "@shared/components/TextButton";
+import Chip from "@shared/components/Chip";
 
 export interface MultiSelectOption {
     name: string;

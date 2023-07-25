@@ -1,8 +1,8 @@
-import RoundedTextIconButton from "@components/RoundedTextIconButton";
+import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 import { MdDeleteOutline } from "react-icons/md";
 import "./style.css";
 
-import { Transaction } from "@ts-types/schema";
+import { Transaction } from "@shared/ts-types/schema";
 import dayjs from "dayjs";
 
 interface IProps {

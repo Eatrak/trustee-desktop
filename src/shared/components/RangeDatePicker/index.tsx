@@ -4,8 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import { MdChevronLeft, MdChevronRight, MdDateRange } from "react-icons/md";
 import dayjs, { Dayjs } from "dayjs";
 
-import MiniRoundedIconButton from "@components/MiniRoundedIconButton";
-import RoundedTextIconButton from "@components/RoundedTextIconButton";
+import MiniRoundedIconButton from "@shared/components/MiniRoundedIconButton";
+import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 
 export interface OnRangeDatePickerRangeChangedEvent {
     startDate: Dayjs;

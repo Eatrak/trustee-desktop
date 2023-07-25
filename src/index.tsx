@@ -12,9 +12,9 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import SignUpPage from "@features/core/auth/SignUp";
 import SignInPage from "@features/core/auth/SignIn";
-import AppLayout from "@customComponents/AppLayout";
-import Authorizer from "@customComponents/Authorizer";
-import TransactionsService from "@services/transactions";
+import AppLayout from "@shared/customComponents/AppLayout";
+import Authorizer from "@shared/customComponents/Authorizer";
+import TransactionsService from "@shared/services/transactions";
 
 Validator.setMessages("en", en);
 

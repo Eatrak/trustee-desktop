@@ -1,5 +1,5 @@
 import "./style.css";
-import TextSkeleton from "@components/TextSkeleton";
+import TextSkeleton from "@shared/components/TextSkeleton";
 
 const TransactionItemSkeleton = () => {
     return (

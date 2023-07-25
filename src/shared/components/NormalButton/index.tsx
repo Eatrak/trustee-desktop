@@ -1,4 +1,4 @@
-import LoadingIcon from "@components/LoadingIcon";
+import LoadingIcon from "@shared/components/LoadingIcon";
 import "./style.css";
 
 import { IconType } from "react-icons";

@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import Validator from "validatorjs";
 
 import "./style.css";
-import FormLayout from "@components/FormLayout";
-import InputTextField from "@components/InputTextField";
-import { signUpValidator } from "@validatorRules/auth";
-import AuthService from "@services/auth";
+import FormLayout from "@shared/components/FormLayout";
+import InputTextField from "@shared/components/InputTextField";
+import { signUpValidator } from "@shared/validatorRules/auth";
+import AuthService from "@shared/services/auth";
 
 const SignUpForm = () => {
     const [submitDisabled, setSubmitDisabled] = useState(true);

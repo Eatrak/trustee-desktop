@@ -1,7 +1,7 @@
 import "@styles/themes.css";
 import "../../index.css";
 
-import MultiSelect from "@components/MultiSelect";
+import MultiSelect from "@shared/components/MultiSelect";
 
 export default {
     title: "MultiSelect",

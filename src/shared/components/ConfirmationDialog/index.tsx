@@ -1,7 +1,7 @@
 import "./style.css";
-import Dialog from "@components/Dialog";
-import NormalButton from "@components/NormalButton";
-import TextButton from "@components/TextButton";
+import Dialog from "@shared/components/Dialog";
+import NormalButton from "@shared/components/NormalButton";
+import TextButton from "@shared/components/TextButton";
 
 interface IProps {
     title: string;

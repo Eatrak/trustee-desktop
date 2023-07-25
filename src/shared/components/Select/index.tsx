@@ -10,8 +10,8 @@ import React, {
 import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
 import Validator, { Rules, TypeCheckingRule } from "validatorjs";
 
-import NormalButton from "@components/NormalButton";
-import TextButton from "@components/TextButton";
+import NormalButton from "@shared/components/NormalButton";
+import TextButton from "@shared/components/TextButton";
 
 export interface SelectOption {
     name: string;

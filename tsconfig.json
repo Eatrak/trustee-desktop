@@ -18,12 +18,7 @@
         "jsx": "react-jsx",
         "baseUrl": "./",
         "paths": {
-            "@assets/*": ["./src/shared/assets/*"],
-            "@components/*": ["./src/shared/components/*"],
-            "@customComponents/*": ["./src/shared/customComponents/*"],
-            "@services/*": ["./src/shared/services/*"],
-            "@validatorRules/*": ["./src/shared/validatorRules/*"],
-            "@ts-types/*": ["./src/shared/types/*"],
+            "@shared/*": ["./src/shared/*"],
             "@features/*": ["./src/features/*"]
         }
     },
