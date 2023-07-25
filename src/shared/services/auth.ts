@@ -31,21 +31,28 @@ export default class AuthService {
     }
 
     async isUserAuthenticated() {
-        const authToken = localStorage.getItem("authToken");
+        try {
+            const authToken = localStorage.getItem("authToken");
 
-        if (!authToken) {
-            return false;
-        }
+            if (!authToken) {
+                return false;
+            }
 
-        const response = await fetch(Utils.getInstance().getAPIEndpoint("/auth/check"), {
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-            },
-        });
-        if (response.ok) {
-            const jsonResponse = await response.json();
-            const decodedAuthToken = jsonResponse.decodedAuthToken;
+            const response = await fetch(
+                Utils.getInstance().getAPIEndpoint("/auth/check"),
+                {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                },
+            );
 
+            const jsonResponse: CheckAuthenticationResponse = await response.json();
+            if (jsonResponse.error) {
+                return false;
+            }
+
+            const { decodedAuthToken } = jsonResponse.data;
             this.personalInfo$.next({
                 name: decodedAuthToken["custom:name"],
                 surname: decodedAuthToken["custom:surname"],
@@ -53,9 +60,9 @@ export default class AuthService {
             });
 
             return true;
+        } catch (err) {
+            return false;
         }
-
-        return false;
     }
 
     async signUp(name: string, surname: string, email: string, password: string) {
@@ -82,13 +89,12 @@ export default class AuthService {
                 },
                 body: JSON.stringify(body),
             });
-            const jsonResponse = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem("authToken", jsonResponse.authToken);
-
-                return true;
+            const jsonResponse: SignUpResponse = await response.json();
+            if (jsonResponse.error) {
+                return false;
             }
+
+            return true;
         } catch (err) {
             console.log(err);
         }
@@ -111,13 +117,16 @@ export default class AuthService {
                 },
                 body: JSON.stringify({ userInfo: { email, password } }),
             });
-            const jsonResponse = await response.json();
 
-            if (response.ok) {
-                localStorage.setItem("authToken", jsonResponse.authToken);
-
-                return true;
+            const jsonResponse: SignInResponse = await response.json();
+            if (jsonResponse.error) {
+                return false;
             }
+
+            const { authToken } = jsonResponse.data;
+            localStorage.setItem("authToken", authToken);
+
+            return true;
         } catch (err) {
             console.log(err);
         }
