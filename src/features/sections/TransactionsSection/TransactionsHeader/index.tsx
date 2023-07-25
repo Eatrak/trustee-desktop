@@ -10,7 +10,7 @@ import RangeDatePicker, {
     OnRangeDatePickerRangeChangedEvent,
 } from "@shared/components/RangeDatePicker";
 import MiniSelect, { SelectOption } from "@shared/components/MiniSelect";
-import { Currency } from "@shared/ts-types/schema";
+import { Currency } from "@shared/schema";
 import TransactionsService from "@shared/services/transactions";
 
 interface IProps {

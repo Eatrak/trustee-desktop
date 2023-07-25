@@ -13,7 +13,7 @@ import Select, { SelectOption } from "@shared/components/Select";
 import DatePicker from "@shared/components/DatePicker";
 import Checkbox from "@shared/components/Checkbox";
 import { createTransactionBodyRules } from "@shared/validatorRules/transactions";
-import { Transaction, TransactionCategory, Wallet } from "@shared/ts-types/schema";
+import { Transaction, TransactionCategory, Wallet } from "@shared/schema";
 import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
 
 interface IProps {

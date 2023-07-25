@@ -5,7 +5,7 @@ import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
 
-import { Currency, Transaction, Wallet } from "@shared/ts-types/schema";
+import { Currency, Transaction, Wallet } from "@shared/schema";
 import TransactionsService from "@shared/services/transactions";
 import TextButton from "@shared/components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@shared/components/RangeDatePicker";

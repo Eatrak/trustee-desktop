@@ -1,14 +1,9 @@
 import { BehaviorSubject } from "rxjs";
 import { Dayjs } from "dayjs";
 
-import {
-    Currency,
-    Transaction,
-    TransactionCategory,
-    Wallet,
-} from "@shared/ts-types/schema";
+import { Currency, Transaction, TransactionCategory, Wallet } from "@shared/schema";
 import { Utils } from "@shared/services/utils";
-import { GetTransactionsByCurrencyAndCreationRangeInput } from "@shared/ts-types/APIs/input/transactions/getTransactions";
+import { GetTransactionsInputQueryParams } from "@shared/ts-types/APIs/input/transactions/getTransactions";
 import { GetTransactionsResponse } from "@shared/ts-types/APIs/output/transactions/getTransactions";
 import { GetWalletsResponse } from "@shared/ts-types/APIs/output/transactions/getWallets";
 import { CreateWalletResponse } from "@shared/ts-types/APIs/output/transactions/createWallet";
@@ -18,9 +13,8 @@ import { GetTransactionCategoriesResponse } from "@shared/ts-types/APIs/output/t
 import { CreateTransactionCategoryResponse } from "@shared/ts-types/APIs/output/transactions/createTransactionCategory";
 import { CreateTransactionCategoryBody } from "@shared/ts-types/APIs/input/transactions/createTransactionCategory";
 import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
-import { CreateTransactionResponse } from "@shared/ts-types/APIs/output/transactions/createTransactionResponse";
+import { CreateTransactionResponse } from "@shared/ts-types/APIs/output/transactions/createTransaction";
 import { DeleteTransactionQueryParameters } from "@shared/ts-types/APIs/input/transactions/deleteTransaction";
-import { UpdateTransactionBody } from "@shared/ts-types/APIs/input/transactions/updateTransaction";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -58,12 +52,12 @@ export default class TransactionsService {
                 body: JSON.stringify(input),
             });
 
-            if (!response.ok) {
+            const jsonResponse: CreateTransactionResponse = await response.json();
+            if (jsonResponse.error) {
                 return false;
             }
 
-            const { createdTransaction }: CreateTransactionResponse =
-                await response.json();
+            const { createdTransaction } = jsonResponse.data;
             const updatedTransactions = [
                 createdTransaction,
                 ...this.transactions$.getValue(),
@@ -77,156 +71,227 @@ export default class TransactionsService {
         }
     }
 
-    /**
-     * Update transaction.
-     *
-     * @param input Input used to update transaction.
-     * @returns The transaction has been updated.
-     */
-    async updateTransaction(input: UpdateTransactionBody): Promise<boolean> {
-        try {
-            const requestURL = Utils.getInstance().getAPIEndpoint("/transactions");
-            const response = await fetch(requestURL, {
-                method: "PUT",
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("authToken"),
-                },
-                body: JSON.stringify(input),
-            });
+    // /**
+    //  * Update transaction.
+    //  *
+    //  * @param input Input used to update transaction.
+    //  * @returns The transaction has been updated.
+    //  */
+    // async updateTransaction(input: UpdateTransactionBody): Promise<boolean> {
+    //     try {
+    //         const requestURL = Utils.getInstance().getAPIEndpoint("/transactions");
+    //         const response = await fetch(requestURL, {
+    //             method: "PUT",
+    //             headers: {
+    //                 Authorization: "Bearer " + localStorage.getItem("authToken"),
+    //             },
+    //             body: JSON.stringify(input),
+    //         });
 
-            if (!response.ok) {
-                return false;
-            }
+    //         if (!response.ok) {
+    //             return false;
+    //         }
 
-            return true;
-        } catch (err) {
-            return false;
-        }
-    }
+    //         return true;
+    //     } catch (err) {
+    //         return false;
+    //     }
+    // }
 
     async getTransactionsByCurrencyAndCreationRange(
         currencyId: string,
         startCreationTimestamp: Dayjs,
         endCreationTimestamp: Dayjs,
     ) {
-        const queryParams: GetTransactionsByCurrencyAndCreationRangeInput = {
-            startCarriedOut: startCreationTimestamp.unix().toString(),
-            endCarriedOut: endCreationTimestamp.unix().toString(),
-            currencyId,
-        };
-        const requestURL =
-            Utils.getInstance().getAPIEndpoint("/transactions?") +
-            new URLSearchParams({ ...queryParams });
-        const response = await fetch(requestURL, {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("authToken"),
-            },
-        });
-        const { transactions }: GetTransactionsResponse = await response.json();
+        try {
+            const queryParams: GetTransactionsInputQueryParams = {
+                startCarriedOut: startCreationTimestamp.unix().toString(),
+                endCarriedOut: endCreationTimestamp.unix().toString(),
+                currencyId,
+            };
+            const requestURL =
+                Utils.getInstance().getAPIEndpoint("/transactions?") +
+                new URLSearchParams({ ...queryParams });
+            const response = await fetch(requestURL, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
 
-        this.transactions$.next(transactions);
+            const jsonResponse: GetTransactionsResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return;
+            }
+
+            const { transactions } = jsonResponse.data;
+            this.transactions$.next(transactions);
+        } catch (err) {
+            // TODO: handle error
+        }
     }
 
     async getWallets() {
-        const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
-        const response = await fetch(requestURL, {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("authToken"),
-            },
-        });
-        const { wallets }: GetWalletsResponse = await response.json();
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
+            const response = await fetch(requestURL, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
 
-        this.wallets$.next(wallets);
+            const jsonResponse: GetWalletsResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return;
+            }
+
+            const { wallets } = jsonResponse.data;
+            this.wallets$.next(wallets);
+        } catch (err) {
+            // TODO: handle error
+        }
     }
 
     async createWallet(createWalletBody: CreateWalletBody) {
-        const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
-        const response = await fetch(requestURL, {
-            method: "POST",
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("authToken"),
-            },
-            body: JSON.stringify(createWalletBody),
-        });
-        const { createdWallet }: CreateWalletResponse = await response.json();
-        const newWallets = [createdWallet, ...this.wallets$.getValue()];
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
+            const response = await fetch(requestURL, {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+                body: JSON.stringify(createWalletBody),
+            });
 
-        this.wallets$.next(newWallets);
+            const jsonResponse: CreateWalletResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return;
+            }
+
+            const { createdWallet } = jsonResponse.data;
+            const newWallets = [createdWallet, ...this.wallets$.getValue()];
+
+            this.wallets$.next(newWallets);
+        } catch (err) {
+            // TODO: handle error
+        }
     }
 
     async getCurrencies() {
-        const requestURL = Utils.getInstance().getAPIEndpoint("/currencies");
-        const response = await fetch(requestURL, {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("authToken"),
-            },
-        });
-        const { currencies }: GetCurrenciesResponse = await response.json();
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint("/currencies");
+            const response = await fetch(requestURL, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
 
-        this.currencies$.next(currencies);
+            const jsonResponse: GetCurrenciesResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return;
+            }
+
+            const { currencies } = jsonResponse.data;
+            this.currencies$.next(currencies);
+        } catch (err) {
+            // TODO: handle error
+        }
     }
 
     async getTransactionCategories() {
-        const requestURL = Utils.getInstance().getAPIEndpoint("/transaction-categories");
-        const response = await fetch(requestURL, {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("authToken"),
-            },
-        });
-        const { transactionCategories }: GetTransactionCategoriesResponse =
-            await response.json();
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                "/transaction-categories",
+            );
+            const response = await fetch(requestURL, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
 
-        this.transactionCategories$.next(transactionCategories);
+            const jsonResponse: GetTransactionCategoriesResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return;
+            }
+
+            const { transactionCategories } = jsonResponse.data;
+            this.transactionCategories$.next(transactionCategories);
+        } catch (err) {
+            // TODO: handle error
+        }
     }
 
     async createTransactionCategory(
         createTransactionCategoryBody: CreateTransactionCategoryBody,
     ) {
-        const requestURL = Utils.getInstance().getAPIEndpoint("/transaction-categories");
-        const response = await fetch(requestURL, {
-            method: "POST",
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("authToken"),
-            },
-            body: JSON.stringify(createTransactionCategoryBody),
-        });
-        const { createdTransactionCategory }: CreateTransactionCategoryResponse =
-            await response.json();
-        const newTransactionCategories = [
-            createdTransactionCategory,
-            ...this.transactionCategories$.getValue(),
-        ];
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                "/transaction-categories",
+            );
+            const response = await fetch(requestURL, {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+                body: JSON.stringify(createTransactionCategoryBody),
+            });
 
-        this.transactionCategories$.next(newTransactionCategories);
+            const jsonResponse: CreateTransactionCategoryResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return;
+            }
+
+            const { createdTransactionCategory } = jsonResponse.data;
+            const newTransactionCategories = [
+                createdTransactionCategory,
+                ...this.transactionCategories$.getValue(),
+            ];
+
+            this.transactionCategories$.next(newTransactionCategories);
+        } catch (err) {
+            // TODO: handle error
+        }
     }
 
     async deleteTransaction(id: string): Promise<boolean> {
-        // Initialize query parameters
-        const queryParams: DeleteTransactionQueryParameters = {
-            id,
-        };
+        try {
+            // Initialize query parameters
+            const queryParams: DeleteTransactionQueryParameters = {
+                id,
+            };
 
-        // Initialize request URL
-        const requestURL =
-            Utils.getInstance().getAPIEndpoint("/transactions?") +
-            new URLSearchParams({ ...queryParams });
+            // Initialize request URL
+            const requestURL =
+                Utils.getInstance().getAPIEndpoint("/transactions?") +
+                new URLSearchParams({ ...queryParams });
 
-        // Send request
-        const response = await fetch(requestURL, {
-            method: "DELETE",
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("authToken"),
-            },
-        });
+            // Send request
+            const response = await fetch(requestURL, {
+                method: "DELETE",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
 
-        if (!response.ok) {
+            const jsonResponse: CreateTransactionCategoryResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return false;
+            }
+
+            // Delete transaction locally
+            this.deleteTransactionLocally(id);
+
+            return true;
+        } catch (err) {
+            // TODO: handle error
             return false;
         }
-
-        // Delete transaction locally
-        this.deleteTransactionLocally(id);
-
-        return true;
     }
 
     /**
