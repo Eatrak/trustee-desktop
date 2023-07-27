@@ -19,6 +19,8 @@ import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 
 const TransactionsSection = () => {
     let [transactions, changeTransactions] = useState<Transaction[]>([]);
+    let [totalIncome, setTotalIncome] = useState<number>(0);
+    let [totalExpense, setTotalExpense] = useState<number>(0);
     let [wallets, changeWallets] = useState<Wallet[]>([]);
     let [cursor, changeCursor] = useState<DocumentClientTypes.Key | undefined>();
     let [isLoadingTransactions, changeTransactionsLoading] = useState<boolean>(false);
@@ -55,6 +57,12 @@ const TransactionsSection = () => {
     useEffect(() => {
         TransactionsService.getInstance().transactions$.subscribe((transactions) => {
             changeTransactions(transactions);
+        });
+        TransactionsService.getInstance().totalIncome$.subscribe((totalIncome) => {
+            setTotalIncome(totalIncome);
+        });
+        TransactionsService.getInstance().totalExpense$.subscribe((totalExpense) => {
+            setTotalExpense(totalExpense);
         });
         TransactionsService.getInstance().wallets$.subscribe((wallets) => {
             changeWallets(wallets);
@@ -255,11 +263,11 @@ const TransactionsSection = () => {
                     <div className="transactions-section--main__statistic-container__left">
                         <Statistic
                             title="Total Income"
-                            value={`${getSelectedCurrencySymbol()} ${0}`}
+                            value={`${getSelectedCurrencySymbol()} ${totalIncome}`}
                         />
                         <Statistic
                             title="Total Expense"
-                            value={`${getSelectedCurrencySymbol()} ${0}`}
+                            value={`${getSelectedCurrencySymbol()} ${totalExpense}`}
                         />
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
@@ -267,7 +275,7 @@ const TransactionsSection = () => {
                             title="Total Balance"
                             value={`
                                 ${getSelectedCurrencySymbol()} 
-                                ${0}`}
+                                ${totalIncome - totalExpense}`}
                             size="large"
                         />
                     </div>

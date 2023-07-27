@@ -20,12 +20,16 @@ export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
 
     transactions$: BehaviorSubject<Transaction[]>;
+    totalIncome$: BehaviorSubject<number>;
+    totalExpense$: BehaviorSubject<number>;
     wallets$: BehaviorSubject<Wallet[]>;
     currencies$: BehaviorSubject<Currency[]>;
     transactionCategories$: BehaviorSubject<TransactionCategory[]>;
 
     private constructor() {
         this.transactions$ = new BehaviorSubject<Transaction[]>([]);
+        this.totalIncome$ = new BehaviorSubject<number>(0);
+        this.totalExpense$ = new BehaviorSubject<number>(0);
         this.wallets$ = new BehaviorSubject<Wallet[]>([]);
         this.currencies$ = new BehaviorSubject<Currency[]>([]);
         this.transactionCategories$ = new BehaviorSubject<TransactionCategory[]>([]);
@@ -124,8 +128,10 @@ export default class TransactionsService {
                 return;
             }
 
-            const { transactions } = jsonResponse.data;
+            const { transactions, totalIncome, totalExpense } = jsonResponse.data;
             this.transactions$.next(transactions);
+            this.totalIncome$.next(totalIncome);
+            this.totalExpense$.next(totalExpense);
         } catch (err) {
             // TODO: handle error
         }
