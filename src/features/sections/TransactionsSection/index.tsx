@@ -278,7 +278,7 @@ const TransactionsSection = () => {
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-income"
-                                title="Total Income"
+                                title="Total income"
                                 value={`${getSelectedCurrencySymbol()} ${totalIncome}`}
                             />
                         )}
@@ -287,7 +287,7 @@ const TransactionsSection = () => {
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-expense"
-                                title="Total Expense"
+                                title="Total expense"
                                 value={`${getSelectedCurrencySymbol()} ${totalExpense}`}
                             />
                         )}
