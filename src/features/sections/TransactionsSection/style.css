@@ -35,6 +35,12 @@
     width: max-content;
 }
 
+.transactions-section--main__total-income,
+.transactions-section--main__total-expense,
+.transactions-section--main__total-balance {
+    width: 180px;
+}
+
 .transactions-section--main__statistic-container__right {
     display: grid;
     grid-auto-flow: column;

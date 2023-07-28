@@ -15,6 +15,7 @@ import { CreateTransactionCategoryBody } from "@shared/ts-types/APIs/input/trans
 import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
 import { CreateTransactionResponse } from "@shared/ts-types/APIs/output/transactions/createTransaction";
 import { DeleteTransactionQueryParameters } from "@shared/ts-types/APIs/input/transactions/deleteTransaction";
+import { GetBalanceResponse } from "@shared/ts-types/APIs/output/transactions/getBalance";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -128,8 +129,36 @@ export default class TransactionsService {
                 return;
             }
 
-            const { transactions, totalIncome, totalExpense } = jsonResponse.data;
+            const { transactions } = jsonResponse.data;
             this.transactions$.next(transactions);
+        } catch (err) {
+            // TODO: handle error
+        }
+    }
+
+    async getBalance(currencyId: string, startCarriedOut: Dayjs, endCarriedOut: Dayjs) {
+        try {
+            const queryParams: GetTransactionsInputQueryParams = {
+                startCarriedOut: startCarriedOut.unix().toString(),
+                endCarriedOut: endCarriedOut.unix().toString(),
+                currencyId,
+            };
+            const requestURL =
+                Utils.getInstance().getAPIEndpoint("/transactions/balance?") +
+                new URLSearchParams({ ...queryParams });
+            const response = await fetch(requestURL, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
+
+            const jsonResponse: GetBalanceResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return;
+            }
+
+            const { totalIncome, totalExpense } = jsonResponse.data;
             this.totalIncome$.next(totalIncome);
             this.totalExpense$.next(totalExpense);
         } catch (err) {

@@ -10,12 +10,13 @@ import TransactionsService from "@shared/services/transactions";
 import TextButton from "@shared/components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@shared/components/RangeDatePicker";
 import MultiSelect, { MultiSelectOption } from "@shared/components/MultiSelect";
-import Statistic from "@shared/components/Statistic";
+import Statistic from "@shared/components/Statistic/Statistic";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import TransactionDialog from "./TransactionDialog";
 import TransactionItemSkeleton from "./TransactionItemSkeleton";
 import ConfirmationDialog from "@shared/components/ConfirmationDialog";
+import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 
 const TransactionsSection = () => {
     let [transactions, changeTransactions] = useState<Transaction[]>([]);
@@ -24,6 +25,7 @@ const TransactionsSection = () => {
     let [wallets, changeWallets] = useState<Wallet[]>([]);
     let [cursor, changeCursor] = useState<DocumentClientTypes.Key | undefined>();
     let [isLoadingTransactions, changeTransactionsLoading] = useState<boolean>(false);
+    let [isBalanceLoading, setIsBalanceLoading] = useState<boolean>(false);
     let [isCreatingNewWallet, setIsCreatingNewWallet] = useState<boolean>(false);
     let [isDeletingTransaction, setIsDeletingTransaction] = useState<boolean>(false);
     let [isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened] =
@@ -82,13 +84,23 @@ const TransactionsSection = () => {
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
         changeTransactionsLoading(true);
-        // Get transactions by both selected currency and creation range
-        await TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
-            selectedCurrency,
-            startDate,
-            endDate,
-        );
+        setIsBalanceLoading(true);
+        await Promise.all([
+            // Get transactions by both selected currency and creation range
+            TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
+                selectedCurrency,
+                startDate,
+                endDate,
+            ),
+            // Get balance of transactions to get
+            TransactionsService.getInstance().getBalance(
+                selectedCurrency,
+                startDate,
+                endDate,
+            ),
+        ]);
         changeTransactionsLoading(false);
+        setIsBalanceLoading(false);
     };
 
     const changeTimeRangeOfTransactionsToShow = async ({
@@ -261,23 +273,38 @@ const TransactionsSection = () => {
                 />
                 <div className="transactions-section--main__statistic-container">
                     <div className="transactions-section--main__statistic-container__left">
-                        <Statistic
-                            title="Total Income"
-                            value={`${getSelectedCurrencySymbol()} ${totalIncome}`}
-                        />
-                        <Statistic
-                            title="Total Expense"
-                            value={`${getSelectedCurrencySymbol()} ${totalExpense}`}
-                        />
+                        {isBalanceLoading ? (
+                            <StatisticSkeleton title="Total income" width="180px" />
+                        ) : (
+                            <Statistic
+                                className="transactions-section--main__total-income"
+                                title="Total Income"
+                                value={`${getSelectedCurrencySymbol()} ${totalIncome}`}
+                            />
+                        )}
+                        {isBalanceLoading ? (
+                            <StatisticSkeleton title="Total expense" width="180px" />
+                        ) : (
+                            <Statistic
+                                className="transactions-section--main__total-expense"
+                                title="Total Expense"
+                                value={`${getSelectedCurrencySymbol()} ${totalExpense}`}
+                            />
+                        )}
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
-                        <Statistic
-                            title="Total Balance"
-                            value={`
-                                ${getSelectedCurrencySymbol()} 
-                                ${totalIncome - totalExpense}`}
-                            size="large"
-                        />
+                        {isBalanceLoading ? (
+                            <StatisticSkeleton title="Total balance" width="180px" />
+                        ) : (
+                            <Statistic
+                                className="transactions-section--main__total-balance"
+                                title="Total balance"
+                                value={`
+                                    ${getSelectedCurrencySymbol()} 
+                                    ${totalIncome - totalExpense}`}
+                                size="large"
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="transactions-section--main--container">
