@@ -14,18 +14,22 @@ import { Currency } from "@shared/schema";
 import TransactionsService from "@shared/services/transactions";
 
 interface IProps {
-    initialStartDate: Dayjs;
-    initialEndDate: Dayjs;
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
     onDatePickerRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any;
     openTransactionCreationDialog: Function;
+    setStartDate: Function;
+    setEndDate: Function;
     selectedCurrency: string;
     setSelectedCurrencyCode: (selectedCurrencyCode: string) => any;
 }
 
 const TransactionsHeader = ({
     onDatePickerRangeChanged,
-    initialStartDate,
-    initialEndDate,
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
     openTransactionCreationDialog,
     selectedCurrency,
     setSelectedCurrencyCode: setSelectedCurrency,
@@ -33,15 +37,13 @@ const TransactionsHeader = ({
     let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
     let [currencies, setCurrencies] = useState<Currency[]>([]);
     let [isDatePickerOpened, changeIsDatePickerOpened] = useState<boolean>(false);
-    let [startDate, changeStartDate] = useState<Dayjs>(initialStartDate);
-    let [endDate, changeEndDate] = useState<Dayjs>(initialEndDate);
 
     const changeTimeRangeOfTransactionsToShow = ({
         startDate,
         endDate,
     }: OnRangeDatePickerRangeChangedEvent) => {
-        changeStartDate(startDate);
-        changeEndDate(endDate);
+        setStartDate(startDate);
+        setEndDate(endDate);
 
         onDatePickerRangeChanged({ startDate, endDate });
     };
@@ -78,7 +80,7 @@ const TransactionsHeader = ({
                     Transactions
                 </h5>
                 <p className="paragraph--sub-title">
-                    {startDate.format("MM/DD/YYYY")} - {endDate.format("MM/DD/YYYY")}
+                    {startDate?.format("MM/DD/YYYY")} - {endDate?.format("MM/DD/YYYY")}
                 </p>
             </div>
             <div className="app-layout__header__actions-container">
@@ -96,8 +98,10 @@ const TransactionsHeader = ({
                 />
                 <RoundedTextIconButton Icon={MdRefresh} />
                 <RangeDatePicker
-                    initialStartDate={initialStartDate}
-                    initialEndDate={initialEndDate}
+                    startDate={startDate}
+                    endDate={endDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
                     onRangeChanged={changeTimeRangeOfTransactionsToShow}
                     isOpened={isDatePickerOpened}
                     setOpened={changeIsDatePickerOpened}

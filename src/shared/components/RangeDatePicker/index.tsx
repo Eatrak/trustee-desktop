@@ -8,22 +8,26 @@ import MiniRoundedIconButton from "@shared/components/MiniRoundedIconButton";
 import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 
 export interface OnRangeDatePickerRangeChangedEvent {
-    startDate: Dayjs;
-    endDate: Dayjs;
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
 }
 
 interface IProps {
     style: React.CSSProperties;
     isOpened: boolean;
     setOpened: Function;
+    setStartDate: Function;
+    setEndDate: Function;
     onRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any;
-    initialStartDate?: Dayjs;
-    initialEndDate?: Dayjs;
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
 }
 
 const RangeDatePicker = ({
-    initialStartDate,
-    initialEndDate,
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
     style,
     isOpened,
     setOpened,
@@ -37,8 +41,6 @@ const RangeDatePicker = ({
     let [canBeOpened, setCanBeOpened] = useState<boolean>(true);
     let [selectedYearAndMonth, changeYearAndMonth] =
         useState<string>(currentYearAndMonth);
-    let [startDate, changeStartDate] = useState<Dayjs | null>(null);
-    let [endDate, changeEndDate] = useState<Dayjs | null>(null);
     let [endDateCandidate, changeEndDateCandidate] = useState<Dayjs | null>();
 
     const selectPreviousMonth = () => {
@@ -102,16 +104,16 @@ const RangeDatePicker = ({
             (startDate == null && endDate == null) ||
             (startDate != null && date.isBefore(startDate))
         ) {
-            changeStartDate(date);
+            setStartDate(date);
         } else if (startDate != null && endDate == null) {
-            changeEndDate(date);
+            setEndDate(date);
             onRangeChanged({ startDate, endDate: date });
             setOpened(false);
         }
 
         if (startDate != null && endDate != null) {
-            changeStartDate(date);
-            changeEndDate(null);
+            setStartDate(date);
+            setEndDate(null);
         }
     };
 
@@ -141,14 +143,10 @@ const RangeDatePicker = ({
     };
 
     useEffect(() => {
-        if (initialStartDate && initialEndDate) {
-            changeStartDate(initialStartDate);
-            changeEndDate(initialEndDate);
-            onRangeChanged({
-                startDate: initialStartDate,
-                endDate: initialEndDate,
-            });
-        }
+        onRangeChanged({
+            startDate,
+            endDate,
+        });
 
         datePickerFrame.current?.addEventListener("animationend", setPanelOpenable);
         document.addEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);

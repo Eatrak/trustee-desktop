@@ -36,15 +36,14 @@ const TransactionsSection = () => {
         useState(false);
     let [currencies, setCurrencies] = useState<Currency[]>([]);
     let [selectedCurrency, setSelectedCurrency] = useState<string>("");
+
+    let [startCarriedOut, setStartCarriedOut] = useState<Dayjs | null>(null);
+    let [endCarriedOut, setEndCarriedOut] = useState<Dayjs | null>(null);
+
     let openedTransaction = useRef<Transaction>();
     let idOfTransactionToDelete = useRef<string | null>(null);
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
-
-    const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
-    const lastDayOfTheCurrentMonthTimestamp = dayjs(
-        dayjs().endOf("month").format("YYYY-MM-DD"),
-    );
 
     const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
 
@@ -57,6 +56,14 @@ const TransactionsSection = () => {
     };
 
     useEffect(() => {
+        const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
+        const lastDayOfTheCurrentMonthTimestamp = dayjs(
+            dayjs().endOf("month").format("YYYY-MM-DD"),
+        );
+
+        setStartCarriedOut(firstDayOfTheCurrentMonthTimestamp);
+        setEndCarriedOut(lastDayOfTheCurrentMonthTimestamp);
+
         TransactionsService.getInstance().wallets$.subscribe((wallets) => {
             changeWallets(wallets);
         });
@@ -106,7 +113,7 @@ const TransactionsSection = () => {
         startDate,
         endDate,
     }: OnRangeDatePickerRangeChangedEvent) => {
-        if (!selectedCurrency) return;
+        if (!selectedCurrency || !startDate || !endDate) return;
         await getTransactionsByCreationRange(startDate, endDate);
     };
 
@@ -138,7 +145,10 @@ const TransactionsSection = () => {
                     idOfTransactionToDelete.current,
                 );
 
-            if (transactionHasBeenDeleted) {
+            if (transactionHasBeenDeleted && startCarriedOut && endCarriedOut) {
+                // Update transactions
+                getTransactionsByCreationRange(startCarriedOut, endCarriedOut);
+
                 setIsTransactionDeletionDialogOpened(false);
             }
         } catch (err) {}
@@ -199,7 +209,7 @@ const TransactionsSection = () => {
     };
 
     useEffect(() => {
-        if (!selectedCurrency) return;
+        if (!selectedCurrency || !startCarriedOut || !endCarriedOut) return;
 
         // Select all wallets with the selected currency
         walletsMultiSelectRef.current?.setSelectedOptions(
@@ -209,10 +219,7 @@ const TransactionsSection = () => {
             ),
         );
 
-        getTransactionsByCreationRange(
-            firstDayOfTheCurrentMonthTimestamp,
-            lastDayOfTheCurrentMonthTimestamp,
-        );
+        getTransactionsByCreationRange(startCarriedOut, endCarriedOut);
     }, [selectedCurrency]);
 
     return (
@@ -248,8 +255,10 @@ const TransactionsSection = () => {
                 <TransactionsHeader
                     selectedCurrency={selectedCurrency}
                     setSelectedCurrencyCode={changeCurrencyCodeInstantly}
-                    initialStartDate={firstDayOfTheCurrentMonthTimestamp}
-                    initialEndDate={lastDayOfTheCurrentMonthTimestamp}
+                    startDate={startCarriedOut}
+                    endDate={endCarriedOut}
+                    setStartDate={setStartCarriedOut}
+                    setEndDate={setEndCarriedOut}
                     openTransactionCreationDialog={() =>
                         setIsTransactionCreationDialogOpened(true)
                     }

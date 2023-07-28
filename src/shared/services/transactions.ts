@@ -16,6 +16,7 @@ import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/
 import { CreateTransactionResponse } from "@shared/ts-types/APIs/output/transactions/createTransaction";
 import { DeleteTransactionQueryParameters } from "@shared/ts-types/APIs/input/transactions/deleteTransaction";
 import { GetBalanceResponse } from "@shared/ts-types/APIs/output/transactions/getBalance";
+import { DeleteTransactionResponse } from "@shared/ts-types/APIs/output/transactions/deleteTransaction";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -301,14 +302,11 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: CreateTransactionCategoryResponse = await response.json();
+            const jsonResponse: DeleteTransactionResponse = await response.json();
             if (jsonResponse.error) {
                 // TODO: handle error
                 return false;
             }
-
-            // Delete transaction locally
-            this.deleteTransaction(id);
 
             return true;
         } catch (err) {
