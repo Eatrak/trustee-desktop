@@ -19,7 +19,7 @@ import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 
 const TransactionsSection = () => {
-    let [transactions, changeTransactions] = useState<Transaction[]>([]);
+    let [transactions, setTransactions] = useState<Transaction[]>([]);
     let [totalIncome, setTotalIncome] = useState<number>(0);
     let [totalExpense, setTotalExpense] = useState<number>(0);
     let [wallets, changeWallets] = useState<Wallet[]>([]);
@@ -57,15 +57,6 @@ const TransactionsSection = () => {
     };
 
     useEffect(() => {
-        TransactionsService.getInstance().transactions$.subscribe((transactions) => {
-            changeTransactions(transactions);
-        });
-        TransactionsService.getInstance().totalIncome$.subscribe((totalIncome) => {
-            setTotalIncome(totalIncome);
-        });
-        TransactionsService.getInstance().totalExpense$.subscribe((totalExpense) => {
-            setTotalExpense(totalExpense);
-        });
         TransactionsService.getInstance().wallets$.subscribe((wallets) => {
             changeWallets(wallets);
         });
@@ -85,7 +76,7 @@ const TransactionsSection = () => {
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
         changeTransactionsLoading(true);
         setIsBalanceLoading(true);
-        await Promise.all([
+        const [transactions, balance] = await Promise.all([
             // Get transactions by both selected currency and creation range
             TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
                 selectedCurrency,
@@ -99,6 +90,14 @@ const TransactionsSection = () => {
                 endDate,
             ),
         ]);
+
+        // Update transactions
+        transactions && setTransactions(transactions);
+
+        // Update total balance
+        balance && setTotalIncome(balance.totalIncome);
+        balance && setTotalExpense(balance.totalExpense);
+
         changeTransactionsLoading(false);
         setIsBalanceLoading(false);
     };

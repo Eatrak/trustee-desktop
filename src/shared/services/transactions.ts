@@ -20,17 +20,11 @@ import { GetBalanceResponse } from "@shared/ts-types/APIs/output/transactions/ge
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
 
-    transactions$: BehaviorSubject<Transaction[]>;
-    totalIncome$: BehaviorSubject<number>;
-    totalExpense$: BehaviorSubject<number>;
     wallets$: BehaviorSubject<Wallet[]>;
     currencies$: BehaviorSubject<Currency[]>;
     transactionCategories$: BehaviorSubject<TransactionCategory[]>;
 
     private constructor() {
-        this.transactions$ = new BehaviorSubject<Transaction[]>([]);
-        this.totalIncome$ = new BehaviorSubject<number>(0);
-        this.totalExpense$ = new BehaviorSubject<number>(0);
         this.wallets$ = new BehaviorSubject<Wallet[]>([]);
         this.currencies$ = new BehaviorSubject<Currency[]>([]);
         this.transactionCategories$ = new BehaviorSubject<TransactionCategory[]>([]);
@@ -46,7 +40,7 @@ export default class TransactionsService {
      * @param input Input used to create new transaction.
      * @returns Is new transaction created.
      */
-    async createTransaction(input: CreateTransactionBody): Promise<boolean> {
+    async createTransaction(input: CreateTransactionBody) {
         try {
             const requestURL = Utils.getInstance().getAPIEndpoint("/transactions");
             const response = await fetch(requestURL, {
@@ -59,20 +53,15 @@ export default class TransactionsService {
 
             const jsonResponse: CreateTransactionResponse = await response.json();
             if (jsonResponse.error) {
+                // TODO: handle error
                 return false;
             }
 
             const { createdTransaction } = jsonResponse.data;
-            const updatedTransactions = [
-                createdTransaction,
-                ...this.transactions$.getValue(),
-            ];
 
-            this.transactions$.next(updatedTransactions);
-
-            return true;
+            return createdTransaction;
         } catch (err) {
-            return false;
+            // TODO: handle error
         }
     }
 
@@ -130,7 +119,7 @@ export default class TransactionsService {
             }
 
             const { transactions } = jsonResponse.data;
-            this.transactions$.next(transactions);
+            return transactions;
         } catch (err) {
             // TODO: handle error
         }
@@ -158,9 +147,8 @@ export default class TransactionsService {
                 return;
             }
 
-            const { totalIncome, totalExpense } = jsonResponse.data;
-            this.totalIncome$.next(totalIncome);
-            this.totalExpense$.next(totalExpense);
+            const balance = jsonResponse.data;
+            return balance;
         } catch (err) {
             // TODO: handle error
         }
@@ -320,7 +308,7 @@ export default class TransactionsService {
             }
 
             // Delete transaction locally
-            this.deleteTransactionLocally(id);
+            this.deleteTransaction(id);
 
             return true;
         } catch (err) {
@@ -345,17 +333,5 @@ export default class TransactionsService {
             .map((wallet) => ({ name: wallet.name, value: wallet.id }));
 
         return newWalletsWithSelectedCurrency;
-    }
-
-    /**
-     * Delete transaction by its ID locally.
-     *
-     * @param idOfTransactionToDeleteLocally ID of the transaction to delete locally.
-     */
-    deleteTransactionLocally(idOfTransactionToDeleteLocally: string) {
-        const transactionsWithoutDeletedTransaction = this.transactions$
-            .getValue()
-            .filter(({ id }) => id != idOfTransactionToDeleteLocally);
-        this.transactions$.next([...transactionsWithoutDeletedTransaction]);
     }
 }
