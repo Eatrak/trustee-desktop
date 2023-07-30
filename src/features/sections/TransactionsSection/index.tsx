@@ -265,12 +265,19 @@ const TransactionsSection = () => {
             {isTransactionCreationDialogOpened && (
                 <TransactionDialog
                     isCreationMode
+                    onSuccess={(createdTransaction) => {
+                        // Show the transactions with the same currency of the created transaction
+                        // in order to see the created transaction
+                        changeCurrencyCodeInstantly(createdTransaction.currencyId);
+                        reloadTransactions();
+                    }}
                     close={() => setIsTransactionCreationDialogOpened(false)}
                 />
             )}
             {isTransactionUpdateDialogOpened && (
                 <TransactionDialog
                     isCreationMode={false}
+                    onSuccess={reloadTransactions}
                     openedTransaction={openedTransaction.current}
                     close={() => setIsTransactionUpdateDialogOpened(false)}
                 />

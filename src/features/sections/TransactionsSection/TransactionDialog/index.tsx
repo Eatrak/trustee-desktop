@@ -22,9 +22,15 @@ interface IProps {
     close: Function;
     isCreationMode: boolean;
     openedTransaction?: Transaction;
+    onSuccess?: (createdTransaction: Transaction) => any;
 }
 
-const TransactionDialog = ({ close, isCreationMode, openedTransaction }: IProps) => {
+const TransactionDialog = ({
+    close,
+    isCreationMode,
+    openedTransaction,
+    onSuccess,
+}: IProps) => {
     if (!isCreationMode && !openedTransaction) {
         throw new Error(
             "The transaction dialog in update mode must receive a transaction to open",
@@ -99,12 +105,13 @@ const TransactionDialog = ({ close, isCreationMode, openedTransaction }: IProps)
         if (formValidator.fails()) return;
 
         setIsSubmittingTransaction(true);
-        const isNewTransactionCreated =
+        const createdTransaction =
             await TransactionsService.getInstance().createTransaction(
                 formValidator.input as any, // The form data aren't undefined due to the passed validation
             );
 
-        if (isNewTransactionCreated) {
+        if (createdTransaction) {
+            onSuccess && onSuccess(createdTransaction);
             close();
             return;
         }
