@@ -244,22 +244,22 @@ const Select = forwardRef<IHandle, IProps>(
                     <div className="select__options-panel__options-container">
                         {renderOptions()}
                     </div>
-                    <div className="select__options-panel__create-new-option-button-container">
-                        {filterValue != "" && !filteredOptionExists() && (
-                            <TextButton
-                                Icon={MdAdd}
-                                text={
-                                    getCreateNewOptionButtonText
-                                        ? getCreateNewOptionButtonText(filterValue)
-                                        : ""
-                                }
-                                isLoading={isCreatingNewOption}
-                                clickEvent={() =>
-                                    createNewOption && createNewOption(filterValue)
-                                }
-                            />
-                        )}
-                    </div>
+                    {createNewOption && (
+                        <div className="select__options-panel__create-new-option-button-container">
+                            {filterValue != "" && !filteredOptionExists() && (
+                                <TextButton
+                                    Icon={MdAdd}
+                                    text={
+                                        getCreateNewOptionButtonText
+                                            ? getCreateNewOptionButtonText(filterValue)
+                                            : ""
+                                    }
+                                    isLoading={isCreatingNewOption}
+                                    clickEvent={() => createNewOption(filterValue)}
+                                />
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         );
