@@ -216,7 +216,7 @@ const TransactionDialog = ({
                         title="Name"
                         value={name}
                         validatorAttributeName="name"
-                        validatorRule={createTransactionBodyRules.transactionName}
+                        validatorRule={createTransactionBodyRules.name}
                         onInput={setName}
                     />
                     {/* Wallet */}
@@ -264,7 +264,7 @@ const TransactionDialog = ({
                         type="number"
                         min={0}
                         validatorAttributeName="value"
-                        validatorRule={createTransactionBodyRules.transactionAmount}
+                        validatorRule={createTransactionBodyRules.amount}
                         value={value}
                         onInput={(value) => setValue(Number.parseFloat(value))}
                     />
