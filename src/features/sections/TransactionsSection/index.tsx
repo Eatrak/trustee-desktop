@@ -142,7 +142,6 @@ const TransactionsSection = () => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
             name: newWalletName,
-            currencyId: selectedCurrency,
         });
         setIsCreatingNewWallet(false);
     };
@@ -227,11 +226,8 @@ const TransactionsSection = () => {
         setSelectedCurrency(newSelectedCurrency);
     };
 
-    const getWalletOptions = () => {
-        return TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
-            wallets,
-            selectedCurrency,
-        );
+    const getWalletOptions = (): MultiSelectOption[] => {
+        return wallets.map((wallet) => ({ name: wallet.name, value: wallet.id }));
     };
 
     const reloadTransactions = () => {
@@ -240,14 +236,6 @@ const TransactionsSection = () => {
 
     useEffect(() => {
         if (!selectedCurrency) return;
-
-        // Select all wallets with the selected currency
-        walletsMultiSelectRef.current?.setSelectedOptions(
-            TransactionsService.getInstance().getOptionsOfWalletsWithSelectedCurrency(
-                wallets,
-                selectedCurrency,
-            ),
-        );
 
         reloadTransactions();
     }, [selectedCurrency]);

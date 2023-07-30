@@ -314,22 +314,4 @@ export default class TransactionsService {
             return false;
         }
     }
-
-    /**
-     * Get options of the wallets with the selected currency.
-     *
-     * @returns Options of the wallets with the selected currency.
-     */
-    getOptionsOfWalletsWithSelectedCurrency(
-        wallets: Wallet[],
-        selectedCurrencyId: string,
-    ) {
-        const newWalletsWithSelectedCurrency = wallets
-            .filter((wallet) => {
-                return wallet.currencyId == selectedCurrencyId;
-            })
-            .map((wallet) => ({ name: wallet.name, value: wallet.id }));
-
-        return newWalletsWithSelectedCurrency;
-    }
 }
