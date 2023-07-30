@@ -265,7 +265,6 @@ const TransactionsSection = () => {
             {isTransactionCreationDialogOpened && (
                 <TransactionDialog
                     isCreationMode
-                    currencyId={selectedCurrency}
                     close={() => setIsTransactionCreationDialogOpened(false)}
                 />
             )}
@@ -273,7 +272,6 @@ const TransactionsSection = () => {
                 <TransactionDialog
                     isCreationMode={false}
                     openedTransaction={openedTransaction.current}
-                    currencyId={selectedCurrency}
                     close={() => setIsTransactionUpdateDialogOpened(false)}
                 />
             )}
