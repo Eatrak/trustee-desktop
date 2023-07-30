@@ -17,6 +17,8 @@ import TransactionsService from "@shared/services/transactions";
 interface IProps {
     startDate: Dayjs | null;
     endDate: Dayjs | null;
+    lastStartDate: Dayjs;
+    lastEndDate: Dayjs;
     onDatePickerRangeChanged: (event: OnRangeDatePickerRangeChangedEvent) => any;
     openTransactionCreationDialog: Function;
     setStartDate: Function;
@@ -29,6 +31,8 @@ interface IProps {
 const TransactionsHeader = ({
     reloadTransactions,
     onDatePickerRangeChanged,
+    lastStartDate,
+    lastEndDate,
     startDate,
     endDate,
     setStartDate,
@@ -95,7 +99,8 @@ const TransactionsHeader = ({
                     Transactions
                 </h5>
                 <p className="paragraph--sub-title">
-                    {startDate?.format("MM/DD/YYYY")} - {endDate?.format("MM/DD/YYYY")}
+                    {lastStartDate.format("MM/DD/YYYY")} -{" "}
+                    {lastEndDate.format("MM/DD/YYYY")}
                 </p>
             </div>
             <div className="app-layout__header__actions-container">

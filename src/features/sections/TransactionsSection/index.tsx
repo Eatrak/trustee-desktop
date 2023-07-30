@@ -287,6 +287,8 @@ const TransactionsSection = () => {
                     reloadTransactions={reloadTransactions}
                     selectedCurrency={selectedCurrency}
                     setSelectedCurrencyCode={changeCurrencyCodeInstantly}
+                    lastStartDate={lastStartCarriedOut}
+                    lastEndDate={lastEndCarriedOut}
                     startDate={startCarriedOut}
                     endDate={endCarriedOut}
                     setStartDate={setStartCarriedOut}
