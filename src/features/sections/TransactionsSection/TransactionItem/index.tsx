@@ -44,7 +44,10 @@ const TransactionItem = ({
             <RoundedTextIconButton
                 Icon={MdDeleteOutline}
                 danger
-                clickEvent={() => onDeleteButtonClicked()}
+                clickEvent={(e) => {
+                    e.stopPropagation();
+                    onDeleteButtonClicked();
+                }}
             />
         </div>
     );
