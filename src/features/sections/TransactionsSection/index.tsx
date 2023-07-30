@@ -84,7 +84,9 @@ const TransactionsSection = () => {
                 changeWallets(wallets);
 
                 // Select all wallets by default
-                walletsMultiSelectRef.current?.setSelectedOptions(getWalletOptions());
+                walletsMultiSelectRef.current?.setSelectedOptions(
+                    getWalletOptions(wallets),
+                );
             },
         );
         currenciesSubscription = TransactionsService.getInstance().currencies$.subscribe(
@@ -229,7 +231,7 @@ const TransactionsSection = () => {
         setSelectedCurrency(newSelectedCurrency);
     };
 
-    const getWalletOptions = (): MultiSelectOption[] => {
+    const getWalletOptions = (wallets: Wallet[]): MultiSelectOption[] => {
         return wallets.map((wallet) => ({ name: wallet.name, value: wallet.id }));
     };
 
@@ -311,7 +313,7 @@ const TransactionsSection = () => {
                         `Create "${filterValue}" wallet`
                     }
                     filterInputPlaceholder="Search or create a wallet by typing a name"
-                    options={getWalletOptions()}
+                    options={getWalletOptions(wallets)}
                     onSelect={(newSelectedWallets) =>
                         setSelectedWallets([...newSelectedWallets])
                     }
