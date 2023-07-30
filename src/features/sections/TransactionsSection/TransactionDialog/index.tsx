@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import Validator from "validatorjs";
 import dayjs, { Dayjs } from "dayjs";
+import { Subscription } from "rxjs";
 
 import "./style.css";
 import Dialog from "@shared/components/Dialog";
@@ -34,6 +35,10 @@ const TransactionDialog = ({
             "The transaction dialog in update mode must receive a transaction to open",
         );
     }
+
+    // Subscriptions
+    let walletsSubscription: Subscription | null = null;
+    let transactionCategoriesSubscription: Subscription | null = null;
 
     let [wallets, setWallets] = useState<Wallet[]>([]);
     let [transactionCategories, setTransactionCategories] = useState<
@@ -130,60 +135,72 @@ const TransactionDialog = ({
     };
 
     useEffect(() => {
-        TransactionsService.getInstance().wallets$.subscribe((wallets) => {
-            setWallets(wallets);
+        walletsSubscription = TransactionsService.getInstance().wallets$.subscribe(
+            (wallets) => {
+                setWallets(wallets);
 
-            // When in update mode, set the wallet of the opened transaction as selected wallet
-            if (!isCreationMode) {
-                const openedTransactionWallet = wallets.find(
-                    (wallet) => wallet.id == openedTransaction!.walletId,
-                );
-                if (openedTransactionWallet) {
-                    setWalletOption({
-                        name: openedTransactionWallet.name,
-                        value: openedTransactionWallet.id,
-                    });
-                } else {
-                    // Show to the user that the wallet of the transaction doesn't exist
-                    setWalletOption({
-                        name: "Unexisting wallet",
-                        value: "",
-                    });
-                }
-            }
-        });
-        TransactionsService.getInstance().transactionCategories$.subscribe(
-            (transactionCategories) => {
-                setTransactionCategories(transactionCategories);
-
-                // When in update mode, set the transaction-category of the
-                // opened transaction as selected transaction-category
+                // When in update mode, set the wallet of the opened transaction as selected wallet
                 if (!isCreationMode) {
-                    const categoryOfOpenedTransaction = transactionCategories.find(
-                        (transactionCategory) => {
-                            return (
-                                transactionCategory.id == openedTransaction!.categoryId
-                            );
-                        },
+                    const openedTransactionWallet = wallets.find(
+                        (wallet) => wallet.id == openedTransaction!.walletId,
                     );
-                    if (categoryOfOpenedTransaction) {
-                        setCategoryOption({
-                            name: categoryOfOpenedTransaction.name,
-                            value: categoryOfOpenedTransaction.id,
+                    if (openedTransactionWallet) {
+                        setWalletOption({
+                            name: openedTransactionWallet.name,
+                            value: openedTransactionWallet.id,
                         });
                     } else {
                         // Show to the user that the wallet of the transaction doesn't exist
                         setWalletOption({
-                            name: "Unexisting category",
+                            name: "Unexisting wallet",
                             value: "",
                         });
                     }
                 }
             },
         );
+        transactionCategoriesSubscription =
+            TransactionsService.getInstance().transactionCategories$.subscribe(
+                (transactionCategories) => {
+                    setTransactionCategories(transactionCategories);
+
+                    // When in update mode, set the transaction-category of the
+                    // opened transaction as selected transaction-category
+                    if (!isCreationMode) {
+                        const categoryOfOpenedTransaction = transactionCategories.find(
+                            (transactionCategory) => {
+                                return (
+                                    transactionCategory.id ==
+                                    openedTransaction!.categoryId
+                                );
+                            },
+                        );
+                        if (categoryOfOpenedTransaction) {
+                            setCategoryOption({
+                                name: categoryOfOpenedTransaction.name,
+                                value: categoryOfOpenedTransaction.id,
+                            });
+                        } else {
+                            // Show to the user that the wallet of the transaction doesn't exist
+                            setWalletOption({
+                                name: "Unexisting category",
+                                value: "",
+                            });
+                        }
+                    }
+                },
+            );
 
         TransactionsService.getInstance().getTransactionCategories();
     }, []);
+
+    useEffect(
+        () => () => {
+            walletsSubscription?.unsubscribe();
+            transactionCategoriesSubscription?.unsubscribe();
+        },
+        [],
+    );
 
     return (
         <Dialog

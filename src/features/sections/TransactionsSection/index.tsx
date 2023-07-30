@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { MdAdd } from "react-icons/md";
 import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
+import { Subscription } from "rxjs";
 
 import { Currency, Transaction, Wallet } from "@shared/schema";
 import TransactionsService from "@shared/services/transactions";
@@ -47,6 +48,10 @@ const TransactionsSection = () => {
 
     const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
 
+    // Subscriptions
+    let walletsSubscription: Subscription | null = null;
+    let currenciesSubscription: Subscription | null = null;
+
     const getSelectedCurrencySymbol = (): string => {
         const currencySymbol = currencies.find(
             ({ id }) => id == selectedCurrency,
@@ -64,20 +69,24 @@ const TransactionsSection = () => {
         setStartCarriedOut(firstDayOfTheCurrentMonthTimestamp);
         setEndCarriedOut(lastDayOfTheCurrentMonthTimestamp);
 
-        TransactionsService.getInstance().wallets$.subscribe((wallets) => {
-            changeWallets(wallets);
-        });
-        TransactionsService.getInstance().currencies$.subscribe((currencies) => {
-            setCurrencies(currencies);
+        walletsSubscription = TransactionsService.getInstance().wallets$.subscribe(
+            (wallets) => {
+                changeWallets(wallets);
+            },
+        );
+        currenciesSubscription = TransactionsService.getInstance().currencies$.subscribe(
+            (currencies) => {
+                setCurrencies(currencies);
 
-            if (currencies.length == 0) {
-                return;
-            }
+                if (currencies.length == 0) {
+                    return;
+                }
 
-            // Set default currency option
-            const { id } = currencies[0];
-            changeCurrencyCodeInstantly(id);
-        });
+                // Set default currency option
+                const { id } = currencies[0];
+                changeCurrencyCodeInstantly(id);
+            },
+        );
     }, []);
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
@@ -226,6 +235,14 @@ const TransactionsSection = () => {
 
         getTransactionsByCreationRange(startCarriedOut, endCarriedOut);
     }, [selectedCurrency]);
+
+    useEffect(
+        () => () => {
+            walletsSubscription?.unsubscribe();
+            currenciesSubscription?.unsubscribe();
+        },
+        [],
+    );
 
     return (
         <div className="section transactions-section">

@@ -3,6 +3,7 @@ import "./style.css";
 import { useEffect, useRef, useState } from "react";
 import { MdAdd, MdRefresh } from "react-icons/md";
 import { Dayjs } from "dayjs";
+import { Subscription } from "rxjs";
 
 import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 import RoundedIconButton from "@shared/components/RoundedIconButton";
@@ -38,6 +39,9 @@ const TransactionsHeader = ({
     let [currencies, setCurrencies] = useState<Currency[]>([]);
     let [isDatePickerOpened, changeIsDatePickerOpened] = useState<boolean>(false);
 
+    // Subscriptions
+    let currenciesSubscription: Subscription | null = null;
+
     const changeTimeRangeOfTransactionsToShow = ({
         startDate,
         endDate,
@@ -57,21 +61,30 @@ const TransactionsHeader = ({
 
     useEffect(() => {
         TransactionsService.getInstance().getCurrencies();
-        TransactionsService.getInstance().currencies$.subscribe((currencies) => {
-            setCurrencies(currencies);
+        currenciesSubscription = TransactionsService.getInstance().currencies$.subscribe(
+            (currencies) => {
+                setCurrencies(currencies);
 
-            if (currencies.length == 0) {
-                return;
-            }
+                if (currencies.length == 0) {
+                    return;
+                }
 
-            // Set default currency option
-            const { id, code, symbol } = currencies[0];
-            currencySelect.current?.setSelectedOption({
-                name: `${symbol} ${code}`,
-                value: id,
-            });
-        });
+                // Set default currency option
+                const { id, code, symbol } = currencies[0];
+                currencySelect.current?.setSelectedOption({
+                    name: `${symbol} ${code}`,
+                    value: id,
+                });
+            },
+        );
     }, []);
+
+    useEffect(
+        () => () => {
+            currenciesSubscription?.unsubscribe();
+        },
+        [],
+    );
 
     return (
         <div className="app-layout__header">
