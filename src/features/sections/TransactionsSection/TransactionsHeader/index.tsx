@@ -21,11 +21,13 @@ interface IProps {
     openTransactionCreationDialog: Function;
     setStartDate: Function;
     setEndDate: Function;
+    reloadTransactions: Function;
     selectedCurrency: string;
     setSelectedCurrencyCode: (selectedCurrencyCode: string) => any;
 }
 
 const TransactionsHeader = ({
+    reloadTransactions,
     onDatePickerRangeChanged,
     startDate,
     endDate,
@@ -109,7 +111,10 @@ const TransactionsHeader = ({
                     }
                     onSelect={({ value }) => setSelectedCurrency(value)}
                 />
-                <RoundedTextIconButton Icon={MdRefresh} />
+                <RoundedTextIconButton
+                    Icon={MdRefresh}
+                    clickEvent={() => reloadTransactions()}
+                />
                 <RangeDatePicker
                     startDate={startDate}
                     endDate={endDate}
