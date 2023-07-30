@@ -30,6 +30,7 @@ interface IProps {
     filterInputPlaceholder?: string;
     isCreatingNewOption?: boolean;
     children?: React.ReactNode;
+    deleteOption?: (option: MultiSelectOption) => any;
 }
 
 interface IHandle {
@@ -40,6 +41,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
     (
         {
             text,
+            deleteOption,
             getCreateNewOptionButtonText,
             createNewOption,
             className,
@@ -113,11 +115,14 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                                 {option.name}
                             </p>
                             <div className="multi-select__option__actions">
-                                <RoundedTextIconButton
-                                    Icon={MdDeleteOutline}
-                                    size="small"
-                                    danger
-                                />
+                                {deleteOption && (
+                                    <RoundedTextIconButton
+                                        clickEvent={() => deleteOption(option)}
+                                        Icon={MdDeleteOutline}
+                                        size="small"
+                                        danger
+                                    />
+                                )}
                             </div>
                         </div>
                     );
