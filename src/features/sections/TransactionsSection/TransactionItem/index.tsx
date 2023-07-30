@@ -7,11 +7,17 @@ import dayjs from "dayjs";
 
 interface IProps {
     transaction: Transaction;
+    currencySymbol: string;
     onDeleteButtonClicked: Function;
     onClick: Function;
 }
 
-const TransactionItem = ({ transaction, onDeleteButtonClicked, onClick }: IProps) => {
+const TransactionItem = ({
+    transaction,
+    onDeleteButtonClicked,
+    onClick,
+    currencySymbol,
+}: IProps) => {
     const getAmountDirectionSymbol = () => {
         return transaction.isIncome ? "+" : "-";
     };
@@ -33,7 +39,7 @@ const TransactionItem = ({ transaction, onDeleteButtonClicked, onClick }: IProps
                 </p>
             </div>
             <p className="paragraph--regular transaction-item__amount">
-                {getAmountDirectionSymbol()} {transaction.amount}
+                {getAmountDirectionSymbol()} {transaction.amount} {currencySymbol}
             </p>
             <RoundedTextIconButton
                 Icon={MdDeleteOutline}

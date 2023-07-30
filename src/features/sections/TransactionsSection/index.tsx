@@ -162,6 +162,10 @@ const TransactionsSection = () => {
     };
 
     const getTransactionItemsToRender = () => {
+        const selectedCurrencySymbol = currencies.find(
+            (currency) => currency.id == selectedCurrency,
+        )?.symbol;
+
         const transactionItemsToRender = transactions
             .filter((transaction) => {
                 for (const selectedWallet of selectedWallets) {
@@ -181,6 +185,7 @@ const TransactionsSection = () => {
                             openTransactionDeletionDialog(transaction.id)
                         }
                         transaction={transaction}
+                        currencySymbol={selectedCurrencySymbol || ""}
                     />
                 );
             });
