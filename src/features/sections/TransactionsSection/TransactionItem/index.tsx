@@ -45,7 +45,9 @@ const TransactionItem = ({
                 Icon={MdDeleteOutline}
                 danger
                 clickEvent={(e) => {
+                    // Avoid to open the transaction item
                     e.stopPropagation();
+
                     onDeleteButtonClicked();
                 }}
             />
