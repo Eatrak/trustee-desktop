@@ -82,6 +82,9 @@ const TransactionsSection = () => {
         walletsSubscription = TransactionsService.getInstance().wallets$.subscribe(
             (wallets) => {
                 changeWallets(wallets);
+
+                // Select all wallets by default
+                walletsMultiSelectRef.current?.setSelectedOptions(getWalletOptions());
             },
         );
         currenciesSubscription = TransactionsService.getInstance().currencies$.subscribe(
