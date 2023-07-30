@@ -7,12 +7,13 @@ import React, {
     useState,
     forwardRef,
 } from "react";
-import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
+import { MdAdd, MdDeleteOutline, MdKeyboardArrowDown } from "react-icons/md";
 
 import Checkbox from "@shared/components/Checkbox";
 import NormalButton from "@shared/components/NormalButton";
 import TextButton from "@shared/components/TextButton";
 import Chip from "@shared/components/Chip";
+import RoundedTextIconButton from "../RoundedTextIconButton";
 
 export interface MultiSelectOption {
     name: string;
@@ -111,6 +112,13 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                             <p className="multi-select__option_text paragraph--small">
                                 {option.name}
                             </p>
+                            <div className="multi-select__option__actions">
+                                <RoundedTextIconButton
+                                    Icon={MdDeleteOutline}
+                                    size="small"
+                                    danger
+                                />
+                            </div>
                         </div>
                     );
                 });

@@ -2,15 +2,23 @@ import "./style.css";
 
 import { IconType } from "react-icons";
 
+type Size = "small" | "regular";
+
 interface IProps {
     Icon: IconType;
     clickEvent?: (...p: any) => any;
     danger?: boolean;
+    size?: Size;
 }
 
-const RoundedTextIconButton = ({ Icon, clickEvent, danger }: IProps) => {
+const RoundedTextIconButton = ({
+    Icon,
+    clickEvent,
+    danger,
+    size = "regular",
+}: IProps) => {
     const getRootClasses = () => {
-        return `rounded-text-icon-button ${
+        return `rounded-text-icon-button rounded-text-icon-button--${size} ${
             danger ? "rounded-text-icon-button--danger" : ""
         }`;
     };
