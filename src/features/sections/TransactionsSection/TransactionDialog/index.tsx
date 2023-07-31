@@ -192,7 +192,7 @@ const TransactionDialog = ({
                         } else {
                             // Show to the user that the wallet of the transaction doesn't exist
                             setWalletOption({
-                                name: "Unexisting category",
+                                name: "",
                                 value: "",
                             });
                         }

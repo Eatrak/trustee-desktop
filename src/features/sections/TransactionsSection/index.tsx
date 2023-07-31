@@ -29,8 +29,10 @@ const TransactionsSection = () => {
     let [isBalanceLoading, setIsBalanceLoading] = useState<boolean>(false);
     let [isCreatingNewWallet, setIsCreatingNewWallet] = useState<boolean>(false);
     let [isDeletingTransaction, setIsDeletingTransaction] = useState<boolean>(false);
+    let [isDeletingWallet, setIsDeletingWallet] = useState<boolean>(false);
     let [isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened] =
         useState<boolean>(false);
+    let [isWalletDeletionDialogOpened, setIsWalletDeletionDialogOpened] = useState(false);
     let [isTransactionDeletionDialogOpened, setIsTransactionDeletionDialogOpened] =
         useState(false);
     let [isTransactionUpdateDialogOpened, setIsTransactionUpdateDialogOpened] =
@@ -61,6 +63,7 @@ const TransactionsSection = () => {
 
     let openedTransaction = useRef<Transaction>();
     let idOfTransactionToDelete = useRef<string | null>(null);
+    let idOfWalletToDelete = useRef<string | null>(null);
 
     let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
 
@@ -156,6 +159,11 @@ const TransactionsSection = () => {
         idOfTransactionToDelete.current = transactionId;
     };
 
+    const openWalletDeletionDialog = (walletId: string) => {
+        setIsWalletDeletionDialogOpened(true);
+        idOfWalletToDelete.current = walletId;
+    };
+
     const deleteTransaction = async () => {
         setIsDeletingTransaction(true);
 
@@ -235,8 +243,33 @@ const TransactionsSection = () => {
         return wallets.map((wallet) => ({ name: wallet.name, value: wallet.id }));
     };
 
-    const reloadTransactions = () => {
-        getTransactionsByCreationRange(lastStartCarriedOut, lastEndCarriedOut);
+    const reloadTransactions = async () => {
+        await getTransactionsByCreationRange(lastStartCarriedOut, lastEndCarriedOut);
+    };
+
+    const deleteWallet = async () => {
+        setIsDeletingWallet(true);
+
+        try {
+            if (!idOfWalletToDelete.current) {
+                // TODO: Give feedback to the user
+                return;
+            }
+
+            const hasWalletBeenDeleted =
+                await TransactionsService.getInstance().deleteWallet(
+                    idOfWalletToDelete.current,
+                );
+
+            if (hasWalletBeenDeleted) {
+                await reloadTransactions();
+
+                // Close deletion dialog
+                setIsWalletDeletionDialogOpened(false);
+            }
+        } catch (err) {}
+
+        setIsDeletingWallet(false);
     };
 
     useEffect(() => {
@@ -264,6 +297,18 @@ const TransactionsSection = () => {
                         isConfirming={isDeletingTransaction}
                         confirm={() => deleteTransaction()}
                         close={() => setIsTransactionDeletionDialogOpened(false)}
+                    />
+                )
+            }
+            {
+                // Wallet deletion dialog
+                isWalletDeletionDialogOpened && (
+                    <ConfirmationDialog
+                        title="Wallet deletion"
+                        description={<p>Are you sure to delete the wallet?</p>}
+                        isConfirming={isDeletingWallet}
+                        confirm={() => deleteWallet()}
+                        close={() => setIsWalletDeletionDialogOpened(false)}
                     />
                 )
             }
@@ -307,6 +352,9 @@ const TransactionsSection = () => {
                     ref={walletsMultiSelectRef}
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
+                    deleteOption={(walletOption) =>
+                        openWalletDeletionDialog(walletOption.value)
+                    }
                     createNewOption={createWallet}
                     isCreatingNewOption={isCreatingNewWallet}
                     getCreateNewOptionButtonText={(filterValue) =>

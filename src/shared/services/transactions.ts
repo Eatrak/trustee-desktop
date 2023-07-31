@@ -17,6 +17,8 @@ import { CreateTransactionResponse } from "@shared/ts-types/APIs/output/transact
 import { DeleteTransactionQueryParameters } from "@shared/ts-types/APIs/input/transactions/deleteTransaction";
 import { GetBalanceResponse } from "@shared/ts-types/APIs/output/transactions/getBalance";
 import { DeleteTransactionResponse } from "@shared/ts-types/APIs/output/transactions/deleteTransaction";
+import { DeleteWalletsResponse } from "@shared/ts-types/APIs/output/transactions/deleteWallet";
+import { DeleteWalletPathParameters } from "@shared/ts-types/APIs/input/transactions/deleteWallet";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -307,6 +309,45 @@ export default class TransactionsService {
                 // TODO: handle error
                 return false;
             }
+
+            return true;
+        } catch (err) {
+            // TODO: handle error
+            return false;
+        }
+    }
+
+    async deleteWallet(id: string): Promise<boolean> {
+        try {
+            // Initialize query parameters
+            const pathParams: DeleteWalletPathParameters = {
+                id,
+            };
+
+            // Initialize request URL
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/wallets/${pathParams.id}`,
+            );
+
+            // Send request
+            const response = await fetch(requestURL, {
+                method: "DELETE",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
+
+            const jsonResponse: DeleteWalletsResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return false;
+            }
+
+            // Delete wallet locally
+            const updatedWallets = this.wallets$
+                .getValue()
+                .filter((wallet) => wallet.id != id);
+            this.wallets$.next(updatedWallets);
 
             return true;
         } catch (err) {
