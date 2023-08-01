@@ -6,7 +6,7 @@
     position: absolute;
     z-index: 1000;
 
-    width: 300px;
+    width: max-content;
     height: max-content;
 
     background-color: var(--background-color);
@@ -45,14 +45,12 @@
     font-weight: 400;
 }
 
-.range-date-picker__panel__content {
-}
-
 /* || Weekday list */
 
 .range-date-picker__panel__weekday-list {
     display: grid;
     grid-auto-flow: column;
+    column-gap: 8px;
 
     width: 100%;
 
@@ -72,6 +70,7 @@
 .range-date-picker__panel__month-day-list {
     display: grid;
     grid-template-columns: repeat(7, auto);
+    column-gap: 8px;
     row-gap: 6px;
 
     margin-top: 8px;
