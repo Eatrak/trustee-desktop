@@ -66,6 +66,7 @@ const RangeDatePicker = ({
     const getMonthDayCSSClass = (date: Dayjs) => {
         let cssClass = "range-date-picker__panel__month-day-list__month-day";
 
+        // Set a certain class to a day that doesn't belong to the selected year and month
         if (
             date.get("month") != dayjs(selectedYearAndMonth).get("month") ||
             date.get("year") != dayjs(selectedYearAndMonth).get("year")
