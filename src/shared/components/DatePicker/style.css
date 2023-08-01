@@ -61,17 +61,22 @@
 }
 
 .date-picker__panel {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 8px;
+
     position: absolute;
     top: 100%;
     z-index: 1000;
     margin-top: 4px;
 
-    width: 100%;
-    height: 320px;
+    width: max-content;
+    height: max-content;
 
     background-color: var(--background-color);
     box-shadow: var(--high-elevation);
     border-radius: 8px;
+    padding: 16px;
 
     user-select: none;
 
@@ -96,7 +101,7 @@
     grid-template-columns: max-content auto max-content;
     align-items: center;
 
-    height: 50px;
+    height: max-content;
 
     padding-inline: 20px;
 }
@@ -106,15 +111,12 @@
     font-weight: 400;
 }
 
-.date-picker__panel__content {
-    padding-inline: 16px;
-}
-
 /* || Weekday list */
 
 .date-picker__panel__weekday-list {
     display: grid;
     grid-auto-flow: column;
+    column-gap: 8px;
 
     width: 100%;
 
@@ -134,9 +136,8 @@
 .date-picker__panel__month-day-list {
     display: grid;
     grid-template-columns: repeat(7, auto);
+    column-gap: 8px;
     row-gap: 6px;
-
-    margin-top: 8px;
 }
 
 .date-picker__panel__month-day-list__month-day {
@@ -175,6 +176,10 @@
 .date-picker__panel__month-day-list__month-day--selected
     > .date-picker__panel__month-day-list__month-day__text {
     color: var(--button-text-color);
+}
+
+.date-picker__panel__month-day-list__month-day--is-of-another-month {
+    opacity: 0.5;
 }
 
 /* -- */
