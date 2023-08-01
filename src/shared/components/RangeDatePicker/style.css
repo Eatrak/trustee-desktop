@@ -1,13 +1,18 @@
 .range-date-picker__panel {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 8px;
+
     position: absolute;
     z-index: 1000;
 
-    width: 270px;
-    height: 320px;
+    width: 300px;
+    height: max-content;
 
     background-color: var(--background-color);
     box-shadow: var(--high-elevation);
     border-radius: 8px;
+    padding: 16px;
 
     user-select: none;
 
@@ -32,9 +37,7 @@
     grid-template-columns: max-content auto max-content;
     align-items: center;
 
-    height: 50px;
-
-    padding-inline: 20px;
+    height: max-content;
 }
 
 .range-date-picker__panel__header > .range-date-picker__panel__header__month-name {
@@ -43,7 +46,6 @@
 }
 
 .range-date-picker__panel__content {
-    padding-inline: 16px;
 }
 
 /* || Weekday list */
@@ -120,6 +122,10 @@
 .range-date-picker__panel__month-day-list__month-day--selected-range-day
     > .range-date-picker__panel__month-day-list__month-day__text {
     color: var(--primary-600);
+}
+
+.range-date-picker__panel__month-day-list__month-day--is-of-another-month {
+    opacity: 0.5;
 }
 
 /* -- */

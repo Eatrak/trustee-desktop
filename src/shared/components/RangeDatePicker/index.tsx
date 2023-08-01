@@ -35,26 +35,44 @@ const RangeDatePicker = ({
 }: IProps) => {
     let datePickerFrame = useRef<HTMLDivElement>(null);
 
-    const dayNames = ["Mo", "Tu", "We", "Th", "Fr", "Sat", "Su"];
+    const NUMBER_OF_DAYS_TO_SHOW = 42;
     const currentYearAndMonth = dayjs().format("YYYY-MM");
+
     let [hasNeverBeenOpened, setHasNeverBeenOpened] = useState<boolean>(true);
     let [canBeOpened, setCanBeOpened] = useState<boolean>(true);
     let [selectedYearAndMonth, changeYearAndMonth] =
         useState<string>(currentYearAndMonth);
     let [endDateCandidate, changeEndDateCandidate] = useState<Dayjs | null>();
+    let [firstWeekDay, setFirstWeekDay] = useState<dayjs.Dayjs>(
+        dayjs(selectedYearAndMonth).startOf("week"),
+    );
 
     const selectPreviousMonth = () => {
         const previousMonthYear = dayjs(selectedYearAndMonth).subtract(1, "month");
-        changeYearAndMonth(previousMonthYear.format("YYYY-MM"));
+        const updatedSelectedYearAndMonth = previousMonthYear.format("YYYY-MM");
+
+        changeYearAndMonth(updatedSelectedYearAndMonth);
+        setFirstWeekDay(dayjs(updatedSelectedYearAndMonth).startOf("week"));
     };
 
     const selectNextMonth = () => {
         const nextMonthYear = dayjs(selectedYearAndMonth).add(1, "month");
-        changeYearAndMonth(nextMonthYear.format("YYYY-MM"));
+        const updatedSelectedYearAndMonth = nextMonthYear.format("YYYY-MM");
+
+        changeYearAndMonth(updatedSelectedYearAndMonth);
+        setFirstWeekDay(dayjs(updatedSelectedYearAndMonth).startOf("week"));
     };
 
     const getMonthDayCSSClass = (date: Dayjs) => {
         let cssClass = "range-date-picker__panel__month-day-list__month-day";
+
+        if (
+            date.get("month") != dayjs(selectedYearAndMonth).get("month") ||
+            date.get("year") != dayjs(selectedYearAndMonth).get("year")
+        ) {
+            cssClass +=
+                " range-date-picker__panel__month-day-list__month-day--is-of-another-month";
+        }
 
         // If no days have been selected, all the days are start-day candidates
         if (startDate == null && endDate == null) {
@@ -192,36 +210,37 @@ const RangeDatePicker = ({
                 </div>
                 <div className="range-date-picker__panel__content">
                     <div className="range-date-picker__panel__weekday-list">
-                        {dayNames.map((dayName) => {
-                            return (
-                                <p
-                                    key={dayName}
-                                    className="paragraph--small paragraph--bold range-date-picker__panel__weekday-list__weekday"
-                                >
-                                    {dayName}
-                                </p>
-                            );
-                        })}
+                        {dayjs
+                            .localeData()
+                            .weekdaysShort()
+                            .map((dayName) => {
+                                return (
+                                    <p
+                                        key={dayName}
+                                        className="paragraph--small paragraph--bold range-date-picker__panel__weekday-list__weekday"
+                                    >
+                                        {dayName}
+                                    </p>
+                                );
+                            })}
                     </div>
                     <div className="range-date-picker__panel__month-day-list">
-                        {[...Array(dayjs(selectedYearAndMonth).daysInMonth()).keys()].map(
-                            (day) => {
-                                const date = dayjs(`${selectedYearAndMonth}-${day + 1}`);
+                        {[...Array(NUMBER_OF_DAYS_TO_SHOW).keys()].map((index) => {
+                            const date = firstWeekDay.add(index, "day");
 
-                                return (
-                                    <div
-                                        key={date.toString()}
-                                        className={getMonthDayCSSClass(date)}
-                                        onClick={() => changeInterval(date)}
-                                        onMouseEnter={() => changeEndDateCandidate(date)}
-                                    >
-                                        <p className="paragraph--small paragraph--bold range-date-picker__panel__month-day-list__month-day__text">
-                                            {day + 1}
-                                        </p>
-                                    </div>
-                                );
-                            },
-                        )}
+                            return (
+                                <div
+                                    key={date.toString()}
+                                    className={getMonthDayCSSClass(date)}
+                                    onClick={() => changeInterval(date)}
+                                    onMouseEnter={() => changeEndDateCandidate(date)}
+                                >
+                                    <p className="paragraph--small paragraph--bold range-date-picker__panel__month-day-list__month-day__text">
+                                        {date.get("date")}
+                                    </p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

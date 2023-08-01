@@ -6,6 +6,8 @@ import { BrowserTracing } from "@sentry/tracing";
 import Validator from "validatorjs";
 //@ts-ignore
 import en from "validatorjs/src/lang/en";
+import dayjs from "dayjs";
+import localeData from "dayjs/plugin/localeData";
 
 import "./themes/light.css";
 import "./index.css";
@@ -16,6 +18,7 @@ import AppLayout from "@shared/customComponents/AppLayout";
 import Authorizer from "@shared/customComponents/Authorizer";
 import TransactionsService from "@shared/services/transactions";
 
+dayjs.extend(localeData);
 Validator.setMessages("en", en);
 
 if (process.env.NODE_ENV === "production") {
