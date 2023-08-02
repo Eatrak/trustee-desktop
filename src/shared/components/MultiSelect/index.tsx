@@ -7,15 +7,14 @@ import React, {
     useState,
     forwardRef,
 } from "react";
-import { MdAdd, MdDeleteOutline, MdKeyboardArrowDown } from "react-icons/md";
+import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
 
-import Checkbox from "@shared/components/Checkbox";
 import NormalButton from "@shared/components/NormalButton";
 import TextButton from "@shared/components/TextButton";
 import Chip from "@shared/components/Chip";
-import RoundedTextIconButton from "../RoundedTextIconButton";
+import MultiSelectOption from "./MultiSelectOption";
 
-export interface MultiSelectOption {
+export interface MultiSelectOptionProprieties {
     name: string;
     value: string;
 }
@@ -25,16 +24,17 @@ interface IProps {
     getCreateNewOptionButtonText?: (filterValue: string) => string;
     createNewOption?: (filterValue: string) => any;
     className?: string;
-    onSelect?: (newSelectedOptions: MultiSelectOption[]) => any;
-    options: MultiSelectOption[];
+    onSelect?: (newSelectedOptions: MultiSelectOptionProprieties[]) => any;
+    options: MultiSelectOptionProprieties[];
     filterInputPlaceholder?: string;
     isCreatingNewOption?: boolean;
     children?: React.ReactNode;
-    deleteOption?: (option: MultiSelectOption) => any;
+    deleteOption?: (option: MultiSelectOptionProprieties) => any;
+    updateOption?: (updatedOption: MultiSelectOptionProprieties) => any;
 }
 
 interface IHandle {
-    setSelectedOptions: (newSelectedOptions: MultiSelectOption[]) => void;
+    setSelectedOptions: (newSelectedOptions: MultiSelectOptionProprieties[]) => void;
 }
 
 const MultiSelect = forwardRef<IHandle, IProps>(
@@ -42,6 +42,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
         {
             text,
             deleteOption,
+            updateOption,
             getCreateNewOptionButtonText,
             createNewOption,
             className,
@@ -56,7 +57,9 @@ const MultiSelect = forwardRef<IHandle, IProps>(
         useImperativeHandle(
             ref,
             () => ({
-                setSelectedOptions: (newSelectedOptions: MultiSelectOption[]) => {
+                setSelectedOptions: (
+                    newSelectedOptions: MultiSelectOptionProprieties[],
+                ) => {
                     let newChecks: { [optionName: string]: boolean } = { ...checks };
                     newSelectedOptions.forEach(({ name }) => (newChecks[name] = true));
 
@@ -74,8 +77,10 @@ const MultiSelect = forwardRef<IHandle, IProps>(
         let [hasNeverBeenOpened, setHasNeverBeenOpened] = useState<boolean>(true);
         let [checks, setChecks] = useState<{ [optionName: string]: boolean }>({});
         let [filteredOptions, changeFilteredOptions] =
-            useState<MultiSelectOption[]>(options);
-        let [selectedOptions, setSelectedOptions] = useState<MultiSelectOption[]>([]);
+            useState<MultiSelectOptionProprieties[]>(options);
+        let [selectedOptions, setSelectedOptions] = useState<
+            MultiSelectOptionProprieties[]
+        >([]);
         let [filterValue, changeFilterValue] = useState<string>("");
 
         const showPanel = () => {
@@ -83,7 +88,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             setOpened(!opened);
         };
 
-        const setChecked = (option: MultiSelectOption, value: boolean) => {
+        const setChecked = (option: MultiSelectOptionProprieties, value: boolean) => {
             let newChecks: { [optionName: string]: boolean } = { ...checks };
             newChecks[option.name] = value;
 
@@ -106,25 +111,14 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             if (filteredOptions.length > 0) {
                 return filteredOptions.map((option) => {
                     return (
-                        <div key={option.name} className="multi-select__option">
-                            <Checkbox
-                                setChecked={(value: boolean) => setChecked(option, value)}
-                                checked={checks[option.name]}
-                            />
-                            <p className="multi-select__option_text paragraph--small">
-                                {option.name}
-                            </p>
-                            <div className="multi-select__option__actions">
-                                {deleteOption && (
-                                    <RoundedTextIconButton
-                                        clickEvent={() => deleteOption(option)}
-                                        Icon={MdDeleteOutline}
-                                        size="small"
-                                        danger
-                                    />
-                                )}
-                            </div>
-                        </div>
+                        <MultiSelectOption
+                            key={option.name}
+                            option={option}
+                            isChecked={checks[option.name]}
+                            setIsChecked={(value: boolean) => setChecked(option, value)}
+                            updateOption={updateOption}
+                            deleteOption={deleteOption}
+                        />
                     );
                 });
             }

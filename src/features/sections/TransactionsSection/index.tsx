@@ -10,7 +10,9 @@ import { Currency, Transaction, Wallet } from "@shared/schema";
 import TransactionsService from "@shared/services/transactions";
 import TextButton from "@shared/components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@shared/components/RangeDatePicker";
-import MultiSelect, { MultiSelectOption } from "@shared/components/MultiSelect";
+import MultiSelect, {
+    MultiSelectOptionProprieties,
+} from "@shared/components/MultiSelect";
 import Statistic from "@shared/components/Statistic/Statistic";
 import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
@@ -65,7 +67,9 @@ const TransactionsSection = () => {
     let idOfTransactionToDelete = useRef<string | null>(null);
     let idOfWalletToDelete = useRef<string | null>(null);
 
-    let [selectedWallets, setSelectedWallets] = useState<MultiSelectOption[]>([]);
+    let [selectedWallets, setSelectedWallets] = useState<MultiSelectOptionProprieties[]>(
+        [],
+    );
 
     const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
 
@@ -239,7 +243,7 @@ const TransactionsSection = () => {
         setSelectedCurrency(newSelectedCurrency);
     };
 
-    const getWalletOptions = (wallets: Wallet[]): MultiSelectOption[] => {
+    const getWalletOptions = (wallets: Wallet[]): MultiSelectOptionProprieties[] => {
         return wallets.map((wallet) => ({ name: wallet.name, value: wallet.id }));
     };
 
@@ -352,6 +356,9 @@ const TransactionsSection = () => {
                     ref={walletsMultiSelectRef}
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
+                    updateOption={(walletOption) =>
+                        openWalletDeletionDialog(walletOption.value)
+                    }
                     deleteOption={(walletOption) =>
                         openWalletDeletionDialog(walletOption.value)
                     }

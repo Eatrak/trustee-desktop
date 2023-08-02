@@ -50,6 +50,7 @@
 
     --aura-shadow: 0px 0px 0px 3px var(--primary-100);
     --error-aura-shadow: 0px 0px 0px 3px var(--error-100);
+    --success-aura-shadow: 0px 0px 0px 3px var(--success-100);
     --high-elevation: 0px 2px 10px 0px var(--neutral-100);
     --low-elevation: 0px 4px 12px rgba(0, 0, 0, 0.05);
 }

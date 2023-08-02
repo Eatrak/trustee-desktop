@@ -16,7 +16,7 @@ import Checkbox from "@shared/components/Checkbox";
 import { createTransactionBodyRules } from "@shared/validatorRules/transactions";
 import { Currency, Transaction, TransactionCategory, Wallet } from "@shared/schema";
 import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
-import { MultiSelectOption } from "@shared/components/MultiSelect";
+import { MultiSelectOptionProprieties } from "@shared/components/MultiSelect";
 
 interface IProps {
     close: Function;
@@ -68,7 +68,7 @@ const TransactionDialog = ({
         isCreationMode ? false : openedTransaction!.isIncome,
     );
 
-    const getWalletOptions = (): MultiSelectOption[] => {
+    const getWalletOptions = (): MultiSelectOptionProprieties[] => {
         return wallets.map((wallet) => ({ name: wallet.name, value: wallet.id }));
     };
 
@@ -79,7 +79,7 @@ const TransactionDialog = ({
         }));
     };
 
-    const getCurrencyOptions = (): MultiSelectOption[] => {
+    const getCurrencyOptions = (): MultiSelectOptionProprieties[] => {
         return currencies.map((currency) => ({
             name: `${currency.symbol} ${currency.code}`,
             value: currency.id,

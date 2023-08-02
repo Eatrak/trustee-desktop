@@ -1,0 +1,30 @@
+.multi-select__option {
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+    column-gap: 10px;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.multi-select__option_text {
+    user-select: none;
+    padding: 4px;
+    border-color: transparent;
+    pointer-events: none;
+}
+
+.multi-select__option--in-edit-mode .multi-select__option_text {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    pointer-events: unset;
+}
+
+.multi-select__option__actions {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 4px;
+}

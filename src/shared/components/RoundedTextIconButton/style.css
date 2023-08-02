@@ -68,3 +68,25 @@
 .rounded-text-icon-button--danger .rounded-text-icon-button__icon {
     color: var(--error-400);
 }
+
+/* -- Success */
+
+.rounded-text-icon-button--success:active {
+    background-color: var(--success-50);
+}
+
+.rounded-text-icon-button--success:focus {
+    box-shadow: var(--success-aura-shadow);
+}
+
+.rounded-text-icon-button--success:hover .rounded-text-icon-button__icon {
+    color: var(--success-500);
+}
+
+.rounded-text-icon-button--success:focus .rounded-text-icon-button__icon {
+    color: var(--success-500);
+}
+
+.rounded-text-icon-button--success .rounded-text-icon-button__icon {
+    color: var(--success-400);
+}

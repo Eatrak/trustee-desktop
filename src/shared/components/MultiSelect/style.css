@@ -155,22 +155,6 @@
     color: var(--ghost-text-color);
 }
 
-.multi-select__option {
-    display: grid;
-    grid-template-columns: max-content auto max-content;
-    column-gap: 10px;
-    align-items: center;
-
-    width: 100%;
-
-    padding: 5px;
-    box-sizing: border-box;
-}
-
-.multi-select__option_text {
-    user-select: none;
-}
-
 .multi-select__options-panel__create-new-option-button-container {
     padding-inline: 10px;
 }

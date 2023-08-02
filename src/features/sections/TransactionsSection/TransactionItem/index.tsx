@@ -43,7 +43,7 @@ const TransactionItem = ({
             </p>
             <RoundedTextIconButton
                 Icon={MdDeleteOutline}
-                danger
+                state="danger"
                 clickEvent={(e) => {
                     // Avoid to open the transaction item
                     e.stopPropagation();
