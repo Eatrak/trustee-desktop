@@ -276,6 +276,12 @@ const TransactionsSection = () => {
         setIsDeletingWallet(false);
     };
 
+    const updateWallet = async (updatedWallet: MultiSelectOptionProprieties) => {
+        await TransactionsService.getInstance().updateWallet(updatedWallet.value, {
+            name: updatedWallet.name,
+        });
+    };
+
     useEffect(() => {
         if (!selectedCurrency) return;
 
@@ -356,9 +362,7 @@ const TransactionsSection = () => {
                     ref={walletsMultiSelectRef}
                     className="transactions-section--main__wallets-multi-select"
                     text="Wallets"
-                    updateOption={(walletOption) =>
-                        openWalletDeletionDialog(walletOption.value)
-                    }
+                    updateOption={updateWallet}
                     deleteOption={(walletOption) =>
                         openWalletDeletionDialog(walletOption.value)
                     }

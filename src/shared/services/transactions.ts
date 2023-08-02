@@ -19,6 +19,12 @@ import { GetBalanceResponse } from "@shared/ts-types/APIs/output/transactions/ge
 import { DeleteTransactionResponse } from "@shared/ts-types/APIs/output/transactions/deleteTransaction";
 import { DeleteWalletsResponse } from "@shared/ts-types/APIs/output/transactions/deleteWallet";
 import { DeleteWalletPathParameters } from "@shared/ts-types/APIs/input/transactions/deleteWallet";
+import {
+    UpdateWalletBody,
+    UpdateWalletPathParameters,
+    UpdateWalletUpdateInfo,
+} from "@shared/ts-types/APIs/input/transactions/updateWallet";
+import { UpdateWalletResponse } from "@shared/ts-types/APIs/output/transactions/updateWallet";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -347,6 +353,56 @@ export default class TransactionsService {
             const updatedWallets = this.wallets$
                 .getValue()
                 .filter((wallet) => wallet.id != id);
+            this.wallets$.next(updatedWallets);
+
+            return true;
+        } catch (err) {
+            // TODO: handle error
+            return false;
+        }
+    }
+
+    async updateWallet(id: string, updateInfo: UpdateWalletUpdateInfo): Promise<boolean> {
+        try {
+            // Initialize path parameters
+            const pathParams: UpdateWalletPathParameters = {
+                id,
+            };
+
+            // Initialize body
+            const body: UpdateWalletBody = {
+                updateInfo,
+            };
+
+            // Initialize request URL
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/wallets/${pathParams.id}`,
+            );
+
+            // Send request
+            const response = await fetch(requestURL, {
+                method: "PUT",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+                body: JSON.stringify(body),
+            });
+
+            const jsonResponse: UpdateWalletResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return false;
+            }
+
+            // Update wallet locally
+            const updatedWallets = this.wallets$.getValue().map((wallet) => {
+                if (wallet.id == id) {
+                    const updatedWallet = { ...wallet, ...updateInfo };
+                    return updatedWallet;
+                }
+
+                return wallet;
+            });
             this.wallets$.next(updatedWallets);
 
             return true;

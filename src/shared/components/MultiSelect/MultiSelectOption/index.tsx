@@ -1,17 +1,18 @@
-import { FC, useState } from "react";
-import { MdClose, MdDeleteOutline, MdModeEditOutline, MdSave } from "react-icons/md";
+import { FC, useEffect, useRef, useState } from "react";
+import { MdDeleteOutline, MdModeEditOutline, MdSave } from "react-icons/md";
 
 import "./style.css";
 import { MultiSelectOptionProprieties } from "..";
 import Checkbox from "@shared/components/Checkbox";
 import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
+import LoadingIcon from "@shared/components/LoadingIcon";
 
 interface IProps {
     option: MultiSelectOptionProprieties;
     isChecked: boolean;
     setIsChecked: (isChecked: boolean) => any;
     deleteOption?: (option: MultiSelectOptionProprieties) => any;
-    updateOption?: (updatedOption: MultiSelectOptionProprieties) => any;
+    updateOption?: (updatedOption: MultiSelectOptionProprieties) => Promise<any>;
 }
 
 const MultiSelectOption: FC<IProps> = ({
@@ -21,7 +22,38 @@ const MultiSelectOption: FC<IProps> = ({
     updateOption,
     deleteOption,
 }) => {
+    let isMounted = useRef(false);
     let [isEditModeEnabled, setIsEditModeEnabled] = useState(false);
+    let [isUpdating, setIsUpdating] = useState(false);
+    let [optionName, setOptionName] = useState(option.name);
+
+    const showLoading = () => setIsUpdating(true);
+    const finishUpdate = () => {
+        setIsUpdating(false);
+        setIsEditModeEnabled(false);
+    };
+
+    const update = async () => {
+        try {
+            if (!updateOption)
+                throw "Missing updateOption property in multi-select-option";
+
+            showLoading();
+            await updateOption({ name: optionName, value: option.value });
+            isMounted.current && finishUpdate();
+        } catch (err) {}
+    };
+
+    useEffect(() => {
+        isMounted.current = true;
+    }, []);
+
+    useEffect(
+        () => () => {
+            isMounted.current = false;
+        },
+        [],
+    );
 
     return (
         <div
@@ -35,14 +67,15 @@ const MultiSelectOption: FC<IProps> = ({
             />
             <input
                 className="multi-select__option_text paragraph--small"
-                defaultValue={option.name}
+                value={optionName}
+                onInput={(e) => setOptionName(e.currentTarget.value)}
             />
             <div className="multi-select__option__actions">
                 {updateOption &&
                     (isEditModeEnabled ? (
                         <RoundedTextIconButton
-                            clickEvent={() => setIsEditModeEnabled(false)}
-                            Icon={MdSave}
+                            clickEvent={update}
+                            Icon={isUpdating ? LoadingIcon : MdSave}
                             size="small"
                             state="success"
                         />

@@ -30,7 +30,7 @@ interface IProps {
     isCreatingNewOption?: boolean;
     children?: React.ReactNode;
     deleteOption?: (option: MultiSelectOptionProprieties) => any;
-    updateOption?: (updatedOption: MultiSelectOptionProprieties) => any;
+    updateOption?: (updatedOption: MultiSelectOptionProprieties) => Promise<any>;
 }
 
 interface IHandle {
