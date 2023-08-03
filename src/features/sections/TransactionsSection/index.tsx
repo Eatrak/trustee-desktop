@@ -20,6 +20,7 @@ import TransactionDialog from "./TransactionDialog";
 import TransactionItemSkeleton from "./TransactionItemSkeleton";
 import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
+import { createWalletInputRules } from "@shared/validatorRules/wallets";
 
 const TransactionsSection = () => {
     let [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -376,7 +377,7 @@ const TransactionsSection = () => {
                     onSelect={(newSelectedWallets) =>
                         setSelectedWallets([...newSelectedWallets])
                     }
-                    optionsValidatorRule="required|string"
+                    optionsValidatorRule={createWalletInputRules.name}
                     creationErrorMessage="For creating a wallet:"
                 />
                 <div className="transactions-section--main__statistic-container">
