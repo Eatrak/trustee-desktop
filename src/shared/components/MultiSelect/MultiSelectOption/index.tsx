@@ -41,7 +41,7 @@ const MultiSelectOption: FC<IProps> = ({
             if (!updateOption)
                 throw "Missing updateOption property in multi-select-option";
 
-            if (hasErrors()) return;
+            if (getValidation()) return;
 
             showLoading();
             await updateOption({ name: optionName, value: option.value });
@@ -49,17 +49,41 @@ const MultiSelectOption: FC<IProps> = ({
         } catch (err) {}
     };
 
-    const hasErrors = (): boolean => {
+    const getValidation = () => {
         // If there are no validation rules, there can no errors
-        if (!validatorRule) return false;
+        if (!validatorRule) return null;
 
         const validation = new Validator(
-            { optionName },
+            { name: optionName },
             {
-                optionName: validatorRule,
+                name: validatorRule,
             },
         );
+        validation.check();
+        return validation;
+    };
+
+    const hasErrors = (): boolean => {
+        const validation = getValidation();
+        // If there are no validation rules, there can no errors
+        if (!validation) return false;
+
         return validation.fails() == true;
+    };
+
+    const getErrorsToShow = () => {
+        const validation = getValidation();
+        if (!validation || !validation.errors.errors.name) return [];
+
+        let id = 0;
+
+        return validation.errors.errors.name.map((error) => {
+            return (
+                <p key={id++} className="paragraph--small text--error">
+                    {error}
+                </p>
+            );
+        });
     };
 
     useEffect(() => {
@@ -79,42 +103,49 @@ const MultiSelectOption: FC<IProps> = ({
                 isEditModeEnabled ? "multi-select__option--in-edit-mode" : ""
             }`}
         >
-            <Checkbox
-                setChecked={(value: boolean) => setIsChecked(value)}
-                checked={isChecked}
-            />
-            <input
-                className={`multi-select__option_text paragraph--small ${
-                    hasErrors() ? "multi-select__option_text--in-error" : ""
-                }`}
-                value={optionName}
-                onInput={(e) => setOptionName(e.currentTarget.value)}
-            />
-            <div className="multi-select__option__actions">
-                {updateOption &&
-                    (isEditModeEnabled ? (
+            <div className="multi-select__option__input-container">
+                <Checkbox
+                    setChecked={(value: boolean) => setIsChecked(value)}
+                    checked={isChecked}
+                />
+                <input
+                    className={`multi-select__option_text paragraph--small ${
+                        hasErrors() ? "multi-select__option_text--in-error" : ""
+                    }`}
+                    value={optionName}
+                    onInput={(e) => setOptionName(e.currentTarget.value)}
+                />
+                <div className="multi-select__option__actions">
+                    {updateOption &&
+                        (isEditModeEnabled ? (
+                            <RoundedTextIconButton
+                                clickEvent={update}
+                                Icon={isUpdating ? LoadingIcon : MdSave}
+                                size="small"
+                                state="success"
+                                isDisabled={
+                                    (isEditModeEnabled && hasErrors()) || isUpdating
+                                }
+                            />
+                        ) : (
+                            <RoundedTextIconButton
+                                clickEvent={() => setIsEditModeEnabled(true)}
+                                Icon={MdModeEditOutline}
+                                size="small"
+                            />
+                        ))}
+                    {deleteOption && (
                         <RoundedTextIconButton
-                            clickEvent={update}
-                            Icon={isUpdating ? LoadingIcon : MdSave}
+                            clickEvent={() => deleteOption(option)}
+                            Icon={MdDeleteOutline}
                             size="small"
-                            state="success"
-                            isDisabled={(isEditModeEnabled && hasErrors()) || isUpdating}
+                            state="danger"
                         />
-                    ) : (
-                        <RoundedTextIconButton
-                            clickEvent={() => setIsEditModeEnabled(true)}
-                            Icon={MdModeEditOutline}
-                            size="small"
-                        />
-                    ))}
-                {deleteOption && (
-                    <RoundedTextIconButton
-                        clickEvent={() => deleteOption(option)}
-                        Icon={MdDeleteOutline}
-                        size="small"
-                        state="danger"
-                    />
-                )}
+                    )}
+                </div>
+            </div>
+            <div className="multi-select__option__input-container__errors">
+                {getErrorsToShow()}
             </div>
         </div>
     );
