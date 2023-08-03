@@ -41,7 +41,7 @@ const MultiSelectOption: FC<IProps> = ({
             if (!updateOption)
                 throw "Missing updateOption property in multi-select-option";
 
-            if (getValidation()) return;
+            if (!getValidation()) return;
 
             showLoading();
             await updateOption({ name: optionName, value: option.value });
