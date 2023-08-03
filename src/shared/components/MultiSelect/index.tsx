@@ -31,6 +31,7 @@ interface IProps {
     children?: React.ReactNode;
     deleteOption?: (option: MultiSelectOptionProprieties) => any;
     updateOption?: (updatedOption: MultiSelectOptionProprieties) => Promise<any>;
+    optionsValidatorRule?: string;
 }
 
 interface IHandle {
@@ -51,6 +52,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             filterInputPlaceholder,
             isCreatingNewOption,
             children,
+            optionsValidatorRule,
         }: IProps,
         ref,
     ) => {
@@ -118,6 +120,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                             setIsChecked={(value: boolean) => setChecked(option, value)}
                             updateOption={updateOption}
                             deleteOption={deleteOption}
+                            validatorRule={optionsValidatorRule}
                         />
                     );
                 });

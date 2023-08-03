@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { MdDeleteOutline, MdModeEditOutline, MdSave } from "react-icons/md";
+import Validator from "validatorjs";
 
 import "./style.css";
 import { MultiSelectOptionProprieties } from "..";
@@ -13,6 +14,7 @@ interface IProps {
     setIsChecked: (isChecked: boolean) => any;
     deleteOption?: (option: MultiSelectOptionProprieties) => any;
     updateOption?: (updatedOption: MultiSelectOptionProprieties) => Promise<any>;
+    validatorRule?: string;
 }
 
 const MultiSelectOption: FC<IProps> = ({
@@ -21,6 +23,7 @@ const MultiSelectOption: FC<IProps> = ({
     setIsChecked,
     updateOption,
     deleteOption,
+    validatorRule,
 }) => {
     let isMounted = useRef(false);
     let [isEditModeEnabled, setIsEditModeEnabled] = useState(false);
@@ -38,10 +41,25 @@ const MultiSelectOption: FC<IProps> = ({
             if (!updateOption)
                 throw "Missing updateOption property in multi-select-option";
 
+            if (hasErrors()) return;
+
             showLoading();
             await updateOption({ name: optionName, value: option.value });
             isMounted.current && finishUpdate();
         } catch (err) {}
+    };
+
+    const hasErrors = (): boolean => {
+        // If there are no validation rules, there can no errors
+        if (!validatorRule) return false;
+
+        const validation = new Validator(
+            { optionName },
+            {
+                optionName: validatorRule,
+            },
+        );
+        return validation.fails() == true;
     };
 
     useEffect(() => {
@@ -66,7 +84,9 @@ const MultiSelectOption: FC<IProps> = ({
                 checked={isChecked}
             />
             <input
-                className="multi-select__option_text paragraph--small"
+                className={`multi-select__option_text paragraph--small ${
+                    hasErrors() ? "multi-select__option_text--in-error" : ""
+                }`}
                 value={optionName}
                 onInput={(e) => setOptionName(e.currentTarget.value)}
             />
@@ -78,6 +98,7 @@ const MultiSelectOption: FC<IProps> = ({
                             Icon={isUpdating ? LoadingIcon : MdSave}
                             size="small"
                             state="success"
+                            isDisabled={(isEditModeEnabled && hasErrors()) || isUpdating}
                         />
                     ) : (
                         <RoundedTextIconButton

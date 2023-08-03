@@ -376,6 +376,7 @@ const TransactionsSection = () => {
                     onSelect={(newSelectedWallets) =>
                         setSelectedWallets([...newSelectedWallets])
                     }
+                    optionsValidatorRule="required|string"
                 />
                 <div className="transactions-section--main__statistic-container">
                     <div className="transactions-section--main__statistic-container__left">

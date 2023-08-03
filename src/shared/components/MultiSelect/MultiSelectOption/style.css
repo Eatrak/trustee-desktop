@@ -13,14 +13,29 @@
 .multi-select__option_text {
     user-select: none;
     padding: 4px;
-    border-color: transparent;
     pointer-events: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+    transition: all 0.2s;
 }
 
 .multi-select__option--in-edit-mode .multi-select__option_text {
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-color: var(--border-color);
     pointer-events: unset;
+}
+
+.multi-select__option--in-edit-mode .multi-select__option_text--in-error {
+    border-color: var(--error-400);
+}
+
+.multi-select__option--in-edit-mode .multi-select__option_text--in-error:hover {
+    border-color: var(--error-500);
+}
+
+.multi-select__option--in-edit-mode .multi-select__option_text--in-error:focus {
+    border-color: var(--error-500);
+    box-shadow: var(--error-aura-shadow);
 }
 
 .multi-select__option__actions {
