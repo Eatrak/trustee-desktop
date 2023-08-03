@@ -8,6 +8,7 @@ import React, {
     forwardRef,
 } from "react";
 import { MdAdd, MdKeyboardArrowDown } from "react-icons/md";
+import Validator from "validatorjs";
 
 import NormalButton from "@shared/components/NormalButton";
 import TextButton from "@shared/components/TextButton";
@@ -32,6 +33,7 @@ interface IProps {
     deleteOption?: (option: MultiSelectOptionProprieties) => any;
     updateOption?: (updatedOption: MultiSelectOptionProprieties) => Promise<any>;
     optionsValidatorRule?: string;
+    creationErrorMessage?: string;
 }
 
 interface IHandle {
@@ -53,6 +55,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             isCreatingNewOption,
             children,
             optionsValidatorRule,
+            creationErrorMessage,
         }: IProps,
         ref,
     ) => {
@@ -76,6 +79,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
         let multiSelectFrame = useRef<HTMLDivElement>(null);
 
         let [opened, setOpened] = useState<boolean>(false);
+        let [errors, setErrors] = useState<string[]>([]);
         let [hasNeverBeenOpened, setHasNeverBeenOpened] = useState<boolean>(true);
         let [checks, setChecks] = useState<{ [optionName: string]: boolean }>({});
         let [filteredOptions, changeFilteredOptions] =
@@ -158,6 +162,50 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             let filteredOption = options.find((e) => e.name == filterValue);
 
             return filteredOption != undefined;
+        };
+
+        const getErrorsToShow = () => {
+            let id = 0;
+
+            if (errors.length == 0) return [];
+
+            return [
+                <p key={id++} className="paragraph--small text--error">
+                    {creationErrorMessage || ""}
+                </p>,
+                ...errors.map((error) => {
+                    return (
+                        <p key={id++} className="paragraph--small text--error">
+                            - {error}
+                        </p>
+                    );
+                }),
+            ];
+        };
+
+        const getValidation = (optionName: string) => {
+            // If there are no validation rules, there can no errors
+            if (!optionsValidatorRule) return null;
+
+            const validation = new Validator(
+                { name: optionName },
+                {
+                    name: optionsValidatorRule,
+                },
+            );
+            validation.check();
+            return validation;
+        };
+
+        const startOptionCreation = () => {
+            const validation = getValidation(filterValue);
+            if (!validation) return;
+
+            setErrors(validation.errors.errors.name || []);
+
+            // If there are no errors, create the option
+            if (!validation.errors.errors.name)
+                createNewOption && createNewOption(filterValue);
         };
 
         // Change filtered options when options change
@@ -246,18 +294,21 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                     </div>
                     <div className="multi-select__options-panel__create-new-option-button-container">
                         {filterValue != "" && !filteredOptionExists() && (
-                            <TextButton
-                                Icon={MdAdd}
-                                text={
-                                    getCreateNewOptionButtonText
-                                        ? getCreateNewOptionButtonText(filterValue)
-                                        : ""
-                                }
-                                isLoading={isCreatingNewOption}
-                                clickEvent={() =>
-                                    createNewOption && createNewOption(filterValue)
-                                }
-                            />
+                            <>
+                                <TextButton
+                                    Icon={MdAdd}
+                                    text={
+                                        getCreateNewOptionButtonText
+                                            ? getCreateNewOptionButtonText(filterValue)
+                                            : ""
+                                    }
+                                    isLoading={isCreatingNewOption}
+                                    clickEvent={startOptionCreation}
+                                />
+                                <div className="multi-select__options-panel__create-new-option-button-container__errors">
+                                    {getErrorsToShow()}
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>
