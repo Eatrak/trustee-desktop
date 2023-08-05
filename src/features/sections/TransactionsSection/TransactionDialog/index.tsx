@@ -21,6 +21,7 @@ import { MultiSelectOptionProprieties } from "@shared/components/MultiSelect";
 interface IProps {
     close: Function;
     isCreationMode: boolean;
+    selectedCurrencyId: string;
     openedTransaction?: Transaction;
     onSuccess?: (createdTransaction: Transaction) => any;
 }
@@ -28,6 +29,7 @@ interface IProps {
 const TransactionDialog = ({
     close,
     isCreationMode,
+    selectedCurrencyId,
     openedTransaction,
     onSuccess,
 }: IProps) => {
@@ -46,7 +48,6 @@ const TransactionDialog = ({
     let [transactionCategories, setTransactionCategories] = useState<
         TransactionCategory[]
     >([]);
-    let [currencies, setCurrencies] = useState<Currency[]>([]);
     let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
     let [isCreatingNewWallet, setIsCreatingNewWallet] = useState<boolean>(false);
     let [isCreatingTransactionCategory, setIsCreatingTransactionCategory] =
@@ -79,19 +80,11 @@ const TransactionDialog = ({
         }));
     };
 
-    const getCurrencyOptions = (): MultiSelectOptionProprieties[] => {
-        return currencies.map((currency) => ({
-            name: `${currency.symbol} ${currency.code}`,
-            value: currency.id,
-        }));
-    };
-
     const getFormValidator = () => {
         const formData: CreateTransactionBody = {
             name,
             walletId: walletOption?.value!,
             categoryId: categoryOption?.value!,
-            currencyId: currencyOption?.value!,
             carriedOut: creationDate?.unix()!,
             amount: value!,
             isIncome,
@@ -123,6 +116,7 @@ const TransactionDialog = ({
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
             name: newWalletName,
+            currencyId: selectedCurrencyId,
         });
         setIsCreatingNewWallet(false);
     };
@@ -199,31 +193,6 @@ const TransactionDialog = ({
                     }
                 },
             );
-        currenciesSubscription = TransactionsService.getInstance().currencies$.subscribe(
-            (currencies) => {
-                setCurrencies(currencies);
-
-                // When in update mode, set the transaction-category of the
-                // opened transaction as selected transaction-category
-                if (!isCreationMode) {
-                    const openedTransactionCurrency = currencies.find((currency) => {
-                        return currency.id == openedTransaction!.categoryId;
-                    });
-                    if (openedTransactionCurrency) {
-                        setCategoryOption({
-                            name: `${openedTransactionCurrency.symbol} ${openedTransactionCurrency.code}`,
-                            value: openedTransactionCurrency.id,
-                        });
-                    } else {
-                        // Show to the user that the wallet of the transaction doesn't exist
-                        setCurrencyOption({
-                            name: "Unexisting currency",
-                            value: "",
-                        });
-                    }
-                }
-            },
-        );
 
         TransactionsService.getInstance().getTransactionCategories();
     }, []);
@@ -283,16 +252,6 @@ const TransactionDialog = ({
                         validatorRule={createTransactionBodyRules.categoryId}
                         selectedOption={categoryOption}
                         onSelect={setCategoryOption}
-                    />
-                    {/* Currency */}
-                    <Select
-                        entityName="currency"
-                        text="Currency"
-                        filterInputPlaceholder="Search by typing a name"
-                        options={getCurrencyOptions()}
-                        validatorRule={createTransactionBodyRules.currencyId}
-                        selectedOption={currencyOption}
-                        onSelect={setCurrencyOption}
                     />
                     {/* Creation date */}
                     <DatePicker

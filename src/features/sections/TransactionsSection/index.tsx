@@ -155,6 +155,7 @@ const TransactionsSection = () => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
             name: newWalletName,
+            currencyId: selectedCurrency,
         });
         setIsCreatingNewWallet(false);
     };
@@ -326,6 +327,7 @@ const TransactionsSection = () => {
             {isTransactionCreationDialogOpened && (
                 <TransactionDialog
                     isCreationMode
+                    selectedCurrencyId={selectedCurrency}
                     onSuccess={(createdTransaction) => {
                         // Show the transactions with the same currency of the created transaction
                         // in order to see the created transaction
@@ -338,6 +340,7 @@ const TransactionsSection = () => {
             {isTransactionUpdateDialogOpened && (
                 <TransactionDialog
                     isCreationMode={false}
+                    selectedCurrencyId={selectedCurrency}
                     onSuccess={reloadTransactions}
                     openedTransaction={openedTransaction.current}
                     close={() => setIsTransactionUpdateDialogOpened(false)}
