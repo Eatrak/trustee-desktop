@@ -329,7 +329,7 @@ const TransactionsSection = () => {
                     onSuccess={(createdTransaction) => {
                         // Show the transactions with the same currency of the created transaction
                         // in order to see the created transaction
-                        changeCurrencyCodeInstantly(createdTransaction.currencyId);
+                        changeCurrencyCodeInstantly(getSelectedCurrencySymbol());
                         reloadTransactions();
                     }}
                     close={() => setIsTransactionCreationDialogOpened(false)}
