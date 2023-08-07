@@ -11,12 +11,20 @@ code {
 }
 
 body {
-    background-color: var(--background-color);
+    background-color: var(--ground-background-color);
 }
 
 ::selection {
     color: white;
     background-color: var(--primary-500);
+}
+
+.card {
+    background-color: var(--card-background-color);
+    border: 1px solid var(--neutral-50);
+    border-radius: 4px;
+    padding: 16px;
+    box-sizing: border-box;
 }
 
 /* || Headers */

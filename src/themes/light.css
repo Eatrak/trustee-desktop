@@ -40,7 +40,8 @@
     --error-100: #ffdae0;
     --error-50: #fff6f9;
 
-    --background-color: white;
+    --ground-background-color: #fdfdff;
+    --card-background-color: white;
     --border-color: var(--neutral-100);
 
     --normal-text-color: var(--neutral-800);

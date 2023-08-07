@@ -383,7 +383,7 @@ const TransactionsSection = () => {
                     optionsValidatorRule={createWalletInputRules.name}
                     creationErrorMessage="For creating a wallet:"
                 />
-                <div className="transactions-section--main__statistic-container">
+                <div className="card transactions-section--main__statistic-container">
                     <div className="transactions-section--main__statistic-container__left">
                         {isBalanceLoading ? (
                             <StatisticSkeleton title="Total income" width="180px" />

@@ -6,7 +6,7 @@
 .transactions-section--main {
     display: grid;
     grid-template-rows: max-content max-content max-content auto max-content;
-    row-gap: 40px;
+    row-gap: 16px;
 
     align-items: baseline;
 
@@ -17,6 +17,8 @@
 
 .transactions-section--main__wallets-multi-select {
     width: 100%;
+
+    margin-top: 16px;
 }
 
 .transactions-section--main__statistic-container {
@@ -24,7 +26,6 @@
     grid-auto-flow: column;
 
     padding-bottom: 8px;
-    border-bottom: 1px solid var(--neutral-50);
 }
 
 .transactions-section--main__statistic-container__left {

@@ -9,7 +9,7 @@
     width: max-content;
     height: max-content;
 
-    background-color: var(--background-color);
+    background-color: var(--card-background-color);
     box-shadow: var(--high-elevation);
     border-radius: 8px;
     padding: 16px;
