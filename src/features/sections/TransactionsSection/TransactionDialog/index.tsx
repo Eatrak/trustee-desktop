@@ -42,7 +42,6 @@ const TransactionDialog = ({
     // Subscriptions
     let walletsSubscription: Subscription | null = null;
     let transactionCategoriesSubscription: Subscription | null = null;
-    let currenciesSubscription: Subscription | null = null;
 
     let [wallets, setWallets] = useState<Wallet[]>([]);
     let [transactionCategories, setTransactionCategories] = useState<
@@ -58,7 +57,6 @@ const TransactionDialog = ({
     let [name, setName] = useState<string>(isCreationMode ? "" : openedTransaction!.name);
     let [walletOption, setWalletOption] = useState<SelectOption | null>(null);
     let [categoryOption, setCategoryOption] = useState<SelectOption | null>(null);
-    let [currencyOption, setCurrencyOption] = useState<SelectOption | null>(null);
     let [creationDate, setCreationDate] = useState<Dayjs>(
         isCreationMode ? dayjs() : dayjs.unix(openedTransaction!.carriedOut),
     );
@@ -201,7 +199,6 @@ const TransactionDialog = ({
         () => () => {
             walletsSubscription?.unsubscribe();
             transactionCategoriesSubscription?.unsubscribe();
-            currenciesSubscription?.unsubscribe();
         },
         [],
     );
