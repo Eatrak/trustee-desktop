@@ -7,6 +7,7 @@
         "@react-rxjs/utils": "^0.9.5",
         "@sentry/react": "^7.7.0",
         "@sentry/tracing": "^7.7.0",
+        "@tanstack/react-table": "^8.9.3",
         "@testing-library/jest-dom": "^5.16.1",
         "@testing-library/react": "^12.1.2",
         "@testing-library/user-event": "^13.5.0",
