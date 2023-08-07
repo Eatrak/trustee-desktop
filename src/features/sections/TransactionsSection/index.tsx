@@ -6,7 +6,7 @@ import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
 import { Subscription } from "rxjs";
 
-import { Currency, Transaction, Wallet } from "@shared/schema";
+import { Currency, Transaction, TransactionCategory, Wallet } from "@shared/schema";
 import TransactionsService from "@shared/services/transactions";
 import TextButton from "@shared/components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@shared/components/RangeDatePicker";
@@ -18,12 +18,16 @@ import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import TransactionDialog from "./TransactionDialog";
 import TransactionItemSkeleton from "./TransactionItemSkeleton";
+import TransactionsTable from "./TransactionsTable";
 import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 import { createWalletInputRules } from "@shared/validatorRules/wallets";
 
 const TransactionsSection = () => {
     let [transactions, setTransactions] = useState<Transaction[]>([]);
+    let [transactionCategories, setTransactionCategories] = useState<
+        TransactionCategory[]
+    >([]);
     let [totalIncome, setTotalIncome] = useState<number>(0);
     let [totalExpense, setTotalExpense] = useState<number>(0);
     let [wallets, changeWallets] = useState<Wallet[]>([]);
@@ -77,6 +81,7 @@ const TransactionsSection = () => {
     // Subscriptions
     let walletsSubscription: Subscription | null = null;
     let currenciesSubscription: Subscription | null = null;
+    let transactionCategoriesSubscription: Subscription | null = null;
 
     const getSelectedCurrencySymbol = (): string => {
         const currencySymbol = currencies.find(
@@ -84,6 +89,12 @@ const TransactionsSection = () => {
         )?.symbol;
 
         return currencySymbol ? currencySymbol : "";
+    };
+
+    const getTransactionCategoryNameById = (id: string) => {
+        return transactionCategories.find(
+            (transactionCategory) => transactionCategory.id == id,
+        )?.name;
     };
 
     useEffect(() => {
@@ -110,6 +121,12 @@ const TransactionsSection = () => {
                 changeCurrencyCodeInstantly(id);
             },
         );
+        transactionCategoriesSubscription =
+            TransactionsService.getInstance().transactionCategories$.subscribe(
+                (transactionCategories) => {
+                    setTransactionCategories(transactionCategories);
+                },
+            );
     }, []);
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
@@ -419,9 +436,22 @@ const TransactionsSection = () => {
                         )}
                     </div>
                 </div>
-                <div className="transactions-section--main--container">
-                    <div>{getTransactionItemsToRender()}</div>
-                </div>
+                <TransactionsTable
+                    className="transactions-section__main__container__transactions-table"
+                    data={transactions.map(
+                        ({ id, name, amount, isIncome, categoryId, carriedOut }) => ({
+                            id,
+                            name,
+                            amount,
+                            isIncome,
+                            category: categoryId
+                                ? getTransactionCategoryNameById(categoryId) || "unknown"
+                                : "",
+                            currencySymbol: getSelectedCurrencySymbol(),
+                            creationDate: dayjs.unix(carriedOut),
+                        }),
+                    )}
+                />
                 {cursor && (
                     <TextButton
                         Icon={MdAdd}
