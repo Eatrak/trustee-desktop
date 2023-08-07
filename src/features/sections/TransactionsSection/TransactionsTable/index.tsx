@@ -92,17 +92,7 @@ const TransactionsTable = ({ className = "", data }: IProps) => {
                         ))}
                     </thead>
                     <tbody>
-                        {[
-                            ...table.getRowModel().rows,
-                            ...table.getRowModel().rows,
-                            ...table.getRowModel().rows,
-                            ...table.getRowModel().rows,
-                            ...table.getRowModel().rows,
-                            ...table.getRowModel().rows,
-                            ...table.getRowModel().rows,
-                            ...table.getRowModel().rows,
-                            ...table.getRowModel().rows,
-                        ].map((row) => (
+                        {table.getRowModel().rows.map((row) => (
                             <tr key={row.id} className="table__row">
                                 {row.getVisibleCells().map((cell) => (
                                     <td key={cell.id}>
