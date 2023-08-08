@@ -7,7 +7,7 @@
 .app-layout__header__texts-container {
     display: grid;
     grid-auto-flow: row;
-    row-gap: 10px;
+    row-gap: 8px;
 }
 
 .app-layout__header__texts_container__title {
