@@ -423,7 +423,11 @@ const TransactionsSection = () => {
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
                         {isBalanceLoading ? (
-                            <StatisticSkeleton title="Total balance" width="180px" />
+                            <StatisticSkeleton
+                                title="Total balance"
+                                width="180px"
+                                size="large"
+                            />
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-balance"
