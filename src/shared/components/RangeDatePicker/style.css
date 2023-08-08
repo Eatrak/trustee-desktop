@@ -10,7 +10,7 @@
     height: max-content;
 
     background-color: var(--card-background-color);
-    box-shadow: var(--high-elevation);
+    box-shadow: var(--low-elevation);
     border-radius: 8px;
     padding: 16px;
 

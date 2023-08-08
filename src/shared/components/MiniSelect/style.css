@@ -33,7 +33,7 @@
 
     background-color: var(--card-background-color);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     padding-left: 10px;
     box-sizing: border-box;
 
@@ -67,7 +67,7 @@
     margin-top: 4px;
     background-color: var(--card-background-color);
     border: 1px solid var(--border-color);
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     box-shadow: var(--low-elevation);
 }
 

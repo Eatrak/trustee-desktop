@@ -53,7 +53,7 @@
 }
 
 .transactions-section--details {
-    border-left: 1px solid var(--neutral-50);
+    border-left: 1px solid var(--border-color);
 }
 
 .transactions-section__main__container__transactions-table {
