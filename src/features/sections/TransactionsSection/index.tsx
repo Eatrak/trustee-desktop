@@ -22,6 +22,7 @@ import TransactionsTable from "./TransactionsTable";
 import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 import { createWalletInputRules } from "@shared/validatorRules/wallets";
+import { Utils } from "@shared/services/utils";
 
 const TransactionsSection = () => {
     let [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -89,6 +90,12 @@ const TransactionsSection = () => {
         )?.symbol;
 
         return currencySymbol ? currencySymbol : "";
+    };
+
+    const getSelectedCurrencyCode = (): string | null => {
+        const currencyCode = currencies.find(({ id }) => id == selectedCurrency)?.code;
+
+        return currencyCode || null;
     };
 
     const getTransactionCategoryNameById = (id: string) => {
@@ -217,42 +224,43 @@ const TransactionsSection = () => {
         setIsTransactionUpdateDialogOpened(true);
     };
 
-    const getTransactionItemsToRender = () => {
-        const selectedCurrencySymbol = currencies.find(
-            (currency) => currency.id == selectedCurrency,
-        )?.symbol;
+    const getFormattedAmount = (amount: number) => {
+        const selectedCurrencyCode = getSelectedCurrencyCode();
+        if (!selectedCurrencyCode) return "-";
 
-        const transactionItemsToRender = transactions
-            .filter((transaction) => {
-                for (const selectedWallet of selectedWallets) {
-                    if (transaction.walletId == selectedWallet.value) {
-                        return true;
-                    }
+        return Utils.getInstance().getFormattedAmount(selectedCurrencyCode, amount);
+    };
+
+    const getTransactionsToShow = () => {
+        return transactions.filter((transaction) => {
+            for (const selectedWallet of selectedWallets) {
+                if (transaction.walletId == selectedWallet.value) {
+                    return true;
                 }
+            }
 
-                return false;
-            })
-            .map((transaction) => {
-                return (
-                    <TransactionItem
-                        key={transaction.id}
-                        onClick={() => openTransaction(transaction)}
-                        onDeleteButtonClicked={() =>
-                            openTransactionDeletionDialog(transaction.id)
-                        }
-                        transaction={transaction}
-                        currencySymbol={selectedCurrencySymbol || ""}
-                    />
-                );
-            });
+            return false;
+        });
+    };
 
-        if (isLoadingTransactions) {
-            return Array.from(Array(4).keys()).map((index) => {
-                return <TransactionItemSkeleton key={index} />;
-            });
-        }
+    const getTransactionsTableData = () => {
+        const selectedCurrencyCode = getSelectedCurrencyCode();
 
-        return transactionItemsToRender;
+        return selectedCurrencyCode
+            ? getTransactionsToShow().map(
+                  ({ id, name, amount, isIncome, categoryId, carriedOut }) => ({
+                      id,
+                      name,
+                      amount,
+                      isIncome,
+                      category: categoryId
+                          ? getTransactionCategoryNameById(categoryId) || "unknown"
+                          : "",
+                      currencyCode: selectedCurrencyCode,
+                      creationDate: dayjs.unix(carriedOut),
+                  }),
+              )
+            : [];
     };
 
     const changeCurrencyCodeInstantly = (newSelectedCurrency: string) => {
@@ -345,10 +353,7 @@ const TransactionsSection = () => {
                 <TransactionDialog
                     isCreationMode
                     selectedCurrencyId={selectedCurrency}
-                    onSuccess={(createdTransaction) => {
-                        // Show the transactions with the same currency of the created transaction
-                        // in order to see the created transaction
-                        changeCurrencyCodeInstantly(getSelectedCurrencySymbol());
+                    onSuccess={() => {
                         reloadTransactions();
                     }}
                     close={() => setIsTransactionCreationDialogOpened(false)}
@@ -408,7 +413,7 @@ const TransactionsSection = () => {
                             <Statistic
                                 className="transactions-section--main__total-income"
                                 title="Total income"
-                                value={`${getSelectedCurrencySymbol()} ${totalIncome}`}
+                                value={getFormattedAmount(totalIncome)}
                             />
                         )}
                         {isBalanceLoading ? (
@@ -417,7 +422,7 @@ const TransactionsSection = () => {
                             <Statistic
                                 className="transactions-section--main__total-expense"
                                 title="Total expense"
-                                value={`${getSelectedCurrencySymbol()} ${totalExpense}`}
+                                value={getFormattedAmount(totalExpense)}
                             />
                         )}
                     </div>
@@ -432,9 +437,7 @@ const TransactionsSection = () => {
                             <Statistic
                                 className="transactions-section--main__total-balance"
                                 title="Total balance"
-                                value={`
-                                    ${getSelectedCurrencySymbol()} 
-                                    ${totalIncome - totalExpense}`}
+                                value={getFormattedAmount(totalIncome - totalExpense)}
                                 size="large"
                             />
                         )}
@@ -442,19 +445,7 @@ const TransactionsSection = () => {
                 </div>
                 <TransactionsTable
                     className="transactions-section__main__container__transactions-table"
-                    data={transactions.map(
-                        ({ id, name, amount, isIncome, categoryId, carriedOut }) => ({
-                            id,
-                            name,
-                            amount,
-                            isIncome,
-                            category: categoryId
-                                ? getTransactionCategoryNameById(categoryId) || "unknown"
-                                : "",
-                            currencySymbol: getSelectedCurrencySymbol(),
-                            creationDate: dayjs.unix(carriedOut),
-                        }),
-                    )}
+                    data={getTransactionsTableData()}
                 />
                 {cursor && (
                     <TextButton

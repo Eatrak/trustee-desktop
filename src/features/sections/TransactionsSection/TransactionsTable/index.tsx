@@ -7,6 +7,7 @@ import {
 import dayjs from "dayjs";
 
 import "./style.css";
+import { Utils } from "@shared/services/utils";
 
 interface TransactionsTableItem {
     id: string;
@@ -14,7 +15,7 @@ interface TransactionsTableItem {
     category: string;
     creationDate: dayjs.Dayjs;
     amount: number;
-    currencySymbol: string;
+    currencyCode: string;
     isIncome: boolean;
 }
 
@@ -50,9 +51,12 @@ const columns = [
                 className={`${
                     info.row.original.isIncome ? "table__cell__amount--income" : ""
                 } ? table__cell__amount--income} paragraph--small`}
-            >{`${info.row.original.isIncome ? "+" : "-"} ${
-                info.row.original.currencySymbol
-            }${info.getValue()}`}</p>
+            >{`${
+                info.row.original.isIncome ? "+" : "-"
+            } ${Utils.getInstance().getFormattedAmount(
+                info.row.original.currencyCode,
+                info.getValue(),
+            )}`}</p>
         ),
         header: () => <p className="table__header paragraph--small">Amount</p>,
         footer: (props) => props.column.id,

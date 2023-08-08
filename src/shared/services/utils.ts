@@ -1,7 +1,13 @@
 export class Utils {
     private static instance = new Utils();
+    private locale: string;
 
-    protected constructor() {}
+    protected constructor() {
+        this.locale =
+            navigator.languages && navigator.languages.length
+                ? navigator.languages[0]
+                : navigator.language;
+    }
 
     static getInstance() {
         return this.instance;
@@ -14,4 +20,11 @@ export class Utils {
 
         return VITE_APP_API_BASE_URL + VITE_APP_STAGE + path;
     }
+
+    getFormattedAmount = (currencyCode: string, amount: number) => {
+        return Intl.NumberFormat(this.locale, {
+            style: "currency",
+            currency: currencyCode,
+        }).format(amount);
+    };
 }
