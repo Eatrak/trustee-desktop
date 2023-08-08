@@ -5,6 +5,7 @@
 
     position: relative;
 
+    background-color: var(--card-background-color);
     border-right: 1px solid var(--neutral-50);
 }
 
