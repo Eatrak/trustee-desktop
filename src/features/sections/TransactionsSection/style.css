@@ -1,6 +1,6 @@
 .transactions-section {
     display: grid;
-    grid-template-columns: auto 400px;
+    grid-template-columns: auto 340px;
 }
 
 .transactions-section--main {
