@@ -6,13 +6,13 @@
     --neutral-100: #f3f1f7;
     --neutral-50: #faf9fa;
 
-    --primary-600: #271278;
-    --primary-500: #6241e3;
-    --primary-400: #866ce9;
-    --primary-300: #ab99f0;
-    --primary-200: #cfc5f6;
-    --primary-100: #ece9fc;
-    --primary-50: #f8f6fe;
+    --primary-600: #3F3CE1;
+    --primary-500: #6562FF;
+    --primary-400: #837FFF;
+    --primary-300: #A19CFF;
+    --primary-200: #C0BFFF;
+    --primary-100: #DED9FF;
+    --primary-50: #F3F2FF;
 
     --accent-600: #d60050;
     --accent-500: #ff3c85;
@@ -22,23 +22,29 @@
     --accent-100: #fff0f5;
     --accent-50: #fffafc;
 
-    --success-600: #298d69;
-    --success-500: #3bc996;
-    --success-400: #89dfc0;
-    --success-100: #d8f4ea;
-    --success-50: #fafffd;
+    --success-600: #1E825E;
+    --success-500: #3BC996;
+    --success-400: #5FE2A1;
+    --success-300: #84EEB0;
+    --success-200: #A9F8C0;
+    --success-100: #CEFDD0;
+    --success-50: #F2FFF3;
 
-    --warning-600: #cc8d2e;
-    --warning-500: #ffb03a;
-    --warning-400: #ffc875;
-    --warning-100: #ffefd8;
-    --warning-50: #fffdfa;
+    --warning-600: #E08718;
+    --warning-500: #FFB03A;
+    --warning-400: #FFC766;
+    --warning-300: #FFDB8F;
+    --warning-200: #FFE9B9;
+    --warning-100: #FFF5E0;
+    --warning-50: #FFFCF3;
 
-    --error-600: #a72646;
-    --error-500: #e63057;
-    --error-400: #ff8f95;
-    --error-100: #ffdae0;
-    --error-50: #fff6f9;
+    --error-600: #B61D3E;
+    --error-500: #E63057;
+    --error-400: #F06A80;
+    --error-300: #F492A0;
+    --error-200: #F7BCC1;
+    --error-100: #FBDDE0;
+    --error-50: #FFF3F4;
 
     --ground-background-color: #fdfdff;
     --card-background-color: white;
@@ -49,7 +55,7 @@
 
     --button-text-color: white;
 
-    --aura-shadow: 0px 0px 0px 3px var(--primary-100);
+    --aura-shadow: 0px 0px 0px 3px var(--primary-50);
     --error-aura-shadow: 0px 0px 0px 3px var(--error-100);
     --success-aura-shadow: 0px 0px 0px 3px var(--success-100);
     --high-elevation: 0px 2px 10px 0px var(--neutral-100);

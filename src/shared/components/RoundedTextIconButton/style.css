@@ -27,7 +27,7 @@
 }
 
 .rounded-text-icon-button:active {
-    background-color: var(--primary-100);
+    background-color: var(--primary-50);
 }
 
 .rounded-text-icon-button:focus {

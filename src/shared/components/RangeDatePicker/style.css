@@ -115,7 +115,7 @@
 }
 
 .range-date-picker__panel__month-day-list__month-day--selected-range-day {
-    background-color: var(--primary-100);
+    background-color: var(--primary-50);
 }
 
 .range-date-picker__panel__month-day-list__month-day--selected-range-day
