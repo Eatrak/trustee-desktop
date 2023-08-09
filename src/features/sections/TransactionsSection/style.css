@@ -6,7 +6,7 @@
 .transactions-section--main {
     display: grid;
     grid-template-rows: max-content max-content max-content auto max-content;
-    row-gap: 16px;
+    row-gap: 8px;
 
     align-items: baseline;
 
