@@ -29,17 +29,25 @@ const columns = [
     columnHelper.accessor("name", {
         id: "name",
         cell: (info) => <p className="paragraph--small table__cell">{info.getValue()}</p>,
-        header: () => <p className="paragraph--small table__header">Name</p>,
+        header: () => (
+            <p className="paragraph--small table__header" style={{ minWidth: "180px" }}>
+                Name
+            </p>
+        ),
     }),
     columnHelper.accessor("category", {
         id: "category",
         cell: (info) => <p className="paragraph--small table__cell">{info.getValue()}</p>,
-        header: () => <p className="paragraph--small table__header">Category</p>,
+        header: () => (
+            <p className="paragraph--small table__header" style={{ minWidth: "120px" }}>
+                Category
+            </p>
+        ),
     }),
     columnHelper.accessor("creationDate", {
         id: "creationDate",
         cell: (info) => (
-            <p className="paragraph--small table__cell">
+            <p className="paragraph--small table__cell" style={{ minWidth: "100px" }}>
                 {info.getValue().format("MM/DD/YYYY")}
             </p>
         ),
@@ -52,6 +60,7 @@ const columns = [
                 className={`${
                     info.row.original.isIncome ? "table__cell__amount--income" : ""
                 } ? table__cell__amount--income} paragraph--small`}
+                style={{ minWidth: "190px" }}
             >{`${
                 info.row.original.isIncome ? "+" : "-"
             } ${Utils.getInstance().getFormattedAmount(

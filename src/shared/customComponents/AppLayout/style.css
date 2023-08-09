@@ -4,3 +4,13 @@
 
     --primaryColor: var(--primary-600) !important;
 }
+
+@media screen and (max-width: 1050px) {
+    .app-layout {
+        grid-template-columns: auto;
+    }
+
+    .navbar {
+        display: none !important;
+    }
+}

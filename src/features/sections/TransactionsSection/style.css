@@ -60,3 +60,13 @@
     width: 100%;
     height: 100%;
 }
+
+@media screen and (max-width: 1400px) {
+    .transactions-section {
+        grid-template-columns: auto;
+    }
+
+    .transactions-section--details {
+        display: none;
+    }
+}
