@@ -6,3 +6,9 @@
 .statistic__title {
     user-select: none;
 }
+
+.statistic__value {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
