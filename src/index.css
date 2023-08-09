@@ -184,6 +184,34 @@ p {
 
 /* -- */
 
+/* || Scrollbar */
+
+/* Define the scrollbar track */
+::-webkit-scrollbar {
+    width: 8px;
+}
+  
+/* Define the scrollbar thumb (selector) */
+::-webkit-scrollbar-thumb {
+    background-color: var(--neutral-500);
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+/* Define the scrollbar thumb (selector) on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--neutral-600);
+}
+
+/* Define the scrollbar track background */
+::-webkit-scrollbar-track {
+    background-color: var(--neutral-100);
+
+    border-radius: 4px;
+}
+
+/* -- */
+
 @keyframes fade {
     0% {
         opacity: 0;
