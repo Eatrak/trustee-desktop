@@ -1,3 +1,4 @@
+import "./style.css";
 import TextSkeleton from "@shared/components/TextSkeleton";
 
 interface IProps {
@@ -8,8 +9,10 @@ interface IProps {
 
 const StatisticSkeleton = ({ title, size = "normal", width = "100%" }: IProps) => {
     return (
-        <div className="statistic">
-            <p className="paragraph paragraph--sub-title">{title}</p>
+        <div className="statistic-skeleton">
+            <p className="statistic-skeleton__title paragraph paragraph--sub-title">
+                {title}
+            </p>
             {size == "normal" && <TextSkeleton width={width} size="large-paragraph" />}
             {size == "large" && <TextSkeleton width={width} size="h6" />}
         </div>

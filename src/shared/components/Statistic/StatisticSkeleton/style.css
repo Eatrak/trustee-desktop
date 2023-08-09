@@ -1,5 +1,8 @@
-.statistic {
+.statistic-skeleton {
     display: grid;
     grid-auto-flow: row;
-    row-gap: 6px;
+}
+
+.statistic-skeleton__title {
+    user-select: none;
 }

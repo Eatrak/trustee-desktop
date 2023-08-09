@@ -1,5 +1,8 @@
 .statistic {
     display: grid;
     grid-auto-flow: row;
-    row-gap: 6px;
+}
+
+.statistic__title {
+    user-select: none;
 }
