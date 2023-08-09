@@ -60,7 +60,7 @@ const columns = [
                 className={`${
                     info.row.original.isIncome ? "table__cell__amount--income" : ""
                 } ? table__cell__amount--income} paragraph--small`}
-                style={{ minWidth: "190px" }}
+                style={{ minWidth: "140px" }}
             >{`${
                 info.row.original.isIncome ? "+" : "-"
             } ${Utils.getInstance().getFormattedAmount(
