@@ -18,7 +18,7 @@ import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import TransactionDialog from "./TransactionDialog";
 import TransactionItemSkeleton from "./TransactionItemSkeleton";
-import TransactionsTable from "./TransactionsTable";
+import TransactionsTable, { TransactionsTableItem } from "./TransactionsTable";
 import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 import { createWalletInputRules } from "@shared/validatorRules/wallets";
@@ -184,9 +184,11 @@ const TransactionsSection = () => {
         setIsCreatingNewWallet(false);
     };
 
-    const openTransactionDeletionDialog = (transactionId: string) => {
+    const openTransactionDeletionDialog = (
+        transactionsTableItem: TransactionsTableItem,
+    ) => {
         setIsTransactionDeletionDialogOpened(true);
-        idOfTransactionToDelete.current = transactionId;
+        idOfTransactionToDelete.current = transactionsTableItem.id;
     };
 
     const openWalletDeletionDialog = (walletId: string) => {
@@ -243,7 +245,7 @@ const TransactionsSection = () => {
         });
     };
 
-    const getTransactionsTableData = () => {
+    const getTransactionsTableData = (): TransactionsTableItem[] => {
         const selectedCurrencyCode = getSelectedCurrencyCode();
 
         return selectedCurrencyCode
@@ -258,6 +260,7 @@ const TransactionsSection = () => {
                           : "",
                       currencyCode: selectedCurrencyCode,
                       creationDate: dayjs.unix(carriedOut),
+                      onDeleteButtonClicked: openTransactionDeletionDialog,
                   }),
               )
             : [];

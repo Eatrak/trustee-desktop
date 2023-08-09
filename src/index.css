@@ -172,6 +172,15 @@ p {
     height: 40px;
 }
 
+.table__actions {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 8px;
+    justify-content: right;
+
+    width: 100%;
+    height: 100%;
+}
 
 /* -- */
 

@@ -5,11 +5,13 @@ import {
     flexRender,
 } from "@tanstack/react-table";
 import dayjs from "dayjs";
+import { MdDeleteOutline } from "react-icons/md";
 
 import "./style.css";
 import { Utils } from "@shared/services/utils";
+import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 
-interface TransactionsTableItem {
+export interface TransactionsTableItem {
     id: string;
     name: string;
     category: string;
@@ -17,22 +19,22 @@ interface TransactionsTableItem {
     amount: number;
     currencyCode: string;
     isIncome: boolean;
+    onDeleteButtonClicked: (transaction: TransactionsTableItem) => any;
 }
 
 const columnHelper = createColumnHelper<TransactionsTableItem>();
 
 const columns = [
+    // @ts-ignore TODO: remove ts-ignore after the library will be fixed
     columnHelper.accessor("name", {
         id: "name",
         cell: (info) => <p className="paragraph--small table__cell">{info.getValue()}</p>,
         header: () => <p className="paragraph--small table__header">Name</p>,
-        footer: (props) => props.column.id,
     }),
     columnHelper.accessor("category", {
         id: "category",
         cell: (info) => <p className="paragraph--small table__cell">{info.getValue()}</p>,
         header: () => <p className="paragraph--small table__header">Category</p>,
-        footer: (props) => props.column.id,
     }),
     columnHelper.accessor("creationDate", {
         id: "creationDate",
@@ -42,7 +44,6 @@ const columns = [
             </p>
         ),
         header: () => <p className="paragraph--small table__header">Creation date</p>,
-        footer: (props) => props.column.id,
     }),
     columnHelper.accessor("amount", {
         id: "amount",
@@ -59,7 +60,23 @@ const columns = [
             )}`}</p>
         ),
         header: () => <p className="table__header paragraph--small">Amount</p>,
-        footer: (props) => props.column.id,
+    }),
+    columnHelper.display({
+        id: "actions",
+        cell: (info) => (
+            <div className="table__actions">
+                <RoundedTextIconButton
+                    Icon={MdDeleteOutline}
+                    state="danger"
+                    clickEvent={(e) => {
+                        // Avoid to open the transaction item
+                        e.stopPropagation();
+
+                        info.row.original.onDeleteButtonClicked(info.row.original);
+                    }}
+                />
+            </div>
+        ),
     }),
 ];
 
