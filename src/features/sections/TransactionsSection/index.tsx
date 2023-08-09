@@ -411,35 +411,31 @@ const TransactionsSection = () => {
                 <div className="card transactions-section--main__statistic-container">
                     <div className="transactions-section--main__statistic-container__left">
                         {isBalanceLoading ? (
-                            <StatisticSkeleton title="Total income" width="180px" />
+                            <StatisticSkeleton title="Income" width="180px" />
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-income"
-                                title="Total income"
+                                title="Income"
                                 value={getFormattedAmount(totalIncome)}
                             />
                         )}
                         {isBalanceLoading ? (
-                            <StatisticSkeleton title="Total expense" width="180px" />
+                            <StatisticSkeleton title="Expense" width="180px" />
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-expense"
-                                title="Total expense"
+                                title="Expense"
                                 value={getFormattedAmount(totalExpense)}
                             />
                         )}
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
                         {isBalanceLoading ? (
-                            <StatisticSkeleton
-                                title="Total balance"
-                                width="180px"
-                                size="large"
-                            />
+                            <StatisticSkeleton title="Net" width="180px" size="large" />
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-balance"
-                                title="Total balance"
+                                title="Net"
                                 value={getFormattedAmount(totalIncome - totalExpense)}
                                 size="large"
                             />
