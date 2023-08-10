@@ -1,11 +1,15 @@
 import { BehaviorSubject } from "rxjs";
 import { Dayjs } from "dayjs";
+import { Ok, Err, Result } from "ts-results";
 
 import { Currency, Transaction, TransactionCategory, Wallet } from "@shared/schema";
 import { Utils } from "@shared/services/utils";
 import { GetTransactionsInputQueryParams } from "@shared/ts-types/APIs/input/transactions/getTransactions";
 import { GetTransactionsResponse } from "@shared/ts-types/APIs/output/transactions/getTransactions";
-import { GetWalletsResponse } from "@shared/ts-types/APIs/output/transactions/getWallets";
+import {
+    GetWalletTableRowsResponse,
+    GetWalletsResponse,
+} from "@shared/ts-types/APIs/output/transactions/getWallets";
 import { CreateWalletResponse } from "@shared/ts-types/APIs/output/transactions/createWallet";
 import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
 import { GetCurrenciesResponse } from "@shared/ts-types/APIs/output/transactions/getCurrencies";
@@ -25,6 +29,8 @@ import {
     UpdateWalletUpdateInfo,
 } from "@shared/ts-types/APIs/input/transactions/updateWallet";
 import { UpdateWalletResponse } from "@shared/ts-types/APIs/output/transactions/updateWallet";
+import { WalletTableRow, WalletViews } from "@shared/ts-types/DTOs/wallets";
+import { ErrorResponseBodyAttributes } from "@shared/errors/types";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -163,9 +169,11 @@ export default class TransactionsService {
         }
     }
 
-    async getWallets() {
+    async getWalletsSummary() {
         try {
-            const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/wallets?view=${WalletViews.SUMMARY}`,
+            );
             const response = await fetch(requestURL, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("authToken"),
@@ -182,6 +190,33 @@ export default class TransactionsService {
             this.wallets$.next(wallets);
         } catch (err) {
             // TODO: handle error
+        }
+    }
+
+    async getWalletTableRows(): Promise<
+        Result<WalletTableRow[], ErrorResponseBodyAttributes | undefined>
+    > {
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/wallets?view=${WalletViews.TABLE_ROW}`,
+            );
+            const response = await fetch(requestURL, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
+
+            const jsonResponse: GetWalletTableRowsResponse = await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return Err(jsonResponse.data);
+            }
+
+            return Ok(jsonResponse.data.wallets);
+        } catch (err) {
+            // TODO: handle error
+
+            return Err(undefined);
         }
     }
 
