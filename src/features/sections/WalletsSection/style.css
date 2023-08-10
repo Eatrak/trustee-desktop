@@ -1,0 +1,16 @@
+.wallets-section {
+    display: grid;
+    grid-template-columns: auto;
+}
+
+.wallets-section--main {
+    display: grid;
+    grid-template-rows: max-content max-content auto;
+    row-gap: 8px;
+
+    align-items: baseline;
+
+    padding: 30px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+}
