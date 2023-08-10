@@ -6,7 +6,7 @@
 .wallets-section--main {
     display: grid;
     grid-template-rows: max-content auto;
-    row-gap: 24px;
+    row-gap: 32px;
 
     align-items: baseline;
 
