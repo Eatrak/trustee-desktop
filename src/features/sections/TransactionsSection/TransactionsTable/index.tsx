@@ -91,7 +91,7 @@ const columns = [
 ];
 
 interface IProps {
-    className: string;
+    className?: string;
     data: TransactionsTableItem[];
 }
 
