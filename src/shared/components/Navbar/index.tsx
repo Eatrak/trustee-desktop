@@ -1,7 +1,7 @@
 import "./style.css";
 
 import { useState, useEffect } from "react";
-import { MdOutlineCreditCard } from "react-icons/md";
+import { MdOutlineAccountBalanceWallet, MdOutlineCreditCard } from "react-icons/md";
 import { Subscription } from "rxjs";
 
 import NavbarButton from "./NavbarButton";
@@ -35,6 +35,11 @@ const Navbar = () => {
     return (
         <div className="navbar">
             <div className="navbar__button-container">
+                <NavbarButton
+                    path="/wallets"
+                    Icon={MdOutlineAccountBalanceWallet}
+                    text="Wallets"
+                />
                 <NavbarButton path="/" Icon={MdOutlineCreditCard} text="Transactions" />
             </div>
             <NavbarUserBadge firstName={name} lastName={surname} email={email} />
