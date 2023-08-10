@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import "./style.css";
 
 import { IconType } from "react-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface IProps {
     Icon: IconType;
@@ -10,9 +11,16 @@ interface IProps {
 }
 
 const NavbarButton = ({ Icon, text, path }: IProps) => {
+    const [isSelected, setIsSelected] = useState(false);
+    let location = useLocation();
+
     const getSelectedStyle = () => {
-        return path === document.location.pathname ? " navbar-button--selected" : "";
+        return isSelected ? " navbar-button--selected" : "";
     };
+
+    useEffect(() => {
+        setIsSelected(path === location.pathname);
+    }, [location]);
 
     return (
         <Link to={path} style={{ textDecoration: "none" }} draggable={false}>
