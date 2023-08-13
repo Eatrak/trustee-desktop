@@ -102,7 +102,10 @@ const WalletsSection: FC = () => {
                         />
                     )
                 }
-                <WalletsHeader reloadWallets={fetchWallets} />
+                <WalletsHeader
+                    walletsCount={wallets.length}
+                    reloadWallets={fetchWallets}
+                />
                 <WalletsBalanceSummary
                     totalIncome={getTotalIncome()}
                     totalExpense={getTotalExpense()}

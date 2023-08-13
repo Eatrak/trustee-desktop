@@ -8,13 +8,14 @@ import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 
 interface IProps {
     reloadWallets: Function;
+    walletsCount: number;
 }
 
-const WalletsHeader: FC<IProps> = ({ reloadWallets }) => {
+const WalletsHeader: FC<IProps> = ({ reloadWallets, walletsCount }) => {
     return (
         <SectionHeader
             title="Wallets"
-            subTitle="0 wallets"
+            subTitle={`${walletsCount} wallets`}
             actions={[
                 <RoundedTextIconButton
                     Icon={MdRefresh}
