@@ -13,14 +13,19 @@ import TableTBody from "@shared/components/Table/TableTBody";
 import TableTHead from "@shared/components/Table/TableTHead";
 import Table from "@shared/components/Table";
 import { WalletTableRow } from "@shared/ts-types/DTOs/wallets";
+import TableActions from "@shared/components/Table/TableActions";
+import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
+import { MdDeleteOutline } from "react-icons/md";
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
     return `${Utils.getInstance().getFormattedAmount(currencyCode, amount)}`;
 };
 
+interface IProps {}
+
 const columnHelper = createColumnHelper<WalletTableRow>();
 
-const columns = [
+const getColumns = (onDeleteButtonClicked: (transaction: WalletTableRow) => any) => [
     columnHelper.accessor("name", {
         id: "name",
         cell: (info) => <TableCell text={info.getValue()} />,
@@ -65,17 +70,37 @@ const columns = [
             <TableHeader text="Transactions count" style={{ minWidth: "80px" }} />
         ),
     }),
+    columnHelper.display({
+        id: "actions",
+        cell: (info) => (
+            <TableActions
+                actions={[
+                    <RoundedTextIconButton
+                        Icon={MdDeleteOutline}
+                        state="danger"
+                        clickEvent={(e) => {
+                            // Avoid to open the transaction item
+                            e.stopPropagation();
+
+                            onDeleteButtonClicked(info.row.original);
+                        }}
+                    />,
+                ]}
+            />
+        ),
+    }),
 ];
 
 interface IProps {
     className?: string;
     data: WalletTableRow[];
+    onDeleteButtonClicked: (transaction: WalletTableRow) => any;
 }
 
-const WalletsTable = ({ className = "", data }: IProps) => {
+const WalletsTable = ({ className = "", data, onDeleteButtonClicked }: IProps) => {
     const table = useReactTable({
         data,
-        columns,
+        columns: getColumns(onDeleteButtonClicked),
         getCoreRowModel: getCoreRowModel(),
     });
 
