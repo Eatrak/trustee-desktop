@@ -6,17 +6,33 @@ import WalletsTable from "./WalletsTable";
 import { WalletTableRow } from "@shared/ts-types/DTOs/wallets";
 import TransactionsService from "@shared/services/transactions";
 import ConfirmationDialog from "@shared/components/ConfirmationDialog";
+import WalletsBalanceSummary from "./WalletsBalanceSummary";
+import AuthService from "@shared/services/auth";
 
 const WalletsSection: FC = () => {
     let [wallets, setWallets] = useState<WalletTableRow[]>([]);
+    let [currencyCode, setCurrencyCode] = useState<string>(
+        AuthService.getInstance().personalInfo$.getValue().settings.currency.code,
+    );
     // Dialog state
     let [isWalletDeletionDialogOpened, setIsWalletDeletionDialogOpened] = useState(false);
-    // Loading state
+    // Loading states
     let [isDeletingWallet, setIsDeletingWallet] = useState<boolean>(false);
+    let [isLoadingWallets, setIsLoadingWallets] = useState<boolean>(false);
     // Selected wallet to delete
     let walletToDelete = useRef<WalletTableRow | null>(null);
 
+    const getTotalIncome = (): number => {
+        return wallets.reduce((totalIncome, wallet) => totalIncome + wallet.income, 0);
+    };
+
+    const getTotalExpense = (): number => {
+        return wallets.reduce((totalExpense, wallet) => totalExpense + wallet.expense, 0);
+    };
+
     const fetchWallets = async () => {
+        setIsLoadingWallets(true);
+
         try {
             const getWalletsResponse =
                 await TransactionsService.getInstance().getWalletTableRows();
@@ -30,6 +46,8 @@ const WalletsSection: FC = () => {
         } catch (err) {
             // TODO: handle error
         }
+
+        setIsLoadingWallets(false);
     };
 
     const openWalletDeletionDialog = (wallet: WalletTableRow) => {
@@ -63,6 +81,9 @@ const WalletsSection: FC = () => {
     };
 
     useEffect(() => {
+        AuthService.getInstance().personalInfo$.subscribe((personalInfo) => {
+            setCurrencyCode(personalInfo.settings.currency.code);
+        });
         fetchWallets();
     }, []);
 
@@ -82,6 +103,12 @@ const WalletsSection: FC = () => {
                     )
                 }
                 <WalletsHeader reloadWallets={fetchWallets} />
+                <WalletsBalanceSummary
+                    totalIncome={getTotalIncome()}
+                    totalExpense={getTotalExpense()}
+                    currencyCode={currencyCode}
+                    isLoading={isLoadingWallets}
+                />
                 <WalletsTable
                     className="wallets-section--main__container__wallets-table"
                     data={wallets}
