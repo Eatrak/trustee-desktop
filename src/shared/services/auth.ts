@@ -7,12 +7,7 @@ import { SignUpBody } from "@shared/ts-types/APIs/input/auth/signUp";
 import { SignUpResponse } from "@shared/ts-types/APIs/output/auth/signUp";
 import { SignInResponse } from "@shared/ts-types/APIs/output/auth/signIn";
 import { CheckAuthenticationResponse } from "@shared/ts-types/APIs/output/auth/checkAuthentication";
-
-interface PersonalInfo {
-    name: string;
-    surname: string;
-    email: string;
-}
+import { PersonalInfo } from "@shared/ts-types/DTOs/auth";
 
 export default class AuthService {
     static instance: AuthService = new AuthService();
@@ -23,6 +18,7 @@ export default class AuthService {
             name: "",
             surname: "",
             email: "",
+            settings: { currency: { id: "", code: "", symbol: "" } },
         });
     }
 
@@ -52,12 +48,8 @@ export default class AuthService {
                 return false;
             }
 
-            const { decodedAuthToken } = jsonResponse.data;
-            this.personalInfo$.next({
-                name: decodedAuthToken["custom:name"],
-                surname: decodedAuthToken["custom:surname"],
-                email: decodedAuthToken["email"],
-            });
+            const { personalInfo } = jsonResponse.data;
+            this.personalInfo$.next(personalInfo);
 
             return true;
         } catch (err) {
