@@ -81,7 +81,7 @@ const WalletsSection: FC = () => {
                         />
                     )
                 }
-                <WalletsHeader />
+                <WalletsHeader reloadWallets={fetchWallets} />
                 <WalletsTable
                     className="wallets-section--main__container__wallets-table"
                     data={wallets}
