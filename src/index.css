@@ -163,6 +163,7 @@ p {
 .table__header {
     text-align: left;
     color: var(--neutral-600);
+    user-select: none;
 }
 
 .table__cell {
