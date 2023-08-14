@@ -292,25 +292,29 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                     <div className="multi-select__options-panel__options-container">
                         {renderOptions()}
                     </div>
-                    <div className="multi-select__options-panel__create-new-option-button-container">
-                        {filterValue != "" && !filteredOptionExists() && (
-                            <>
-                                <TextButton
-                                    Icon={MdAdd}
-                                    text={
-                                        getCreateNewOptionButtonText
-                                            ? getCreateNewOptionButtonText(filterValue)
-                                            : ""
-                                    }
-                                    isLoading={isCreatingNewOption}
-                                    clickEvent={startOptionCreation}
-                                />
-                                <div className="multi-select__options-panel__create-new-option-button-container__errors">
-                                    {getErrorsToShow()}
-                                </div>
-                            </>
-                        )}
-                    </div>
+                    {createNewOption && (
+                        <div className="multi-select__options-panel__create-new-option-button-container">
+                            {filterValue != "" && !filteredOptionExists() && (
+                                <>
+                                    <TextButton
+                                        Icon={MdAdd}
+                                        text={
+                                            getCreateNewOptionButtonText
+                                                ? getCreateNewOptionButtonText(
+                                                      filterValue,
+                                                  )
+                                                : ""
+                                        }
+                                        isLoading={isCreatingNewOption}
+                                        clickEvent={startOptionCreation}
+                                    />
+                                    <div className="multi-select__options-panel__create-new-option-button-container__errors">
+                                        {getErrorsToShow()}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         );
