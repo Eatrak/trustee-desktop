@@ -6,13 +6,17 @@
 .wallets-section--main {
     display: grid;
     grid-template-rows: max-content max-content auto;
-    row-gap: 32px;
+    row-gap: 8px;
 
     align-items: baseline;
 
     padding: 30px;
     padding-top: 26px;
     padding-bottom: 26px;
+}
+
+.wallets-balance-summary {
+    margin-top: 24px;
 }
 
 .wallets-section--main__container__wallets-table {
