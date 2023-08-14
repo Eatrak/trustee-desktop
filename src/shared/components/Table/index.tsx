@@ -1,5 +1,7 @@
 import { FC, ReactNode } from "react";
 
+import "./style.css";
+
 interface IProps {
     className?: string;
     children: ReactNode;
