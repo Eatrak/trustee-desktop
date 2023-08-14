@@ -23,6 +23,7 @@ import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 import { createWalletInputRules } from "@shared/validatorRules/wallets";
 import { Utils } from "@shared/services/utils";
+import AuthService from "@shared/services/auth";
 
 const TransactionsSection = () => {
     let [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -44,7 +45,9 @@ const TransactionsSection = () => {
     let [isTransactionUpdateDialogOpened, setIsTransactionUpdateDialogOpened] =
         useState(false);
     let [currencies, setCurrencies] = useState<Currency[]>([]);
-    let [selectedCurrency, setSelectedCurrency] = useState<string>("");
+    let [selectedCurrency, setSelectedCurrency] = useState<Currency>(
+        AuthService.getInstance().personalInfo$.getValue().settings.currency,
+    );
 
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
     const lastDayOfTheCurrentMonthTimestamp = dayjs(
@@ -78,22 +81,8 @@ const TransactionsSection = () => {
 
     // Subscriptions
     let walletsSubscription: Subscription | null = null;
-    let currenciesSubscription: Subscription | null = null;
+    let personalInfoSubscription: Subscription | null = null;
     let transactionCategoriesSubscription: Subscription | null = null;
-
-    const getSelectedCurrencySymbol = (): string => {
-        const currencySymbol = currencies.find(
-            ({ id }) => id == selectedCurrency,
-        )?.symbol;
-
-        return currencySymbol ? currencySymbol : "";
-    };
-
-    const getSelectedCurrencyCode = (): string | null => {
-        const currencyCode = currencies.find(({ id }) => id == selectedCurrency)?.code;
-
-        return currencyCode || null;
-    };
 
     const getTransactionCategoryNameById = (id: string) => {
         return transactionCategories.find(
@@ -112,17 +101,10 @@ const TransactionsSection = () => {
                 );
             },
         );
-        currenciesSubscription = TransactionsService.getInstance().currencies$.subscribe(
-            (currencies) => {
-                setCurrencies(currencies);
 
-                if (currencies.length == 0) {
-                    return;
-                }
-
-                // Set default currency option
-                const { id } = currencies[0];
-                changeCurrencyCodeInstantly(id);
+        personalInfoSubscription = AuthService.getInstance().personalInfo$.subscribe(
+            ({ settings }) => {
+                setSelectedCurrency(settings.currency);
             },
         );
         transactionCategoriesSubscription =
@@ -139,13 +121,13 @@ const TransactionsSection = () => {
         const [transactions, balance] = await Promise.all([
             // Get transactions by both selected currency and creation range
             TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
-                selectedCurrency,
+                selectedCurrency.id,
                 startDate,
                 endDate,
             ),
             // Get balance of transactions to get
             TransactionsService.getInstance().getBalance(
-                selectedCurrency,
+                selectedCurrency.id,
                 startDate,
                 endDate,
             ),
@@ -176,7 +158,7 @@ const TransactionsSection = () => {
         setIsCreatingNewWallet(true);
         await TransactionsService.getInstance().createWallet({
             name: newWalletName,
-            currencyId: selectedCurrency,
+            currencyId: selectedCurrency.id,
         });
         setIsCreatingNewWallet(false);
     };
@@ -219,10 +201,7 @@ const TransactionsSection = () => {
     };
 
     const getFormattedAmount = (amount: number) => {
-        const selectedCurrencyCode = getSelectedCurrencyCode();
-        if (!selectedCurrencyCode) return "-";
-
-        return Utils.getInstance().getFormattedAmount(selectedCurrencyCode, amount);
+        return Utils.getInstance().getFormattedAmount(selectedCurrency.code, amount);
     };
 
     const getTransactionsToShow = () => {
@@ -238,31 +217,20 @@ const TransactionsSection = () => {
     };
 
     const getTransactionsTableData = (): TransactionsTableItem[] => {
-        const selectedCurrencyCode = getSelectedCurrencyCode();
-
-        return selectedCurrencyCode
-            ? getTransactionsToShow().map(
-                  ({ id, name, amount, isIncome, categoryId, carriedOut }) => ({
-                      id,
-                      name,
-                      amount,
-                      isIncome,
-                      category: categoryId
-                          ? getTransactionCategoryNameById(categoryId) || "unknown"
-                          : "",
-                      currencyCode: selectedCurrencyCode,
-                      creationDate: dayjs.unix(carriedOut),
-                      onDeleteButtonClicked: openTransactionDeletionDialog,
-                  }),
-              )
-            : [];
-    };
-
-    const changeCurrencyCodeInstantly = (newSelectedCurrency: string) => {
-        // Make sure the new selected currency-code is available instantly
-        selectedCurrency = newSelectedCurrency;
-        // Re-render by setting the new state
-        setSelectedCurrency(newSelectedCurrency);
+        return getTransactionsToShow().map(
+            ({ id, name, amount, isIncome, categoryId, carriedOut }) => ({
+                id,
+                name,
+                amount,
+                isIncome,
+                category: categoryId
+                    ? getTransactionCategoryNameById(categoryId) || "unknown"
+                    : "",
+                currencyCode: selectedCurrency.code,
+                creationDate: dayjs.unix(carriedOut),
+                onDeleteButtonClicked: openTransactionDeletionDialog,
+            }),
+        );
     };
 
     const getWalletOptions = (wallets: Wallet[]): MultiSelectOptionProprieties[] => {
@@ -288,7 +256,7 @@ const TransactionsSection = () => {
     useEffect(
         () => () => {
             walletsSubscription?.unsubscribe();
-            currenciesSubscription?.unsubscribe();
+            personalInfoSubscription?.unsubscribe();
         },
         [],
     );
@@ -310,7 +278,7 @@ const TransactionsSection = () => {
             {isTransactionCreationDialogOpened && (
                 <TransactionDialog
                     isCreationMode
-                    selectedCurrencyId={selectedCurrency}
+                    selectedCurrencyId={selectedCurrency.id}
                     onSuccess={() => {
                         reloadTransactions();
                     }}
@@ -320,7 +288,7 @@ const TransactionsSection = () => {
             {isTransactionUpdateDialogOpened && (
                 <TransactionDialog
                     isCreationMode={false}
-                    selectedCurrencyId={selectedCurrency}
+                    selectedCurrencyId={selectedCurrency.id}
                     onSuccess={reloadTransactions}
                     openedTransaction={openedTransaction.current}
                     close={() => setIsTransactionUpdateDialogOpened(false)}
@@ -329,8 +297,6 @@ const TransactionsSection = () => {
             <div className="transactions-section--main">
                 <TransactionsHeader
                     reloadTransactions={reloadTransactions}
-                    selectedCurrency={selectedCurrency}
-                    setSelectedCurrencyCode={changeCurrencyCodeInstantly}
                     lastStartDate={lastStartCarriedOut}
                     lastEndDate={lastEndCarriedOut}
                     startDate={startCarriedOut}

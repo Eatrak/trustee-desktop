@@ -1,18 +1,14 @@
 import "./style.css";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { MdAdd, MdRefresh } from "react-icons/md";
 import { Dayjs } from "dayjs";
-import { Subscription } from "rxjs";
 
 import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 import RoundedIconButton from "@shared/components/RoundedIconButton";
 import RangeDatePicker, {
     OnRangeDatePickerRangeChangedEvent,
 } from "@shared/components/RangeDatePicker";
-import MiniSelect, { SelectOption } from "@shared/components/MiniSelect";
-import { Currency } from "@shared/schema";
-import TransactionsService from "@shared/services/transactions";
 
 interface IProps {
     startDate: Dayjs | null;
@@ -24,8 +20,6 @@ interface IProps {
     setStartDate: Function;
     setEndDate: Function;
     reloadTransactions: Function;
-    selectedCurrency: string;
-    setSelectedCurrencyCode: (selectedCurrencyCode: string) => any;
 }
 
 const TransactionsHeader = ({
@@ -38,15 +32,8 @@ const TransactionsHeader = ({
     setStartDate,
     setEndDate,
     openTransactionCreationDialog,
-    selectedCurrency,
-    setSelectedCurrencyCode: setSelectedCurrency,
 }: IProps) => {
-    let currencySelect = useRef<React.ElementRef<typeof MiniSelect>>(null);
-    let [currencies, setCurrencies] = useState<Currency[]>([]);
     let [isDatePickerOpened, changeIsDatePickerOpened] = useState<boolean>(false);
-
-    // Subscriptions
-    let currenciesSubscription: Subscription | null = null;
 
     const changeTimeRangeOfTransactionsToShow = ({
         startDate,
@@ -57,40 +44,6 @@ const TransactionsHeader = ({
 
         onDatePickerRangeChanged({ startDate, endDate });
     };
-
-    const getCurrencyOptions = (): SelectOption[] => {
-        return currencies.map(({ id, code, symbol }) => ({
-            name: `${symbol} ${code}`,
-            value: id,
-        }));
-    };
-
-    useEffect(() => {
-        TransactionsService.getInstance().getCurrencies();
-        currenciesSubscription = TransactionsService.getInstance().currencies$.subscribe(
-            (currencies) => {
-                setCurrencies(currencies);
-
-                if (currencies.length == 0) {
-                    return;
-                }
-
-                // Set default currency option
-                const { id, code, symbol } = currencies[0];
-                currencySelect.current?.setSelectedOption({
-                    name: `${symbol} ${code}`,
-                    value: id,
-                });
-            },
-        );
-    }, []);
-
-    useEffect(
-        () => () => {
-            currenciesSubscription?.unsubscribe();
-        },
-        [],
-    );
 
     return (
         <div className="app-layout__header">
@@ -104,18 +57,6 @@ const TransactionsHeader = ({
                 </p>
             </div>
             <div className="app-layout__header__actions-container">
-                <MiniSelect
-                    ref={currencySelect}
-                    className="currency-select"
-                    options={getCurrencyOptions()}
-                    entityName="currency"
-                    selectedOption={
-                        getCurrencyOptions().find(
-                            (currency) => currency.value == selectedCurrency,
-                        )!
-                    }
-                    onSelect={({ value }) => setSelectedCurrency(value)}
-                />
                 <RoundedTextIconButton
                     Icon={MdRefresh}
                     clickEvent={() => reloadTransactions()}
