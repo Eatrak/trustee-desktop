@@ -9,9 +9,14 @@ import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 interface IProps {
     reloadWallets: Function;
     walletsCount: number;
+    onCreationButtonClicked: Function;
 }
 
-const WalletsHeader: FC<IProps> = ({ reloadWallets, walletsCount }) => {
+const WalletsHeader: FC<IProps> = ({
+    reloadWallets,
+    walletsCount,
+    onCreationButtonClicked,
+}) => {
     return (
         <SectionHeader
             title="Wallets"
@@ -21,7 +26,10 @@ const WalletsHeader: FC<IProps> = ({ reloadWallets, walletsCount }) => {
                     Icon={MdRefresh}
                     clickEvent={() => reloadWallets()}
                 />,
-                <RoundedIconButton Icon={MdAdd} />,
+                <RoundedIconButton
+                    Icon={MdAdd}
+                    clickEvent={() => onCreationButtonClicked()}
+                />,
             ]}
         />
     );

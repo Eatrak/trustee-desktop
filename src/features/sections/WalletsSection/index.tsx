@@ -8,14 +8,17 @@ import TransactionsService from "@shared/services/transactions";
 import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import WalletsBalanceSummary from "./WalletsBalanceSummary";
 import AuthService from "@shared/services/auth";
+import WalletDialog from "./WalletDialog";
+import { Currency } from "@shared/schema";
 
 const WalletsSection: FC = () => {
     let [wallets, setWallets] = useState<WalletTableRow[]>([]);
-    let [currencyCode, setCurrencyCode] = useState<string>(
-        AuthService.getInstance().personalInfo$.getValue().settings.currency.code,
+    let [currency, setCurrency] = useState<Currency>(
+        AuthService.getInstance().personalInfo$.getValue().settings.currency,
     );
-    // Dialog state
+    // Dialog states
     let [isWalletDeletionDialogOpened, setIsWalletDeletionDialogOpened] = useState(false);
+    let [isWalletCreationDialogOpened, setIsWalletCreationDialogOpened] = useState(false);
     // Loading states
     let [isDeletingWallet, setIsDeletingWallet] = useState<boolean>(false);
     let [isLoadingWallets, setIsLoadingWallets] = useState<boolean>(false);
@@ -82,7 +85,7 @@ const WalletsSection: FC = () => {
 
     useEffect(() => {
         AuthService.getInstance().personalInfo$.subscribe((personalInfo) => {
-            setCurrencyCode(personalInfo.settings.currency.code);
+            setCurrency(personalInfo.settings.currency);
         });
         fetchWallets();
     }, []);
@@ -102,14 +105,25 @@ const WalletsSection: FC = () => {
                         />
                     )
                 }
+                {isWalletCreationDialogOpened && (
+                    <WalletDialog
+                        isCreationMode
+                        selectedCurrencyId={currency.id}
+                        onSuccess={() => {
+                            fetchWallets();
+                        }}
+                        close={() => setIsWalletCreationDialogOpened(false)}
+                    />
+                )}
                 <WalletsHeader
                     walletsCount={wallets.length}
                     reloadWallets={fetchWallets}
+                    onCreationButtonClicked={() => setIsWalletCreationDialogOpened(true)}
                 />
                 <WalletsBalanceSummary
                     totalIncome={getTotalIncome()}
                     totalExpense={getTotalExpense()}
-                    currencyCode={currencyCode}
+                    currencyCode={currency.code}
                     isLoading={isLoadingWallets}
                 />
                 <WalletsTable

@@ -1,0 +1,29 @@
+.transaction-creation-dialog__content {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 12px;
+
+    margin-bottom: 48px;
+}
+
+.transaction-creation-dialog__content__is-income {
+    justify-self: right;
+}
+
+.transaction-creation-dialog__footer {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.transaction-creation-dialog__footer > * {
+    width: 120px;
+}
+
+.transaction-creation-dialog__footer__confirmation-button {
+    display: grid;
+    justify-self: right;
+}
+
+.currency-select {
+    width: 80px;
+}
