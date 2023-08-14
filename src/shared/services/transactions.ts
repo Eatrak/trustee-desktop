@@ -220,7 +220,9 @@ export default class TransactionsService {
         }
     }
 
-    async createWallet(createWalletBody: CreateWalletBody) {
+    async createWallet(
+        createWalletBody: CreateWalletBody,
+    ): Promise<Result<Wallet, ErrorResponseBodyAttributes | undefined>> {
         try {
             const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
             const response = await fetch(requestURL, {
@@ -234,15 +236,18 @@ export default class TransactionsService {
             const jsonResponse: CreateWalletResponse = await response.json();
             if (jsonResponse.error) {
                 // TODO: handle error
-                return;
+                return Err(jsonResponse.data);
             }
 
             const { createdWallet } = jsonResponse.data;
             const newWallets = [createdWallet, ...this.wallets$.getValue()];
 
             this.wallets$.next(newWallets);
+
+            return Ok(createdWallet);
         } catch (err) {
             // TODO: handle error
+            return Err(undefined);
         }
     }
 

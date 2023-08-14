@@ -119,6 +119,7 @@ const WalletsSection: FC = () => {
                         selectedCurrencyId={currency.id}
                         onSuccess={() => {
                             fetchWallets();
+                            setIsWalletCreationDialogOpened(false);
                         }}
                         close={() => setIsWalletCreationDialogOpened(false)}
                     />

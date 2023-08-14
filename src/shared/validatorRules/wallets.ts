@@ -3,10 +3,10 @@ export const deleteWalletValidator = {
     userId: "required|string",
 };
 
-export const createWalletInputRules = {
-    id: "required|string",
-    userId: "required|string",
-    name: "string",
+export const createWalletBodyRules = {
+    name: "required|string",
+    untrackedBalance: "required|numeric",
+    currencyId: "required|string",
 };
 
 export const updateWalletInputRules = {

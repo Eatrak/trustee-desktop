@@ -62,7 +62,9 @@ const WalletsBalanceSummary: FC<IProps> = ({
                     <Statistic
                         className="wallets-balance-summary__right__total-balance"
                         title="Total net"
-                        value={getFormattedAmount(totalIncome - totalExpense)}
+                        value={getFormattedAmount(
+                            totalIncome - totalExpense + totalUntrackedBalance,
+                        )}
                         size="large"
                     />
                 )}
