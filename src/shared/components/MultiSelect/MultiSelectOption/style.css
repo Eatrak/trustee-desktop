@@ -33,7 +33,7 @@
 }
 
 .multi-select__option--in-edit-mode .multi-select__option_text {
-    border-color: var(--border-color);
+    border-color: var(--input-border-color);
     pointer-events: unset;
 }
 
