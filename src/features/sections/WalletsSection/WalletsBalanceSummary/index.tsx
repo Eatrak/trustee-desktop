@@ -46,7 +46,7 @@ const WalletsBalanceSummary: FC<IProps> = ({
                     />
                 )}
                 {isLoading ? (
-                    <StatisticSkeleton title="Total expense" width="180px" />
+                    <StatisticSkeleton title="Total untracked balance" width="180px" />
                 ) : (
                     <Statistic
                         className="wallets-balance-summary__left__total-untracked-balance"
