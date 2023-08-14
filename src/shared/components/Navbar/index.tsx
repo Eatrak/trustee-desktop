@@ -40,7 +40,11 @@ const Navbar = () => {
                     Icon={MdOutlineAccountBalanceWallet}
                     text="Wallets"
                 />
-                <NavbarButton path="/" Icon={MdOutlineCreditCard} text="Transactions" />
+                <NavbarButton
+                    path="/transactions"
+                    Icon={MdOutlineCreditCard}
+                    text="Transactions"
+                />
             </div>
             <NavbarUserBadge firstName={name} lastName={surname} email={email} />
         </div>

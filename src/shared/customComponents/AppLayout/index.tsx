@@ -12,7 +12,7 @@ const AppLayout = () => {
             <Navbar />
             <div className="app-layout__content">
                 <Routes>
-                    <Route path="/" element={<TransactionsSection />} />
+                    <Route path="/transactions" element={<TransactionsSection />} />
                     <Route path="/wallets" element={<WalletsSection />} />
                 </Routes>
             </div>
