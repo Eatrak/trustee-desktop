@@ -58,6 +58,20 @@ const getColumns = (onDeleteButtonClicked: (transaction: WalletTableRow) => any)
         ),
         header: () => <TableHeader text="Expense" style={{ minWidth: "140px" }} />,
     }),
+    columnHelper.accessor("untrackedBalance", {
+        id: "untrackedBalance",
+        cell: ({ row }) => (
+            <TableCell
+                text={getAmountToDisplay(
+                    row.original.untrackedBalance,
+                    row.original.currencyCode,
+                )}
+            />
+        ),
+        header: () => (
+            <TableHeader text="Untracked balance" style={{ minWidth: "140px" }} />
+        ),
+    }),
     // columnHelper.accessor("creationDate", {
     //     id: "creationDate",
     //     cell: (info) => <TableCell text={info.getValue().format("MM/DD/YYYY")} />,

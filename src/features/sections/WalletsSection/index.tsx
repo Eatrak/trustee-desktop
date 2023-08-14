@@ -33,6 +33,14 @@ const WalletsSection: FC = () => {
         return wallets.reduce((totalExpense, wallet) => totalExpense + wallet.expense, 0);
     };
 
+    const getTotalUntrackedBalance = (): number => {
+        return wallets.reduce(
+            (totalUntrackedBalance, wallet) =>
+                totalUntrackedBalance + wallet.untrackedBalance,
+            0,
+        );
+    };
+
     const fetchWallets = async () => {
         setIsLoadingWallets(true);
 
@@ -123,6 +131,7 @@ const WalletsSection: FC = () => {
                 <WalletsBalanceSummary
                     totalIncome={getTotalIncome()}
                     totalExpense={getTotalExpense()}
+                    totalUntrackedBalance={getTotalUntrackedBalance()}
                     currencyCode={currency.code}
                     isLoading={isLoadingWallets}
                 />

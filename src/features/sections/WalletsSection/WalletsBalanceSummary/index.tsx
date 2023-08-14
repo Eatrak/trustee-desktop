@@ -10,6 +10,7 @@ interface IProps {
     currencyCode: string;
     totalIncome: number;
     totalExpense: number;
+    totalUntrackedBalance: number;
 }
 
 const WalletsBalanceSummary: FC<IProps> = ({
@@ -17,6 +18,7 @@ const WalletsBalanceSummary: FC<IProps> = ({
     currencyCode,
     totalIncome,
     totalExpense,
+    totalUntrackedBalance,
 }) => {
     const getFormattedAmount = (amount: number) => {
         return Utils.getInstance().getFormattedAmount(currencyCode, amount);
@@ -41,6 +43,15 @@ const WalletsBalanceSummary: FC<IProps> = ({
                         className="wallets-balance-summary__left__total-expense"
                         title="Total expense"
                         value={getFormattedAmount(totalExpense)}
+                    />
+                )}
+                {isLoading ? (
+                    <StatisticSkeleton title="Total expense" width="180px" />
+                ) : (
+                    <Statistic
+                        className="wallets-balance-summary__left__total-untracked-balance"
+                        title="Total untracked balance"
+                        value={getFormattedAmount(totalUntrackedBalance)}
                     />
                 )}
             </div>
