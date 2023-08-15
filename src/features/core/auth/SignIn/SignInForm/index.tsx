@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Validator from "validatorjs";
 
@@ -9,6 +10,7 @@ import { signInValidator } from "@shared/validatorRules/auth";
 import AuthService from "@shared/services/auth";
 
 const SignInForm = () => {
+    const navigate = useNavigate();
     const [submitDisabled, setSubmitDisabled] = useState(true);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -18,7 +20,7 @@ const SignInForm = () => {
             email!,
             password!,
         );
-        if (successfulSignIn) document.location.href = "/";
+        if (successfulSignIn) navigate("/wallets");
 
         return true;
     };
