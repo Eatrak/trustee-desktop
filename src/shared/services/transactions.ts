@@ -402,7 +402,10 @@ export default class TransactionsService {
         }
     }
 
-    async updateWallet(id: string, updateInfo: UpdateWalletUpdateInfo): Promise<boolean> {
+    async updateWallet(
+        id: string,
+        updateInfo: UpdateWalletUpdateInfo,
+    ): Promise<Result<undefined, ErrorResponseBodyAttributes | undefined>> {
         try {
             // Initialize path parameters
             const pathParams: UpdateWalletPathParameters = {
@@ -431,7 +434,7 @@ export default class TransactionsService {
             const jsonResponse: UpdateWalletResponse = await response.json();
             if (jsonResponse.error) {
                 // TODO: handle error
-                return false;
+                return Err(jsonResponse.data);
             }
 
             // Update wallet locally
@@ -445,10 +448,10 @@ export default class TransactionsService {
             });
             this.wallets$.next(updatedWallets);
 
-            return true;
+            return Ok(undefined);
         } catch (err) {
             // TODO: handle error
-            return false;
+            return Err(undefined);
         }
     }
 }

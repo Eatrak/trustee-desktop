@@ -8,7 +8,6 @@ import InputTextField from "@shared/components/InputTextField";
 import TransactionsService from "@shared/services/transactions";
 import NormalButton from "@shared/components/NormalButton";
 import TextButton from "@shared/components/TextButton";
-import { createTransactionBodyRules } from "@shared/validatorRules/transactions";
 import { Wallet } from "@shared/schema";
 import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
 import { createWalletBodyRules } from "@shared/validatorRules/wallets";
@@ -19,6 +18,7 @@ interface IProps {
     selectedCurrencyId: string;
     openedWallet?: Wallet;
     onSuccess?: (createdTransaction: Wallet) => any;
+    onUpdate?: Function;
 }
 
 const WalletDialog = ({
@@ -27,12 +27,13 @@ const WalletDialog = ({
     selectedCurrencyId,
     openedWallet,
     onSuccess,
+    onUpdate,
 }: IProps) => {
     if (!isCreationMode && !openedWallet) {
         throw new Error("The wallet dialog in update mode must receive a wallet to open");
     }
 
-    let [isCreatingWallet, setIsCreatingWallet] = useState<boolean>(false);
+    let [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     // Form data
     let [name, setName] = useState<string>(isCreationMode ? "" : openedWallet!.name);
@@ -51,7 +52,7 @@ const WalletDialog = ({
     };
 
     const createWallet = async () => {
-        setIsCreatingWallet(true);
+        setIsSubmitting(true);
 
         const createWalletRequest = await TransactionsService.getInstance().createWallet({
             name,
@@ -64,7 +65,27 @@ const WalletDialog = ({
             onSuccess && onSuccess(createWalletRequest.val);
         }
 
-        setIsCreatingWallet(false);
+        setIsSubmitting(false);
+    };
+
+    const updateWallet = async () => {
+        setIsSubmitting(true);
+
+        const updateWalletRequest = await TransactionsService.getInstance().updateWallet(
+            // TODO: remove assertion and use conditional props interface instead
+            openedWallet!.id,
+            {
+                name,
+                untrackedBalance,
+            },
+        );
+        if (updateWalletRequest.err) {
+            // TODO: handle error
+        } else {
+            onUpdate && onUpdate();
+        }
+
+        setIsSubmitting(false);
     };
 
     return (
@@ -98,9 +119,9 @@ const WalletDialog = ({
                         className="transaction-creation-dialog__footer__confirmation-button"
                         Icon={isCreationMode ? MdAdd : undefined}
                         text={isCreationMode ? "Create" : "Update"}
-                        isLoading={isCreatingWallet}
-                        event={() => isCreationMode && createWallet()}
-                        disabled={!getFormValidator().passes() || isCreatingWallet}
+                        isLoading={isSubmitting}
+                        event={() => (isCreationMode ? createWallet() : updateWallet())}
+                        disabled={!getFormValidator().passes() || isSubmitting}
                     />
                 </div>
             }

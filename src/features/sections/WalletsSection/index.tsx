@@ -19,11 +19,14 @@ const WalletsSection: FC = () => {
     // Dialog states
     let [isWalletDeletionDialogOpened, setIsWalletDeletionDialogOpened] = useState(false);
     let [isWalletCreationDialogOpened, setIsWalletCreationDialogOpened] = useState(false);
+    let [isWalletUpdateDialogOpened, setIsWalletUpdateDialogOpened] = useState(false);
     // Loading states
     let [isDeletingWallet, setIsDeletingWallet] = useState<boolean>(false);
     let [isLoadingWallets, setIsLoadingWallets] = useState<boolean>(false);
     // Selected wallet to delete
     let walletToDelete = useRef<WalletTableRow | null>(null);
+    // Selected wallet to edit
+    let walletToUpdate = useRef<WalletTableRow | undefined>();
 
     const getTotalIncome = (): number => {
         return wallets.reduce((totalIncome, wallet) => totalIncome + wallet.income, 0);
@@ -64,6 +67,11 @@ const WalletsSection: FC = () => {
     const openWalletDeletionDialog = (wallet: WalletTableRow) => {
         setIsWalletDeletionDialogOpened(true);
         walletToDelete.current = wallet;
+    };
+
+    const openWalletUpdateDialog = (wallet: WalletTableRow) => {
+        setIsWalletUpdateDialogOpened(true);
+        walletToUpdate.current = wallet;
     };
 
     const deleteWallet = async () => {
@@ -124,6 +132,18 @@ const WalletsSection: FC = () => {
                         close={() => setIsWalletCreationDialogOpened(false)}
                     />
                 )}
+                {isWalletUpdateDialogOpened && (
+                    <WalletDialog
+                        isCreationMode={false}
+                        selectedCurrencyId={currency.id}
+                        onUpdate={() => {
+                            fetchWallets();
+                            setIsWalletUpdateDialogOpened(false);
+                        }}
+                        close={() => setIsWalletUpdateDialogOpened(false)}
+                        openedWallet={walletToUpdate.current}
+                    />
+                )}
                 <WalletsHeader
                     walletsCount={wallets.length}
                     reloadWallets={fetchWallets}
@@ -139,6 +159,7 @@ const WalletsSection: FC = () => {
                 <WalletsTable
                     className="wallets-section--main__container__wallets-table"
                     data={wallets}
+                    onEditButtonClicked={openWalletUpdateDialog}
                     onDeleteButtonClicked={openWalletDeletionDialog}
                 />
             </div>

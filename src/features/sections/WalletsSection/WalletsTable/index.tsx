@@ -15,7 +15,7 @@ import Table from "@shared/components/Table";
 import { WalletTableRow } from "@shared/ts-types/DTOs/wallets";
 import TableActions from "@shared/components/Table/TableActions";
 import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
     return `${Utils.getInstance().getFormattedAmount(currencyCode, amount)}`;
@@ -25,7 +25,10 @@ interface IProps {}
 
 const columnHelper = createColumnHelper<WalletTableRow>();
 
-const getColumns = (onDeleteButtonClicked: (transaction: WalletTableRow) => any) => [
+const getColumns = (
+    onEditButtonClicked: (transaction: WalletTableRow) => any,
+    onDeleteButtonClicked: (transaction: WalletTableRow) => any,
+) => [
     columnHelper.accessor("name", {
         id: "name",
         cell: (info) => <TableCell text={info.getValue()} />,
@@ -90,6 +93,15 @@ const getColumns = (onDeleteButtonClicked: (transaction: WalletTableRow) => any)
             <TableActions
                 actions={[
                     <RoundedTextIconButton
+                        Icon={MdOutlineModeEditOutline}
+                        clickEvent={(e) => {
+                            // Avoid to open the transaction item
+                            e.stopPropagation();
+
+                            onEditButtonClicked(info.row.original);
+                        }}
+                    />,
+                    <RoundedTextIconButton
                         Icon={MdDeleteOutline}
                         state="danger"
                         clickEvent={(e) => {
@@ -108,13 +120,19 @@ const getColumns = (onDeleteButtonClicked: (transaction: WalletTableRow) => any)
 interface IProps {
     className?: string;
     data: WalletTableRow[];
+    onEditButtonClicked: (transaction: WalletTableRow) => any;
     onDeleteButtonClicked: (transaction: WalletTableRow) => any;
 }
 
-const WalletsTable = ({ className = "", data, onDeleteButtonClicked }: IProps) => {
+const WalletsTable = ({
+    className = "",
+    data,
+    onEditButtonClicked,
+    onDeleteButtonClicked,
+}: IProps) => {
     const table = useReactTable({
         data,
-        columns: getColumns(onDeleteButtonClicked),
+        columns: getColumns(onEditButtonClicked, onDeleteButtonClicked),
         getCoreRowModel: getCoreRowModel(),
     });
 
