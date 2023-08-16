@@ -148,6 +148,7 @@ const WalletsSection: FC = () => {
                     walletsCount={wallets.length}
                     reloadWallets={fetchWallets}
                     onCreationButtonClicked={() => setIsWalletCreationDialogOpened(true)}
+                    isSubTitleLoading={isLoadingWallets}
                 />
                 <WalletsBalanceSummary
                     totalIncome={getTotalIncome()}

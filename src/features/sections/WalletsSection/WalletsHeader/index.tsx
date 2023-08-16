@@ -10,17 +10,20 @@ interface IProps {
     reloadWallets: Function;
     walletsCount: number;
     onCreationButtonClicked: Function;
+    isSubTitleLoading?: boolean;
 }
 
 const WalletsHeader: FC<IProps> = ({
     reloadWallets,
     walletsCount,
     onCreationButtonClicked,
+    isSubTitleLoading = false,
 }) => {
     return (
         <SectionHeader
             title="Wallets"
             subTitle={`${walletsCount} wallets`}
+            isSubTitleLoading={isSubTitleLoading}
             actions={[
                 <RoundedTextIconButton
                     Icon={MdRefresh}
