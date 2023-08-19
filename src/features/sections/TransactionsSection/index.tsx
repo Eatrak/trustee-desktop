@@ -14,14 +14,11 @@ import MultiSelect, {
     MultiSelectOptionProprieties,
 } from "@shared/components/MultiSelect";
 import Statistic from "@shared/components/Statistic/Statistic";
-import TransactionItem from "./TransactionItem";
 import TransactionsHeader from "./TransactionsHeader";
 import TransactionDialog from "./TransactionDialog";
-import TransactionItemSkeleton from "./TransactionItemSkeleton";
 import TransactionsTable, { TransactionsTableItem } from "./TransactionsTable";
 import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
-import { createWalletInputRules } from "@shared/validatorRules/wallets";
 import { Utils } from "@shared/services/utils";
 import AuthService from "@shared/services/auth";
 
@@ -152,15 +149,6 @@ const TransactionsSection = () => {
         setLastStartCarriedOut(startDate);
         setLastEndCarriedOut(endDate);
         await getTransactionsByCreationRange(startDate, endDate);
-    };
-
-    const createWallet = async (newWalletName: string) => {
-        setIsCreatingNewWallet(true);
-        await TransactionsService.getInstance().createWallet({
-            name: newWalletName,
-            currencyId: selectedCurrency.id,
-        });
-        setIsCreatingNewWallet(false);
     };
 
     const openTransactionDeletionDialog = (
