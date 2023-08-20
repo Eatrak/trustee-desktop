@@ -21,6 +21,7 @@ import ConfirmationDialog from "@shared/components/ConfirmationDialog";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 import { Utils } from "@shared/services/utils";
 import AuthService from "@shared/services/auth";
+import DetailsPieChart from "@features/sections/TransactionsSection/DetailsPieChart";
 
 const TransactionsSection = () => {
     let [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -352,7 +353,18 @@ const TransactionsSection = () => {
                     />
                 )}
             </div>
-            <div className="transactions-section--details"></div>
+            <div className="transactions-section--details">
+                <DetailsPieChart
+                    className="transactions-section--details__transaction-categories-statistic"
+                    title="Categories income"
+                    data={[]}
+                />
+                <DetailsPieChart
+                    className="transactions-section--details__transaction-categories-statistic"
+                    title="Categories expense"
+                    data={[]}
+                />
+            </div>
         </div>
     );
 };
