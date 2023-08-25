@@ -14,3 +14,13 @@ export const createTransactionBodyRules = {
 export const deleteTransactionBodyRules = {
     id: "required|string",
 };
+
+export const getTransactionCategoryBalancesInputRules = {
+    startDate: "required_with:endDate,wallets|integer",
+    endDate: "required_with:startDate,wallets|integer",
+    wallets: "required_with:endDate,startDate|array",
+};
+
+export const getTransactionCategoriesInputRules = {
+    userId: "required|string",
+};

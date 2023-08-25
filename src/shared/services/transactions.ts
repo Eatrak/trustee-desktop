@@ -13,7 +13,10 @@ import {
 import { CreateWalletResponse } from "@shared/ts-types/APIs/output/transactions/createWallet";
 import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
 import { GetCurrenciesResponse } from "@shared/ts-types/APIs/output/transactions/getCurrencies";
-import { GetTransactionCategoriesResponse } from "@shared/ts-types/APIs/output/transactions/getTransactionCategories";
+import {
+    GetNormalTransactionCategoriesResponse,
+    GetTransactionCategoryBalancesResponse,
+} from "@shared/ts-types/APIs/output/transactions/getTransactionCategories";
 import { CreateTransactionCategoryResponse } from "@shared/ts-types/APIs/output/transactions/createTransactionCategory";
 import { CreateTransactionCategoryBody } from "@shared/ts-types/APIs/input/transactions/createTransactionCategory";
 import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
@@ -31,6 +34,14 @@ import {
 import { UpdateWalletResponse } from "@shared/ts-types/APIs/output/transactions/updateWallet";
 import { WalletTableRow, WalletViews } from "@shared/ts-types/DTOs/wallets";
 import { ErrorResponseBodyAttributes } from "@shared/errors/types";
+import {
+    GetTransactionCategoryBalancesInputMultiQueryParams,
+    GetTransactionCategoryBalancesInputQueryParams,
+} from "@shared/ts-types/APIs/input/transactions/getTransactionCategories";
+import { TransactionCategoryBalance } from "@shared/ts-types/DTOs/transactions";
+import ErrorType from "@shared/errors/list";
+import Validator from "validatorjs";
+import { getTransactionCategoryBalancesInputRules } from "@shared/validatorRules/transactions";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -284,7 +295,8 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: GetTransactionCategoriesResponse = await response.json();
+            const jsonResponse: GetNormalTransactionCategoriesResponse =
+                await response.json();
             if (jsonResponse.error) {
                 // TODO: handle error
                 return;
@@ -294,6 +306,58 @@ export default class TransactionsService {
             this.transactionCategories$.next(transactionCategories);
         } catch (err) {
             // TODO: handle error
+        }
+    }
+
+    async getTransactionCategoryBalances(
+        queryParams: GetTransactionCategoryBalancesInputQueryParams,
+        multiQueryParams: GetTransactionCategoryBalancesInputMultiQueryParams,
+    ): Promise<
+        Result<TransactionCategoryBalance[], ErrorResponseBodyAttributes | undefined>
+    > {
+        try {
+            // Validate data
+            const getTransactionCategoryBalanceValidation = new Validator(
+                { ...queryParams, ...multiQueryParams },
+                getTransactionCategoryBalancesInputRules,
+            );
+            if (getTransactionCategoryBalanceValidation.fails()) {
+                return Err(undefined);
+            }
+
+            const { startDate, endDate } = queryParams;
+            const stringQueryParams = new URLSearchParams({
+                startDate: startDate.toString(),
+                endDate: endDate.toString(),
+            });
+            const stringMultiQueryParams = Utils.getInstance().getMultiQueryParams(
+                "wallets",
+                multiQueryParams.wallets,
+            );
+
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/transaction-categories?${stringQueryParams}&${stringMultiQueryParams}`,
+            );
+
+            const response = await fetch(requestURL, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
+
+            const jsonResponse: GetTransactionCategoryBalancesResponse =
+                await response.json();
+            if (jsonResponse.error) {
+                // TODO: handle error
+                return Err(jsonResponse.data);
+            }
+
+            const { transactionCategories } = jsonResponse.data;
+            return Ok(transactionCategories);
+        } catch (err) {
+            console.log(err);
+            // TODO: handle error
+            return Err(undefined);
         }
     }
 

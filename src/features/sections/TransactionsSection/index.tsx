@@ -6,7 +6,7 @@ import { DocumentClientTypes } from "@typedorm/document-client/cjs/public-api";
 import dayjs, { Dayjs } from "dayjs";
 import { Subscription } from "rxjs";
 
-import { Currency, Transaction, TransactionCategory, Wallet } from "@shared/schema";
+import { Currency, Transaction, Wallet } from "@shared/schema";
 import TransactionsService from "@shared/services/transactions";
 import TextButton from "@shared/components/TextButton";
 import { OnRangeDatePickerRangeChangedEvent } from "@shared/components/RangeDatePicker";
@@ -22,11 +22,12 @@ import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 import { Utils } from "@shared/services/utils";
 import AuthService from "@shared/services/auth";
 import DetailsPieChart from "@features/sections/TransactionsSection/DetailsPieChart";
+import { TransactionCategoryBalance } from "@shared/ts-types/DTOs/transactions";
 
 const TransactionsSection = () => {
     let [transactions, setTransactions] = useState<Transaction[]>([]);
     let [transactionCategories, setTransactionCategories] = useState<
-        TransactionCategory[]
+        TransactionCategoryBalance[]
     >([]);
     let [totalIncome, setTotalIncome] = useState<number>(0);
     let [totalExpense, setTotalExpense] = useState<number>(0);
@@ -80,7 +81,6 @@ const TransactionsSection = () => {
     // Subscriptions
     let walletsSubscription: Subscription | null = null;
     let personalInfoSubscription: Subscription | null = null;
-    let transactionCategoriesSubscription: Subscription | null = null;
 
     const getTransactionCategoryNameById = (id: string) => {
         return transactionCategories.find(
@@ -105,15 +105,30 @@ const TransactionsSection = () => {
                 setSelectedCurrency(settings.currency);
             },
         );
-        transactionCategoriesSubscription =
-            TransactionsService.getInstance().transactionCategories$.subscribe(
-                (transactionCategories) => {
-                    setTransactionCategories(transactionCategories);
-                },
-            );
     }, []);
 
+    async function fetchTransactionCategories() {
+        console.log("Called");
+        const response =
+            await TransactionsService.getInstance().getTransactionCategoryBalances(
+                {
+                    startDate: lastStartCarriedOut.unix(),
+                    endDate: lastEndCarriedOut.unix(),
+                },
+                { wallets: wallets.map((wallet) => wallet.id) },
+            );
+
+        if (response.ok) {
+            setTransactionCategories(response.val);
+            return;
+        }
+
+        // TODO: handle error and use try catch
+    }
+
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
+        await fetchTransactionCategories();
+
         changeTransactionsLoading(true);
         setIsBalanceLoading(true);
         const [transactions, balance] = await Promise.all([
@@ -236,11 +251,33 @@ const TransactionsSection = () => {
         });
     };
 
+    const getChartTransactionCategoriesIncome = () => {
+        return transactionCategories
+            .filter(({ income }) => income > 0)
+            .map(({ name, income }) => ({
+                name,
+                value: income,
+            }));
+    };
+
+    const getChartTransactionCategoriesExpense = () => {
+        return transactionCategories
+            .filter(({ expense }) => expense > 0)
+            .map(({ name, expense }) => ({
+                name,
+                value: expense,
+            }));
+    };
+
     useEffect(() => {
         if (!selectedCurrency) return;
 
         reloadTransactions();
     }, [selectedCurrency]);
+
+    useEffect(() => {
+        fetchTransactionCategories();
+    }, [wallets]);
 
     useEffect(
         () => () => {
@@ -357,12 +394,12 @@ const TransactionsSection = () => {
                 <DetailsPieChart
                     className="transactions-section--details__transaction-categories-statistic"
                     title="Categories income"
-                    data={[]}
+                    data={getChartTransactionCategoriesIncome()}
                 />
                 <DetailsPieChart
                     className="transactions-section--details__transaction-categories-statistic"
                     title="Categories expense"
-                    data={[]}
+                    data={getChartTransactionCategoriesExpense()}
                 />
             </div>
         </div>

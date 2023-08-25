@@ -27,4 +27,16 @@ export class Utils {
             currency: currencyCode,
         }).format(amount);
     };
+
+    getMultiQueryParams(name: string, values: string[]) {
+        return values.reduce((accumulator, value, index) => {
+            let queryParam = "";
+
+            if (index > 0) queryParam = "&";
+
+            queryParam += `${name}=${value}`;
+
+            return (accumulator += queryParam);
+        }, "");
+    }
 }
