@@ -127,8 +127,6 @@ const TransactionsSection = () => {
     }
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
-        await fetchTransactionCategories();
-
         changeTransactionsLoading(true);
         setIsBalanceLoading(true);
         const [transactions, balance] = await Promise.all([
@@ -269,15 +267,17 @@ const TransactionsSection = () => {
             }));
     };
 
+    const isFirstTransactionsChange = useRef(true);
     useEffect(() => {
-        if (!selectedCurrency) return;
+        // Make sure the transaction-categories are not fetched until
+        // the transactions are fetched and set
+        if (isFirstTransactionsChange.current) {
+            isFirstTransactionsChange.current = false;
+            return;
+        }
 
-        reloadTransactions();
-    }, [selectedCurrency]);
-
-    useEffect(() => {
         fetchTransactionCategories();
-    }, [wallets]);
+    }, [transactions]);
 
     useEffect(
         () => () => {
