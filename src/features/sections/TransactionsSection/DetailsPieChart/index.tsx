@@ -8,13 +8,16 @@ interface IProps {
     className?: string;
     title: string;
     data: any[];
+    currencySymbol: string;
 }
 
-const DetailsPieChart: FC<IProps> = ({ className = "", title, data }) => {
+const DetailsPieChart: FC<IProps> = ({ className = "", title, data, currencySymbol }) => {
     const getOption = () => {
         const option: EChartsOption = {
             tooltip: {
                 trigger: "item",
+                formatter: (params: any) =>
+                    `<p class="paragraph--bold">${params.name}</p>${currencySymbol}${params.value}`,
             },
             legend: {
                 type: "scroll",

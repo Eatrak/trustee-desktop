@@ -394,11 +394,13 @@ const TransactionsSection = () => {
                 <DetailsPieChart
                     className="transactions-section--details__transaction-categories-statistic"
                     title="Categories income"
+                    currencySymbol={selectedCurrency.symbol}
                     data={getChartTransactionCategoriesIncome()}
                 />
                 <DetailsPieChart
                     className="transactions-section--details__transaction-categories-statistic"
                     title="Categories expense"
+                    currencySymbol={selectedCurrency.symbol}
                     data={getChartTransactionCategoriesExpense()}
                 />
             </div>
