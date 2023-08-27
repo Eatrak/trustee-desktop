@@ -110,15 +110,6 @@ const TransactionDialog = ({
         setIsSubmittingTransaction(false);
     };
 
-    const createWallet = async (newWalletName: string) => {
-        setIsCreatingNewWallet(true);
-        await TransactionsService.getInstance().createWallet({
-            name: newWalletName,
-            currencyId: selectedCurrencyId,
-        });
-        setIsCreatingNewWallet(false);
-    };
-
     const createTransactionCategory = async (
         nameOfTransactionCategoryToCreate: string,
     ) => {
@@ -224,13 +215,8 @@ const TransactionDialog = ({
                     <Select
                         entityName="wallet"
                         text="Wallet"
-                        filterInputPlaceholder="Search or create by typing a name"
+                        filterInputPlaceholder="Search by typing a name"
                         options={getWalletOptions()}
-                        createNewOption={createWallet}
-                        isCreatingNewOption={isCreatingNewWallet}
-                        getCreateNewOptionButtonText={(nameOfWalletToCreate) =>
-                            `Create "${nameOfWalletToCreate}" wallet`
-                        }
                         validatorRule={createTransactionBodyRules.walletId}
                         selectedOption={walletOption}
                         onSelect={setWalletOption}
