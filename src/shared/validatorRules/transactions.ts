@@ -5,7 +5,7 @@ export const createTransactionCategoryRules = {
 export const createTransactionBodyRules = {
     name: "required|string",
     walletId: "required|string",
-    categoryId: "required|string",
+    categories: "required|array",
     carriedOut: "required|integer",
     amount: "required|numeric|min:0.01",
     isIncome: "required|boolean",

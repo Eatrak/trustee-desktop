@@ -16,7 +16,9 @@ import Checkbox from "@shared/components/Checkbox";
 import { createTransactionBodyRules } from "@shared/validatorRules/transactions";
 import { Currency, Transaction, TransactionCategory, Wallet } from "@shared/schema";
 import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
-import { MultiSelectOptionProprieties } from "@shared/components/MultiSelect";
+import MultiSelect, {
+    MultiSelectOptionProprieties,
+} from "@shared/components/MultiSelect";
 
 interface IProps {
     close: Function;
@@ -48,7 +50,6 @@ const TransactionDialog = ({
         TransactionCategory[]
     >([]);
     let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
-    let [isCreatingNewWallet, setIsCreatingNewWallet] = useState<boolean>(false);
     let [isCreatingTransactionCategory, setIsCreatingTransactionCategory] =
         useState<boolean>(false);
     let [isSubmittingTransaction, setIsSubmittingTransaction] = useState<boolean>(false);
@@ -56,7 +57,7 @@ const TransactionDialog = ({
     // Form data
     let [name, setName] = useState<string>(isCreationMode ? "" : openedTransaction!.name);
     let [walletOption, setWalletOption] = useState<SelectOption | null>(null);
-    let [categoryOption, setCategoryOption] = useState<SelectOption | null>(null);
+    let [categoryOptions, setCategoryOptions] = useState<SelectOption[]>([]);
     let [creationDate, setCreationDate] = useState<Dayjs>(
         isCreationMode ? dayjs() : dayjs.unix(openedTransaction!.carriedOut),
     );
@@ -82,7 +83,7 @@ const TransactionDialog = ({
         const formData: CreateTransactionBody = {
             name,
             walletId: walletOption?.value!,
-            categoryId: categoryOption?.value!,
+            categories: categoryOptions?.map((categoryOption) => categoryOption.value),
             carriedOut: creationDate?.unix()!,
             amount: value!,
             isIncome,
@@ -159,26 +160,6 @@ const TransactionDialog = ({
                     // When in update mode, set the transaction-category of the
                     // opened transaction as selected transaction-category
                     if (!isCreationMode) {
-                        const categoryOfOpenedTransaction = transactionCategories.find(
-                            (transactionCategory) => {
-                                return (
-                                    transactionCategory.id ==
-                                    openedTransaction!.categoryId
-                                );
-                            },
-                        );
-                        if (categoryOfOpenedTransaction) {
-                            setCategoryOption({
-                                name: categoryOfOpenedTransaction.name,
-                                value: categoryOfOpenedTransaction.id,
-                            });
-                        } else {
-                            // Show to the user that the wallet of the transaction doesn't exist
-                            setWalletOption({
-                                name: "",
-                                value: "",
-                            });
-                        }
                     }
                 },
             );
@@ -222,19 +203,19 @@ const TransactionDialog = ({
                         onSelect={setWalletOption}
                     />
                     {/* Category */}
-                    <Select
-                        entityName="category"
+                    <MultiSelect
                         text="Category"
                         filterInputPlaceholder="Search or create by typing a name"
-                        options={getTransactionCategoryOptions()}
                         createNewOption={createTransactionCategory}
                         isCreatingNewOption={isCreatingTransactionCategory}
                         getCreateNewOptionButtonText={
                             getCreateTransactionCategoryButtonText
                         }
-                        validatorRule={createTransactionBodyRules.categoryId}
-                        selectedOption={categoryOption}
-                        onSelect={setCategoryOption}
+                        onSelect={setCategoryOptions}
+                        creationValidatorRule="required|string"
+                        optionsValidatorRule={"required|array"}
+                        options={getTransactionCategoryOptions()}
+                        entityName="categories"
                     />
                     {/* Creation date */}
                     <DatePicker

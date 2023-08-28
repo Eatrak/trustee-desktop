@@ -34,6 +34,8 @@ interface IProps {
     updateOption?: (updatedOption: MultiSelectOptionProprieties) => Promise<any>;
     optionsValidatorRule?: string;
     creationErrorMessage?: string;
+    entityName: string;
+    creationValidatorRule?: string;
 }
 
 interface IHandle {
@@ -55,7 +57,9 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             isCreatingNewOption,
             children,
             optionsValidatorRule,
+            creationValidatorRule,
             creationErrorMessage,
+            entityName,
         }: IProps,
         ref,
     ) => {
@@ -78,6 +82,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
 
         let multiSelectFrame = useRef<HTMLDivElement>(null);
 
+        const isFirstRender = useRef(true);
         let [opened, setOpened] = useState<boolean>(false);
         let [errors, setErrors] = useState<string[]>([]);
         let [hasNeverBeenOpened, setHasNeverBeenOpened] = useState<boolean>(true);
@@ -109,7 +114,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             }
 
             setSelectedOptions(newSelectedOptions);
-            onSelect && onSelect(newSelectedOptions);
+            onSelect && onSelect([...newSelectedOptions]);
             setChecks(newChecks);
         };
 
@@ -124,7 +129,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                             setIsChecked={(value: boolean) => setChecked(option, value)}
                             updateOption={updateOption}
                             deleteOption={deleteOption}
-                            validatorRule={optionsValidatorRule}
+                            validatorRule={creationValidatorRule}
                         />
                     );
                 });
@@ -164,10 +169,12 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             return filteredOption != undefined;
         };
 
-        const getErrorsToShow = () => {
+        const getCreationErrorsToShow = () => {
             let id = 0;
 
-            if (errors.length == 0) return [];
+            const creationValidation = getCreationValidation(filterValue);
+
+            if (!creationValidation || creationValidation.passes()) return [];
 
             return [
                 <p key={id++} className="paragraph--small text--error">
@@ -183,14 +190,14 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             ];
         };
 
-        const getValidation = (optionName: string) => {
+        const getCreationValidation = (optionName: string) => {
             // If there are no validation rules, there can no errors
-            if (!optionsValidatorRule) return null;
+            if (!creationValidatorRule) return null;
 
             const validation = new Validator(
                 { name: optionName },
                 {
-                    name: optionsValidatorRule,
+                    name: creationValidatorRule,
                 },
             );
             validation.check();
@@ -198,7 +205,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
         };
 
         const startOptionCreation = () => {
-            const validation = getValidation(filterValue);
+            const validation = getCreationValidation(filterValue);
             if (!validation) return;
 
             setErrors(validation.errors.errors.name || []);
@@ -206,6 +213,36 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             // If there are no errors, create the option
             if (!validation.errors.errors.name)
                 createNewOption && createNewOption(filterValue);
+        };
+
+        const checkErrors = () => {
+            if (!optionsValidatorRule) return;
+
+            const validation = new Validator(
+                {
+                    [entityName]: selectedOptions?.map(
+                        (selectedOption) => selectedOption.value,
+                    ),
+                },
+                { [entityName]: optionsValidatorRule },
+            );
+            validation.check();
+
+            const errors = validation.errors.get(entityName);
+            setErrors(errors);
+            console.log("Checked errors", errors);
+        };
+
+        const getErrorsToShow = () => {
+            let id = 0;
+
+            return errors.map((error) => {
+                return (
+                    <p key={id++} className="paragraph--small text--error">
+                        {error}
+                    </p>
+                );
+            });
         };
 
         // Change filtered options when options change
@@ -229,6 +266,18 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             },
             [],
         );
+
+        useEffect(() => {
+            // Exit if it is the first render
+            if (isFirstRender.current) {
+                isFirstRender.current = false;
+                return;
+            }
+
+            if (!opened) {
+                checkErrors();
+            }
+        }, [opened]);
 
         return (
             <div
@@ -272,6 +321,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                         }
                     />
                 </div>
+                {getErrorsToShow()}
                 <div
                     className={
                         "multi-select__options-panel multi-select__options-panel--" +
@@ -309,7 +359,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                                         clickEvent={startOptionCreation}
                                     />
                                     <div className="multi-select__options-panel__create-new-option-button-container__errors">
-                                        {getErrorsToShow()}
+                                        {getCreationErrorsToShow()}
                                     </div>
                                 </>
                             )}

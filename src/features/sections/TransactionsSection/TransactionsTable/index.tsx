@@ -19,7 +19,6 @@ import Table from "@shared/components/Table";
 export interface TransactionsTableItem {
     id: string;
     name: string;
-    category: string;
     creationDate: dayjs.Dayjs;
     amount: number;
     currencyCode: string;
@@ -42,11 +41,6 @@ const columns = [
         id: "name",
         cell: (info) => <TableCell text={info.getValue()} />,
         header: () => <TableHeader text="Name" style={{ minWidth: "180px" }} />,
-    }),
-    columnHelper.accessor("category", {
-        id: "category",
-        cell: (info) => <TableCell text={info.getValue()} />,
-        header: () => <TableHeader text="Category" style={{ minWidth: "120px" }} />,
     }),
     columnHelper.accessor("creationDate", {
         id: "creationDate",

@@ -220,14 +220,11 @@ const TransactionsSection = () => {
 
     const getTransactionsTableData = (): TransactionsTableItem[] => {
         return getTransactionsToShow().map(
-            ({ id, name, amount, isIncome, categoryId, carriedOut }) => ({
+            ({ id, name, amount, isIncome, carriedOut }) => ({
                 id,
                 name,
                 amount,
                 isIncome,
-                category: categoryId
-                    ? getTransactionCategoryNameById(categoryId) || "unknown"
-                    : "",
                 currencyCode: selectedCurrency.code,
                 creationDate: dayjs.unix(carriedOut),
                 onDeleteButtonClicked: openTransactionDeletionDialog,
@@ -343,6 +340,7 @@ const TransactionsSection = () => {
                     onSelect={(newSelectedWallets) =>
                         setSelectedWallets([...newSelectedWallets])
                     }
+                    entityName="wallets"
                 />
                 <div className="card transactions-section--main__statistic-container">
                     <div className="transactions-section--main__statistic-container__left">
