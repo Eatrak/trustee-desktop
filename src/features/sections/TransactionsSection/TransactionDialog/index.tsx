@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import Validator from "validatorjs";
 import dayjs, { Dayjs } from "dayjs";
-import { Subscription } from "rxjs";
 
 import "./style.css";
 import Dialog from "@shared/components/Dialog";
@@ -14,7 +13,7 @@ import Select, { SelectOption } from "@shared/components/Select";
 import DatePicker from "@shared/components/DatePicker";
 import Checkbox from "@shared/components/Checkbox";
 import { createTransactionBodyRules } from "@shared/validatorRules/transactions";
-import { Currency, Transaction, TransactionCategory, Wallet } from "@shared/schema";
+import { Transaction, TransactionCategory, Wallet } from "@shared/schema";
 import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
 import MultiSelect, {
     MultiSelectOptionProprieties,
@@ -26,14 +25,15 @@ interface IProps {
     selectedCurrencyId: string;
     openedTransaction?: Transaction;
     onSuccess?: (createdTransaction: Transaction) => any;
+    wallets: Wallet[];
 }
 
 const TransactionDialog = ({
     close,
     isCreationMode,
-    selectedCurrencyId,
     openedTransaction,
     onSuccess,
+    wallets,
 }: IProps) => {
     if (!isCreationMode && !openedTransaction) {
         throw new Error(
@@ -41,11 +41,6 @@ const TransactionDialog = ({
         );
     }
 
-    // Subscriptions
-    let walletsSubscription: Subscription | null = null;
-    let transactionCategoriesSubscription: Subscription | null = null;
-
-    let [wallets, setWallets] = useState<Wallet[]>([]);
     let [transactionCategories, setTransactionCategories] = useState<
         TransactionCategory[]
     >([]);
@@ -127,53 +122,40 @@ const TransactionDialog = ({
         return `Create "${nameOfTransactionCategoryToCreate}" wallet`;
     };
 
+    const initTransactionCategories = async () => {
+        const transactionCategories =
+            await TransactionsService.getInstance().getTransactionCategories();
+
+        if (!transactionCategories) return;
+
+        setTransactionCategories(transactionCategories);
+    };
+
     useEffect(() => {
-        walletsSubscription = TransactionsService.getInstance().wallets$.subscribe(
-            (wallets) => {
-                setWallets(wallets);
-
-                // When in update mode, set the wallet of the opened transaction as selected wallet
-                if (!isCreationMode) {
-                    const openedTransactionWallet = wallets.find(
-                        (wallet) => wallet.id == openedTransaction!.walletId,
-                    );
-                    if (openedTransactionWallet) {
-                        setWalletOption({
-                            name: openedTransactionWallet.name,
-                            value: openedTransactionWallet.id,
-                        });
-                    } else {
-                        // Show to the user that the wallet of the transaction doesn't exist
-                        setWalletOption({
-                            name: "Unexisting wallet",
-                            value: "",
-                        });
-                    }
-                }
-            },
-        );
-        transactionCategoriesSubscription =
-            TransactionsService.getInstance().transactionCategories$.subscribe(
-                (transactionCategories) => {
-                    setTransactionCategories(transactionCategories);
-
-                    // When in update mode, set the transaction-category of the
-                    // opened transaction as selected transaction-category
-                    if (!isCreationMode) {
-                    }
-                },
-            );
-
-        TransactionsService.getInstance().getTransactionCategories();
+        initWallets(wallets);
+        initTransactionCategories();
     }, []);
 
-    useEffect(
-        () => () => {
-            walletsSubscription?.unsubscribe();
-            transactionCategoriesSubscription?.unsubscribe();
-        },
-        [],
-    );
+    const initWallets = (wallets: Wallet[]) => {
+        // When in update mode, set the wallet of the opened transaction as selected wallet
+        if (!isCreationMode) {
+            const openedTransactionWallet = wallets.find(
+                (wallet) => wallet.id == openedTransaction!.walletId,
+            );
+            if (openedTransactionWallet) {
+                setWalletOption({
+                    name: openedTransactionWallet.name,
+                    value: openedTransactionWallet.id,
+                });
+            } else {
+                // Show to the user that the wallet of the transaction doesn't exist
+                setWalletOption({
+                    name: "Unexisting wallet",
+                    value: "",
+                });
+            }
+        }
+    };
 
     return (
         <Dialog

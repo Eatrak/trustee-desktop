@@ -33,11 +33,7 @@ const App = () => {
     document.body.classList.add("light-mode");
 
     const loadResources = async () => {
-        await Promise.all([
-            TransactionsService.getInstance().getWalletsSummary(),
-            TransactionsService.getInstance().getTransactionCategories(),
-            TransactionsService.getInstance().getCurrencies(),
-        ]);
+        await Promise.all([TransactionsService.getInstance().getCurrencies()]);
     };
 
     return (

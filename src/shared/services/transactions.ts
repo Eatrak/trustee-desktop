@@ -42,18 +42,18 @@ import { TransactionCategoryBalance } from "@shared/ts-types/DTOs/transactions";
 import ErrorType from "@shared/errors/list";
 import Validator from "validatorjs";
 import { getTransactionCategoryBalancesInputRules } from "@shared/validatorRules/transactions";
+import {
+    GetBalanceInputMultiQueryParams,
+    GetBalanceInputQueryParams,
+} from "@shared/ts-types/APIs/input/transactions/getBalance";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
 
-    wallets$: BehaviorSubject<Wallet[]>;
     currencies$: BehaviorSubject<Currency[]>;
-    transactionCategories$: BehaviorSubject<TransactionCategory[]>;
 
     private constructor() {
-        this.wallets$ = new BehaviorSubject<Wallet[]>([]);
         this.currencies$ = new BehaviorSubject<Currency[]>([]);
-        this.transactionCategories$ = new BehaviorSubject<TransactionCategory[]>([]);
     }
 
     static getInstance() {
@@ -151,16 +151,33 @@ export default class TransactionsService {
         }
     }
 
-    async getBalance(currencyId: string, startCarriedOut: Dayjs, endCarriedOut: Dayjs) {
+    async getBalance(
+        currencyId: string,
+        startCarriedOut: Dayjs,
+        endCarriedOut: Dayjs,
+        wallets: string[],
+    ) {
         try {
-            const queryParams: GetTransactionsInputQueryParams = {
+            const queryParams: GetBalanceInputQueryParams = {
                 startCarriedOut: startCarriedOut.unix().toString(),
                 endCarriedOut: endCarriedOut.unix().toString(),
                 currencyId,
             };
-            const requestURL =
-                Utils.getInstance().getAPIEndpoint("/transactions/balance?") +
-                new URLSearchParams({ ...queryParams });
+            const multiQueryParams: GetBalanceInputMultiQueryParams = {
+                wallets,
+            };
+
+            const stringQueryParams = new URLSearchParams({
+                ...queryParams,
+            });
+            const stringMultiQueryParams = Utils.getInstance().getMultiQueryParams(
+                "wallets",
+                multiQueryParams.wallets,
+            );
+
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/transactions/balance?${stringQueryParams}&${stringMultiQueryParams}`,
+            );
             const response = await fetch(requestURL, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("authToken"),
@@ -198,7 +215,8 @@ export default class TransactionsService {
             }
 
             const { wallets } = jsonResponse.data;
-            this.wallets$.next(wallets);
+
+            return wallets;
         } catch (err) {
             // TODO: handle error
         }
@@ -251,9 +269,6 @@ export default class TransactionsService {
             }
 
             const { createdWallet } = jsonResponse.data;
-            const newWallets = [createdWallet, ...this.wallets$.getValue()];
-
-            this.wallets$.next(newWallets);
 
             return Ok(createdWallet);
         } catch (err) {
@@ -303,7 +318,8 @@ export default class TransactionsService {
             }
 
             const { transactionCategories } = jsonResponse.data;
-            this.transactionCategories$.next(transactionCategories);
+
+            return transactionCategories;
         } catch (err) {
             // TODO: handle error
         }
@@ -383,12 +399,8 @@ export default class TransactionsService {
             }
 
             const { createdTransactionCategory } = jsonResponse.data;
-            const newTransactionCategories = [
-                createdTransactionCategory,
-                ...this.transactionCategories$.getValue(),
-            ];
 
-            this.transactionCategories$.next(newTransactionCategories);
+            return createdTransactionCategory;
         } catch (err) {
             // TODO: handle error
         }
@@ -453,12 +465,6 @@ export default class TransactionsService {
                 return false;
             }
 
-            // Delete wallet locally
-            const updatedWallets = this.wallets$
-                .getValue()
-                .filter((wallet) => wallet.id != id);
-            this.wallets$.next(updatedWallets);
-
             return true;
         } catch (err) {
             // TODO: handle error
@@ -500,17 +506,6 @@ export default class TransactionsService {
                 // TODO: handle error
                 return Err(jsonResponse.data);
             }
-
-            // Update wallet locally
-            const updatedWallets = this.wallets$.getValue().map((wallet) => {
-                if (wallet.id == id) {
-                    const updatedWallet = { ...wallet, ...updateInfo };
-                    return updatedWallet;
-                }
-
-                return wallet;
-            });
-            this.wallets$.next(updatedWallets);
 
             return Ok(undefined);
         } catch (err) {

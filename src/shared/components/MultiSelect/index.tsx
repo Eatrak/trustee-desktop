@@ -230,7 +230,6 @@ const MultiSelect = forwardRef<IHandle, IProps>(
 
             const errors = validation.errors.get(entityName);
             setErrors(errors);
-            console.log("Checked errors", errors);
         };
 
         const getErrorsToShow = () => {

@@ -29,13 +29,10 @@ const TransactionsSection = () => {
     let [transactionCategories, setTransactionCategories] = useState<
         TransactionCategoryBalance[]
     >([]);
-    let [totalIncome, setTotalIncome] = useState<number>(0);
-    let [totalExpense, setTotalExpense] = useState<number>(0);
     let [wallets, changeWallets] = useState<Wallet[]>([]);
     let [cursor, changeCursor] = useState<DocumentClientTypes.Key | undefined>();
     let [isLoadingTransactions, changeTransactionsLoading] = useState<boolean>(false);
     let [isBalanceLoading, setIsBalanceLoading] = useState<boolean>(false);
-    let [isCreatingNewWallet, setIsCreatingNewWallet] = useState<boolean>(false);
     let [isDeletingTransaction, setIsDeletingTransaction] = useState<boolean>(false);
     let [isTransactionCreationDialogOpened, setIsTransactionCreationDialogOpened] =
         useState<boolean>(false);
@@ -43,7 +40,6 @@ const TransactionsSection = () => {
         useState(false);
     let [isTransactionUpdateDialogOpened, setIsTransactionUpdateDialogOpened] =
         useState(false);
-    let [currencies, setCurrencies] = useState<Currency[]>([]);
     let [selectedCurrency, setSelectedCurrency] = useState<Currency>(
         AuthService.getInstance().personalInfo$.getValue().settings.currency,
     );
@@ -79,26 +75,10 @@ const TransactionsSection = () => {
     const walletsMultiSelectRef = useRef<React.ElementRef<typeof MultiSelect>>(null);
 
     // Subscriptions
-    let walletsSubscription: Subscription | null = null;
     let personalInfoSubscription: Subscription | null = null;
 
-    const getTransactionCategoryNameById = (id: string) => {
-        return transactionCategories.find(
-            (transactionCategory) => transactionCategory.id == id,
-        )?.name;
-    };
-
     useEffect(() => {
-        walletsSubscription = TransactionsService.getInstance().wallets$.subscribe(
-            (wallets) => {
-                changeWallets(wallets);
-
-                // Select all wallets by default
-                walletsMultiSelectRef.current?.setSelectedOptions(
-                    getWalletOptions(wallets),
-                );
-            },
-        );
+        initData(lastStartCarriedOut, lastEndCarriedOut, true);
 
         personalInfoSubscription = AuthService.getInstance().personalInfo$.subscribe(
             ({ settings }) => {
@@ -107,15 +87,40 @@ const TransactionsSection = () => {
         );
     }, []);
 
-    async function fetchTransactionCategories() {
-        console.log("Called");
+    const initData = async (
+        startDate: Dayjs,
+        endDate: Dayjs,
+        resetSelectedWallets: boolean,
+    ) => {
+        const [updatedWallets] = await Promise.all([
+            TransactionsService.getInstance().getWalletsSummary(),
+            getTransactionsByCreationRange(startDate, endDate),
+        ]);
+
+        if (!updatedWallets) {
+            return;
+        }
+
+        changeWallets(updatedWallets);
+        // Make sure the wallets are immediately updated
+        wallets = updatedWallets;
+
+        if (resetSelectedWallets) {
+            // Select all wallets by default
+            walletsMultiSelectRef.current?.setSelectedOptions(
+                getWalletOptions(updatedWallets),
+            );
+        }
+    };
+
+    async function fetchTransactionCategoryBalances() {
         const response =
             await TransactionsService.getInstance().getTransactionCategoryBalances(
                 {
                     startDate: lastStartCarriedOut.unix(),
                     endDate: lastEndCarriedOut.unix(),
                 },
-                { wallets: wallets.map((wallet) => wallet.id) },
+                { wallets: selectedWallets.map((wallet) => wallet.value) },
             );
 
         if (response.ok) {
@@ -128,31 +133,31 @@ const TransactionsSection = () => {
 
     let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
         changeTransactionsLoading(true);
-        setIsBalanceLoading(true);
-        const [transactions, balance] = await Promise.all([
-            // Get transactions by both selected currency and creation range
-            TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
+
+        // Get transactions by both selected currency and creation range
+        const transactions =
+            await TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
                 selectedCurrency.id,
                 startDate,
                 endDate,
-            ),
-            // Get balance of transactions to get
-            TransactionsService.getInstance().getBalance(
-                selectedCurrency.id,
-                startDate,
-                endDate,
-            ),
-        ]);
+            );
 
         // Update transactions
         transactions && setTransactions(transactions);
 
-        // Update total balance
-        balance && setTotalIncome(balance.totalIncome);
-        balance && setTotalExpense(balance.totalExpense);
-
         changeTransactionsLoading(false);
-        setIsBalanceLoading(false);
+    };
+
+    const getTotalIncome = () => {
+        return transactionCategories
+            .map(({ income }) => income)
+            .reduce((totalIncome, income) => (totalIncome += income), 0);
+    };
+
+    const getTotalExpense = () => {
+        return transactionCategories
+            .map(({ expense }) => expense)
+            .reduce((totalExpense, expense) => (totalExpense += expense), 0);
     };
 
     const changeTimeRangeOfTransactionsToShow = async ({
@@ -162,7 +167,8 @@ const TransactionsSection = () => {
         if (!selectedCurrency || !startDate || !endDate) return;
         setLastStartCarriedOut(startDate);
         setLastEndCarriedOut(endDate);
-        await getTransactionsByCreationRange(startDate, endDate);
+
+        await initData(startDate, endDate, false);
     };
 
     const openTransactionDeletionDialog = (
@@ -195,11 +201,6 @@ const TransactionsSection = () => {
         } catch (err) {}
 
         setIsDeletingTransaction(false);
-    };
-
-    const openTransaction = (transactionToOpen: Transaction) => {
-        openedTransaction.current = transactionToOpen;
-        setIsTransactionUpdateDialogOpened(true);
     };
 
     const getFormattedAmount = (amount: number) => {
@@ -236,16 +237,6 @@ const TransactionsSection = () => {
         return wallets.map((wallet) => ({ name: wallet.name, value: wallet.id }));
     };
 
-    const reloadTransactions = async () => {
-        await getTransactionsByCreationRange(lastStartCarriedOut, lastEndCarriedOut);
-    };
-
-    const updateWallet = async (updatedWallet: MultiSelectOptionProprieties) => {
-        await TransactionsService.getInstance().updateWallet(updatedWallet.value, {
-            name: updatedWallet.name,
-        });
-    };
-
     const getChartTransactionCategoriesIncome = () => {
         return transactionCategories
             .filter(({ income }) => income > 0)
@@ -264,21 +255,26 @@ const TransactionsSection = () => {
             }));
     };
 
-    const isFirstTransactionsChange = useRef(true);
+    const a = useRef(true);
     useEffect(() => {
-        // Make sure the transaction-categories are not fetched until
-        // the transactions are fetched and set
-        if (isFirstTransactionsChange.current) {
-            isFirstTransactionsChange.current = false;
+        if (a.current) {
+            a.current = false;
             return;
         }
+        fetchTransactionCategoryBalances();
+    }, [selectedWallets]);
 
-        fetchTransactionCategories();
+    const b = useRef(true);
+    useEffect(() => {
+        if (b.current) {
+            b.current = false;
+            return;
+        }
+        fetchTransactionCategoryBalances();
     }, [transactions]);
 
     useEffect(
         () => () => {
-            walletsSubscription?.unsubscribe();
             personalInfoSubscription?.unsubscribe();
         },
         [],
@@ -303,23 +299,29 @@ const TransactionsSection = () => {
                     isCreationMode
                     selectedCurrencyId={selectedCurrency.id}
                     onSuccess={() => {
-                        reloadTransactions();
+                        initData(lastStartCarriedOut, lastEndCarriedOut, false);
                     }}
                     close={() => setIsTransactionCreationDialogOpened(false)}
+                    wallets={wallets}
                 />
             )}
             {isTransactionUpdateDialogOpened && (
                 <TransactionDialog
                     isCreationMode={false}
                     selectedCurrencyId={selectedCurrency.id}
-                    onSuccess={reloadTransactions}
+                    onSuccess={() =>
+                        initData(lastStartCarriedOut, lastEndCarriedOut, false)
+                    }
                     openedTransaction={openedTransaction.current}
                     close={() => setIsTransactionUpdateDialogOpened(false)}
+                    wallets={wallets}
                 />
             )}
             <div className="transactions-section--main">
                 <TransactionsHeader
-                    reloadTransactions={reloadTransactions}
+                    reloadTransactions={() =>
+                        initData(lastStartCarriedOut, lastEndCarriedOut, false)
+                    }
                     lastStartDate={lastStartCarriedOut}
                     lastEndDate={lastEndCarriedOut}
                     startDate={startCarriedOut}
@@ -350,7 +352,7 @@ const TransactionsSection = () => {
                             <Statistic
                                 className="transactions-section--main__total-income"
                                 title="Income"
-                                value={getFormattedAmount(totalIncome)}
+                                value={getFormattedAmount(getTotalIncome())}
                             />
                         )}
                         {isBalanceLoading ? (
@@ -359,7 +361,7 @@ const TransactionsSection = () => {
                             <Statistic
                                 className="transactions-section--main__total-expense"
                                 title="Expense"
-                                value={getFormattedAmount(totalExpense)}
+                                value={getFormattedAmount(getTotalExpense())}
                             />
                         )}
                     </div>
@@ -370,7 +372,9 @@ const TransactionsSection = () => {
                             <Statistic
                                 className="transactions-section--main__total-balance"
                                 title="Net"
-                                value={getFormattedAmount(totalIncome - totalExpense)}
+                                value={getFormattedAmount(
+                                    getTotalIncome() - getTotalExpense(),
+                                )}
                                 size="large"
                             />
                         )}
