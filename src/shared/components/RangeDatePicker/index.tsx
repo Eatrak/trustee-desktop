@@ -162,11 +162,6 @@ const RangeDatePicker = ({
     };
 
     useEffect(() => {
-        onRangeChanged({
-            startDate,
-            endDate,
-        });
-
         datePickerFrame.current?.addEventListener("animationend", setPanelOpenable);
         document.addEventListener("mousedown", closeDatePickerWhenTouchingOutsideEvent);
     }, []);

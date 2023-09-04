@@ -26,6 +26,7 @@ interface IProps {
     openedTransaction?: Transaction;
     onSuccess?: (createdTransaction: Transaction) => any;
     wallets: Wallet[];
+    transactionCategories: TransactionCategory[];
 }
 
 const TransactionDialog = ({
@@ -34,6 +35,7 @@ const TransactionDialog = ({
     openedTransaction,
     onSuccess,
     wallets,
+    transactionCategories,
 }: IProps) => {
     if (!isCreationMode && !openedTransaction) {
         throw new Error(
@@ -41,9 +43,6 @@ const TransactionDialog = ({
         );
     }
 
-    let [transactionCategories, setTransactionCategories] = useState<
-        TransactionCategory[]
-    >([]);
     let [isDatePickerOpened, setIsDatePickerOpened] = useState<boolean>(false);
     let [isCreatingTransactionCategory, setIsCreatingTransactionCategory] =
         useState<boolean>(false);
@@ -122,18 +121,8 @@ const TransactionDialog = ({
         return `Create "${nameOfTransactionCategoryToCreate}" wallet`;
     };
 
-    const initTransactionCategories = async () => {
-        const transactionCategories =
-            await TransactionsService.getInstance().getTransactionCategories();
-
-        if (!transactionCategories) return;
-
-        setTransactionCategories(transactionCategories);
-    };
-
     useEffect(() => {
         initWallets(wallets);
-        initTransactionCategories();
     }, []);
 
     const initWallets = (wallets: Wallet[]) => {

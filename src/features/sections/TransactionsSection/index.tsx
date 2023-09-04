@@ -78,7 +78,7 @@ const TransactionsSection = () => {
     let personalInfoSubscription: Subscription | null = null;
 
     useEffect(() => {
-        initData(lastStartCarriedOut, lastEndCarriedOut, true);
+        fetchData(lastStartCarriedOut, lastEndCarriedOut, true);
 
         personalInfoSubscription = AuthService.getInstance().personalInfo$.subscribe(
             ({ settings }) => {
@@ -87,14 +87,14 @@ const TransactionsSection = () => {
         );
     }, []);
 
-    const initData = async (
+    const fetchData = async (
         startDate: Dayjs,
         endDate: Dayjs,
         resetSelectedWallets: boolean,
     ) => {
         const [updatedWallets] = await Promise.all([
             TransactionsService.getInstance().getWalletsSummary(),
-            getTransactionsByCreationRange(startDate, endDate),
+            fetchTransactionsByCreationRange(startDate, endDate),
         ]);
 
         if (!updatedWallets) {
@@ -114,6 +114,8 @@ const TransactionsSection = () => {
     };
 
     async function fetchTransactionCategoryBalances() {
+        setIsBalanceLoading(true);
+
         const response =
             await TransactionsService.getInstance().getTransactionCategoryBalances(
                 {
@@ -125,13 +127,14 @@ const TransactionsSection = () => {
 
         if (response.ok) {
             setTransactionCategories(response.val);
-            return;
         }
+
+        setIsBalanceLoading(false);
 
         // TODO: handle error and use try catch
     }
 
-    let getTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
+    let fetchTransactionsByCreationRange = async (startDate: Dayjs, endDate: Dayjs) => {
         changeTransactionsLoading(true);
 
         // Get transactions by both selected currency and creation range
@@ -168,7 +171,7 @@ const TransactionsSection = () => {
         setLastStartCarriedOut(startDate);
         setLastEndCarriedOut(endDate);
 
-        await initData(startDate, endDate, false);
+        await fetchTransactionsByCreationRange(startDate, endDate);
     };
 
     const openTransactionDeletionDialog = (
@@ -194,7 +197,10 @@ const TransactionsSection = () => {
 
             if (transactionHasBeenDeleted) {
                 // Update transactions
-                getTransactionsByCreationRange(lastStartCarriedOut, lastEndCarriedOut);
+                await fetchTransactionsByCreationRange(
+                    lastStartCarriedOut,
+                    lastEndCarriedOut,
+                );
 
                 setIsTransactionDeletionDialogOpened(false);
             }
@@ -255,22 +261,23 @@ const TransactionsSection = () => {
             }));
     };
 
-    const a = useRef(true);
+    const selectedWalletsChangeCount = useRef(0);
     useEffect(() => {
-        if (a.current) {
-            a.current = false;
+        selectedWalletsChangeCount.current++;
+        if (selectedWalletsChangeCount.current === 1) {
             return;
         }
         fetchTransactionCategoryBalances();
     }, [selectedWallets]);
 
-    const b = useRef(true);
+    const transactionsChangeCount = useRef(0);
     useEffect(() => {
-        if (b.current) {
-            b.current = false;
+        transactionsChangeCount.current++;
+        if (transactionsChangeCount.current === 1) {
             return;
         }
-        fetchTransactionCategoryBalances();
+        // If the wallets have been selected after fetching the wallets
+        selectedWalletsChangeCount.current > 1 && fetchTransactionCategoryBalances();
     }, [transactions]);
 
     useEffect(
@@ -298,30 +305,41 @@ const TransactionsSection = () => {
                 <TransactionDialog
                     isCreationMode
                     selectedCurrencyId={selectedCurrency.id}
-                    onSuccess={() => {
-                        initData(lastStartCarriedOut, lastEndCarriedOut, false);
+                    onSuccess={async () => {
+                        await fetchTransactionsByCreationRange(
+                            lastStartCarriedOut,
+                            lastEndCarriedOut,
+                        );
                     }}
                     close={() => setIsTransactionCreationDialogOpened(false)}
                     wallets={wallets}
+                    transactionCategories={transactionCategories}
                 />
             )}
             {isTransactionUpdateDialogOpened && (
                 <TransactionDialog
                     isCreationMode={false}
                     selectedCurrencyId={selectedCurrency.id}
-                    onSuccess={() =>
-                        initData(lastStartCarriedOut, lastEndCarriedOut, false)
-                    }
+                    onSuccess={async () => {
+                        await fetchTransactionsByCreationRange(
+                            lastStartCarriedOut,
+                            lastEndCarriedOut,
+                        );
+                    }}
                     openedTransaction={openedTransaction.current}
                     close={() => setIsTransactionUpdateDialogOpened(false)}
                     wallets={wallets}
+                    transactionCategories={transactionCategories}
                 />
             )}
             <div className="transactions-section--main">
                 <TransactionsHeader
-                    reloadTransactions={() =>
-                        initData(lastStartCarriedOut, lastEndCarriedOut, false)
-                    }
+                    reloadTransactions={async () => {
+                        await fetchTransactionsByCreationRange(
+                            lastStartCarriedOut,
+                            lastEndCarriedOut,
+                        );
+                    }}
                     lastStartDate={lastStartCarriedOut}
                     lastEndDate={lastEndCarriedOut}
                     startDate={startCarriedOut}
