@@ -15,6 +15,7 @@ import TableTBody from "@shared/components/Table/TableTBody";
 import TableTHead from "@shared/components/Table/TableTHead";
 import TableActions from "@shared/components/Table/TableActions";
 import Table from "@shared/components/Table";
+import TableNoDataContainer from "@shared/components/Table/TableNoDataContainer";
 
 export interface TransactionsTableItem {
     id: string;
@@ -87,16 +88,19 @@ const columns = [
 interface IProps {
     className?: string;
     data: TransactionsTableItem[];
+    hasBeenLoaded: boolean;
 }
 
-const TransactionsTable = ({ className = "", data }: IProps) => {
+const TransactionsTable = ({ className = "", data, hasBeenLoaded }: IProps) => {
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
 
-    return (
+    return data.length == 0 && hasBeenLoaded ? (
+        <TableNoDataContainer />
+    ) : (
         <Table className={className}>
             <TableTHead table={table} />
             <TableTBody table={table} />

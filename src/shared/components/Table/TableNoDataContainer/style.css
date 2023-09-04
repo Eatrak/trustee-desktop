@@ -1,0 +1,29 @@
+.table__no-data-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+.table__no-data-container__content {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 8px;
+
+    width: max-content;
+    height: max-content;
+}
+
+.table__no-data-container__content__image {
+    width: 200px;
+    height: auto;
+    filter: grayscale(1);
+}
+
+.table__no-data-container__content__message {
+    text-align: center;
+    color: var(--neutral-600);
+    user-select: none;
+}

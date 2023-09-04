@@ -43,6 +43,7 @@ const TransactionsSection = () => {
     let [selectedCurrency, setSelectedCurrency] = useState<Currency>(
         AuthService.getInstance().personalInfo$.getValue().settings.currency,
     );
+    let [haveTransactionsBeenLoaded, setHaveTransactionsBeenLoaded] = useState(false);
 
     const firstDayOfTheCurrentMonthTimestamp = dayjs().startOf("month");
     const lastDayOfTheCurrentMonthTimestamp = dayjs(
@@ -148,6 +149,7 @@ const TransactionsSection = () => {
         // Update transactions
         transactions && setTransactions(transactions);
 
+        setHaveTransactionsBeenLoaded(true);
         changeTransactionsLoading(false);
     };
 
@@ -401,6 +403,7 @@ const TransactionsSection = () => {
                 <TransactionsTable
                     className="transactions-section__main__container__transactions-table"
                     data={getTransactionsTableData()}
+                    hasBeenLoaded={haveTransactionsBeenLoaded}
                 />
                 {cursor && (
                     <TextButton
