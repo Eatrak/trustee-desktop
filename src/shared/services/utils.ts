@@ -1,3 +1,9 @@
+import Error, { getErrorType } from "@shared/errors";
+import ErrorType from "@shared/errors/list";
+import { toast } from "react-toastify";
+
+import i18n from "@shared/i18n";
+
 export class Utils {
     private static instance = new Utils();
     private locale: string;
@@ -38,5 +44,19 @@ export class Utils {
 
             return (accumulator += queryParam);
         }, "");
+    }
+
+    getErrorMessage(status: number, code: string) {
+        return [getErrorType(status, code)];
+    }
+
+    showErrorMessage(errorType: ErrorType) {
+        const error = new Error(errorType);
+
+        return toast.error(
+            i18n.t(
+                `errors.${getErrorType(error.getStatus(), error.getCode()).toString()}`,
+            ),
+        );
     }
 }

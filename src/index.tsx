@@ -8,6 +8,8 @@ import Validator from "validatorjs";
 import en from "validatorjs/src/lang/en";
 import dayjs from "dayjs";
 import localeData from "dayjs/plugin/localeData";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./themes/light.css";
 import "./index.css";
@@ -50,6 +52,7 @@ const App = () => {
                 <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="/sign-in" element={<SignInPage />} />
             </Routes>
+            <ToastContainer />
         </Router>
     );
 };

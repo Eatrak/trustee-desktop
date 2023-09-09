@@ -8,6 +8,8 @@ import { SignUpResponse } from "@shared/ts-types/APIs/output/auth/signUp";
 import { SignInResponse } from "@shared/ts-types/APIs/output/auth/signIn";
 import { CheckAuthenticationResponse } from "@shared/ts-types/APIs/output/auth/checkAuthentication";
 import { PersonalInfo } from "@shared/ts-types/DTOs/auth";
+import { getErrorType } from "@shared/errors";
+import ErrorType from "@shared/errors/list";
 
 export default class AuthService {
     static instance: AuthService = new AuthService();
@@ -43,16 +45,20 @@ export default class AuthService {
                 },
             );
 
-            const jsonResponse: CheckAuthenticationResponse = await response.json();
-            if (jsonResponse.error) {
+            const { data, error }: CheckAuthenticationResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return false;
             }
 
-            const { personalInfo } = jsonResponse.data;
+            const { personalInfo } = data;
             this.personalInfo$.next(personalInfo);
 
             return true;
         } catch (err) {
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return false;
         }
     }
@@ -81,14 +87,18 @@ export default class AuthService {
                 },
                 body: JSON.stringify(body),
             });
-            const jsonResponse: SignUpResponse = await response.json();
-            if (jsonResponse.error) {
+            const { data, error }: SignUpResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return false;
             }
 
             return true;
         } catch (err) {
             console.log(err);
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
 
         return false;
@@ -110,17 +120,21 @@ export default class AuthService {
                 body: JSON.stringify({ userInfo: { email, password } }),
             });
 
-            const jsonResponse: SignInResponse = await response.json();
-            if (jsonResponse.error) {
+            const { data, error }: SignInResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return false;
             }
 
-            const { authToken } = jsonResponse.data;
+            const { authToken } = data;
             localStorage.setItem("authToken", authToken);
 
             return true;
         } catch (err) {
             console.log(err);
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
 
         return false;

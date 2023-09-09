@@ -46,6 +46,7 @@ import {
     GetBalanceInputMultiQueryParams,
     GetBalanceInputQueryParams,
 } from "@shared/ts-types/APIs/input/transactions/getBalance";
+import { getErrorType } from "@shared/errors";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -77,17 +78,19 @@ export default class TransactionsService {
                 body: JSON.stringify(input),
             });
 
-            const jsonResponse: CreateTransactionResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            const { data, error }: CreateTransactionResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return false;
             }
 
-            const { createdTransaction } = jsonResponse.data;
+            const { createdTransaction } = data;
 
             return createdTransaction;
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
     }
 
@@ -138,16 +141,18 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: GetTransactionsResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            const { data, error }: GetTransactionsResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return;
             }
 
-            const { transactions } = jsonResponse.data;
+            const { transactions } = data;
             return transactions;
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
     }
 
@@ -184,16 +189,18 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: GetBalanceResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            const { data, error }: GetBalanceResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return;
             }
 
-            const balance = jsonResponse.data;
+            const balance = data;
             return balance;
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
     }
 
@@ -208,17 +215,19 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: GetWalletsResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            const { data, error }: GetWalletsResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return;
             }
 
-            const { wallets } = jsonResponse.data;
+            const { wallets } = data;
 
             return wallets;
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
     }
 
@@ -235,16 +244,17 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: GetWalletTableRowsResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
-                return Err(jsonResponse.data);
+            const { data, error }: GetWalletTableRowsResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
+                return Err(data);
             }
 
-            return Ok(jsonResponse.data.wallets);
+            return Ok(data.wallets);
         } catch (err) {
-            // TODO: handle error
-
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return Err(undefined);
         }
     }
@@ -262,17 +272,20 @@ export default class TransactionsService {
                 body: JSON.stringify(createWalletBody),
             });
 
-            const jsonResponse: CreateWalletResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
-                return Err(jsonResponse.data);
+            const { data, error }: CreateWalletResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
+                return Err(data);
             }
 
-            const { createdWallet } = jsonResponse.data;
+            const { createdWallet } = data;
 
             return Ok(createdWallet);
         } catch (err) {
-            // TODO: handle error
+            console.log(err);
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return Err(undefined);
         }
     }
@@ -286,16 +299,18 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: GetCurrenciesResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            const { data, error }: GetCurrenciesResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return;
             }
 
-            const { currencies } = jsonResponse.data;
+            const { currencies } = data;
             this.currencies$.next(currencies);
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
     }
 
@@ -310,18 +325,20 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: GetNormalTransactionCategoriesResponse =
+            const { data, error }: GetNormalTransactionCategoriesResponse =
                 await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return;
             }
 
-            const { transactionCategories } = jsonResponse.data;
+            const { transactionCategories } = data;
 
             return transactionCategories;
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
     }
 
@@ -361,18 +378,20 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: GetTransactionCategoryBalancesResponse =
+            const { data, error }: GetTransactionCategoryBalancesResponse =
                 await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
-                return Err(jsonResponse.data);
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
+                return Err(data);
             }
 
-            const { transactionCategories } = jsonResponse.data;
+            const { transactionCategories } = data;
             return Ok(transactionCategories);
         } catch (err) {
             console.log(err);
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return Err(undefined);
         }
     }
@@ -392,17 +411,20 @@ export default class TransactionsService {
                 body: JSON.stringify(createTransactionCategoryBody),
             });
 
-            const jsonResponse: CreateTransactionCategoryResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            const { data, error }: CreateTransactionCategoryResponse =
+                await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return;
             }
 
-            const { createdTransactionCategory } = jsonResponse.data;
+            const { createdTransactionCategory } = data;
 
             return createdTransactionCategory;
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
     }
 
@@ -426,15 +448,17 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: DeleteTransactionResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            const { data, error }: DeleteTransactionResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return false;
             }
 
             return true;
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return false;
         }
     }
@@ -459,15 +483,17 @@ export default class TransactionsService {
                 },
             });
 
-            const jsonResponse: DeleteWalletsResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
+            const { data, error }: DeleteWalletsResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
                 return false;
             }
 
             return true;
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return false;
         }
     }
@@ -501,15 +527,17 @@ export default class TransactionsService {
                 body: JSON.stringify(body),
             });
 
-            const jsonResponse: UpdateWalletResponse = await response.json();
-            if (jsonResponse.error) {
-                // TODO: handle error
-                return Err(jsonResponse.data);
+            const { data, error }: UpdateWalletResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
+                return Err(data);
             }
 
             return Ok(undefined);
         } catch (err) {
-            // TODO: handle error
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return Err(undefined);
         }
     }
