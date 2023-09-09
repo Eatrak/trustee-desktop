@@ -23,6 +23,15 @@ const translation: Translation = {
                 successfulWalletDeletion: "Wallet successfully deleted",
             },
         },
+        transactions: {
+            toastMessages: {
+                successfulTransactionCreation: "Transaction successfully created",
+                successfulTransactionUpdate: "Transaction successfully updated",
+                successfulTransactionDeletion: "Transaction successfully deleted",
+                successfulTransactionCategoryCreation:
+                    "Transaction category successfully created",
+            },
+        },
     },
 };
 

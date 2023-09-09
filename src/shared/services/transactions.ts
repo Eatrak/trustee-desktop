@@ -32,6 +32,8 @@ import {
     GetBalanceInputQueryParams,
 } from "@shared/ts-types/APIs/input/transactions/getBalance";
 import { getErrorType } from "@shared/errors";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
+import { toast } from "react-toastify";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -44,6 +46,15 @@ export default class TransactionsService {
 
     static getInstance() {
         return this.instance;
+    }
+
+    translate(translationKeys: (TranslationKey | ErrorType)[]) {
+        return Utils.getInstance().translate([
+            TranslationKey.MODULES,
+            TranslationKey.TRANSACTIONS,
+            TranslationKey.TOAST_MESSAGES,
+            ...translationKeys,
+        ]);
     }
 
     /**
@@ -70,6 +81,10 @@ export default class TransactionsService {
                 );
                 return false;
             }
+
+            toast.success(
+                this.translate([TranslationKey.SUCCESSFUL_TRANSACTION_CREATION]),
+            );
 
             const { createdTransaction } = data;
 
@@ -319,6 +334,10 @@ export default class TransactionsService {
                 return;
             }
 
+            toast.success(
+                this.translate([TranslationKey.SUCCESSFUL_TRANSACTION_CATEGORY_CREATION]),
+            );
+
             const { createdTransactionCategory } = data;
 
             return createdTransactionCategory;
@@ -354,6 +373,10 @@ export default class TransactionsService {
                 );
                 return false;
             }
+
+            toast.success(
+                this.translate([TranslationKey.SUCCESSFUL_TRANSACTION_DELETION]),
+            );
 
             return true;
         } catch (err) {
