@@ -1,4 +1,4 @@
-import Error, { getErrorType } from "@shared/errors";
+import { getErrorType } from "@shared/errors";
 import ErrorType from "@shared/errors/list";
 import { toast } from "react-toastify";
 
