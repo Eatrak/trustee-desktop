@@ -12,6 +12,8 @@ import { Wallet } from "@shared/schema";
 import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
 import { createWalletBodyRules } from "@shared/validatorRules/wallets";
 import WalletsService from "@shared/services/wallets";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
+import { Utils } from "@shared/services/utils";
 
 interface IProps {
     close: Function;
@@ -89,14 +91,30 @@ const WalletDialog = ({
         setIsSubmitting(false);
     };
 
+    const translate = (translationKeys: TranslationKey[]) => {
+        return Utils.getInstance().translate([
+            TranslationKey.MODULES,
+            TranslationKey.WALLETS,
+            ...translationKeys,
+        ]);
+    };
+
     return (
         <Dialog
-            title={isCreationMode ? "Wallet creation" : `"${openedWallet!.name}" wallet`}
+            title={
+                isCreationMode
+                    ? translate([TranslationKey.CREATION_DIALOG, TranslationKey.TITLE])
+                    : `"${openedWallet!.name}" wallet`
+            }
             content={
                 <div className="transaction-creation-dialog__content">
                     {/* Name */}
                     <InputTextField
-                        title="Name"
+                        title={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.NAME,
+                        ])}
                         value={name}
                         validatorAttributeName="name"
                         validatorRule={createWalletBodyRules.name}
@@ -104,7 +122,11 @@ const WalletDialog = ({
                     />
                     {/* Untracked balance */}
                     <InputTextField
-                        title="Untracked balance"
+                        title={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.UNTRACKED_BALANCE,
+                        ])}
                         type="number"
                         validatorAttributeName="untracked balance"
                         validatorRule={createWalletBodyRules.untrackedBalance}
@@ -115,11 +137,25 @@ const WalletDialog = ({
             }
             footer={
                 <div className="transaction-creation-dialog__footer">
-                    <TextButton text="Exit" size="large" clickEvent={() => close()} />
+                    <TextButton
+                        text={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.CANCEL,
+                        ])}
+                        size="large"
+                        clickEvent={() => close()}
+                    />
                     <NormalButton
                         className="transaction-creation-dialog__footer__confirmation-button"
                         Icon={isCreationMode ? MdAdd : undefined}
-                        text={isCreationMode ? "Create" : "Update"}
+                        text={
+                            isCreationMode
+                                ? translate([
+                                      TranslationKey.CREATION_DIALOG,
+                                      TranslationKey.CONFIRM,
+                                  ])
+                                : "Update"
+                        }
                         isLoading={isSubmitting}
                         event={() => (isCreationMode ? createWallet() : updateWallet())}
                         disabled={!getFormValidator().passes() || isSubmitting}

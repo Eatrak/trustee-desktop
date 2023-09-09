@@ -7,12 +7,22 @@ import { Subscription } from "rxjs";
 import NavbarButton from "./NavbarButton";
 import NavbarUserBadge from "./NavbarUserBadge";
 import AuthService from "@shared/services/auth";
+import { Utils } from "@shared/services/utils";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 const Navbar = () => {
     const [name, setName] = useState<string>("");
     const [surname, setSurname] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     let personalInfoSubcription: Subscription;
+
+    const translateButton = (translationKey: TranslationKey) => {
+        return Utils.getInstance().translate([
+            TranslationKey.NAVBAR,
+            TranslationKey.BUTTONS,
+            translationKey,
+        ]);
+    };
 
     useEffect(() => {
         personalInfoSubcription = AuthService.getInstance().personalInfo$.subscribe(
@@ -38,12 +48,12 @@ const Navbar = () => {
                 <NavbarButton
                     path="/wallets"
                     Icon={MdOutlineAccountBalanceWallet}
-                    text="Wallets"
+                    text={translateButton(TranslationKey.WALLETS)}
                 />
                 <NavbarButton
                     path="/transactions"
                     Icon={MdOutlineCreditCard}
-                    text="Transactions"
+                    text={translateButton(TranslationKey.TRANSACTIONS)}
                 />
             </div>
             <NavbarUserBadge firstName={name} lastName={surname} email={email} />

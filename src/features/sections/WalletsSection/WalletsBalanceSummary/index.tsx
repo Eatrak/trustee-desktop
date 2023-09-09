@@ -4,6 +4,7 @@ import "./style.css";
 import { Utils } from "@shared/services/utils";
 import StatisticSkeleton from "@shared/components/Statistic/StatisticSkeleton";
 import Statistic from "@shared/components/Statistic/Statistic";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 interface IProps {
     isLoading?: boolean;
@@ -24,44 +25,66 @@ const WalletsBalanceSummary: FC<IProps> = ({
         return Utils.getInstance().getFormattedAmount(currencyCode, amount);
     };
 
+    const translate = (translationKeys: TranslationKey[]) => {
+        return Utils.getInstance().translate([
+            TranslationKey.MODULES,
+            TranslationKey.WALLETS,
+            TranslationKey.SUMMARY,
+            ...translationKeys,
+        ]);
+    };
+
     return (
         <div className="card wallets-balance-summary">
             <div className="wallets-balance-summary__left">
                 {isLoading ? (
-                    <StatisticSkeleton title="Total income" width="180px" />
+                    <StatisticSkeleton
+                        title={translate([TranslationKey.TOTAL_INCOME])}
+                        width="180px"
+                    />
                 ) : (
                     <Statistic
                         className="wallets-balance-summary__left__total-income"
-                        title="Total income"
+                        title={translate([TranslationKey.TOTAL_INCOME])}
                         value={getFormattedAmount(totalIncome)}
                     />
                 )}
                 {isLoading ? (
-                    <StatisticSkeleton title="Total expense" width="180px" />
+                    <StatisticSkeleton
+                        title={translate([TranslationKey.TOTAL_EXPENSE])}
+                        width="180px"
+                    />
                 ) : (
                     <Statistic
                         className="wallets-balance-summary__left__total-expense"
-                        title="Total expense"
+                        title={translate([TranslationKey.TOTAL_EXPENSE])}
                         value={getFormattedAmount(totalExpense)}
                     />
                 )}
                 {isLoading ? (
-                    <StatisticSkeleton title="Total untracked balance" width="180px" />
+                    <StatisticSkeleton
+                        title={translate([TranslationKey.TOTAL_UNTRACKED_BALANCE])}
+                        width="180px"
+                    />
                 ) : (
                     <Statistic
                         className="wallets-balance-summary__left__total-untracked-balance"
-                        title="Total untracked balance"
+                        title={translate([TranslationKey.TOTAL_UNTRACKED_BALANCE])}
                         value={getFormattedAmount(totalUntrackedBalance)}
                     />
                 )}
             </div>
             <div className="wallets-balance-summary__right">
                 {isLoading ? (
-                    <StatisticSkeleton title="Total net" width="180px" size="large" />
+                    <StatisticSkeleton
+                        title={translate([TranslationKey.TOTAL_NET])}
+                        width="180px"
+                        size="large"
+                    />
                 ) : (
                     <Statistic
                         className="wallets-balance-summary__right__total-balance"
-                        title="Total net"
+                        title={translate([TranslationKey.TOTAL_NET])}
                         value={getFormattedAmount(
                             totalIncome - totalExpense + totalUntrackedBalance,
                         )}

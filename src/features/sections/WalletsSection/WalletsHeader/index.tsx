@@ -5,6 +5,8 @@ import "./style.css";
 import RoundedIconButton from "@shared/components/RoundedIconButton";
 import SectionHeader from "@shared/components/SectionHeader";
 import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
+import { Utils } from "@shared/services/utils";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 interface IProps {
     reloadWallets: Function;
@@ -19,10 +21,19 @@ const WalletsHeader: FC<IProps> = ({
     onCreationButtonClicked,
     isSubTitleLoading = false,
 }) => {
+    const translate = (translationKeys: TranslationKey[]) => {
+        return Utils.getInstance().translate([
+            TranslationKey.MODULES,
+            TranslationKey.WALLETS,
+            TranslationKey.HEADER,
+            ...translationKeys,
+        ]);
+    };
+
     return (
         <SectionHeader
-            title="Wallets"
-            subTitle={`${walletsCount} wallets`}
+            title={translate([TranslationKey.TITLE])}
+            subTitle={`${walletsCount} ${translate([TranslationKey.SUB_TITLE])}`}
             isSubTitleLoading={isSubTitleLoading}
             actions={[
                 <RoundedTextIconButton

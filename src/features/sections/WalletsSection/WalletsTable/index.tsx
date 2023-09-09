@@ -16,6 +16,7 @@ import { WalletTableRow } from "@shared/ts-types/DTOs/wallets";
 import TableActions from "@shared/components/Table/TableActions";
 import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
 import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
     return `${Utils.getInstance().getFormattedAmount(currencyCode, amount)}`;
@@ -25,6 +26,15 @@ interface IProps {}
 
 const columnHelper = createColumnHelper<WalletTableRow>();
 
+const translate = (translationKeys: TranslationKey[]) => {
+    return Utils.getInstance().translate([
+        TranslationKey.MODULES,
+        TranslationKey.WALLETS,
+        TranslationKey.TABLE,
+        ...translationKeys,
+    ]);
+};
+
 const getColumns = (
     onEditButtonClicked: (transaction: WalletTableRow) => any,
     onDeleteButtonClicked: (transaction: WalletTableRow) => any,
@@ -32,7 +42,12 @@ const getColumns = (
     columnHelper.accessor("name", {
         id: "name",
         cell: (info) => <TableCell text={info.getValue()} />,
-        header: () => <TableHeader text="Name" style={{ minWidth: "180px" }} />,
+        header: () => (
+            <TableHeader
+                text={translate([TranslationKey.NAME])}
+                style={{ minWidth: "180px" }}
+            />
+        ),
     }),
     columnHelper.accessor("net", {
         id: "net",
@@ -41,7 +56,12 @@ const getColumns = (
                 text={getAmountToDisplay(row.original.net, row.original.currencyCode)}
             />
         ),
-        header: () => <TableHeader text="Net" style={{ minWidth: "140px" }} />,
+        header: () => (
+            <TableHeader
+                text={translate([TranslationKey.NET])}
+                style={{ minWidth: "140px" }}
+            />
+        ),
     }),
     columnHelper.accessor("income", {
         id: "income",
@@ -50,7 +70,12 @@ const getColumns = (
                 text={getAmountToDisplay(row.original.income, row.original.currencyCode)}
             />
         ),
-        header: () => <TableHeader text="Income" style={{ minWidth: "140px" }} />,
+        header: () => (
+            <TableHeader
+                text={translate([TranslationKey.INCOME])}
+                style={{ minWidth: "140px" }}
+            />
+        ),
     }),
     columnHelper.accessor("expense", {
         id: "expense",
@@ -59,7 +84,12 @@ const getColumns = (
                 text={getAmountToDisplay(row.original.expense, row.original.currencyCode)}
             />
         ),
-        header: () => <TableHeader text="Expense" style={{ minWidth: "140px" }} />,
+        header: () => (
+            <TableHeader
+                text={translate([TranslationKey.EXPENSE])}
+                style={{ minWidth: "140px" }}
+            />
+        ),
     }),
     columnHelper.accessor("untrackedBalance", {
         id: "untrackedBalance",
@@ -72,7 +102,10 @@ const getColumns = (
             />
         ),
         header: () => (
-            <TableHeader text="Untracked balance" style={{ minWidth: "140px" }} />
+            <TableHeader
+                text={translate([TranslationKey.UNTRACKED_BALANCE])}
+                style={{ minWidth: "140px" }}
+            />
         ),
     }),
     // columnHelper.accessor("creationDate", {
@@ -84,7 +117,10 @@ const getColumns = (
         id: "transactionsCount",
         cell: (info) => <TableCell text={info.getValue().toString()} />,
         header: () => (
-            <TableHeader text="Transactions count" style={{ minWidth: "80px" }} />
+            <TableHeader
+                text={translate([TranslationKey.TRANSACTIONS_COUNT])}
+                style={{ minWidth: "80px" }}
+            />
         ),
     }),
     columnHelper.display({

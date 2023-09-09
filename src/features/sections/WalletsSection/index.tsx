@@ -11,6 +11,8 @@ import AuthService from "@shared/services/auth";
 import WalletDialog from "./WalletDialog";
 import { Currency } from "@shared/schema";
 import WalletsService from "@shared/services/wallets";
+import { Utils } from "@shared/services/utils";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 const WalletsSection: FC = () => {
     let [wallets, setWallets] = useState<WalletTableRow[]>([]);
@@ -99,6 +101,14 @@ const WalletsSection: FC = () => {
         setIsDeletingWallet(false);
     };
 
+    const translate = (translationKeys: TranslationKey[]) => {
+        return Utils.getInstance().translate([
+            TranslationKey.MODULES,
+            TranslationKey.WALLETS,
+            ...translationKeys,
+        ]);
+    };
+
     useEffect(() => {
         AuthService.getInstance().personalInfo$.subscribe((personalInfo) => {
             setCurrency(personalInfo.settings.currency);
@@ -113,8 +123,18 @@ const WalletsSection: FC = () => {
                     // Wallet deletion dialog
                     isWalletDeletionDialogOpened && (
                         <ConfirmationDialog
-                            title="Wallet deletion"
-                            description={<p>Are you sure to delete the wallet?</p>}
+                            title={translate([
+                                TranslationKey.DELETION_DIALOG,
+                                TranslationKey.TITLE,
+                            ])}
+                            description={
+                                <p>
+                                    {translate([
+                                        TranslationKey.DELETION_DIALOG,
+                                        TranslationKey.DESCRIPTION,
+                                    ])}
+                                </p>
+                            }
                             isConfirming={isDeletingWallet}
                             confirm={() => deleteWallet()}
                             close={() => setIsWalletDeletionDialogOpened(false)}

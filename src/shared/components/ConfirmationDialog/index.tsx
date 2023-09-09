@@ -2,6 +2,8 @@ import "./style.css";
 import Dialog from "@shared/components/Dialog";
 import NormalButton from "@shared/components/NormalButton";
 import TextButton from "@shared/components/TextButton";
+import { Utils } from "@shared/services/utils";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 interface IProps {
     title: string;
@@ -18,15 +20,25 @@ const ConfirmationDialog = ({
     close,
     isConfirming,
 }: IProps) => {
+    const translate = (translationKeys: TranslationKey[]) => {
+        return Utils.getInstance().translate([
+            TranslationKey.CONFIRMATION_DIALOG,
+            ...translationKeys,
+        ]);
+    };
+
     return (
         <Dialog
             title={title}
             content={description}
             footer={
                 <div className="transaction-deletion-dialog__footer">
-                    <TextButton text="Close" clickEvent={() => close()} />
+                    <TextButton
+                        text={translate([TranslationKey.CANCEL])}
+                        clickEvent={() => close()}
+                    />
                     <NormalButton
-                        text="Confirm"
+                        text={translate([TranslationKey.CONFIRM])}
                         disabled={isConfirming}
                         event={() => confirm()}
                         isLoading={isConfirming}
