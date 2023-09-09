@@ -8,6 +8,7 @@ interface IProps {
     submitText: string;
     submitEvent?: (...p: any) => any;
     submitDisabled?: boolean;
+    isLoading?: boolean;
 }
 
 const FormLayout = ({
@@ -16,6 +17,7 @@ const FormLayout = ({
     submitText,
     submitEvent,
     submitDisabled,
+    isLoading = false,
 }: IProps) => {
     return (
         <div className="form">
@@ -24,6 +26,7 @@ const FormLayout = ({
             <NormalButton
                 testId="submitButton"
                 className="form__submit-button"
+                isLoading={isLoading}
                 text={submitText}
                 event={submitEvent}
                 disabled={submitDisabled}

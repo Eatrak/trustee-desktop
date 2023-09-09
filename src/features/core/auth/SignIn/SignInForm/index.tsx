@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Validator from "validatorjs";
@@ -11,16 +11,24 @@ import AuthService from "@shared/services/auth";
 
 const SignInForm = () => {
     const navigate = useNavigate();
-    const [submitDisabled, setSubmitDisabled] = useState(true);
+    const [isSigningIn, setIsSigningIn] = useState(false);
+    const [isSignedIn, setIsSignedIn] = useState(false);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     const signIn = async () => {
+        setIsSigningIn(true);
+
         const successfulSignIn = await AuthService.getInstance().signIn(
             email!,
             password!,
         );
-        if (successfulSignIn) navigate("/wallets");
+        if (successfulSignIn) {
+            setIsSignedIn(true);
+            navigate("/wallets");
+        }
+
+        setIsSigningIn(false);
 
         return true;
     };
@@ -32,16 +40,13 @@ const SignInForm = () => {
         return isFormValid;
     };
 
-    useEffect(() => {
-        setSubmitDisabled(!isFormValid());
-    }, [email, password]);
-
     return (
         <FormLayout
             header="Welcome back!"
             submitText="Sign in"
             submitEvent={signIn}
-            submitDisabled={submitDisabled}
+            submitDisabled={!isFormValid() || isSigningIn || isSignedIn}
+            isLoading={isSigningIn}
         >
             {/* Email field */}
             <InputTextField

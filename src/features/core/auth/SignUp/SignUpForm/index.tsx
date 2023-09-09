@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Validator from "validatorjs";
 
@@ -9,20 +10,29 @@ import { signUpValidator } from "@shared/validatorRules/auth";
 import AuthService from "@shared/services/auth";
 
 const SignUpForm = () => {
-    const [submitDisabled, setSubmitDisabled] = useState(true);
+    const navigate = useNavigate();
     const [name, setName] = useState<string>("");
     const [surname, setSurname] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [isSignedUp, setIsSignedUp] = useState(false);
+    const [isSigningUp, setIsSigningUp] = useState(false);
 
     const signUp = async () => {
+        setIsSigningUp(true);
+
         const successfulSignUp = await AuthService.getInstance().signUp(
             name!,
             surname!,
             email!,
             password!,
         );
-        if (successfulSignUp) document.location.href = "/sign-in";
+        if (successfulSignUp) {
+            setIsSignedUp(true);
+            navigate("/sign-in");
+        }
+
+        setIsSigningUp(false);
 
         return true;
     };
@@ -42,16 +52,13 @@ const SignUpForm = () => {
         return isFormValid;
     };
 
-    useEffect(() => {
-        setSubmitDisabled(!isFormValid());
-    }, [name, surname, email, password]);
-
     return (
         <FormLayout
             header="Welcome!"
             submitText="Sign up"
             submitEvent={signUp}
-            submitDisabled={submitDisabled}
+            submitDisabled={!isFormValid() || isSigningUp || isSignedUp}
+            isLoading={isSigningUp}
         >
             {/* Name field */}
             <InputTextField
