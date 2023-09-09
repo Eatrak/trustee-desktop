@@ -10,6 +10,7 @@ import WalletsBalanceSummary from "./WalletsBalanceSummary";
 import AuthService from "@shared/services/auth";
 import WalletDialog from "./WalletDialog";
 import { Currency } from "@shared/schema";
+import WalletsService from "@shared/services/wallets";
 
 const WalletsSection: FC = () => {
     let [wallets, setWallets] = useState<WalletTableRow[]>([]);
@@ -49,7 +50,7 @@ const WalletsSection: FC = () => {
 
         try {
             const getWalletsResponse =
-                await TransactionsService.getInstance().getWalletTableRows();
+                await WalletsService.getInstance().getWalletTableRows();
 
             if (getWalletsResponse.err) {
                 // TODO: handle error
@@ -83,10 +84,9 @@ const WalletsSection: FC = () => {
                 return;
             }
 
-            const hasWalletBeenDeleted =
-                await TransactionsService.getInstance().deleteWallet(
-                    walletToDelete.current.id,
-                );
+            const hasWalletBeenDeleted = await WalletsService.getInstance().deleteWallet(
+                walletToDelete.current.id,
+            );
 
             if (hasWalletBeenDeleted) {
                 await fetchWallets();

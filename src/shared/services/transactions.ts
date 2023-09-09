@@ -2,16 +2,10 @@ import { BehaviorSubject } from "rxjs";
 import { Dayjs } from "dayjs";
 import { Ok, Err, Result } from "ts-results";
 
-import { Currency, Transaction, TransactionCategory, Wallet } from "@shared/schema";
+import { Currency } from "@shared/schema";
 import { Utils } from "@shared/services/utils";
 import { GetTransactionsInputQueryParams } from "@shared/ts-types/APIs/input/transactions/getTransactions";
 import { GetTransactionsResponse } from "@shared/ts-types/APIs/output/transactions/getTransactions";
-import {
-    GetWalletTableRowsResponse,
-    GetWalletsResponse,
-} from "@shared/ts-types/APIs/output/transactions/getWallets";
-import { CreateWalletResponse } from "@shared/ts-types/APIs/output/transactions/createWallet";
-import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
 import { GetCurrenciesResponse } from "@shared/ts-types/APIs/output/transactions/getCurrencies";
 import {
     GetNormalTransactionCategoriesResponse,
@@ -24,15 +18,6 @@ import { CreateTransactionResponse } from "@shared/ts-types/APIs/output/transact
 import { DeleteTransactionQueryParameters } from "@shared/ts-types/APIs/input/transactions/deleteTransaction";
 import { GetBalanceResponse } from "@shared/ts-types/APIs/output/transactions/getBalance";
 import { DeleteTransactionResponse } from "@shared/ts-types/APIs/output/transactions/deleteTransaction";
-import { DeleteWalletsResponse } from "@shared/ts-types/APIs/output/transactions/deleteWallet";
-import { DeleteWalletPathParameters } from "@shared/ts-types/APIs/input/transactions/deleteWallet";
-import {
-    UpdateWalletBody,
-    UpdateWalletPathParameters,
-    UpdateWalletUpdateInfo,
-} from "@shared/ts-types/APIs/input/transactions/updateWallet";
-import { UpdateWalletResponse } from "@shared/ts-types/APIs/output/transactions/updateWallet";
-import { WalletTableRow, WalletViews } from "@shared/ts-types/DTOs/wallets";
 import { ErrorResponseBodyAttributes } from "@shared/errors/types";
 import {
     GetTransactionCategoryBalancesInputMultiQueryParams,
@@ -201,92 +186,6 @@ export default class TransactionsService {
             return balance;
         } catch (err) {
             Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
-        }
-    }
-
-    async getWalletsSummary() {
-        try {
-            const requestURL = Utils.getInstance().getAPIEndpoint(
-                `/wallets?view=${WalletViews.SUMMARY}`,
-            );
-            const response = await fetch(requestURL, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("authToken"),
-                },
-            });
-
-            const { data, error }: GetWalletsResponse = await response.json();
-            if (error) {
-                Utils.getInstance().showErrorMessage(
-                    getErrorType(data.status, data.code),
-                );
-                return;
-            }
-
-            const { wallets } = data;
-
-            return wallets;
-        } catch (err) {
-            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
-        }
-    }
-
-    async getWalletTableRows(): Promise<
-        Result<WalletTableRow[], ErrorResponseBodyAttributes | undefined>
-    > {
-        try {
-            const requestURL = Utils.getInstance().getAPIEndpoint(
-                `/wallets?view=${WalletViews.TABLE_ROW}`,
-            );
-            const response = await fetch(requestURL, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("authToken"),
-                },
-            });
-
-            const { data, error }: GetWalletTableRowsResponse = await response.json();
-            if (error) {
-                Utils.getInstance().showErrorMessage(
-                    getErrorType(data.status, data.code),
-                );
-                return Err(data);
-            }
-
-            return Ok(data.wallets);
-        } catch (err) {
-            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
-            return Err(undefined);
-        }
-    }
-
-    async createWallet(
-        createWalletBody: CreateWalletBody,
-    ): Promise<Result<Wallet, ErrorResponseBodyAttributes | undefined>> {
-        try {
-            const requestURL = Utils.getInstance().getAPIEndpoint("/wallets");
-            const response = await fetch(requestURL, {
-                method: "POST",
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("authToken"),
-                },
-                body: JSON.stringify(createWalletBody),
-            });
-
-            const { data, error }: CreateWalletResponse = await response.json();
-            if (error) {
-                Utils.getInstance().showErrorMessage(
-                    getErrorType(data.status, data.code),
-                );
-                return Err(data);
-            }
-
-            const { createdWallet } = data;
-
-            return Ok(createdWallet);
-        } catch (err) {
-            console.log(err);
-            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
-            return Err(undefined);
         }
     }
 
@@ -460,85 +359,6 @@ export default class TransactionsService {
         } catch (err) {
             Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return false;
-        }
-    }
-
-    async deleteWallet(id: string): Promise<boolean> {
-        try {
-            // Initialize query parameters
-            const pathParams: DeleteWalletPathParameters = {
-                id,
-            };
-
-            // Initialize request URL
-            const requestURL = Utils.getInstance().getAPIEndpoint(
-                `/wallets/${pathParams.id}`,
-            );
-
-            // Send request
-            const response = await fetch(requestURL, {
-                method: "DELETE",
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("authToken"),
-                },
-            });
-
-            const { data, error }: DeleteWalletsResponse = await response.json();
-            if (error) {
-                Utils.getInstance().showErrorMessage(
-                    getErrorType(data.status, data.code),
-                );
-                return false;
-            }
-
-            return true;
-        } catch (err) {
-            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
-            return false;
-        }
-    }
-
-    async updateWallet(
-        id: string,
-        updateInfo: UpdateWalletUpdateInfo,
-    ): Promise<Result<undefined, ErrorResponseBodyAttributes | undefined>> {
-        try {
-            // Initialize path parameters
-            const pathParams: UpdateWalletPathParameters = {
-                id,
-            };
-
-            // Initialize body
-            const body: UpdateWalletBody = {
-                updateInfo,
-            };
-
-            // Initialize request URL
-            const requestURL = Utils.getInstance().getAPIEndpoint(
-                `/wallets/${pathParams.id}`,
-            );
-
-            // Send request
-            const response = await fetch(requestURL, {
-                method: "PUT",
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("authToken"),
-                },
-                body: JSON.stringify(body),
-            });
-
-            const { data, error }: UpdateWalletResponse = await response.json();
-            if (error) {
-                Utils.getInstance().showErrorMessage(
-                    getErrorType(data.status, data.code),
-                );
-                return Err(data);
-            }
-
-            return Ok(undefined);
-        } catch (err) {
-            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
-            return Err(undefined);
         }
     }
 }

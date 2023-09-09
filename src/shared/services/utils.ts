@@ -54,6 +54,10 @@ export class Utils {
     showErrorMessage(errorType: ErrorType) {
         const { ERRORS } = TranslationKey;
 
-        return toast.error(i18n.t(`${ERRORS}.${errorType}`));
+        return toast.error(this.translate([ERRORS, errorType]));
+    }
+
+    translate(translationKeys: (TranslationKey | ErrorType)[]) {
+        return i18n.t(translationKeys.join("."));
     }
 }

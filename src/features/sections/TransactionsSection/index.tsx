@@ -23,6 +23,7 @@ import { Utils } from "@shared/services/utils";
 import AuthService from "@shared/services/auth";
 import DetailsPieChart from "@features/sections/TransactionsSection/DetailsPieChart";
 import { TransactionCategoryBalance } from "@shared/ts-types/DTOs/transactions";
+import WalletsService from "@shared/services/wallets";
 
 const TransactionsSection = () => {
     let [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -93,7 +94,7 @@ const TransactionsSection = () => {
         resetSelectedWallets: boolean,
     ) => {
         const [updatedWallets] = await Promise.all([
-            TransactionsService.getInstance().getWalletsSummary(),
+            WalletsService.getInstance().getWalletsSummary(),
             fetchTransactionsByCreationRange(startDate, endDate),
         ]);
 

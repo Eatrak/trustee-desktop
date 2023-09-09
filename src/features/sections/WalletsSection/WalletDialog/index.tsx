@@ -11,6 +11,7 @@ import TextButton from "@shared/components/TextButton";
 import { Wallet } from "@shared/schema";
 import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
 import { createWalletBodyRules } from "@shared/validatorRules/wallets";
+import WalletsService from "@shared/services/wallets";
 
 interface IProps {
     close: Function;
@@ -54,7 +55,7 @@ const WalletDialog = ({
     const createWallet = async () => {
         setIsSubmitting(true);
 
-        const createWalletRequest = await TransactionsService.getInstance().createWallet({
+        const createWalletRequest = await WalletsService.getInstance().createWallet({
             name,
             untrackedBalance,
             currencyId: selectedCurrencyId,
@@ -71,7 +72,7 @@ const WalletDialog = ({
     const updateWallet = async () => {
         setIsSubmitting(true);
 
-        const updateWalletRequest = await TransactionsService.getInstance().updateWallet(
+        const updateWalletRequest = await WalletsService.getInstance().updateWallet(
             // TODO: remove assertion and use conditional props interface instead
             openedWallet!.id,
             {
