@@ -14,6 +14,8 @@ import NormalButton from "@shared/components/NormalButton";
 import TextButton from "@shared/components/TextButton";
 import Chip from "@shared/components/Chip";
 import MultiSelectOption from "./MultiSelectOption";
+import { Utils } from "@shared/services/utils";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 export interface MultiSelectOptionProprieties {
     name: string;
@@ -298,7 +300,13 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                             // and all the options are selected
                             selectedOptions.length == options.length &&
                             options.length > 0 ? (
-                                <Chip key="" text="All" />
+                                <Chip
+                                    key=""
+                                    text={Utils.getInstance().translate([
+                                        TranslationKey.GENERAL,
+                                        TranslationKey.ALL,
+                                    ])}
+                                />
                             ) : (
                                 selectedOptions.map((selectedOption) => {
                                     return (

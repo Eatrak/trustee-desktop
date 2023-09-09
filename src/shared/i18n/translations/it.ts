@@ -26,6 +26,9 @@ const translation: Translation = {
         cancel: "Esci",
         confirm: "Conferma",
     },
+    general: {
+        all: "Tutti",
+    },
     modules: {
         wallets: {
             header: {
@@ -71,6 +74,50 @@ const translation: Translation = {
             header: {
                 title: "Transazioni",
             },
+            summary: {
+                income: "Entrata",
+                expense: "Spesa",
+                net: "Netto",
+            },
+            walletsMultiSelect: {
+                title: "Portafogli",
+                placeholder: "Cerca un portafoglio digitando un nome",
+            },
+            table: {
+                name: "Nome",
+                creationDate: "Data di creazione",
+                amount: "Importo",
+            },
+            creationDialog: {
+                title: "Creazione transazione",
+                fields: {
+                    name: "Nome",
+                    walletSelect: {
+                        title: "Portafoglio",
+                        placeholder: "Cerca digitando un nome",
+                    },
+                    categoriesMultiSelect: {
+                        title: "Categorie",
+                        placeholder: "Cerca o crea digitando un nome",
+                    },
+                    creationDate: "Data di creazione",
+                    amount: "Importo",
+                    itIsIncome: "È un'entrata",
+                },
+                cancel: "Esci",
+                confirm: "Conferma",
+            },
+            deletionDialog: {
+                title: "Eliminazione transazione",
+                description: "Sei sicuro di voler eliminare la transazione?",
+                cancel: "Esci",
+                confirm: "Conferma",
+            },
+            statistics: {
+                categoriesIncome: "Entrate per categorie",
+                categoriesExpense: "Spese per categorie",
+            },
+            loadMore: "Carica altro",
             toastMessages: {
                 successfulTransactionCreation: "Transazione creata con successo",
                 successfulTransactionUpdate: "Transazione aggiornata con successo",

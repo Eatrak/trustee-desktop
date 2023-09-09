@@ -42,6 +42,20 @@ export enum TranslationKey {
     FIELDS = "fields",
     SUMMARY = "summary",
     CONFIRMATION_DIALOG = "confirmationDialog",
+    WALLETS_MULTI_SELECT = "walletsMultiSelect",
+    CREATION_DATE = "creationDate",
+    AMOUNT = "amount",
+    CATEGORIES_MULTI_SELECT = "categoriesMultiSelect",
+    WALLET = "wallet",
+    IT_IS_INCOME = "itIsIncome",
+    ALL = "all",
+    GENERAL = "general",
+    STATISTICS = "statistics",
+    CATEGORIES_INCOME = "categoriesIncome",
+    CATEGORIES_EXPENSE = "categoriesExpense",
+    PLACEHOLDER = "placeholder",
+    LOAD_MORE = "loadMore",
+    WALLET_SELECT = "walletSelect",
 }
 
 export interface Translation {
@@ -93,6 +107,50 @@ export interface Translation {
             [TranslationKey.HEADER]: {
                 [TranslationKey.TITLE]: string;
             };
+            [TranslationKey.WALLETS_MULTI_SELECT]: {
+                [TranslationKey.TITLE]: string;
+                [TranslationKey.PLACEHOLDER]: string;
+            };
+            [TranslationKey.SUMMARY]: {
+                [TranslationKey.INCOME]: string;
+                [TranslationKey.EXPENSE]: string;
+                [TranslationKey.NET]: string;
+            };
+            [TranslationKey.TABLE]: {
+                [TranslationKey.NAME]: string;
+                [TranslationKey.CREATION_DATE]: string;
+                [TranslationKey.AMOUNT]: string;
+            };
+            [TranslationKey.DELETION_DIALOG]: {
+                [TranslationKey.TITLE]: string;
+                [TranslationKey.DESCRIPTION]: string;
+                [TranslationKey.CANCEL]: string;
+                [TranslationKey.CONFIRM]: string;
+            };
+            [TranslationKey.CREATION_DIALOG]: {
+                [TranslationKey.TITLE]: string;
+                [TranslationKey.FIELDS]: {
+                    [TranslationKey.NAME]: string;
+                    [TranslationKey.WALLET_SELECT]: {
+                        [TranslationKey.TITLE]: string;
+                        [TranslationKey.PLACEHOLDER]: string;
+                    };
+                    [TranslationKey.CATEGORIES_MULTI_SELECT]: {
+                        [TranslationKey.TITLE]: string;
+                        [TranslationKey.PLACEHOLDER]: string;
+                    };
+                    [TranslationKey.CREATION_DATE]: string;
+                    [TranslationKey.AMOUNT]: string;
+                    [TranslationKey.IT_IS_INCOME]: string;
+                };
+                [TranslationKey.CANCEL]: string;
+                [TranslationKey.CONFIRM]: string;
+            };
+            [TranslationKey.LOAD_MORE]: string;
+            [TranslationKey.STATISTICS]: {
+                [TranslationKey.CATEGORIES_INCOME]: string;
+                [TranslationKey.CATEGORIES_EXPENSE]: string;
+            };
             [TranslationKey.TOAST_MESSAGES]: {
                 [TranslationKey.SUCCESSFUL_TRANSACTION_CREATION]: string;
                 [TranslationKey.SUCCESSFUL_TRANSACTION_UPDATE]: string;
@@ -100,6 +158,9 @@ export interface Translation {
                 [TranslationKey.SUCCESSFUL_TRANSACTION_CATEGORY_CREATION]: string;
             };
         };
+    };
+    [TranslationKey.GENERAL]: {
+        [TranslationKey.ALL]: string;
     };
     [TranslationKey.NAVBAR]: {
         [TranslationKey.BUTTONS]: {

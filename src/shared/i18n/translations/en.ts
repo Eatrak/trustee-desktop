@@ -25,6 +25,9 @@ const translation: Translation = {
         cancel: "Exit",
         confirm: "Confirm",
     },
+    general: {
+        all: "All",
+    },
     modules: {
         wallets: {
             header: {
@@ -70,6 +73,50 @@ const translation: Translation = {
             header: {
                 title: "Transactions",
             },
+            summary: {
+                income: "Income",
+                expense: "Expense",
+                net: "Net",
+            },
+            walletsMultiSelect: {
+                title: "Wallets",
+                placeholder: "Search a wallet by typing a name",
+            },
+            table: {
+                name: "Name",
+                creationDate: "Creation date",
+                amount: "Amount",
+            },
+            creationDialog: {
+                title: "Transaction creation",
+                fields: {
+                    name: "Name",
+                    walletSelect: {
+                        title: "Wallet",
+                        placeholder: "Search by typing a name",
+                    },
+                    categoriesMultiSelect: {
+                        title: "Categories",
+                        placeholder: "Search or create by typing a name",
+                    },
+                    creationDate: "Creation date",
+                    amount: "Amount",
+                    itIsIncome: "It's income",
+                },
+                cancel: "Exit",
+                confirm: "Confirm",
+            },
+            deletionDialog: {
+                title: "Transaction deletion",
+                description: "Are you sure to delete the transaction?",
+                cancel: "Exit",
+                confirm: "Confirm",
+            },
+            statistics: {
+                categoriesIncome: "Categories income",
+                categoriesExpense: "Categories expense",
+            },
+            loadMore: "Load more",
             toastMessages: {
                 successfulTransactionCreation: "Transaction successfully created",
                 successfulTransactionUpdate: "Transaction successfully updated",

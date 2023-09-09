@@ -18,6 +18,8 @@ import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/
 import MultiSelect, {
     MultiSelectOptionProprieties,
 } from "@shared/components/MultiSelect";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
+import { Utils } from "@shared/services/utils";
 
 interface IProps {
     close: Function;
@@ -146,18 +148,30 @@ const TransactionDialog = ({
         }
     };
 
+    const translate = (translationKeys: TranslationKey[]) => {
+        return Utils.getInstance().translate([
+            TranslationKey.MODULES,
+            TranslationKey.TRANSACTIONS,
+            ...translationKeys,
+        ]);
+    };
+
     return (
         <Dialog
             title={
                 isCreationMode
-                    ? "Transaction creation"
+                    ? translate([TranslationKey.CREATION_DIALOG, TranslationKey.TITLE])
                     : `"${openedTransaction!.name}" transaction`
             }
             content={
                 <div className="transaction-creation-dialog__content">
                     {/* Name */}
                     <InputTextField
-                        title="Name"
+                        title={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.NAME,
+                        ])}
                         value={name}
                         validatorAttributeName="name"
                         validatorRule={createTransactionBodyRules.name}
@@ -166,8 +180,18 @@ const TransactionDialog = ({
                     {/* Wallet */}
                     <Select
                         entityName="wallet"
-                        text="Wallet"
-                        filterInputPlaceholder="Search by typing a name"
+                        text={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.WALLET_SELECT,
+                            TranslationKey.TITLE,
+                        ])}
+                        filterInputPlaceholder={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.WALLET_SELECT,
+                            TranslationKey.PLACEHOLDER,
+                        ])}
                         options={getWalletOptions()}
                         validatorRule={createTransactionBodyRules.walletId}
                         selectedOption={walletOption}
@@ -175,8 +199,18 @@ const TransactionDialog = ({
                     />
                     {/* Category */}
                     <MultiSelect
-                        text="Category"
-                        filterInputPlaceholder="Search or create by typing a name"
+                        text={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.CATEGORIES_MULTI_SELECT,
+                            TranslationKey.TITLE,
+                        ])}
+                        filterInputPlaceholder={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.CATEGORIES_MULTI_SELECT,
+                            TranslationKey.PLACEHOLDER,
+                        ])}
                         createNewOption={createTransactionCategory}
                         isCreatingNewOption={isCreatingTransactionCategory}
                         getCreateNewOptionButtonText={
@@ -190,6 +224,11 @@ const TransactionDialog = ({
                     />
                     {/* Creation date */}
                     <DatePicker
+                        title={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.CREATION_DATE,
+                        ])}
                         isOpened={isDatePickerOpened}
                         setOpened={setIsDatePickerOpened}
                         validatorAttributeName="creation date"
@@ -199,7 +238,11 @@ const TransactionDialog = ({
                     />
                     {/* Value */}
                     <InputTextField
-                        title="Value"
+                        title={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.AMOUNT,
+                        ])}
                         type="number"
                         min={0}
                         validatorAttributeName="value"
@@ -210,7 +253,11 @@ const TransactionDialog = ({
                     {/* It's income */}
                     <Checkbox
                         className="transaction-creation-dialog__content__is-income"
-                        text="It's income"
+                        text={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.FIELDS,
+                            TranslationKey.IT_IS_INCOME,
+                        ])}
                         checked={isIncome}
                         setChecked={setIsIncome}
                     />
@@ -218,11 +265,25 @@ const TransactionDialog = ({
             }
             footer={
                 <div className="transaction-creation-dialog__footer">
-                    <TextButton text="Exit" size="large" clickEvent={() => close()} />
+                    <TextButton
+                        text={translate([
+                            TranslationKey.CREATION_DIALOG,
+                            TranslationKey.CANCEL,
+                        ])}
+                        size="large"
+                        clickEvent={() => close()}
+                    />
                     <NormalButton
                         className="transaction-creation-dialog__footer__confirmation-button"
                         Icon={isCreationMode ? MdAdd : undefined}
-                        text={isCreationMode ? "Create" : "Update"}
+                        text={
+                            isCreationMode
+                                ? translate([
+                                      TranslationKey.CREATION_DIALOG,
+                                      TranslationKey.CONFIRM,
+                                  ])
+                                : "Update"
+                        }
                         isLoading={isSubmittingTransaction}
                         event={() => isCreationMode && createTransaction()}
                         disabled={!getFormValidator().passes() || isSubmittingTransaction}

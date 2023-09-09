@@ -9,6 +9,8 @@ import RoundedIconButton from "@shared/components/RoundedIconButton";
 import RangeDatePicker, {
     OnRangeDatePickerRangeChangedEvent,
 } from "@shared/components/RangeDatePicker";
+import { Utils } from "@shared/services/utils";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 interface IProps {
     startDate: Dayjs | null;
@@ -49,7 +51,12 @@ const TransactionsHeader = ({
         <div className="app-layout__header">
             <div className="app-layout__header__texts-container">
                 <h5 className="header--bold app-layout__header__texts_container__title">
-                    Transactions
+                    {Utils.getInstance().translate([
+                        TranslationKey.MODULES,
+                        TranslationKey.TRANSACTIONS,
+                        TranslationKey.HEADER,
+                        TranslationKey.TITLE,
+                    ])}
                 </h5>
                 <p className="paragraph--sub-title">
                     {lastStartDate.format("MM/DD/YYYY")} -{" "}

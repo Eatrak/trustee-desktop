@@ -16,6 +16,7 @@ import TableTHead from "@shared/components/Table/TableTHead";
 import TableActions from "@shared/components/Table/TableActions";
 import Table from "@shared/components/Table";
 import TableNoDataContainer from "@shared/components/Table/TableNoDataContainer";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 export interface TransactionsTableItem {
     id: string;
@@ -34,6 +35,15 @@ const getAmountToDisplay = (amount: number, isIncome: boolean, currencyCode: str
     )}`;
 };
 
+const translate = (translationKeys: TranslationKey[]) => {
+    return Utils.getInstance().translate([
+        TranslationKey.MODULES,
+        TranslationKey.TRANSACTIONS,
+        TranslationKey.TABLE,
+        ...translationKeys,
+    ]);
+};
+
 const columnHelper = createColumnHelper<TransactionsTableItem>();
 
 const columns = [
@@ -41,12 +51,22 @@ const columns = [
     columnHelper.accessor("name", {
         id: "name",
         cell: (info) => <TableCell text={info.getValue()} />,
-        header: () => <TableHeader text="Name" style={{ minWidth: "180px" }} />,
+        header: () => (
+            <TableHeader
+                text={translate([TranslationKey.NAME])}
+                style={{ minWidth: "180px" }}
+            />
+        ),
     }),
     columnHelper.accessor("creationDate", {
         id: "creationDate",
         cell: (info) => <TableCell text={info.getValue().format("MM/DD/YYYY")} />,
-        header: () => <TableHeader text="Creation date" style={{ minWidth: "100px" }} />,
+        header: () => (
+            <TableHeader
+                text={translate([TranslationKey.CREATION_DATE])}
+                style={{ minWidth: "100px" }}
+            />
+        ),
     }),
     columnHelper.accessor("amount", {
         id: "amount",
@@ -62,7 +82,12 @@ const columns = [
                 )}
             />
         ),
-        header: () => <TableHeader text="Amount" style={{ minWidth: "140px" }} />,
+        header: () => (
+            <TableHeader
+                text={translate([TranslationKey.AMOUNT])}
+                style={{ minWidth: "140px" }}
+            />
+        ),
     }),
     columnHelper.display({
         id: "actions",

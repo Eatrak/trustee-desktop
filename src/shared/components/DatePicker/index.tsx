@@ -8,6 +8,7 @@ import Validator, { Rules, TypeCheckingRule } from "validatorjs";
 import MiniRoundedIconButton from "@shared/components/MiniRoundedIconButton";
 
 interface IProps {
+    title: string;
     style?: React.CSSProperties;
     isOpened: boolean;
     setOpened: Function;
@@ -18,6 +19,7 @@ interface IProps {
 }
 
 const DatePicker = ({
+    title,
     style,
     isOpened,
     setOpened,
@@ -165,7 +167,7 @@ const DatePicker = ({
         >
             <div className="date-picker-selector">
                 <p className="paragraph--small paragraph--sub-title date-picker-selector__title">
-                    {"Creation date"}
+                    {title}
                 </p>
                 <div
                     className="date-picker-selector__body"

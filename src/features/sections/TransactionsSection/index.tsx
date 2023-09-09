@@ -24,6 +24,7 @@ import AuthService from "@shared/services/auth";
 import DetailsPieChart from "@features/sections/TransactionsSection/DetailsPieChart";
 import { TransactionCategoryBalance } from "@shared/ts-types/DTOs/transactions";
 import WalletsService from "@shared/services/wallets";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 const TransactionsSection = () => {
     let [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -87,6 +88,14 @@ const TransactionsSection = () => {
             },
         );
     }, []);
+
+    const translate = (translationKeys: TranslationKey[]) => {
+        return Utils.getInstance().translate([
+            TranslationKey.MODULES,
+            TranslationKey.TRANSACTIONS,
+            ...translationKeys,
+        ]);
+    };
 
     const fetchData = async (
         startDate: Dayjs,
@@ -294,8 +303,18 @@ const TransactionsSection = () => {
                 // Transaction deletion dialog
                 isTransactionDeletionDialogOpened && (
                     <ConfirmationDialog
-                        title="Transaction deletion"
-                        description={<p>Are you sure to delete the transaction?</p>}
+                        title={translate([
+                            TranslationKey.DELETION_DIALOG,
+                            TranslationKey.TITLE,
+                        ])}
+                        description={
+                            <p>
+                                {translate([
+                                    TranslationKey.DELETION_DIALOG,
+                                    TranslationKey.DESCRIPTION,
+                                ])}
+                            </p>
+                        }
                         isConfirming={isDeletingTransaction}
                         confirm={() => deleteTransaction()}
                         close={() => setIsTransactionDeletionDialogOpened(false)}
@@ -355,8 +374,14 @@ const TransactionsSection = () => {
                 <MultiSelect
                     ref={walletsMultiSelectRef}
                     className="transactions-section--main__wallets-multi-select"
-                    text="Wallets"
-                    filterInputPlaceholder="Search a wallet by typing a name"
+                    text={translate([
+                        TranslationKey.WALLETS_MULTI_SELECT,
+                        TranslationKey.TITLE,
+                    ])}
+                    filterInputPlaceholder={translate([
+                        TranslationKey.WALLETS_MULTI_SELECT,
+                        TranslationKey.PLACEHOLDER,
+                    ])}
                     options={getWalletOptions(wallets)}
                     onSelect={(newSelectedWallets) =>
                         setSelectedWallets([...newSelectedWallets])
@@ -366,31 +391,59 @@ const TransactionsSection = () => {
                 <div className="card transactions-section--main__statistic-container">
                     <div className="transactions-section--main__statistic-container__left">
                         {isBalanceLoading ? (
-                            <StatisticSkeleton title="Income" width="180px" />
+                            <StatisticSkeleton
+                                title={translate([
+                                    TranslationKey.SUMMARY,
+                                    TranslationKey.INCOME,
+                                ])}
+                                width="180px"
+                            />
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-income"
-                                title="Income"
+                                title={translate([
+                                    TranslationKey.SUMMARY,
+                                    TranslationKey.INCOME,
+                                ])}
                                 value={getFormattedAmount(getTotalIncome())}
                             />
                         )}
                         {isBalanceLoading ? (
-                            <StatisticSkeleton title="Expense" width="180px" />
+                            <StatisticSkeleton
+                                title={translate([
+                                    TranslationKey.SUMMARY,
+                                    TranslationKey.EXPENSE,
+                                ])}
+                                width="180px"
+                            />
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-expense"
-                                title="Expense"
+                                title={translate([
+                                    TranslationKey.SUMMARY,
+                                    TranslationKey.EXPENSE,
+                                ])}
                                 value={getFormattedAmount(getTotalExpense())}
                             />
                         )}
                     </div>
                     <div className="transactions-section--main__statistic-container__right">
                         {isBalanceLoading ? (
-                            <StatisticSkeleton title="Net" width="180px" size="large" />
+                            <StatisticSkeleton
+                                title={translate([
+                                    TranslationKey.SUMMARY,
+                                    TranslationKey.NET,
+                                ])}
+                                width="180px"
+                                size="large"
+                            />
                         ) : (
                             <Statistic
                                 className="transactions-section--main__total-balance"
-                                title="Net"
+                                title={translate([
+                                    TranslationKey.SUMMARY,
+                                    TranslationKey.NET,
+                                ])}
                                 value={getFormattedAmount(
                                     getTotalIncome() - getTotalExpense(),
                                 )}
@@ -407,7 +460,7 @@ const TransactionsSection = () => {
                 {cursor && (
                     <TextButton
                         Icon={MdAdd}
-                        text="Load more"
+                        text={translate([TranslationKey.LOAD_MORE])}
                         isLoading={isLoadingTransactions}
                     />
                 )}
@@ -415,13 +468,19 @@ const TransactionsSection = () => {
             <div className="transactions-section--details">
                 <DetailsPieChart
                     className="transactions-section--details__transaction-categories-statistic"
-                    title="Categories income"
+                    title={translate([
+                        TranslationKey.STATISTICS,
+                        TranslationKey.CATEGORIES_INCOME,
+                    ])}
                     currencySymbol={selectedCurrency.symbol}
                     data={getChartTransactionCategoriesIncome()}
                 />
                 <DetailsPieChart
                     className="transactions-section--details__transaction-categories-statistic"
-                    title="Categories expense"
+                    title={translate([
+                        TranslationKey.STATISTICS,
+                        TranslationKey.CATEGORIES_EXPENSE,
+                    ])}
                     currencySymbol={selectedCurrency.symbol}
                     data={getChartTransactionCategoriesExpense()}
                 />
