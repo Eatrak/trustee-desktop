@@ -3,6 +3,7 @@ import ErrorType from "@shared/errors/list";
 import { toast } from "react-toastify";
 
 import i18n from "@shared/i18n";
+import { TranslationKey } from "@shared/ts-types/generic/translations";
 
 export class Utils {
     private static instance = new Utils();
@@ -51,12 +52,8 @@ export class Utils {
     }
 
     showErrorMessage(errorType: ErrorType) {
-        const error = new Error(errorType);
+        const { ERRORS } = TranslationKey;
 
-        return toast.error(
-            i18n.t(
-                `errors.${getErrorType(error.getStatus(), error.getCode()).toString()}`,
-            ),
-        );
+        return toast.error(i18n.t(`${ERRORS}.${errorType}`));
     }
 }
