@@ -47,9 +47,6 @@ export default class AuthService {
 
             const { data, error }: CheckAuthenticationResponse = await response.json();
             if (error) {
-                Utils.getInstance().showErrorMessage(
-                    getErrorType(data.status, data.code),
-                );
                 return false;
             }
 
