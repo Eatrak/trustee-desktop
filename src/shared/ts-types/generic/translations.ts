@@ -5,6 +5,15 @@ export enum TranslationLanguage {
     IT = "it",
 }
 
+export enum FieldName {
+    NAME = "name",
+    WALLET = "wallet",
+    CATEGORIES = "categories",
+    CREATION_DATE = "creationDate",
+    AMOUNT = "amount",
+    UNTRACKED_BALANCE = "untrackedBalance",
+}
+
 export enum TranslationKey {
     ERRORS = "errors",
     MODULES = "modules",
@@ -56,9 +65,13 @@ export enum TranslationKey {
     PLACEHOLDER = "placeholder",
     LOAD_MORE = "loadMore",
     WALLET_SELECT = "walletSelect",
+    FIELD_NAMES = "fieldNames",
 }
 
 export interface Translation {
+    [TranslationKey.FIELD_NAMES]: {
+        [fieldName in FieldName]: string;
+    };
     [TranslationKey.ERRORS]: {
         [errorType in ErrorType]: string;
     };

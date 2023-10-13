@@ -3,7 +3,7 @@ import ErrorType from "@shared/errors/list";
 import { toast } from "react-toastify";
 
 import i18n from "@shared/i18n";
-import { TranslationKey } from "@shared/ts-types/generic/translations";
+import { FieldName, TranslationKey } from "@shared/ts-types/generic/translations";
 
 export class Utils {
     private static instance = new Utils();
@@ -59,5 +59,9 @@ export class Utils {
 
     translate(translationKeys: (TranslationKey | ErrorType)[]) {
         return i18n.t(translationKeys.join("."));
+    }
+
+    translateFieldName(fieldNameKey: FieldName) {
+        return i18n.t(`${TranslationKey.FIELD_NAMES}.${fieldNameKey}`);
     }
 }

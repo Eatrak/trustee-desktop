@@ -12,7 +12,7 @@ import { Wallet } from "@shared/schema";
 import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
 import { createWalletBodyRules } from "@shared/validatorRules/wallets";
 import WalletsService from "@shared/services/wallets";
-import { TranslationKey } from "@shared/ts-types/generic/translations";
+import { FieldName, TranslationKey } from "@shared/ts-types/generic/translations";
 import { Utils } from "@shared/services/utils";
 
 interface IProps {
@@ -116,7 +116,7 @@ const WalletDialog = ({
                             TranslationKey.NAME,
                         ])}
                         value={name}
-                        validatorAttributeName="name"
+                        validatorAttributeName={FieldName.NAME}
                         validatorRule={createWalletBodyRules.name}
                         onInput={setName}
                     />
@@ -128,7 +128,7 @@ const WalletDialog = ({
                             TranslationKey.UNTRACKED_BALANCE,
                         ])}
                         type="number"
-                        validatorAttributeName="untracked balance"
+                        validatorAttributeName={FieldName.UNTRACKED_BALANCE}
                         validatorRule={createWalletBodyRules.untrackedBalance}
                         value={untrackedBalance}
                         onInput={(value) => setUntrackedBalance(Number.parseFloat(value))}

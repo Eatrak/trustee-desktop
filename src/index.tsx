@@ -3,9 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
-import Validator from "validatorjs";
-//@ts-ignore
-import en from "validatorjs/src/lang/en";
 import dayjs from "dayjs";
 import localeData from "dayjs/plugin/localeData";
 import { ToastContainer } from "react-toastify";
@@ -21,7 +18,6 @@ import Authorizer from "@shared/customComponents/Authorizer";
 import TransactionsService from "@shared/services/transactions";
 
 dayjs.extend(localeData);
-Validator.setMessages("en", en);
 
 if (process.env.NODE_ENV === "production") {
     Sentry.init({

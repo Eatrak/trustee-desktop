@@ -2,6 +2,14 @@ import ErrorType from "@shared/errors/list";
 import { Translation } from "@shared/ts-types/generic/translations";
 
 const translation: Translation = {
+    fieldNames: {
+        name: "name",
+        wallet: "wallet",
+        amount: "amount",
+        categories: "categories",
+        creationDate: "creation date",
+        untrackedBalance: "untracked balance",
+    },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Already existing resource",
         [ErrorType.ENV]: "Something went wrong. Please, try later",

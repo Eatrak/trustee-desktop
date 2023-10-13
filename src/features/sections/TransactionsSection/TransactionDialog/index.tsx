@@ -18,7 +18,7 @@ import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/
 import MultiSelect, {
     MultiSelectOptionProprieties,
 } from "@shared/components/MultiSelect";
-import { TranslationKey } from "@shared/ts-types/generic/translations";
+import { FieldName, TranslationKey } from "@shared/ts-types/generic/translations";
 import { Utils } from "@shared/services/utils";
 
 interface IProps {
@@ -173,13 +173,13 @@ const TransactionDialog = ({
                             TranslationKey.NAME,
                         ])}
                         value={name}
-                        validatorAttributeName="name"
+                        validatorAttributeName={FieldName.NAME}
                         validatorRule={createTransactionBodyRules.name}
                         onInput={setName}
                     />
                     {/* Wallet */}
                     <Select
-                        entityName="wallet"
+                        entityName={FieldName.WALLET}
                         text={translate([
                             TranslationKey.CREATION_DIALOG,
                             TranslationKey.FIELDS,
@@ -220,7 +220,7 @@ const TransactionDialog = ({
                         creationValidatorRule="required|string"
                         optionsValidatorRule={"required|array"}
                         options={getTransactionCategoryOptions()}
-                        entityName="categories"
+                        entityName={FieldName.CATEGORIES}
                     />
                     {/* Creation date */}
                     <DatePicker
@@ -231,7 +231,7 @@ const TransactionDialog = ({
                         ])}
                         isOpened={isDatePickerOpened}
                         setOpened={setIsDatePickerOpened}
-                        validatorAttributeName="creation date"
+                        validatorAttributeName={FieldName.CREATION_DATE}
                         validatorRule="required"
                         selectedDate={creationDate}
                         onDateChanged={setCreationDate}
@@ -245,7 +245,7 @@ const TransactionDialog = ({
                         ])}
                         type="number"
                         min={0}
-                        validatorAttributeName="value"
+                        validatorAttributeName={FieldName.AMOUNT}
                         validatorRule={createTransactionBodyRules.amount}
                         value={value}
                         onInput={(value) => setValue(Number.parseFloat(value))}
