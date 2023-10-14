@@ -206,19 +206,16 @@ const RangeDatePicker = ({
                 </div>
                 <div className="range-date-picker__panel__content">
                     <div className="range-date-picker__panel__weekday-list">
-                        {dayjs
-                            .localeData()
-                            .weekdaysShort()
-                            .map((dayName) => {
-                                return (
-                                    <p
-                                        key={dayName}
-                                        className="paragraph--small paragraph--bold range-date-picker__panel__weekday-list__weekday"
-                                    >
-                                        {dayName}
-                                    </p>
-                                );
-                            })}
+                        {dayjs.weekdaysShort(true).map((dayName) => {
+                            return (
+                                <p
+                                    key={dayName}
+                                    className="paragraph--small paragraph--bold range-date-picker__panel__weekday-list__weekday"
+                                >
+                                    {dayName}
+                                </p>
+                            );
+                        })}
                     </div>
                     <div className="range-date-picker__panel__month-day-list">
                         {[...Array(NUMBER_OF_DAYS_TO_SHOW).keys()].map((index) => {

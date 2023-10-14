@@ -5,6 +5,9 @@ import Validator from "validatorjs";
 import validatorEn from "validatorjs/src/lang/en";
 //@ts-ignore
 import validatorIt from "validatorjs/src/lang/it";
+import dayjs from "dayjs";
+// Dayjs locale imports
+import "dayjs/locale/it";
 
 import { FieldName, TranslationLanguage } from "@shared/ts-types/generic/translations";
 import en from "./translations/en";
@@ -16,11 +19,15 @@ const translations = {
     [TranslationLanguage.IT]: it,
 };
 
+const currentLanguage = TranslationLanguage.IT;
+
 i18n.use(initReactI18next).init({
     resources: translations,
-    lng: TranslationLanguage.IT,
+    lng: currentLanguage,
     fallbackLng: TranslationLanguage.EN,
 });
+
+dayjs.locale(currentLanguage);
 
 Validator.setMessages("en", validatorEn);
 Validator.setMessages("it", validatorIt);
