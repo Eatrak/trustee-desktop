@@ -7,6 +7,8 @@ export enum TranslationLanguage {
 
 export enum FieldName {
     NAME = "name",
+    SURNAME = "surname",
+    EMAIL = "email",
     WALLET = "wallet",
     CATEGORIES = "categories",
     CREATION_DATE = "creationDate",
@@ -68,6 +70,8 @@ export enum TranslationKey {
     WALLET_SELECT = "walletSelect",
     FIELD_NAMES = "fieldNames",
     CREATION_BUTTON_TEXT = "creationButtonText",
+    SURNAME = "surname",
+    EMAIL = "email",
 }
 
 export interface Translation {
@@ -178,6 +182,11 @@ export interface Translation {
             [TranslationKey.HEADER]: {
                 [TranslationKey.TITLE]: string;
                 [TranslationKey.SUB_TITLE]: string;
+            };
+            [TranslationKey.FIELDS]: {
+                [TranslationKey.NAME]: string;
+                [TranslationKey.SURNAME]: string;
+                [TranslationKey.EMAIL]: string;
             };
         };
     };

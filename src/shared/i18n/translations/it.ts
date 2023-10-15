@@ -9,6 +9,8 @@ const translation: Translation = {
         categories: "categorie",
         creationDate: "data creazione",
         untrackedBalance: "saldo non monitorato",
+        email: "email",
+        surname: "cognome",
     },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Risorsa già esistente",
@@ -139,6 +141,11 @@ const translation: Translation = {
             header: {
                 title: "Impostazioni",
                 subTitle: "",
+            },
+            fields: {
+                name: "Nome",
+                surname: "Cognome",
+                email: "Email",
             },
         },
     },

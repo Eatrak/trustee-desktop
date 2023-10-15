@@ -9,6 +9,8 @@ const translation: Translation = {
         categories: "categories",
         creationDate: "creation date",
         untrackedBalance: "untracked balance",
+        email: "email",
+        surname: "surname",
     },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Already existing resource",
@@ -138,6 +140,11 @@ const translation: Translation = {
             header: {
                 title: "Settings",
                 subTitle: "",
+            },
+            fields: {
+                name: "Name",
+                surname: "Surname",
+                email: "Email",
             },
         },
     },
