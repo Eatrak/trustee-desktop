@@ -208,9 +208,7 @@ const DatePicker = ({
                 </div>
                 <div className="date-picker__panel__content">
                     <div className="date-picker__panel__weekday-list">
-                        {dayjs
-                            .localeData()
-                            .weekdaysShort()
+                        {dayjs.weekdaysShort(true)
                             .map((dayName) => {
                                 return (
                                     <p
