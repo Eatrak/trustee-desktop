@@ -11,6 +11,7 @@ const translation: Translation = {
         untrackedBalance: "untracked balance",
         email: "email",
         surname: "surname",
+        currency: "currency",
     },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Already existing resource",
@@ -145,7 +146,12 @@ const translation: Translation = {
                 name: "Name",
                 surname: "Surname",
                 email: "Email",
+                currency: {
+                    title: "Currency",
+                    filterPlaceHolder: "Search a currency by typing a name",
+                },
             },
+            footer: { confirm: "Save" },
         },
     },
 };

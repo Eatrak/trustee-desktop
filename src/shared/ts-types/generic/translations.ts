@@ -14,6 +14,7 @@ export enum FieldName {
     CREATION_DATE = "creationDate",
     AMOUNT = "amount",
     UNTRACKED_BALANCE = "untrackedBalance",
+    CURRENCY = "currency",
 }
 
 export enum TranslationKey {
@@ -72,6 +73,9 @@ export enum TranslationKey {
     CREATION_BUTTON_TEXT = "creationButtonText",
     SURNAME = "surname",
     EMAIL = "email",
+    CURRENCY = "currency",
+    FILTER_PLACEHOLDER = "filterPlaceHolder",
+    FOOTER = "footer",
 }
 
 export interface Translation {
@@ -187,6 +191,13 @@ export interface Translation {
                 [TranslationKey.NAME]: string;
                 [TranslationKey.SURNAME]: string;
                 [TranslationKey.EMAIL]: string;
+                [TranslationKey.CURRENCY]: {
+                    [TranslationKey.TITLE]: string;
+                    [TranslationKey.FILTER_PLACEHOLDER]: string;
+                };
+            };
+            [TranslationKey.FOOTER]: {
+                [TranslationKey.CONFIRM]: string;
             };
         };
     };

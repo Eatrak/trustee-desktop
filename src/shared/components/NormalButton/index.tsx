@@ -3,6 +3,8 @@ import "./style.css";
 
 import { IconType } from "react-icons";
 
+type State = "danger" | "success" | "normal";
+
 interface IProps {
     Icon?: IconType;
     iconClass?: string;
@@ -13,6 +15,7 @@ interface IProps {
     isLoading?: boolean;
     disabled?: boolean;
     testId?: string;
+    state?: State;
 }
 
 const NormalButton = ({
@@ -25,8 +28,11 @@ const NormalButton = ({
     isLoading,
     disabled,
     testId,
+    state = "normal",
 }: IProps) => {
-    const defaultClasses = "button--normal " + (disabled ? " button--disabled " : " ");
+    const defaultClasses = `button--normal button--${state} ${
+        disabled ? " button--disabled " : " "
+    }`;
 
     return (
         <button
@@ -36,15 +42,13 @@ const NormalButton = ({
             disabled={disabled}
         >
             {Icon && !isLoading && !isRightIcon && (
-                <Icon className={"button--normal__icon " + iconClass} />
+                <Icon className={"button__icon " + iconClass} />
             )}
-            {isLoading && !isRightIcon && (
-                <LoadingIcon className="button--normal__icon" />
-            )}
+            {isLoading && !isRightIcon && <LoadingIcon className="button__icon" />}
             {text && <p>{text}</p>}
-            {isLoading && isRightIcon && <LoadingIcon className="button--normal__icon" />}
+            {isLoading && isRightIcon && <LoadingIcon className="button__icon" />}
             {Icon && !isLoading && isRightIcon && (
-                <Icon className={"button--normal__icon " + iconClass} />
+                <Icon className={"button__icon " + iconClass} />
             )}
         </button>
     );

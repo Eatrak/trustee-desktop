@@ -32,9 +32,37 @@
     background-color: var(--primary-300);
 }
 
-.button--normal__icon {
+.button__icon {
     width: 24px;
     height: 24px;
 
     color: var(--button-text-color);
+}
+
+/* -- Danger */
+
+.button--danger {
+    background-color: var(--error-500);
+}
+
+.button--danger:focus {
+    box-shadow: var(--error-aura-shadow);
+}
+
+.button--danger .button__icon {
+    color: var(--error-400);
+}
+
+/* -- Success */
+
+.button--success {
+    background-color: var(--success-500);
+}
+
+.button--success:focus {
+    box-shadow: var(--success-aura-shadow);
+}
+
+.button--success .button__icon {
+    color: white;
 }

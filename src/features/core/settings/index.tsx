@@ -7,13 +7,23 @@ import InputTextField from "@shared/components/InputTextField";
 import AuthService from "@shared/services/auth";
 import { FieldName, TranslationKey } from "@shared/ts-types/generic/translations";
 import { Utils } from "@shared/services/utils";
+import Select, { SelectOption } from "@shared/components/Select";
+import { MultiSelectOptionProprieties } from "@shared/components/MultiSelect";
+import { Currency } from "@shared/schema";
+import TransactionsService from "@shared/services/transactions";
+import NormalButton from "@shared/components/NormalButton";
 
 const SettingsPage: FC = () => {
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
+    const [isSavingChanges, setIsSavingChanges] = useState(false);
+    let [selectedCurrencyOption, setSelectedCurrencyOption] =
+        useState<SelectOption | null>(null);
+    const [currencies, setCurrencies] = useState<Currency[]>([]);
 
-    let personalInfoSubscription: Subscription;
+    let getPersonalInfoSubscription: Subscription;
+    let getCurrenciesSubscription: Subscription;
 
     const translate = (translationKeys: TranslationKey[], params?: Object) => {
         return Utils.getInstance().translate(
@@ -22,19 +32,39 @@ const SettingsPage: FC = () => {
         );
     };
 
+    const getCurrencyOptions = (): MultiSelectOptionProprieties[] => {
+        return currencies.map((currency) => ({
+            name: `${currency.symbol} ${currency.code}`,
+            value: currency.id,
+        }));
+    };
+
     useEffect(() => {
-        personalInfoSubscription = AuthService.getInstance().personalInfo$.subscribe(
+        getPersonalInfoSubscription = AuthService.getInstance().personalInfo$.subscribe(
             (personalInfo) => {
                 setName(personalInfo.name);
                 setSurname(personalInfo.surname);
                 setEmail(personalInfo.email);
+
+                // Set current user currency
+                const { id, code, symbol } = personalInfo.settings.currency;
+                setSelectedCurrencyOption({
+                    value: id,
+                    name: `${symbol} ${code}`,
+                });
             },
         );
+
+        getCurrenciesSubscription =
+            TransactionsService.getInstance().currencies$.subscribe((currencies) => {
+                setCurrencies(currencies);
+            });
     }, []);
 
     useEffect(
         () => () => {
-            personalInfoSubscription.unsubscribe();
+            getPersonalInfoSubscription.unsubscribe();
+            getCurrenciesSubscription.unsubscribe();
         },
         [],
     );
@@ -67,6 +97,33 @@ const SettingsPage: FC = () => {
                         title={translate([TranslationKey.FIELDS, TranslationKey.EMAIL])}
                         placeholder="johndoe@test.com"
                         disabled
+                    />
+                    {/* Currency field */}
+                    <Select
+                        entityName={FieldName.CURRENCY}
+                        text={translate([
+                            TranslationKey.FIELDS,
+                            TranslationKey.CURRENCY,
+                            TranslationKey.TITLE,
+                        ])}
+                        filterInputPlaceholder={translate([
+                            TranslationKey.FIELDS,
+                            TranslationKey.CURRENCY,
+                            TranslationKey.FILTER_PLACEHOLDER,
+                        ])}
+                        options={getCurrencyOptions()}
+                        selectedOption={selectedCurrencyOption}
+                        onSelect={setSelectedCurrencyOption}
+                    />
+                </div>
+                <div className="section__settings-card__footer">
+                    <NormalButton
+                        className="transaction-creation-dialog__footer__confirmation-button"
+                        text={translate([TranslationKey.FOOTER, TranslationKey.CONFIRM])}
+                        isLoading={isSavingChanges}
+                        event={() => {}}
+                        state="success"
+                        disabled={isSavingChanges}
                     />
                 </div>
             </div>

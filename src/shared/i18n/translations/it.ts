@@ -11,6 +11,7 @@ const translation: Translation = {
         untrackedBalance: "saldo non monitorato",
         email: "email",
         surname: "cognome",
+        currency: "valuta",
     },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Risorsa già esistente",
@@ -146,7 +147,12 @@ const translation: Translation = {
                 name: "Nome",
                 surname: "Cognome",
                 email: "Email",
+                currency: {
+                    title: "Valuta",
+                    filterPlaceHolder: "Cerca una valuta digitando un nome",
+                },
             },
+            footer: { confirm: "Salva" },
         },
     },
 };

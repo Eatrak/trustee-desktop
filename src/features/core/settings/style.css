@@ -4,8 +4,20 @@
     row-gap: 32px;
 }
 
+.section__settings-card {
+    display: grid;
+    grid-template-rows: auto max-content;
+}
+
 .section__settings-card__content-container {
     display: grid;
     grid-auto-flow: row;
     row-gap: 16px;
+
+    height: max-content;
+}
+
+.section__settings-card__footer {
+    display: grid;
+    justify-content: right;
 }
