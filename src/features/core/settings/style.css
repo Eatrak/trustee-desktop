@@ -1,0 +1,11 @@
+.settings-section {
+    display: grid;
+    grid-template-rows: max-content auto;
+    row-gap: 32px;
+}
+
+.section__settings-card__content-container {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 16px;
+}
