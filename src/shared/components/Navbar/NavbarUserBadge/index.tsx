@@ -1,3 +1,4 @@
+import { Tooltip } from "react-tooltip";
 import "./style.css";
 
 interface IProps {
@@ -19,10 +20,23 @@ const NavbarUserBadge = ({ firstName, lastName, email }: IProps) => {
                 </p>
             </div>
             <div className="navbar__user-badge__text-container">
-                <p className="paragraph--small paragraph--bold">
+                <p
+                    data-tooltip-id="user-badge-name-and-surname"
+                    data-tooltip-content={`${firstName} ${lastName}`}
+                    className="paragraph--small paragraph--bold navbar__user-badge__name-and-surname"
+                >
                     {firstName} {lastName}
                 </p>
-                <p className="paragraph--small navbar__user-badge__email">{email}</p>
+                <Tooltip id="user-badge-name-and-surname" />
+
+                <p
+                    data-tooltip-id="user-badge-email"
+                    data-tooltip-content={email}
+                    className="paragraph--small navbar__user-badge__email"
+                >
+                    {email}
+                </p>
+                <Tooltip id="user-badge-email" />
             </div>
         </div>
     );

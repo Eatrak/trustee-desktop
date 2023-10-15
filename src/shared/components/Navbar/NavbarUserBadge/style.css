@@ -41,6 +41,13 @@
     height: max-content;
 }
 
+.navbar__user-badge__email,
+.navbar__user-badge__name-and-surname {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .navbar__user-badge__email {
     color: var(--neutral-600);
 }
