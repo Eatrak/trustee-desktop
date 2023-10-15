@@ -53,6 +53,7 @@
     grid-template-rows: max-content max-content;
 
     border-left: 1px solid var(--border-color);
+    background-color: var(--card-background-color);
     padding: 26px;
 }
 
