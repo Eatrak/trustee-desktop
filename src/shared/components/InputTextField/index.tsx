@@ -62,7 +62,7 @@ const InputTextField = ({
                 errors.length > 0 ? "input-text-field--in-error" : ""
             }`}
         >
-            <p className="paragraph--small paragraph--bold input-text-field__title">
+            <p className="paragraph--small paragraph--sub-title input-text-field__title">
                 {title}
             </p>
             <input
