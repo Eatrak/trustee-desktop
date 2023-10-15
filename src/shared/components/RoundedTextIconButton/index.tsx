@@ -6,6 +6,7 @@ type Size = "small" | "regular";
 type State = "danger" | "success" | "normal";
 
 interface IProps {
+    className?: string;
     Icon: IconType;
     clickEvent?: (...p: any) => any;
     state?: State;
@@ -14,6 +15,7 @@ interface IProps {
 }
 
 const RoundedTextIconButton = ({
+    className = "",
     Icon,
     clickEvent,
     state = "normal",
@@ -23,7 +25,7 @@ const RoundedTextIconButton = ({
     const getRootClasses = () => {
         return `rounded-text-icon-button rounded-text-icon-button--${size} rounded-text-icon-button--${state} ${
             isDisabled ? "rounded-text-icon-button--disabled" : ""
-        }`;
+        } ${className}`;
     };
 
     return (

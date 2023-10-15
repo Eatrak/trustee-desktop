@@ -1,5 +1,8 @@
 import { Tooltip } from "react-tooltip";
 import "./style.css";
+import RoundedTextIconButton from "@shared/components/RoundedTextIconButton";
+import { MdOutlineSettings } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 interface IProps {
     firstName: string;
@@ -30,14 +33,17 @@ const NavbarUserBadge = ({ firstName, lastName, email }: IProps) => {
                 <Tooltip id="user-badge-name-and-surname" />
 
                 <p
-                    data-tooltip-id="user-badge-email"
-                    data-tooltip-content={email}
-                    className="paragraph--small navbar__user-badge__email"
+                    data-tooltip-id="user-badge-plan"
+                    data-tooltip-content="Free plan"
+                    className="paragraph--small navbar__user-badge__plan"
                 >
-                    {email}
+                    Free plan
                 </p>
-                <Tooltip id="user-badge-email" />
+                <Tooltip id="user-badge-plan" />
             </div>
+            <Link to="settings" draggable={false}>
+                <RoundedTextIconButton Icon={MdOutlineSettings} size="small" />
+            </Link>
         </div>
     );
 };

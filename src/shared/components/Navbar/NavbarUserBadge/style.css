@@ -1,6 +1,6 @@
 .navbar__user-badge {
     display: grid;
-    grid-template-columns: max-content auto;
+    grid-template-columns: max-content auto max-content;
     column-gap: 15px;
     align-items: center;
 
