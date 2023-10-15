@@ -140,6 +140,13 @@ p {
     height: 100%;
 }
 
+.section__main-content {
+    padding: 30px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+    box-sizing: border-box;
+}
+
 /* -- */
 
 /* || Scrollbar */

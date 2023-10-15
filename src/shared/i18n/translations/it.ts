@@ -135,6 +135,12 @@ const translation: Translation = {
                     "Categoria di transazione creata con successo",
             },
         },
+        settings: {
+            header: {
+                title: "Impostazioni",
+                subTitle: "",
+            },
+        },
     },
 };
 

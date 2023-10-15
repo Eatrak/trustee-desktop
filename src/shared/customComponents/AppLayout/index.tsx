@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "@shared/components/Navbar";
 import TransactionsSection from "@features/sections/TransactionsSection";
 import WalletsSection from "@features/sections/WalletsSection";
+import SettingsPage from "@features/core/settings";
 
 const AppLayout = () => {
     return (
@@ -14,6 +15,7 @@ const AppLayout = () => {
                 <Routes>
                     <Route path="/transactions" element={<TransactionsSection />} />
                     <Route path="/wallets" element={<WalletsSection />} />
+                    <Route path="/settings" element={<SettingsPage />} />
                 </Routes>
             </div>
         </div>

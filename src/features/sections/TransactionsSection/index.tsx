@@ -352,7 +352,7 @@ const TransactionsSection = () => {
                     transactionCategories={transactionCategories}
                 />
             )}
-            <div className="transactions-section--main">
+            <div className="section__main-content transactions-section--main">
                 <TransactionsHeader
                     reloadTransactions={async () => {
                         await fetchTransactionsByCreationRange(

@@ -118,7 +118,7 @@ const WalletsSection: FC = () => {
 
     return (
         <div className="section wallets-section">
-            <div className="wallets-section--main">
+            <div className="section__main-content wallets-section--main">
                 {
                     // Wallet deletion dialog
                     isWalletDeletionDialogOpened && (

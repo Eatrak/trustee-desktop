@@ -19,6 +19,7 @@ export enum TranslationKey {
     MODULES = "modules",
     WALLETS = "wallets",
     TRANSACTIONS = "transactions",
+    SETTINGS = "settings",
     TOAST_MESSAGES = "toastMessages",
     SUCCESSFUL_WALLET_CREATION = "successfulWalletCreation",
     SUCCESSFUL_WALLET_UPDATE = "successfulWalletUpdate",
@@ -171,6 +172,12 @@ export interface Translation {
                 [TranslationKey.SUCCESSFUL_TRANSACTION_UPDATE]: string;
                 [TranslationKey.SUCCESSFUL_TRANSACTION_DELETION]: string;
                 [TranslationKey.SUCCESSFUL_TRANSACTION_CATEGORY_CREATION]: string;
+            };
+        };
+        [TranslationKey.SETTINGS]: {
+            [TranslationKey.HEADER]: {
+                [TranslationKey.TITLE]: string;
+                [TranslationKey.SUB_TITLE]: string;
             };
         };
     };
