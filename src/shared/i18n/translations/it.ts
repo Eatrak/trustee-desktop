@@ -107,6 +107,7 @@ const translation: Translation = {
                     categoriesMultiSelect: {
                         title: "Categorie",
                         placeholder: "Cerca o crea digitando un nome",
+                        creationButtonText: 'Crea la categoria "{{categoryName}}"',
                     },
                     creationDate: "Data di creazione",
                     amount: "Importo",

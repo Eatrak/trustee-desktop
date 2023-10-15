@@ -66,6 +66,7 @@ export enum TranslationKey {
     LOAD_MORE = "loadMore",
     WALLET_SELECT = "walletSelect",
     FIELD_NAMES = "fieldNames",
+    CREATION_BUTTON_TEXT = "creationButtonText",
 }
 
 export interface Translation {
@@ -151,6 +152,7 @@ export interface Translation {
                     [TranslationKey.CATEGORIES_MULTI_SELECT]: {
                         [TranslationKey.TITLE]: string;
                         [TranslationKey.PLACEHOLDER]: string;
+                        [TranslationKey.CREATION_BUTTON_TEXT]: string;
                     };
                     [TranslationKey.CREATION_DATE]: string;
                     [TranslationKey.AMOUNT]: string;

@@ -120,7 +120,15 @@ const TransactionDialog = ({
     const getCreateTransactionCategoryButtonText = (
         nameOfTransactionCategoryToCreate: string,
     ) => {
-        return `Create "${nameOfTransactionCategoryToCreate}" wallet`;
+        return translate(
+            [
+                TranslationKey.CREATION_DIALOG,
+                TranslationKey.FIELDS,
+                TranslationKey.CATEGORIES_MULTI_SELECT,
+                TranslationKey.CREATION_BUTTON_TEXT,
+            ],
+            { categoryName: nameOfTransactionCategoryToCreate },
+        );
     };
 
     useEffect(() => {
@@ -148,12 +156,11 @@ const TransactionDialog = ({
         }
     };
 
-    const translate = (translationKeys: TranslationKey[]) => {
-        return Utils.getInstance().translate([
-            TranslationKey.MODULES,
-            TranslationKey.TRANSACTIONS,
-            ...translationKeys,
-        ]);
+    const translate = (translationKeys: TranslationKey[], params?: Object) => {
+        return Utils.getInstance().translate(
+            [TranslationKey.MODULES, TranslationKey.TRANSACTIONS, ...translationKeys],
+            params,
+        );
     };
 
     return (
