@@ -8,6 +8,7 @@ import FormLayout from "@shared/components/FormLayout";
 import InputTextField from "@shared/components/InputTextField";
 import { signUpValidator } from "@shared/validatorRules/auth";
 import AuthService from "@shared/services/auth";
+import SettingsService from "@shared/services/settings";
 
 const SignUpForm = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const SignUpForm = () => {
     const [surname, setSurname] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const userLanguage = SettingsService.getInstance().getBrowserLanguage();
     const [isSignedUp, setIsSignedUp] = useState(false);
     const [isSigningUp, setIsSigningUp] = useState(false);
 
@@ -26,6 +28,7 @@ const SignUpForm = () => {
             surname!,
             email!,
             password!,
+            userLanguage!,
         );
         if (successfulSignUp) {
             setIsSignedUp(true);
@@ -44,6 +47,7 @@ const SignUpForm = () => {
                 surname,
                 email,
                 password,
+                language: userLanguage,
             },
             signUpValidator,
         );

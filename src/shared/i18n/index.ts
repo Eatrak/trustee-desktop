@@ -19,15 +19,19 @@ const translations = {
     [TranslationLanguage.IT]: it,
 };
 
-const currentLanguage = TranslationLanguage.IT;
+export const updateLanguage = (language: TranslationLanguage) => {
+    i18n.use(initReactI18next).init({
+        resources: translations,
+        lng: language,
+        fallbackLng: TranslationLanguage.EN,
+    });
 
-i18n.use(initReactI18next).init({
-    resources: translations,
-    lng: currentLanguage,
-    fallbackLng: TranslationLanguage.EN,
-});
+    dayjs.locale(i18n.language);
 
-dayjs.locale(currentLanguage);
+    Validator.useLang(i18n.language);
+};
+
+updateLanguage(TranslationLanguage.EN);
 
 Validator.setMessages("en", validatorEn);
 Validator.setMessages("it", validatorIt);
@@ -35,7 +39,5 @@ Validator.setMessages("it", validatorIt);
 Validator.setAttributeFormatter((attribute: FieldName) => {
     return Utils.getInstance().translateFieldName(attribute);
 });
-
-Validator.useLang(i18n.language);
 
 export default i18n;

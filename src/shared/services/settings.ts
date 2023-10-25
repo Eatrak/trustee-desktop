@@ -5,9 +5,13 @@ import { Utils } from "./utils";
 import ErrorType from "@shared/errors/list";
 import { getErrorType } from "@shared/errors";
 import { ErrorResponseBodyAttributes } from "@shared/errors/types";
-import { TranslationKey } from "@shared/ts-types/generic/translations";
+import {
+    TranslationKey,
+    TranslationLanguage,
+} from "@shared/ts-types/generic/translations";
 import { UpdateUserSettingsBody } from "@shared/ts-types/APIs/input/user/updateUserSettings";
 import { UpdateUserSettingsResponse } from "@shared/ts-types/APIs/output/user/updateUserSettings";
+import { updateLanguage } from "@shared/i18n";
 
 export default class SettingsService {
     static instance: SettingsService = new SettingsService();
@@ -51,6 +55,7 @@ export default class SettingsService {
                 return Err(data);
             }
 
+            updateLanguage(body.updateInfo.language);
             toast.success(this.translate([TranslationKey.SUCCESSFUL_SETTINGS_UPDATE]));
 
             return Ok(undefined);
@@ -58,5 +63,9 @@ export default class SettingsService {
             Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
             return Err(undefined);
         }
+    }
+
+    getBrowserLanguage(): TranslationLanguage {
+        return navigator.language.slice(0, 2) as TranslationLanguage;
     }
 }

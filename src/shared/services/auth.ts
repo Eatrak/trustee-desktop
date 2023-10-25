@@ -10,6 +10,9 @@ import { CheckAuthenticationResponse } from "@shared/ts-types/APIs/output/auth/c
 import { PersonalInfo } from "@shared/ts-types/DTOs/auth";
 import { getErrorType } from "@shared/errors";
 import ErrorType from "@shared/errors/list";
+import { TranslationLanguage } from "@shared/ts-types/generic/translations";
+import SettingsService from "./settings";
+import { updateLanguage } from "@shared/i18n";
 
 export default class AuthService {
     static instance: AuthService = new AuthService();
@@ -20,7 +23,10 @@ export default class AuthService {
             name: "",
             surname: "",
             email: "",
-            settings: { currency: { id: "", code: "", symbol: "" } },
+            settings: {
+                currency: { id: "", code: "", symbol: "" },
+                language: SettingsService.getInstance().getBrowserLanguage(),
+            },
         });
     }
 
@@ -52,6 +58,7 @@ export default class AuthService {
 
             const { personalInfo } = data;
             this.personalInfo$.next(personalInfo);
+            updateLanguage(personalInfo.settings.language);
 
             return true;
         } catch (err) {
@@ -60,7 +67,13 @@ export default class AuthService {
         }
     }
 
-    async signUp(name: string, surname: string, email: string, password: string) {
+    async signUp(
+        name: string,
+        surname: string,
+        email: string,
+        password: string,
+        language: TranslationLanguage,
+    ) {
         try {
             const body: SignUpBody = {
                 userInfo: {
@@ -68,6 +81,7 @@ export default class AuthService {
                     surname,
                     email,
                     password,
+                    language,
                 },
             };
 
