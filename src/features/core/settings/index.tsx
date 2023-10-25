@@ -12,6 +12,10 @@ import { MultiSelectOptionProprieties } from "@shared/components/MultiSelect";
 import { Currency } from "@shared/schema";
 import TransactionsService from "@shared/services/transactions";
 import NormalButton from "@shared/components/NormalButton";
+import SettingsService from "@shared/services/settings";
+import { updateUserSettingsBodyRules } from "@shared/validatorRules/user";
+import { UpdateUserSettingsBody } from "@shared/ts-types/APIs/input/user/updateUserSettings";
+import Validator from "validatorjs";
 
 const SettingsPage: FC = () => {
     const [name, setName] = useState("");
@@ -37,6 +41,30 @@ const SettingsPage: FC = () => {
             name: `${currency.symbol} ${currency.code}`,
             value: currency.id,
         }));
+    };
+
+    const hasErrors = () => {
+        const body: UpdateUserSettingsBody = {
+            updateInfo: {
+                currencyId: selectedCurrencyOption?.value || "",
+            },
+        };
+
+        // Validate data
+        const validator = new Validator(body, updateUserSettingsBodyRules);
+        return validator.fails();
+    };
+
+    const saveChanges = async () => {
+        setIsSavingChanges(true);
+
+        try {
+            await SettingsService.getInstance().updateSettings({
+                updateInfo: { currencyId: selectedCurrencyOption?.value || "" },
+            });
+        } catch (err) {}
+
+        setIsSavingChanges(false);
     };
 
     useEffect(() => {
@@ -121,9 +149,9 @@ const SettingsPage: FC = () => {
                         className="transaction-creation-dialog__footer__confirmation-button"
                         text={translate([TranslationKey.FOOTER, TranslationKey.CONFIRM])}
                         isLoading={isSavingChanges}
-                        event={() => {}}
+                        event={saveChanges}
                         state="success"
-                        disabled={isSavingChanges}
+                        disabled={hasErrors() || isSavingChanges}
                     />
                 </div>
             </div>

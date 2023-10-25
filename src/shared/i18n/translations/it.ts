@@ -153,6 +153,10 @@ const translation: Translation = {
                 },
             },
             footer: { confirm: "Salva" },
+            toastMessages: {
+                successfulSettingsUpdate:
+                    "Le tue impostazioni sono state aggiornate con successo",
+            },
         },
     },
 };

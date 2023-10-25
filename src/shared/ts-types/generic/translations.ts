@@ -31,6 +31,7 @@ export enum TranslationKey {
     SUCCESSFUL_TRANSACTION_UPDATE = "successfulTransactionUpdate",
     SUCCESSFUL_TRANSACTION_DELETION = "successfulTransactionDeletion",
     SUCCESSFUL_TRANSACTION_CATEGORY_CREATION = "successfulTransactionCategoryCreation",
+    SUCCESSFUL_SETTINGS_UPDATE = "successfulSettingsUpdate",
     NAVBAR = "navbar",
     BUTTONS = "buttons",
     HEADER = "header",
@@ -198,6 +199,9 @@ export interface Translation {
             };
             [TranslationKey.FOOTER]: {
                 [TranslationKey.CONFIRM]: string;
+            };
+            [TranslationKey.TOAST_MESSAGES]: {
+                [TranslationKey.SUCCESSFUL_SETTINGS_UPDATE]: string;
             };
         };
     };

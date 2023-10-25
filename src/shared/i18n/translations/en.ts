@@ -152,6 +152,9 @@ const translation: Translation = {
                 },
             },
             footer: { confirm: "Save" },
+            toastMessages: {
+                successfulSettingsUpdate: "Your settings has been successfully updated",
+            },
         },
     },
 };
