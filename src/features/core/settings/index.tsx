@@ -61,6 +61,7 @@ const SettingsPage: FC = () => {
         const body: UpdateUserSettingsBody = {
             updateInfo: {
                 currencyId: selectedCurrencyOption?.value || "",
+                language: (selectedLanguageOption?.value as TranslationLanguage) || "",
             },
         };
 
@@ -74,7 +75,11 @@ const SettingsPage: FC = () => {
 
         try {
             await SettingsService.getInstance().updateSettings({
-                updateInfo: { currencyId: selectedCurrencyOption?.value || "" },
+                updateInfo: {
+                    currencyId: selectedCurrencyOption?.value || "",
+                    language:
+                        (selectedLanguageOption?.value as TranslationLanguage) || "",
+                },
             });
         } catch (err) {}
 
