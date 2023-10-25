@@ -30,14 +30,14 @@ const NormalButton = ({
     testId,
     state = "normal",
 }: IProps) => {
-    const defaultClasses = `button--normal button--${state} ${
-        disabled ? " button--disabled " : " "
+    const defaultClasses = `button--normal button--${state} button--${
+        disabled ? "disabled" : "not-disabled"
     }`;
 
     return (
         <button
             data-testid={testId}
-            className={defaultClasses + className}
+            className={`${defaultClasses} ${className}`}
             onClick={event}
             disabled={disabled}
         >

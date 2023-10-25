@@ -19,17 +19,17 @@
     transition: 0.3s all;
 }
 
-.button--normal:hover {
-    opacity: 0.9;
-}
-
 .button--normal:focus {
     box-shadow: var(--aura-shadow);
 }
 
+.button--not-disabled:hover {
+    opacity: 0.9;
+}
+
 .button--disabled {
     cursor: not-allowed;
-    background-color: var(--primary-300);
+    opacity: 0.6;
 }
 
 .button__icon {
