@@ -5,6 +5,15 @@ export enum TranslationLanguage {
     IT = "it",
 }
 
+export const getCompleteLanguageName = (language: TranslationLanguage) => {
+    const completeLanguageNames: { [language in TranslationLanguage]: string } = {
+        en: "English",
+        it: "Italiano",
+    };
+
+    return completeLanguageNames[language];
+};
+
 export enum FieldName {
     NAME = "name",
     SURNAME = "surname",
@@ -15,6 +24,7 @@ export enum FieldName {
     AMOUNT = "amount",
     UNTRACKED_BALANCE = "untrackedBalance",
     CURRENCY = "currency",
+    LANGUAGE = "language",
 }
 
 export enum TranslationKey {
@@ -77,6 +87,7 @@ export enum TranslationKey {
     CURRENCY = "currency",
     FILTER_PLACEHOLDER = "filterPlaceHolder",
     FOOTER = "footer",
+    LANGUAGE = "language",
 }
 
 export interface Translation {
@@ -193,6 +204,10 @@ export interface Translation {
                 [TranslationKey.SURNAME]: string;
                 [TranslationKey.EMAIL]: string;
                 [TranslationKey.CURRENCY]: {
+                    [TranslationKey.TITLE]: string;
+                    [TranslationKey.FILTER_PLACEHOLDER]: string;
+                };
+                [TranslationKey.LANGUAGE]: {
                     [TranslationKey.TITLE]: string;
                     [TranslationKey.FILTER_PLACEHOLDER]: string;
                 };

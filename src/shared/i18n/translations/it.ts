@@ -12,6 +12,7 @@ const translation: Translation = {
         email: "email",
         surname: "cognome",
         currency: "valuta",
+        language: "lingua",
     },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Risorsa già esistente",
@@ -150,6 +151,10 @@ const translation: Translation = {
                 currency: {
                     title: "Valuta",
                     filterPlaceHolder: "Cerca una valuta digitando un nome",
+                },
+                language: {
+                    title: "Lingua",
+                    filterPlaceHolder: "Cerca una lingua digitando un nome",
                 },
             },
             footer: { confirm: "Salva" },

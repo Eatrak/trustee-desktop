@@ -5,7 +5,12 @@ import "./style.css";
 import SettingsHeader from "./SettingsHeader";
 import InputTextField from "@shared/components/InputTextField";
 import AuthService from "@shared/services/auth";
-import { FieldName, TranslationKey } from "@shared/ts-types/generic/translations";
+import {
+    FieldName,
+    TranslationKey,
+    TranslationLanguage,
+    getCompleteLanguageName,
+} from "@shared/ts-types/generic/translations";
 import { Utils } from "@shared/services/utils";
 import Select, { SelectOption } from "@shared/components/Select";
 import { MultiSelectOptionProprieties } from "@shared/components/MultiSelect";
@@ -24,6 +29,8 @@ const SettingsPage: FC = () => {
     const [isSavingChanges, setIsSavingChanges] = useState(false);
     let [selectedCurrencyOption, setSelectedCurrencyOption] =
         useState<SelectOption | null>(null);
+    let [selectedLanguageOption, setSelectedLanguageOption] =
+        useState<SelectOption | null>(null);
     const [currencies, setCurrencies] = useState<Currency[]>([]);
 
     let getPersonalInfoSubscription: Subscription;
@@ -40,6 +47,13 @@ const SettingsPage: FC = () => {
         return currencies.map((currency) => ({
             name: `${currency.symbol} ${currency.code}`,
             value: currency.id,
+        }));
+    };
+
+    const getLanguageOptions = (): MultiSelectOptionProprieties[] => {
+        return Object.values(TranslationLanguage).map((language) => ({
+            name: getCompleteLanguageName(language),
+            value: language,
         }));
     };
 
@@ -79,6 +93,12 @@ const SettingsPage: FC = () => {
                 setSelectedCurrencyOption({
                     value: id,
                     name: `${symbol} ${code}`,
+                });
+
+                const { language } = personalInfo.settings;
+                setSelectedLanguageOption({
+                    name: getCompleteLanguageName(language),
+                    value: language,
                 });
             },
         );
@@ -125,6 +145,23 @@ const SettingsPage: FC = () => {
                         title={translate([TranslationKey.FIELDS, TranslationKey.EMAIL])}
                         placeholder="johndoe@test.com"
                         disabled
+                    />
+                    {/* Language field */}
+                    <Select
+                        entityName={FieldName.LANGUAGE}
+                        text={translate([
+                            TranslationKey.FIELDS,
+                            TranslationKey.LANGUAGE,
+                            TranslationKey.TITLE,
+                        ])}
+                        filterInputPlaceholder={translate([
+                            TranslationKey.FIELDS,
+                            TranslationKey.LANGUAGE,
+                            TranslationKey.FILTER_PLACEHOLDER,
+                        ])}
+                        options={getLanguageOptions()}
+                        selectedOption={selectedLanguageOption}
+                        onSelect={setSelectedLanguageOption}
                     />
                     {/* Currency field */}
                     <Select
