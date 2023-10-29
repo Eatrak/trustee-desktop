@@ -1,0 +1,7 @@
+.tabs-container {
+    display: grid;
+    grid-auto-flow: column;
+
+    width: max-content;
+    height: max-content;
+}
