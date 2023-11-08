@@ -19,19 +19,21 @@ const translations = {
     [TranslationLanguage.IT]: it,
 };
 
-export const updateLanguage = (language: TranslationLanguage) => {
-    i18n.use(initReactI18next).init({
-        resources: translations,
-        lng: language,
-        fallbackLng: TranslationLanguage.EN,
-    });
+i18n.use(initReactI18next).init({
+    resources: translations,
+    fallbackLng: TranslationLanguage.EN,
+});
 
-    dayjs.locale(i18n.language);
+i18n.on("languageChanged", (language) => {
+    dayjs.locale(language);
+    Validator.useLang(language);
+});
 
-    Validator.useLang(i18n.language);
+export const setCurrentLanguage = async (language: TranslationLanguage) => {
+    await i18n.changeLanguage(language);
 };
 
-updateLanguage(TranslationLanguage.EN);
+setCurrentLanguage(TranslationLanguage.EN);
 
 Validator.setMessages("en", validatorEn);
 Validator.setMessages("it", validatorIt);

@@ -13,6 +13,7 @@ const translation: Translation = {
         surname: "surname",
         currency: "currency",
         language: "language",
+        password: "password",
     },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Already existing resource",
@@ -143,22 +144,41 @@ const translation: Translation = {
                 title: "Settings",
                 subTitle: "",
             },
-            fields: {
-                name: "Name",
-                surname: "Surname",
-                email: "Email",
-                currency: {
-                    title: "Currency",
-                    filterPlaceHolder: "Search a currency by typing a name",
+            tabs: {
+                info: {
+                    title: "Info",
+                    fields: {
+                        name: "Name",
+                        surname: "Surname",
+                        email: "Email",
+                    },
                 },
-                language: {
-                    title: "Language",
-                    filterPlaceHolder: "Search a language by typing a name",
+                preferences: {
+                    title: "Preferences",
+                    fields: {
+                        currency: {
+                            title: "Currency",
+                            filterPlaceHolder: "Search a currency by typing a name",
+                        },
+                        language: {
+                            title: "Language",
+                            filterPlaceHolder: "Search a language by typing a name",
+                        },
+                    },
+                    toastMessages: {
+                        successfulSettingsUpdate:
+                            "Your settings has been successfully updated",
+                    },
+                    footer: { confirm: "Save" },
                 },
-            },
-            footer: { confirm: "Save" },
-            toastMessages: {
-                successfulSettingsUpdate: "Your settings has been successfully updated",
+                changePassword: {
+                    title: "Change Password",
+                    toastMessages: {
+                        successfulSettingsUpdate:
+                            "Your settings has been successfully updated",
+                    },
+                    footer: { confirm: "Save" },
+                },
             },
         },
     },

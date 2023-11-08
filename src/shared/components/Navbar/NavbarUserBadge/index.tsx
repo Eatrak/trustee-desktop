@@ -41,7 +41,7 @@ const NavbarUserBadge = ({ firstName, lastName, email }: IProps) => {
                 </p>
                 <Tooltip id="user-badge-plan" />
             </div>
-            <Link to="settings" draggable={false}>
+            <Link to="settings/info" draggable={false}>
                 <RoundedTextIconButton Icon={MdOutlineSettings} size="small" />
             </Link>
         </div>

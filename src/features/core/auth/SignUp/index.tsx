@@ -1,5 +1,7 @@
 import "./style.css";
 
+import { withTranslation } from "react-i18next";
+
 import logo from "@shared/assets/logo.jpg";
 import { ReactComponent as DotsDecoration } from "@shared/assets/dots-decoration.svg";
 import SignUpForm from "./SignUpForm";
@@ -18,4 +20,4 @@ const SignUpPage = () => {
     );
 };
 
-export default SignUpPage;
+export default withTranslation()(SignUpPage);

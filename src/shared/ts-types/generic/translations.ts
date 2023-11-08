@@ -25,6 +25,7 @@ export enum FieldName {
     UNTRACKED_BALANCE = "untrackedBalance",
     CURRENCY = "currency",
     LANGUAGE = "language",
+    PASSWORD = "password",
 }
 
 export enum TranslationKey {
@@ -88,6 +89,11 @@ export enum TranslationKey {
     FILTER_PLACEHOLDER = "filterPlaceHolder",
     FOOTER = "footer",
     LANGUAGE = "language",
+    PASSWORD = "password",
+    TABS = "tabs",
+    INFO = "info",
+    PREFERENCES = "preferences",
+    CHANGE_PASSWORD = "changePassword",
 }
 
 export interface Translation {
@@ -199,24 +205,43 @@ export interface Translation {
                 [TranslationKey.TITLE]: string;
                 [TranslationKey.SUB_TITLE]: string;
             };
-            [TranslationKey.FIELDS]: {
-                [TranslationKey.NAME]: string;
-                [TranslationKey.SURNAME]: string;
-                [TranslationKey.EMAIL]: string;
-                [TranslationKey.CURRENCY]: {
+            [TranslationKey.TABS]: {
+                [TranslationKey.INFO]: {
                     [TranslationKey.TITLE]: string;
-                    [TranslationKey.FILTER_PLACEHOLDER]: string;
+                    [TranslationKey.FIELDS]: {
+                        [TranslationKey.NAME]: string;
+                        [TranslationKey.SURNAME]: string;
+                        [TranslationKey.EMAIL]: string;
+                    };
                 };
-                [TranslationKey.LANGUAGE]: {
+                [TranslationKey.PREFERENCES]: {
                     [TranslationKey.TITLE]: string;
-                    [TranslationKey.FILTER_PLACEHOLDER]: string;
+                    [TranslationKey.FIELDS]: {
+                        [TranslationKey.CURRENCY]: {
+                            [TranslationKey.TITLE]: string;
+                            [TranslationKey.FILTER_PLACEHOLDER]: string;
+                        };
+                        [TranslationKey.LANGUAGE]: {
+                            [TranslationKey.TITLE]: string;
+                            [TranslationKey.FILTER_PLACEHOLDER]: string;
+                        };
+                    };
+                    [TranslationKey.FOOTER]: {
+                        [TranslationKey.CONFIRM]: string;
+                    };
+                    [TranslationKey.TOAST_MESSAGES]: {
+                        [TranslationKey.SUCCESSFUL_SETTINGS_UPDATE]: string;
+                    };
                 };
-            };
-            [TranslationKey.FOOTER]: {
-                [TranslationKey.CONFIRM]: string;
-            };
-            [TranslationKey.TOAST_MESSAGES]: {
-                [TranslationKey.SUCCESSFUL_SETTINGS_UPDATE]: string;
+                [TranslationKey.CHANGE_PASSWORD]: {
+                    [TranslationKey.TITLE]: string;
+                    [TranslationKey.FOOTER]: {
+                        [TranslationKey.CONFIRM]: string;
+                    };
+                    [TranslationKey.TOAST_MESSAGES]: {
+                        [TranslationKey.SUCCESSFUL_SETTINGS_UPDATE]: string;
+                    };
+                };
             };
         };
     };

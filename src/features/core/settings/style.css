@@ -4,12 +4,18 @@
     row-gap: 32px;
 }
 
-.section__settings-card {
+.settings-section__card {
+    display: grid;
+    grid-template-rows: max-content auto;
+    row-gap: 32px;
+}
+
+.settings-tab {
     display: grid;
     grid-template-rows: auto max-content;
 }
 
-.section__settings-card__content-container {
+.settings-tab__content {
     display: grid;
     grid-auto-flow: row;
     row-gap: 16px;
@@ -17,7 +23,7 @@
     height: max-content;
 }
 
-.section__settings-card__footer {
+.settings-tab__footer {
     display: grid;
     justify-content: right;
 }

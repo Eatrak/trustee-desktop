@@ -11,7 +11,9 @@ import {
 } from "@shared/ts-types/generic/translations";
 import { UpdateUserSettingsBody } from "@shared/ts-types/APIs/input/user/updateUserSettings";
 import { UpdateUserSettingsResponse } from "@shared/ts-types/APIs/output/user/updateUserSettings";
-import { updateLanguage } from "@shared/i18n";
+import { setCurrentLanguage } from "@shared/i18n";
+import AuthService from "./auth";
+import TransactionsService from "./transactions";
 
 export default class SettingsService {
     static instance: SettingsService = new SettingsService();
@@ -26,12 +28,11 @@ export default class SettingsService {
         return Utils.getInstance().translate([
             TranslationKey.MODULES,
             TranslationKey.SETTINGS,
-            TranslationKey.TOAST_MESSAGES,
             ...translationKeys,
         ]);
     }
 
-    async updateSettings(
+    async updateSettingsPreferences(
         body: UpdateUserSettingsBody,
     ): Promise<Result<undefined, ErrorResponseBodyAttributes | undefined>> {
         try {
@@ -55,8 +56,30 @@ export default class SettingsService {
                 return Err(data);
             }
 
-            updateLanguage(body.updateInfo.language);
-            toast.success(this.translate([TranslationKey.SUCCESSFUL_SETTINGS_UPDATE]));
+            // Update settings preferences in local
+            const personalInfo = AuthService.getInstance().personalInfo$.getValue();
+            const newCurrentCurrency = TransactionsService.getInstance().getCurrency(
+                body.updateInfo.currencyId,
+            );
+            AuthService.getInstance().personalInfo$.next({
+                ...personalInfo,
+                settings: {
+                    currency: newCurrentCurrency || personalInfo.settings.currency,
+                    language: body.updateInfo.language,
+                },
+            });
+
+            // Set new current language
+            await setCurrentLanguage(body.updateInfo.language);
+
+            toast.success(
+                this.translate([
+                    TranslationKey.TABS,
+                    TranslationKey.PREFERENCES,
+                    TranslationKey.TOAST_MESSAGES,
+                    TranslationKey.SUCCESSFUL_SETTINGS_UPDATE,
+                ]),
+            );
 
             return Ok(undefined);
         } catch (err) {

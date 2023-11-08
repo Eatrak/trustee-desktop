@@ -228,6 +228,10 @@ export default class TransactionsService {
         }
     }
 
+    getCurrency(id: string): Currency | undefined {
+        return this.currencies$.getValue().find((currency) => currency.id === id);
+    }
+
     async getTransactionCategories() {
         try {
             const requestURL = Utils.getInstance().getAPIEndpoint(

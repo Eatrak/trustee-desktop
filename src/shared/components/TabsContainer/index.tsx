@@ -7,6 +7,7 @@ export interface TabProps {
     id: string;
     name: string;
     icon?: IconType;
+    link?: string;
 }
 
 export interface IProps {
@@ -17,13 +18,14 @@ export interface IProps {
 
 const TabsContainer = ({ tabs, activeTab, onTabClick }: IProps) => {
     const getTabsToRender = () => {
-        return tabs.map(({ id, name, icon }) => (
+        return tabs.map(({ id, name, icon, link }) => (
             <Tab
                 key={id}
                 id={id}
                 isActive={id === activeTab}
                 Icon={icon}
                 name={name}
+                link={link}
                 onClick={onTabClick}
             />
         ));

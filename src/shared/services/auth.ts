@@ -12,7 +12,7 @@ import { getErrorType } from "@shared/errors";
 import ErrorType from "@shared/errors/list";
 import { TranslationLanguage } from "@shared/ts-types/generic/translations";
 import SettingsService from "./settings";
-import { updateLanguage } from "@shared/i18n";
+import { setCurrentLanguage } from "@shared/i18n";
 
 export default class AuthService {
     static instance: AuthService = new AuthService();
@@ -58,7 +58,7 @@ export default class AuthService {
 
             const { personalInfo } = data;
             this.personalInfo$.next(personalInfo);
-            updateLanguage(personalInfo.settings.language);
+            await setCurrentLanguage(personalInfo.settings.language);
 
             return true;
         } catch (err) {
