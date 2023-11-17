@@ -14,6 +14,7 @@ const translation: Translation = {
         currency: "currency",
         language: "language",
         password: "password",
+        repeatedPassword: "repeated password",
     },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Already existing resource",
@@ -173,6 +174,10 @@ const translation: Translation = {
                 },
                 changePassword: {
                     title: "Change Password",
+                    fields: {
+                        password: "Password",
+                        repeatedPassword: "Repeated password",
+                    },
                     toastMessages: {
                         successfulSettingsUpdate:
                             "Your settings has been successfully updated",

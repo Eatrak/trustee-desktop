@@ -9,6 +9,7 @@ import SettingsPreferences from "./SettingsSections/SettingsPreferences";
 import SettingsInfo from "./SettingsSections/SettingsInfo";
 import { TranslationKey } from "@shared/ts-types/generic/translations";
 import { Utils } from "@shared/services/utils";
+import SettingsChangePassword from "./SettingsSections/SettingsChangePassword";
 
 const SettingsPage: FC = () => {
     const navigate = useNavigate();
@@ -80,6 +81,7 @@ const SettingsPage: FC = () => {
                 <Routes>
                     <Route path="/info" element={<SettingsInfo />} />
                     <Route path="/preferences" element={<SettingsPreferences />} />
+                    <Route path="/change-password" element={<SettingsChangePassword />} />
                 </Routes>
             </div>
         </div>

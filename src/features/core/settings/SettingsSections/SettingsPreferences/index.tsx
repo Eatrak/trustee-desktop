@@ -7,14 +7,14 @@ import Select, { SelectOption } from "@shared/components/Select";
 import { Currency } from "@shared/schema";
 import SettingsService from "@shared/services/settings";
 import { Utils } from "@shared/services/utils";
-import { UpdateUserSettingsBody } from "@shared/ts-types/APIs/input/user/updateUserSettings";
+import { UpdateUserPreferencesBody } from "@shared/ts-types/APIs/input/user/updateUserPreferences";
 import {
     FieldName,
     TranslationKey,
     TranslationLanguage,
     getCompleteLanguageName,
 } from "@shared/ts-types/generic/translations";
-import { updateUserSettingsBodyRules } from "@shared/validatorRules/user";
+import { updateUserPreferencesBodyRules } from "@shared/validatorRules/user";
 import TransactionsService from "@shared/services/transactions";
 import NormalButton from "@shared/components/NormalButton";
 import AuthService from "@shared/services/auth";
@@ -58,7 +58,7 @@ const SettingsPreferences: FC = () => {
     };
 
     const hasErrors = () => {
-        const body: UpdateUserSettingsBody = {
+        const body: UpdateUserPreferencesBody = {
             updateInfo: {
                 currencyId: selectedCurrencyOption?.value || "",
                 language: (selectedLanguageOption?.value as TranslationLanguage) || "",
@@ -66,7 +66,7 @@ const SettingsPreferences: FC = () => {
         };
 
         // Validate data
-        const validator = new Validator(body, updateUserSettingsBodyRules);
+        const validator = new Validator(body, updateUserPreferencesBodyRules);
         return validator.fails();
     };
 

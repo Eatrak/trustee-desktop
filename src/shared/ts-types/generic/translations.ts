@@ -26,6 +26,7 @@ export enum FieldName {
     CURRENCY = "currency",
     LANGUAGE = "language",
     PASSWORD = "password",
+    REPEATED_PASSWORD = "repeatedPassword",
 }
 
 export enum TranslationKey {
@@ -94,6 +95,7 @@ export enum TranslationKey {
     INFO = "info",
     PREFERENCES = "preferences",
     CHANGE_PASSWORD = "changePassword",
+    REPEATED_PASSWORD = "repeatedPassword",
 }
 
 export interface Translation {
@@ -235,6 +237,10 @@ export interface Translation {
                 };
                 [TranslationKey.CHANGE_PASSWORD]: {
                     [TranslationKey.TITLE]: string;
+                    [TranslationKey.FIELDS]: {
+                        [TranslationKey.PASSWORD]: string;
+                        [TranslationKey.REPEATED_PASSWORD]: string;
+                    };
                     [TranslationKey.FOOTER]: {
                         [TranslationKey.CONFIRM]: string;
                     };

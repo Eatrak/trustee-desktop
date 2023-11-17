@@ -9,11 +9,12 @@ import {
     TranslationKey,
     TranslationLanguage,
 } from "@shared/ts-types/generic/translations";
-import { UpdateUserSettingsBody } from "@shared/ts-types/APIs/input/user/updateUserSettings";
-import { UpdateUserSettingsResponse } from "@shared/ts-types/APIs/output/user/updateUserSettings";
+import { UpdateUserPreferencesBody } from "@shared/ts-types/APIs/input/user/updateUserPreferences";
+import { UpdateUserPreferencesResponse } from "@shared/ts-types/APIs/output/user/updateUserPreferences";
 import { setCurrentLanguage } from "@shared/i18n";
 import AuthService from "./auth";
 import TransactionsService from "./transactions";
+import { UpdatePasswordBody } from "@shared/ts-types/APIs/input/user/updatePassword";
 
 export default class SettingsService {
     static instance: SettingsService = new SettingsService();
@@ -32,8 +33,10 @@ export default class SettingsService {
         ]);
     }
 
+    async updatePassword(body: UpdatePasswordBody) {}
+
     async updateSettingsPreferences(
-        body: UpdateUserSettingsBody,
+        body: UpdateUserPreferencesBody,
     ): Promise<Result<undefined, ErrorResponseBodyAttributes | undefined>> {
         try {
             // Initialize request URL
@@ -48,7 +51,7 @@ export default class SettingsService {
                 body: JSON.stringify(body),
             });
 
-            const { data, error }: UpdateUserSettingsResponse = await response.json();
+            const { data, error }: UpdateUserPreferencesResponse = await response.json();
             if (error) {
                 Utils.getInstance().showErrorMessage(
                     getErrorType(data.status, data.code),
