@@ -1,5 +1,0 @@
-.transaction-deletion-dialog__footer {
-    display: grid;
-    column-gap: 16px;
-    grid-auto-flow: column;
-}

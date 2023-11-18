@@ -1,8 +1,0 @@
-.statistic-skeleton {
-    display: grid;
-    grid-auto-flow: row;
-}
-
-.statistic-skeleton__title {
-    user-select: none;
-}
