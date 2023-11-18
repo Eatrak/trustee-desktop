@@ -1,16 +1,19 @@
 import "./style.css";
 
 import { withTranslation } from "react-i18next";
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { Navbar } from "../Navbar";
+import WalletsModule from "@/features/WalletsModule";
 
 const AppLayout = () => {
     return (
         <div className="page app-layout">
             <Navbar />
             <div className="app-layout__content">
-                <Routes></Routes>
+                <Routes>
+                    <Route path="/wallets" element={<WalletsModule />} />
+                </Routes>
             </div>
         </div>
     );

@@ -65,6 +65,13 @@
     --ring: 212.7 26.8% 83.9%;
   }
 }
+
+* {
+    font-family: "Poppins", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    outline: 0;
+}
  
 @layer base {
   * {
@@ -74,3 +81,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* || Sections */
+
+.section {
+  width: 100%;
+  height: 100%;
+}
+
+.section__main-content {
+  padding: 30px;
+  padding-top: 26px;
+  padding-bottom: 26px;
+  box-sizing: border-box;
+}
+
+/* -- */
