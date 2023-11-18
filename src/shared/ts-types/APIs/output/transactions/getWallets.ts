@@ -1,6 +1,6 @@
-import { Wallet } from "@shared/schema";
-import { Response } from "@shared/errors/types";
-import { WalletTableRow } from "@shared/ts-types/DTOs/wallets";
+import { Wallet } from "@/shared/schema";
+import { Response } from "@/shared/errors/types";
+import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
 
 export interface GetWalletTableRowsResponseData {
     view: "table-row";

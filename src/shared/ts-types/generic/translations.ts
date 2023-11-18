@@ -1,4 +1,4 @@
-import ErrorType from "@shared/errors/list";
+import ErrorType from "@/shared/errors/list";
 
 export enum TranslationLanguage {
     EN = "en",

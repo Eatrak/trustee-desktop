@@ -1,4 +1,4 @@
-import { Response } from "@shared/errors/types";
+import { Response } from "@/shared/errors/types";
 
 export interface DeleteWalletsResponseData {}
 

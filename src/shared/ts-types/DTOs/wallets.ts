@@ -1,4 +1,4 @@
-import { Wallet } from "@shared/schema";
+import { Wallet } from "@/shared/schema";
 
 export enum WalletViews {
     TABLE_ROW = "table-row",

@@ -1,4 +1,4 @@
-import { Currency } from "@shared/schema";
+import { Currency } from "@/shared/schema";
 import { TranslationLanguage } from "../generic/translations";
 
 interface PersonalInfoSettings {

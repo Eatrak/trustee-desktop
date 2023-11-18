@@ -1,0 +1,14 @@
+.navbar-content-container {
+    display: grid;
+    grid-template-rows: auto max-content;
+    row-gap: 8px;
+
+    height: 100%;
+}
+
+.user-badge {
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+
+    user-select: none;
+}

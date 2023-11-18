@@ -2,37 +2,37 @@ import { BehaviorSubject } from "rxjs";
 import { Dayjs } from "dayjs";
 import { Ok, Err, Result } from "ts-results";
 
-import { Currency } from "@shared/schema";
-import { Utils } from "@shared/services/utils";
-import { GetTransactionsInputQueryParams } from "@shared/ts-types/APIs/input/transactions/getTransactions";
-import { GetTransactionsResponse } from "@shared/ts-types/APIs/output/transactions/getTransactions";
-import { GetCurrenciesResponse } from "@shared/ts-types/APIs/output/transactions/getCurrencies";
+import { Currency } from "@/shared/schema";
+import { Utils } from "@/shared/services/utils";
+import { GetTransactionsInputQueryParams } from "@/shared/ts-types/APIs/input/transactions/getTransactions";
+import { GetTransactionsResponse } from "@/shared/ts-types/APIs/output/transactions/getTransactions";
+import { GetCurrenciesResponse } from "@/shared/ts-types/APIs/output/transactions/getCurrencies";
 import {
     GetNormalTransactionCategoriesResponse,
     GetTransactionCategoryBalancesResponse,
-} from "@shared/ts-types/APIs/output/transactions/getTransactionCategories";
-import { CreateTransactionCategoryResponse } from "@shared/ts-types/APIs/output/transactions/createTransactionCategory";
-import { CreateTransactionCategoryBody } from "@shared/ts-types/APIs/input/transactions/createTransactionCategory";
-import { CreateTransactionBody } from "@shared/ts-types/APIs/input/transactions/createTransaction";
-import { CreateTransactionResponse } from "@shared/ts-types/APIs/output/transactions/createTransaction";
-import { DeleteTransactionQueryParameters } from "@shared/ts-types/APIs/input/transactions/deleteTransaction";
-import { GetBalanceResponse } from "@shared/ts-types/APIs/output/transactions/getBalance";
-import { DeleteTransactionResponse } from "@shared/ts-types/APIs/output/transactions/deleteTransaction";
-import { ErrorResponseBodyAttributes } from "@shared/errors/types";
+} from "@/shared/ts-types/APIs/output/transactions/getTransactionCategories";
+import { CreateTransactionCategoryResponse } from "@/shared/ts-types/APIs/output/transactions/createTransactionCategory";
+import { CreateTransactionCategoryBody } from "@/shared/ts-types/APIs/input/transactions/createTransactionCategory";
+import { CreateTransactionBody } from "@/shared/ts-types/APIs/input/transactions/createTransaction";
+import { CreateTransactionResponse } from "@/shared/ts-types/APIs/output/transactions/createTransaction";
+import { DeleteTransactionQueryParameters } from "@/shared/ts-types/APIs/input/transactions/deleteTransaction";
+import { GetBalanceResponse } from "@/shared/ts-types/APIs/output/transactions/getBalance";
+import { DeleteTransactionResponse } from "@/shared/ts-types/APIs/output/transactions/deleteTransaction";
+import { ErrorResponseBodyAttributes } from "@/shared/errors/types";
 import {
     GetTransactionCategoryBalancesInputMultiQueryParams,
     GetTransactionCategoryBalancesInputQueryParams,
-} from "@shared/ts-types/APIs/input/transactions/getTransactionCategories";
-import { TransactionCategoryBalance } from "@shared/ts-types/DTOs/transactions";
-import ErrorType from "@shared/errors/list";
+} from "@/shared/ts-types/APIs/input/transactions/getTransactionCategories";
+import { TransactionCategoryBalance } from "@/shared/ts-types/DTOs/transactions";
+import ErrorType from "@/shared/errors/list";
 import Validator from "validatorjs";
-import { getTransactionCategoryBalancesInputRules } from "@shared/validatorRules/transactions";
+import { getTransactionCategoryBalancesInputRules } from "@/shared/validatorRules/transactions";
 import {
     GetBalanceInputMultiQueryParams,
     GetBalanceInputQueryParams,
-} from "@shared/ts-types/APIs/input/transactions/getBalance";
-import { getErrorType } from "@shared/errors";
-import { TranslationKey } from "@shared/ts-types/generic/translations";
+} from "@/shared/ts-types/APIs/input/transactions/getBalance";
+import { getErrorType } from "@/shared/errors";
+import { TranslationKey } from "@/shared/ts-types/generic/translations";
 import { toast } from "react-toastify";
 
 export default class TransactionsService {

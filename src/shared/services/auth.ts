@@ -1,18 +1,18 @@
 import Validator from "validatorjs";
 import { BehaviorSubject } from "rxjs";
 
-import { signInValidator, signUpValidator } from "@shared/validatorRules/auth";
-import { Utils } from "@shared/services/utils";
-import { SignUpBody } from "@shared/ts-types/APIs/input/auth/signUp";
-import { SignUpResponse } from "@shared/ts-types/APIs/output/auth/signUp";
-import { SignInResponse } from "@shared/ts-types/APIs/output/auth/signIn";
-import { CheckAuthenticationResponse } from "@shared/ts-types/APIs/output/auth/checkAuthentication";
-import { PersonalInfo } from "@shared/ts-types/DTOs/auth";
-import { getErrorType } from "@shared/errors";
-import ErrorType from "@shared/errors/list";
-import { TranslationLanguage } from "@shared/ts-types/generic/translations";
+import { signInValidator, signUpValidator } from "@/shared/validatorRules/auth";
+import { Utils } from "@/shared/services/utils";
+import { SignUpBody } from "@/shared/ts-types/APIs/input/auth/signUp";
+import { SignUpResponse } from "@/shared/ts-types/APIs/output/auth/signUp";
+import { SignInResponse } from "@/shared/ts-types/APIs/output/auth/signIn";
+import { CheckAuthenticationResponse } from "@/shared/ts-types/APIs/output/auth/checkAuthentication";
+import { PersonalInfo } from "@/shared/ts-types/DTOs/auth";
+import { getErrorType } from "@/shared/errors";
+import ErrorType from "@/shared/errors/list";
+import { TranslationLanguage } from "@/shared/ts-types/generic/translations";
 import SettingsService from "./settings";
-import { setCurrentLanguage } from "@shared/i18n";
+import { setCurrentLanguage } from "@/shared/i18n";
 
 export default class AuthService {
     static instance: AuthService = new AuthService();

@@ -1,9 +1,9 @@
-import { Response } from "@shared/errors/types";
-import { TransactionCategory } from "@shared/schema";
+import { Response } from "@/shared/errors/types";
+import { TransactionCategory } from "@/shared/schema";
 import {
     TransactionCategoriesViews,
     TransactionCategoryBalance,
-} from "@shared/ts-types/DTOs/transactions";
+} from "@/shared/ts-types/DTOs/transactions";
 
 export interface GetNormalTransactionCategoriesResponseData {
     view: TransactionCategoriesViews.NORMAL;

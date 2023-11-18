@@ -1,5 +1,5 @@
-import ErrorType from "@shared/errors/list";
-import { Translation } from "@shared/ts-types/generic/translations";
+import ErrorType from "@/shared/errors/list";
+import { Translation } from "@/shared/ts-types/generic/translations";
 
 const translation: Translation = {
     fieldNames: {

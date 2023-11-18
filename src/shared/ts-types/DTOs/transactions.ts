@@ -1,4 +1,4 @@
-import { TransactionCategory } from "@shared/schema";
+import { TransactionCategory } from "@/shared/schema";
 
 export enum TransactionCategoriesViews {
     WITH_BALANCE = "with-balance",

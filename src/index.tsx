@@ -7,15 +7,14 @@ import dayjs from "dayjs";
 import localeData from "dayjs/plugin/localeData";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 import "./themes/light.css";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import SignUpPage from "@features/core/auth/SignUp";
-import SignInPage from "@features/core/auth/SignIn";
-import AppLayout from "@shared/customComponents/AppLayout";
-import Authorizer from "@shared/customComponents/Authorizer";
-import TransactionsService from "@shared/services/transactions";
+import AppLayout from "@/shared/customComponents/AppLayout";
+import Authorizer from "@/shared/customComponents/Authorizer";
+import TransactionsService from "@/shared/services/transactions";
 
 dayjs.extend(localeData);
 
@@ -28,28 +27,26 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const App = () => {
-    document.body.classList.add("light-mode");
-
     const loadResources = async () => {
         await Promise.all([TransactionsService.getInstance().getCurrencies()]);
     };
 
     return (
-        <Router>
-            <Routes>
-                <Route
-                    path="/*"
-                    element={
-                        <Authorizer loadResources={loadResources}>
-                            <AppLayout />
-                        </Authorizer>
-                    }
-                />
-                <Route path="/sign-up" element={<SignUpPage />} />
-                <Route path="/sign-in" element={<SignInPage />} />
-            </Routes>
-            <ToastContainer />
-        </Router>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <Router>
+                <Routes>
+                    <Route
+                        path="/*"
+                        element={
+                            <Authorizer loadResources={loadResources}>
+                                <AppLayout />
+                            </Authorizer>
+                        }
+                    />
+                </Routes>
+                <ToastContainer />
+            </Router>
+        </ThemeProvider>
     );
 };
 

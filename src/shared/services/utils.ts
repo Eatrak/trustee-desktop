@@ -1,9 +1,9 @@
-import { getErrorType } from "@shared/errors";
-import ErrorType from "@shared/errors/list";
+import { getErrorType } from "@/shared/errors";
+import ErrorType from "@/shared/errors/list";
 import { toast } from "react-toastify";
 
-import i18n from "@shared/i18n";
-import { FieldName, TranslationKey } from "@shared/ts-types/generic/translations";
+import i18n from "@/shared/i18n";
+import { FieldName, TranslationKey } from "@/shared/ts-types/generic/translations";
 
 export class Utils {
     private static instance = new Utils();

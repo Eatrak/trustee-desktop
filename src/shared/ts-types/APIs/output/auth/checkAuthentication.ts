@@ -1,5 +1,5 @@
-import { Response } from "@shared/errors/types";
-import { PersonalInfo } from "@shared/ts-types/DTOs/auth";
+import { Response } from "@/shared/errors/types";
+import { PersonalInfo } from "@/shared/ts-types/DTOs/auth";
 
 export interface CheckAuthenticationResponseData {
     personalInfo: PersonalInfo;

@@ -1,13 +1,11 @@
 import "./style.css";
-import logo from "@shared/assets/logo.jpg";
-import LoadingBar from "@shared/components/LoadingBar";
+import { LoadingSpinner } from "@/components/ui/loadingSpinner";
 
 const LoadingPage = () => {
     return (
         <div className="page loading-page">
-            <div className="loading-page__content">
-                <img src={logo} draggable={false} />
-                <LoadingBar />
+            <div className="loading-content">
+                <LoadingSpinner />
             </div>
         </div>
     );

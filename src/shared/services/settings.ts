@@ -2,16 +2,16 @@ import { Err, Ok, Result } from "ts-results";
 import { toast } from "react-toastify";
 
 import { Utils } from "./utils";
-import ErrorType from "@shared/errors/list";
-import { getErrorType } from "@shared/errors";
-import { ErrorResponseBodyAttributes } from "@shared/errors/types";
+import ErrorType from "@/shared/errors/list";
+import { getErrorType } from "@/shared/errors";
+import { ErrorResponseBodyAttributes } from "@/shared/errors/types";
 import {
     TranslationKey,
     TranslationLanguage,
-} from "@shared/ts-types/generic/translations";
-import { UpdateUserSettingsBody } from "@shared/ts-types/APIs/input/user/updateUserSettings";
-import { UpdateUserSettingsResponse } from "@shared/ts-types/APIs/output/user/updateUserSettings";
-import { setCurrentLanguage } from "@shared/i18n";
+} from "@/shared/ts-types/generic/translations";
+import { UpdateUserSettingsBody } from "@/shared/ts-types/APIs/input/user/updateUserSettings";
+import { UpdateUserSettingsResponse } from "@/shared/ts-types/APIs/output/user/updateUserSettings";
+import { setCurrentLanguage } from "@/shared/i18n";
 import AuthService from "./auth";
 import TransactionsService from "./transactions";
 

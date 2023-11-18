@@ -1,4 +1,4 @@
-import { TranslationLanguage } from "@shared/ts-types/generic/translations";
+import { TranslationLanguage } from "@/shared/ts-types/generic/translations";
 
 /**
  * Body of the request body for the sign-up process.

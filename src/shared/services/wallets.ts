@@ -2,26 +2,26 @@ import { Err, Ok, Result } from "ts-results";
 import { toast } from "react-toastify";
 
 import { Utils } from "./utils";
-import { Wallet } from "@shared/schema";
-import ErrorType from "@shared/errors/list";
-import { getErrorType } from "@shared/errors";
-import { ErrorResponseBodyAttributes } from "@shared/errors/types";
-import { TranslationKey } from "@shared/ts-types/generic/translations";
-import { CreateWalletBody } from "@shared/ts-types/APIs/input/transactions/createWallet";
-import { DeleteWalletPathParameters } from "@shared/ts-types/APIs/input/transactions/deleteWallet";
+import { Wallet } from "@/shared/schema";
+import ErrorType from "@/shared/errors/list";
+import { getErrorType } from "@/shared/errors";
+import { ErrorResponseBodyAttributes } from "@/shared/errors/types";
+import { TranslationKey } from "@/shared/ts-types/generic/translations";
+import { CreateWalletBody } from "@/shared/ts-types/APIs/input/transactions/createWallet";
+import { DeleteWalletPathParameters } from "@/shared/ts-types/APIs/input/transactions/deleteWallet";
 import {
     UpdateWalletBody,
     UpdateWalletPathParameters,
     UpdateWalletUpdateInfo,
-} from "@shared/ts-types/APIs/input/transactions/updateWallet";
-import { CreateWalletResponse } from "@shared/ts-types/APIs/output/transactions/createWallet";
-import { DeleteWalletsResponse } from "@shared/ts-types/APIs/output/transactions/deleteWallet";
-import { UpdateWalletResponse } from "@shared/ts-types/APIs/output/transactions/updateWallet";
+} from "@/shared/ts-types/APIs/input/transactions/updateWallet";
+import { CreateWalletResponse } from "@/shared/ts-types/APIs/output/transactions/createWallet";
+import { DeleteWalletsResponse } from "@/shared/ts-types/APIs/output/transactions/deleteWallet";
+import { UpdateWalletResponse } from "@/shared/ts-types/APIs/output/transactions/updateWallet";
 import {
     GetWalletTableRowsResponse,
     GetWalletsResponse,
-} from "@shared/ts-types/APIs/output/transactions/getWallets";
-import { WalletTableRow, WalletViews } from "@shared/ts-types/DTOs/wallets";
+} from "@/shared/ts-types/APIs/output/transactions/getWallets";
+import { WalletTableRow, WalletViews } from "@/shared/ts-types/DTOs/wallets";
 
 export default class WalletsService {
     static instance: WalletsService = new WalletsService();

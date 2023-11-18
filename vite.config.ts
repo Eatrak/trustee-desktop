@@ -9,6 +9,7 @@ export default defineConfig({
     plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
     resolve: {
         alias: [
+            { find: "@", replacement: path.resolve(__dirname, "./src") },
             {
                 find: "@shared",
                 replacement: path.resolve(__dirname, "src/shared"),

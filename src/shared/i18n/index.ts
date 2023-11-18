@@ -9,10 +9,10 @@ import dayjs from "dayjs";
 // Dayjs locale imports
 import "dayjs/locale/it";
 
-import { FieldName, TranslationLanguage } from "@shared/ts-types/generic/translations";
+import { FieldName, TranslationLanguage } from "@/shared/ts-types/generic/translations";
 import en from "./translations/en";
 import it from "./translations/it";
-import { Utils } from "@shared/services/utils";
+import { Utils } from "@/shared/services/utils";
 
 const translations = {
     [TranslationLanguage.EN]: en,
