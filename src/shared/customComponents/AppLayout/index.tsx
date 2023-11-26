@@ -4,7 +4,7 @@ import { withTranslation } from "react-i18next";
 import { Route, Routes } from "react-router-dom";
 
 import { Navbar } from "../Navbar";
-import WalletsModule from "@/features/WalletsModule";
+import WalletsModule from "@/features/modules/WalletsModule";
 
 const AppLayout = () => {
     return (
