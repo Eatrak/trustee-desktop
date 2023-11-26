@@ -46,7 +46,7 @@ export const Navbar = () => {
     return (
         <div className="navbar">
             <div className="navbar-content-container space-y-4 px-3 py-5">
-                <div className="space-y-1">
+                <div className="space-y-1 mt-14">
                     <NavbarButton
                         text={translate([TranslationKey.WALLETS])}
                         Icon={ArchiveIcon}
