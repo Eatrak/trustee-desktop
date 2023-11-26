@@ -37,8 +37,6 @@ export const setCurrentLanguage = async (language: TranslationLanguage) => {
     await i18n.changeLanguage(language);
 };
 
-setCurrentLanguage(TranslationLanguage.IT);
-
 Validator.setMessages("en", validatorEn);
 Validator.setMessages("it", validatorIt);
 
