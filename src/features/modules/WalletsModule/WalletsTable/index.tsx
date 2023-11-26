@@ -27,6 +27,8 @@ import {
 import { Utils } from "@/shared/services/utils";
 import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
 import { TranslationKey } from "@/shared/ts-types/generic/translations";
+import { Skeleton } from "@/components/ui/skeleton";
+import TableSkeletonRow from "@/components/ui/table-skeleton-row";
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
     return `${Utils.getInstance().getFormattedAmount(currencyCode, amount)}`;
@@ -123,16 +125,30 @@ export const columns: ColumnDef<WalletTableRow>[] = [
 
 interface IProps {
     wallets: WalletTableRow[];
+    isLoading?: boolean;
 }
 
-export function WalletsTable({ wallets }: IProps) {
+const skeletonWallets: WalletTableRow[] = Array.from(Array(5).keys()).map((id) => ({
+    id: id.toString(),
+    net: 0,
+    income: 0,
+    expense: 0,
+    transactionsCount: 0,
+    currencyCode: "",
+    name: "",
+    userId: "",
+    currencyId: "",
+    untrackedBalance: 0,
+}));
+
+export function WalletsTable({ wallets, isLoading = false }: IProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data: wallets,
+        data: isLoading ? skeletonWallets : wallets,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -173,7 +189,11 @@ export function WalletsTable({ wallets }: IProps) {
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {isLoading ? (
+                            table
+                                .getRowModel()
+                                .rows.map((row) => <TableSkeletonRow row={row} />)
+                        ) : table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
