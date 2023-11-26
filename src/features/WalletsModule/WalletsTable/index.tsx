@@ -82,7 +82,7 @@ export const columns: ColumnDef<WalletTableRow>[] = [
     {
         accessorKey: "name",
         header: translate([TranslationKey.NAME]),
-        cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
+        cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
     },
     {
         accessorKey: "net",
@@ -152,7 +152,9 @@ export const columns: ColumnDef<WalletTableRow>[] = [
     {
         accessorKey: "transactionsCount",
         header: translate([TranslationKey.TRANSACTIONS_COUNT]),
-        cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+        cell: ({ row }) => (
+            <div className="lowercase">{row.original.transactionsCount}</div>
+        ),
     },
 ];
 
