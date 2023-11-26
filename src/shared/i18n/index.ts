@@ -1,5 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { z } from "zod";
+import { zodI18nMap } from "zod-i18n-map";
 import Validator from "validatorjs";
 //@ts-ignore
 import validatorEn from "validatorjs/src/lang/en";
@@ -24,6 +26,8 @@ i18n.use(initReactI18next).init({
     fallbackLng: TranslationLanguage.EN,
 });
 
+z.setErrorMap(zodI18nMap);
+
 i18n.on("languageChanged", (language) => {
     dayjs.locale(language);
     Validator.useLang(language);
@@ -33,7 +37,7 @@ export const setCurrentLanguage = async (language: TranslationLanguage) => {
     await i18n.changeLanguage(language);
 };
 
-setCurrentLanguage(TranslationLanguage.EN);
+setCurrentLanguage(TranslationLanguage.IT);
 
 Validator.setMessages("en", validatorEn);
 Validator.setMessages("it", validatorIt);

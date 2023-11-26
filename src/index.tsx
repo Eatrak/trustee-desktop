@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import * as Sentry from "@sentry/react";
@@ -15,6 +15,7 @@ import reportWebVitals from "./reportWebVitals";
 import AppLayout from "@/shared/customComponents/AppLayout";
 import Authorizer from "@/shared/customComponents/Authorizer";
 import TransactionsService from "@/shared/services/transactions";
+import SignInPage from "./features/core/SignIn";
 
 dayjs.extend(localeData);
 
@@ -43,6 +44,7 @@ const App = () => {
                             </Authorizer>
                         }
                     />
+                    <Route path="/sign-in" element={<SignInPage />} />
                 </Routes>
                 <ToastContainer />
             </Router>
@@ -50,7 +52,9 @@ const App = () => {
     );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const container = document.getElementById("root");
+const root = createRoot(container!);
+root.render(<App />);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

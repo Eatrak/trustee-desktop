@@ -1,7 +1,7 @@
 import Validator from "validatorjs";
 import { BehaviorSubject } from "rxjs";
 
-import { signInValidator, signUpValidator } from "@/shared/validatorRules/auth";
+import { signInFormSchema, signUpValidator } from "@/shared/validatorRules/auth";
 import { Utils } from "@/shared/services/utils";
 import { SignUpBody } from "@/shared/ts-types/APIs/input/auth/signUp";
 import { SignUpResponse } from "@/shared/ts-types/APIs/output/auth/signUp";
@@ -117,9 +117,9 @@ export default class AuthService {
 
     async signIn(email: string, password: string) {
         try {
-            const validation = new Validator({ email, password }, signInValidator);
+            const validation = signInFormSchema.safeParse({ email, password });
 
-            if (validation.fails()) {
+            if (!validation.success) {
                 return false;
             }
 

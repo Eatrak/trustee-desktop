@@ -1,5 +1,11 @@
+import zodTranslation from "zod-i18n-map/locales/it/zod.json";
+
 import ErrorType from "@/shared/errors/list";
-import { Translation } from "@/shared/ts-types/generic/translations";
+import {
+    FieldNamesTranslation,
+    Translation,
+} from "@/shared/ts-types/generic/translations";
+import { ZodIssueCode, z } from "zod";
 
 const translation: Translation = {
     fieldNames: {
@@ -185,6 +191,25 @@ const translation: Translation = {
     },
 };
 
+let customZodTranslation = zodTranslation;
+customZodTranslation.errors.too_small.string.inclusive =
+    "Il campo {{path}} deve essere almeno {{minimum}} carattere/i";
+
+const fieldNamesTranslation: FieldNamesTranslation = {
+    email: "email",
+    password: "password",
+    amount: "import",
+    categories: "categorie",
+    creationDate: "data di creazione",
+    currency: "valuta",
+    language: "lingua",
+    name: "nome",
+    surname: "cognome",
+    untrackedBalance: "bilancio non tracciato",
+    wallet: "portafoglio",
+};
+
 export default {
+    zod: { ...customZodTranslation, ...fieldNamesTranslation },
     translation,
 };

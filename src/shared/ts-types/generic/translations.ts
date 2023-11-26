@@ -96,6 +96,13 @@ export enum TranslationKey {
     CHANGE_PASSWORD = "changePassword",
 }
 
+// By using a dictionary where the keys are in the FieldName enum,
+// I'm sure that I'm adding the translation of each field name,
+// since I've used the FieldName enum for the keys of the form zod schemas.
+export type FieldNamesTranslation = {
+    [fieldName in FieldName]: string;
+};
+
 export interface Translation {
     [TranslationKey.FIELD_NAMES]: {
         [fieldName in FieldName]: string;
