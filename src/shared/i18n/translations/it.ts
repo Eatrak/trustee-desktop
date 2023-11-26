@@ -52,7 +52,9 @@ const translation: Translation = {
         wallets: {
             header: {
                 title: "Portafogli",
-                subTitle: "portafogli",
+                subTitle_one: "{{count}} portafoglio",
+                subTitle_other: "{{count}} portafogli",
+                creationButtonText: "Aggiungi nuovo portafoglio",
             },
             summary: {
                 totalIncome: "Reddito totale",

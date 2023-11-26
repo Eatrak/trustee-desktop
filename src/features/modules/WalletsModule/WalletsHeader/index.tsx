@@ -1,0 +1,44 @@
+import H2 from "@/components/ui/h2";
+import { Icons } from "@/components/ui/icons";
+import { Button } from "@/components/ui/button";
+import { TranslationKey } from "@/shared/ts-types/generic/translations";
+import { Utils } from "@/shared/services/utils";
+
+interface IProps {
+    walletsCount: number;
+}
+
+const WalletsHeader = ({ walletsCount }: IProps) => {
+    const translate = (translationKeys: TranslationKey[], params?: Object) => {
+        return Utils.getInstance().translate(
+            [
+                TranslationKey.MODULES,
+                TranslationKey.WALLETS,
+                TranslationKey.HEADER,
+                ...translationKeys,
+            ],
+            params,
+        );
+    };
+
+    return (
+        <div className="flex flex-column space-x-4">
+            <div className="flex-grow">
+                <H2 text={translate([TranslationKey.TITLE])} />
+                <p className="text-muted-foreground">
+                    {translate([TranslationKey.SUB_TITLE], {
+                        count: walletsCount,
+                    })}
+                </p>
+            </div>
+            <div className="flex flex-column space-x-1">
+                <Button>
+                    <Icons.plus className="mr-2 h-4 w-4" />
+                    {translate([TranslationKey.CREATION_BUTTON_TEXT])}
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+export default WalletsHeader;

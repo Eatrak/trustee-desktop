@@ -51,7 +51,9 @@ const translation: Translation = {
         wallets: {
             header: {
                 title: "Wallets",
-                subTitle: "wallets",
+                subTitle_one: "{{count}} wallet",
+                subTitle_other: "{{count}} wallets",
+                creationButtonText: "Add new wallet",
             },
             summary: {
                 totalIncome: "Total income",

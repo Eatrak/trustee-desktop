@@ -48,6 +48,8 @@ export enum TranslationKey {
     HEADER = "header",
     TITLE = "title",
     SUB_TITLE = "subTitle",
+    SUB_TITLE_SINGULAR = "subTitle_one",
+    SUB_TITLE_PLURAL = "subTitle_other",
     TOTAL_INCOME = "totalIncome",
     TOTAL_EXPENSE = "totalExpense",
     TOTAL_UNTRACKED_BALANCE = "totalUntrackedBalance",
@@ -114,7 +116,9 @@ export interface Translation {
         [TranslationKey.WALLETS]: {
             [TranslationKey.HEADER]: {
                 [TranslationKey.TITLE]: string;
-                [TranslationKey.SUB_TITLE]: string;
+                [TranslationKey.SUB_TITLE_SINGULAR]: string;
+                [TranslationKey.SUB_TITLE_PLURAL]: string;
+                [TranslationKey.CREATION_BUTTON_TEXT]: string;
             };
             [TranslationKey.TABLE]: {
                 [TranslationKey.NAME]: string;

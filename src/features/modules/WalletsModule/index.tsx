@@ -9,6 +9,9 @@ import H2 from "@/components/ui/h2";
 import WalletsBalanceSummaryContainer from "./WalletsBalanceSummaryContainer";
 import AuthService from "@/shared/services/auth";
 import { Currency } from "@/shared/schema";
+import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/ui/icons";
+import WalletsHeader from "./WalletsHeader";
 
 const WalletsModule = () => {
     let [wallets, setWallets] = useState<WalletTableRow[]>([]);
@@ -63,7 +66,7 @@ const WalletsModule = () => {
     return (
         <div className="section">
             <div className="section__main-content space-y-4">
-                <H2 text="Wallets" />
+                <WalletsHeader walletsCount={wallets.length} />
                 <WalletsBalanceSummaryContainer
                     currencyCode={currency.code}
                     totalIncome={getTotalIncome()}
