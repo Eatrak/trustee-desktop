@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { Navbar } from "../Navbar";
 import WalletsModule from "@/features/modules/WalletsModule";
+import WalletCreationModule from "@/features/modules/WalletsModule/WalletCreationModule";
 
 const AppLayout = () => {
     return (
@@ -12,6 +13,7 @@ const AppLayout = () => {
             <Navbar />
             <div className="app-layout__content">
                 <Routes>
+                    <Route path="/wallets/new" element={<WalletCreationModule />} />
                     <Route path="/wallets" element={<WalletsModule />} />
                 </Routes>
             </div>

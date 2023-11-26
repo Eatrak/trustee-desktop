@@ -107,6 +107,8 @@
   padding-top: 26px;
   padding-bottom: 26px;
   box-sizing: border-box;
+
+  height: 100%;
 }
 
 /* -- */
