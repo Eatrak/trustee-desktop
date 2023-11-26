@@ -157,10 +157,14 @@ export default class WalletsService {
         }
     }
 
-    async getWalletsSummary() {
+    async getWalletsSummary(currencyId?: string) {
         try {
+            let queryParams = `view=${WalletViews.SUMMARY}`;
+            // If the currencyId is given, get only the wallets with the given currencyId
+            if (currencyId) queryParams += `&currencyId=${currencyId}`;
+
             const requestURL = Utils.getInstance().getAPIEndpoint(
-                `/wallets?view=${WalletViews.SUMMARY}`,
+                `/wallets?${queryParams}`,
             );
             const response = await fetch(requestURL, {
                 headers: {
@@ -184,12 +188,16 @@ export default class WalletsService {
         }
     }
 
-    async getWalletTableRows(): Promise<
-        Result<WalletTableRow[], ErrorResponseBodyAttributes | undefined>
-    > {
+    async getWalletTableRows(
+        currencyId?: string,
+    ): Promise<Result<WalletTableRow[], ErrorResponseBodyAttributes | undefined>> {
         try {
+            let queryParams = `view=${WalletViews.TABLE_ROW}`;
+            // If the currencyId is given, get only the wallets with the given currencyId
+            if (currencyId) queryParams += `&currencyId=${currencyId}`;
+
             const requestURL = Utils.getInstance().getAPIEndpoint(
-                `/wallets?view=${WalletViews.TABLE_ROW}`,
+                `/wallets?${queryParams}`,
             );
             const response = await fetch(requestURL, {
                 headers: {
