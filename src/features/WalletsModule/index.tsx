@@ -6,7 +6,7 @@ const WalletsModule = () => {
         <div className="section">
             <div className="section__main-content">
                 <H2 text="Wallets" />
-                <WalletsTable />
+                <WalletsTable wallets={[]} />
             </div>
         </div>
     );

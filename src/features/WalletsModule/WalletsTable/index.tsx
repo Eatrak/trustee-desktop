@@ -13,18 +13,9 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
     Table,
     TableBody,
@@ -34,36 +25,8 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Utils } from "@/shared/services/utils";
-import AuthService from "@/shared/services/auth";
 import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
 import { TranslationKey } from "@/shared/ts-types/generic/translations";
-
-const data: WalletTableRow[] = [
-    {
-        currencyCode: "EUR",
-        currencyId: "1",
-        expense: 1000,
-        id: "abc123",
-        income: 2000,
-        name: "W 1",
-        net: 1000,
-        transactionsCount: 10,
-        untrackedBalance: 0,
-        userId: "user1",
-    },
-    {
-        currencyCode: "USD",
-        currencyId: "2",
-        expense: 1000,
-        id: "def456",
-        income: 1500,
-        name: "W 2",
-        net: 500,
-        transactionsCount: 5,
-        untrackedBalance: 0,
-        userId: "user2",
-    },
-];
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
     return `${Utils.getInstance().getFormattedAmount(currencyCode, amount)}`;
@@ -158,14 +121,18 @@ export const columns: ColumnDef<WalletTableRow>[] = [
     },
 ];
 
-export function WalletsTable() {
+interface IProps {
+    wallets: WalletTableRow[];
+}
+
+export function WalletsTable({ wallets }: IProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data,
+        data: wallets,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
