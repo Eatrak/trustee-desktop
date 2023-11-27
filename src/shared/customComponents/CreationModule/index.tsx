@@ -39,9 +39,9 @@ const CreationModule = ({ title, subTitle }: IProps) => {
                     <H2 text={title} />
                     <p className="text-muted-foreground">{subTitle}</p>
                 </div>
+                <Separator />
                 <Form {...form}>
                     <form className="creation-module__form">
-                        <Separator />
                         <div className="space-y-4">
                             <FormField
                                 control={form.control}
@@ -77,20 +77,18 @@ const CreationModule = ({ title, subTitle }: IProps) => {
                                 )}
                             />
                         </div>
-                        <Separator />
-                        <div className="creation-module__form__footer">
-                            <Button variant="ghost" disabled={false}>
-                                Cancel
-                            </Button>
-                            <Button type="submit" disabled={false}>
-                                {false && (
-                                    <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
-                                )}
-                                Confirm
-                            </Button>
-                        </div>
                     </form>
                 </Form>
+                <Separator />
+                <div className="creation-module__form__footer">
+                    <Button variant="ghost" disabled={false}>
+                        Cancel
+                    </Button>
+                    <Button disabled={false}>
+                        {false && <Icons.loading className="mr-2 h-4 w-4 animate-spin" />}
+                        Confirm
+                    </Button>
+                </div>
             </div>
         </div>
     );

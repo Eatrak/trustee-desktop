@@ -1,16 +1,15 @@
 .creation-module__main-content {
     display: grid;
-    grid-template-rows: max-content auto;
+    grid-template-rows: max-content max-content auto max-content max-content;
     row-gap: 24px;
 
     width: 100%;
-    max-width: 800px;
 }
 
 .creation-module__form {
     display: grid;
-    grid-template-rows: max-content auto max-content max-content;
-    row-gap: 24px;
+
+    max-width: 800px;
 }
 
 .creation-module__form__footer {
