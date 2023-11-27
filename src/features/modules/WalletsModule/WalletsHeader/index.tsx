@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import H2 from "@/components/ui/h2";
 import { Icons } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
@@ -9,6 +11,8 @@ interface IProps {
 }
 
 const WalletsHeader = ({ walletsCount }: IProps) => {
+    const navigate = useNavigate();
+
     const translate = (translationKeys: TranslationKey[], params?: Object) => {
         return Utils.getInstance().translate(
             [
@@ -21,6 +25,8 @@ const WalletsHeader = ({ walletsCount }: IProps) => {
         );
     };
 
+    const goToWalletsModule = () => navigate("/wallets/new");
+
     return (
         <div className="flex flex-column space-x-4">
             <div className="flex-grow">
@@ -32,7 +38,7 @@ const WalletsHeader = ({ walletsCount }: IProps) => {
                 </p>
             </div>
             <div className="flex flex-column space-x-1">
-                <Button>
+                <Button onClick={goToWalletsModule}>
                     <Icons.plus className="mr-2 h-4 w-4" />
                     {translate([TranslationKey.CREATION_BUTTON_TEXT])}
                 </Button>
