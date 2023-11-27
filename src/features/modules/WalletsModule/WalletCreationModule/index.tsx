@@ -16,6 +16,8 @@ import { createWalletFormSchema } from "@/shared/validatorRules/wallets";
 import { CreateWalletFormSchema } from "@/shared/ts-types/APIs/input/transactions/createWallet";
 import WalletsService from "@/shared/services/wallets";
 import AuthService from "@/shared/services/auth";
+import { FieldName, TranslationKey } from "@/shared/ts-types/generic/translations";
+import { Utils } from "@/shared/services/utils";
 
 const WalletCreationModule = () => {
     const navigate = useNavigate();
@@ -28,11 +30,18 @@ const WalletCreationModule = () => {
         },
     });
 
-    const goToWalletsModule = () => navigate("/wallets");
-
-    const openCancelConfirmationDialog = () => {
-        goToWalletsModule();
+    const translate = (translationKeys: TranslationKey[], params?: Object) => {
+        return Utils.getInstance().translate(
+            [TranslationKey.MODULES, TranslationKey.WALLET_CREATION, ...translationKeys],
+            params,
+        );
     };
+
+    const translateFormFieldTitle = (fieldName: FieldName) => {
+        return Utils.getInstance().translateFormFieldTitle(fieldName);
+    };
+
+    const goToWalletsModule = () => navigate("/wallets");
 
     const confirm = async (formData: CreateWalletFormSchema) => {
         await createWallet(formData);
@@ -52,8 +61,8 @@ const WalletCreationModule = () => {
 
     return (
         <CreationModule
-            title="Wallet creation"
-            subTitle="Create a new wallet."
+            title={translate([TranslationKey.HEADER, TranslationKey.TITLE])}
+            subTitle={translate([TranslationKey.HEADER, TranslationKey.SUB_TITLE])}
             onExit={goToWalletsModule}
             onSubmit={confirm}
             form={form}
@@ -64,7 +73,9 @@ const WalletCreationModule = () => {
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>
+                                    {translateFormFieldTitle(FieldName.NAME)}
+                                </FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -77,7 +88,9 @@ const WalletCreationModule = () => {
                         name="untrackedBalance"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Untracked balance</FormLabel>
+                                <FormLabel>
+                                    {translateFormFieldTitle(FieldName.UNTRACKED_BALANCE)}
+                                </FormLabel>
                                 <FormControl>
                                     <Input
                                         type="number"

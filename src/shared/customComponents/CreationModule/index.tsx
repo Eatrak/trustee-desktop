@@ -8,6 +8,8 @@ import H2 from "@/components/ui/h2";
 import { Icons } from "@/components/ui/icons";
 import { Separator } from "@/components/ui/separator";
 import { ConfirmationDialog } from "../ConfirmationDialog";
+import { TranslationKey } from "@/shared/ts-types/generic/translations";
+import { Utils } from "@/shared/services/utils";
 
 interface IProps {
     title: string;
@@ -27,6 +29,13 @@ const CreationModule = ({
     onSubmit,
 }: IProps) => {
     let [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const translate = (translationKeys: TranslationKey[], params?: Object) => {
+        return Utils.getInstance().translate(
+            [TranslationKey.CREATION_MODULE, ...translationKeys],
+            params,
+        );
+    };
 
     const submit = async (formData: any) => {
         setIsSubmitting(true);
@@ -50,10 +59,21 @@ const CreationModule = ({
                 <Separator />
                 <div className="creation-module__form__footer">
                     <ConfirmationDialog
+                        title={translate([
+                            TranslationKey.CONFIRMATION_DIALOG,
+                            TranslationKey.TITLE,
+                        ])}
+                        description={translate([
+                            TranslationKey.CONFIRMATION_DIALOG,
+                            TranslationKey.DESCRIPTION,
+                        ])}
                         onConfirm={onExit}
                         trigger={
                             <Button variant="ghost" disabled={isSubmitting}>
-                                Cancel
+                                {translate([
+                                    TranslationKey.FOOTER,
+                                    TranslationKey.CANCEL,
+                                ])}
                             </Button>
                         }
                     />
@@ -62,7 +82,7 @@ const CreationModule = ({
                         {isSubmitting && (
                             <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        Confirm
+                        {translate([TranslationKey.FOOTER, TranslationKey.CONFIRM])}
                     </Button>
                 </div>
             </div>

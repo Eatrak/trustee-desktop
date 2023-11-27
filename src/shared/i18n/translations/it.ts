@@ -5,7 +5,6 @@ import {
     FieldNamesTranslation,
     Translation,
 } from "@/shared/ts-types/generic/translations";
-import { ZodIssueCode, z } from "zod";
 
 const translation: Translation = {
     fieldNames: {
@@ -42,13 +41,29 @@ const translation: Translation = {
         },
     },
     confirmationDialog: {
-        cancel: "Esci",
-        confirm: "Conferma",
+        cancel: "No",
+        confirm: "Sì",
+    },
+    creationModule: {
+        confirmationDialog: {
+            title: "Sei sicuro di uscire?",
+            description: "Cliccando 'Sì' il processo sarà annullato.",
+        },
+        footer: {
+            cancel: "Esci",
+            confirm: "Conferma",
+        },
     },
     general: {
         all: "Tutti",
     },
     modules: {
+        walletCreation: {
+            header: {
+                title: "Creazione portafoglio",
+                subTitle: "Crea un nuovo portafoglio.",
+            },
+        },
         wallets: {
             header: {
                 title: "Portafogli",

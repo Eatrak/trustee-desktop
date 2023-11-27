@@ -64,4 +64,9 @@ export class Utils {
     translateFieldName(fieldNameKey: FieldName) {
         return i18n.t(`${TranslationKey.FIELD_NAMES}.${fieldNameKey}`);
     }
+
+    translateFormFieldTitle(fieldName: FieldName) {
+        const translatedFieldName = this.translateFieldName(fieldName);
+        return translatedFieldName.charAt(0).toUpperCase() + translatedFieldName.slice(1);
+    }
 }

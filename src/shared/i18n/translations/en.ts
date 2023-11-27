@@ -2,7 +2,6 @@ import zodTranslation from "zod-i18n-map/locales/en/zod.json";
 
 import ErrorType from "@/shared/errors/list";
 import {
-    FieldName,
     FieldNamesTranslation,
     Translation,
 } from "@/shared/ts-types/generic/translations";
@@ -41,13 +40,29 @@ const translation: Translation = {
         },
     },
     confirmationDialog: {
-        cancel: "Exit",
-        confirm: "Confirm",
+        cancel: "No",
+        confirm: "Yes",
+    },
+    creationModule: {
+        confirmationDialog: {
+            title: "Are you sure to exit?",
+            description: "By clicking 'Yes' the creation process will be aborted.",
+        },
+        footer: {
+            cancel: "Exit",
+            confirm: "Confirm",
+        },
     },
     general: {
         all: "All",
     },
     modules: {
+        walletCreation: {
+            header: {
+                title: "Wallet creation",
+                subTitle: "Create a new wallet.",
+            },
+        },
         wallets: {
             header: {
                 title: "Wallets",

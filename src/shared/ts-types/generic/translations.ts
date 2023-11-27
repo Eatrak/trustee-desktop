@@ -96,6 +96,8 @@ export enum TranslationKey {
     INFO = "info",
     PREFERENCES = "preferences",
     CHANGE_PASSWORD = "changePassword",
+    CREATION_MODULE = "creationModule",
+    WALLET_CREATION = "walletCreation",
 }
 
 // By using a dictionary where the keys are in the FieldName enum,
@@ -113,6 +115,12 @@ export interface Translation {
         [errorType in ErrorType]: string;
     };
     [TranslationKey.MODULES]: {
+        [TranslationKey.WALLET_CREATION]: {
+            [TranslationKey.HEADER]: {
+                [TranslationKey.TITLE]: string;
+                [TranslationKey.SUB_TITLE]: string;
+            };
+        };
         [TranslationKey.WALLETS]: {
             [TranslationKey.HEADER]: {
                 [TranslationKey.TITLE]: string;
@@ -268,5 +276,15 @@ export interface Translation {
     [TranslationKey.CONFIRMATION_DIALOG]: {
         [TranslationKey.CANCEL]: string;
         [TranslationKey.CONFIRM]: string;
+    };
+    [TranslationKey.CREATION_MODULE]: {
+        [TranslationKey.CONFIRMATION_DIALOG]: {
+            [TranslationKey.TITLE]: string;
+            [TranslationKey.DESCRIPTION]: string;
+        };
+        [TranslationKey.FOOTER]: {
+            [TranslationKey.CANCEL]: string;
+            [TranslationKey.CONFIRM]: string;
+        };
     };
 }
