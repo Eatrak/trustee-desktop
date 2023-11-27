@@ -54,7 +54,7 @@ const WalletCreationModule = () => {
         <CreationModule
             title="Wallet creation"
             subTitle="Create a new wallet."
-            onCancel={() => openCancelConfirmationDialog()}
+            onExit={goToWalletsModule}
             onSubmit={confirm}
             form={form}
             formContent={

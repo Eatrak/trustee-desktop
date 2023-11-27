@@ -7,13 +7,14 @@ import { Form } from "@/components/ui/form";
 import H2 from "@/components/ui/h2";
 import { Icons } from "@/components/ui/icons";
 import { Separator } from "@/components/ui/separator";
+import { ConfirmationDialog } from "../ConfirmationDialog";
 
 interface IProps {
     title: string;
     subTitle: string;
     form: UseFormReturn<any>;
     formContent: JSX.Element;
-    onCancel: Function;
+    onExit: Function;
     onSubmit: SubmitHandler<any>;
 }
 
@@ -22,7 +23,7 @@ const CreationModule = ({
     subTitle,
     form,
     formContent,
-    onCancel,
+    onExit,
     onSubmit,
 }: IProps) => {
     let [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -48,13 +49,15 @@ const CreationModule = ({
                 </Form>
                 <Separator />
                 <div className="creation-module__form__footer">
-                    <Button
-                        onClick={() => onCancel()}
-                        variant="ghost"
-                        disabled={isSubmitting}
-                    >
-                        Cancel
-                    </Button>
+                    <ConfirmationDialog
+                        onConfirm={onExit}
+                        trigger={
+                            <Button variant="ghost" disabled={isSubmitting}>
+                                Cancel
+                            </Button>
+                        }
+                    />
+
                     <Button onClick={form.handleSubmit(submit)} disabled={isSubmitting}>
                         {isSubmitting && (
                             <Icons.loading className="mr-2 h-4 w-4 animate-spin" />
