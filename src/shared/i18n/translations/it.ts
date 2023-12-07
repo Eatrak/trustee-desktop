@@ -44,7 +44,7 @@ const translation: Translation = {
         cancel: "No",
         confirm: "Sì",
     },
-    creationModule: {
+    formModule: {
         confirmationDialog: {
             title: "Sei sicuro di uscire?",
             description: "Cliccando 'Sì' il processo sarà annullato.",

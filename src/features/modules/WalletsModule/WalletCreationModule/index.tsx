@@ -10,7 +10,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import FormModule from "@/shared/customComponents/CreationModule";
+import FormModule from "@/shared/customComponents/FormModule";
 
 import { createWalletFormSchema } from "@/shared/validatorRules/wallets";
 import { CreateWalletFormSchema } from "@/shared/ts-types/APIs/input/transactions/createWallet";

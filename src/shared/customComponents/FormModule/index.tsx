@@ -25,7 +25,7 @@ const FormModule = ({ title, subTitle, form, formContent, onExit, onSubmit }: IP
 
     const translate = (translationKeys: TranslationKey[], params?: Object) => {
         return Utils.getInstance().translate(
-            [TranslationKey.CREATION_MODULE, ...translationKeys],
+            [TranslationKey.FORM_MODULE, ...translationKeys],
             params,
         );
     };
@@ -38,19 +38,19 @@ const FormModule = ({ title, subTitle, form, formContent, onExit, onSubmit }: IP
 
     return (
         <div className="section">
-            <div className="section__main-content creation-module__main-content">
+            <div className="section__main-content form-module__main-content">
                 <div>
                     <H2 text={title} />
                     <p className="text-muted-foreground">{subTitle}</p>
                 </div>
                 <Separator />
                 <Form {...form}>
-                    <form className="creation-module__form">
+                    <form className="form-module__form">
                         <div className="space-y-4">{formContent}</div>
                     </form>
                 </Form>
                 <Separator />
-                <div className="creation-module__form__footer">
+                <div className="form-module__form__footer">
                     <ConfirmationDialog
                         title={translate([
                             TranslationKey.CONFIRMATION_DIALOG,

@@ -11,7 +11,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import FormModule from "@/shared/customComponents/CreationModule";
+import FormModule from "@/shared/customComponents/FormModule";
 import { updateWalletFormSchema } from "@/shared/validatorRules/wallets";
 import WalletsService from "@/shared/services/wallets";
 import { FieldName, TranslationKey } from "@/shared/ts-types/generic/translations";

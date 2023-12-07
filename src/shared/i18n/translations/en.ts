@@ -43,10 +43,10 @@ const translation: Translation = {
         cancel: "No",
         confirm: "Yes",
     },
-    creationModule: {
+    formModule: {
         confirmationDialog: {
             title: "Are you sure to exit?",
-            description: "By clicking 'Yes' the creation process will be aborted.",
+            description: "By clicking 'Yes' the process will be aborted.",
         },
         footer: {
             cancel: "Exit",

@@ -96,7 +96,7 @@ export enum TranslationKey {
     INFO = "info",
     PREFERENCES = "preferences",
     CHANGE_PASSWORD = "changePassword",
-    CREATION_MODULE = "creationModule",
+    FORM_MODULE = "formModule",
     WALLET_CREATION = "walletCreation",
     WALLET_UPDATE = "walletUpdate",
 }
@@ -284,7 +284,7 @@ export interface Translation {
         [TranslationKey.CANCEL]: string;
         [TranslationKey.CONFIRM]: string;
     };
-    [TranslationKey.CREATION_MODULE]: {
+    [TranslationKey.FORM_MODULE]: {
         [TranslationKey.CONFIRMATION_DIALOG]: {
             [TranslationKey.TITLE]: string;
             [TranslationKey.DESCRIPTION]: string;

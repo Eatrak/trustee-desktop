@@ -1,4 +1,4 @@
-.creation-module__main-content {
+.form-module__main-content {
     display: grid;
     grid-template-rows: max-content max-content auto max-content max-content;
     row-gap: 24px;
@@ -6,20 +6,20 @@
     width: 100%;
 }
 
-.creation-module__form {
+.form-module__form {
     display: grid;
 
     max-width: 800px;
 }
 
-.creation-module__form__footer {
+.form-module__form__footer {
     display: grid;
     grid-auto-flow: column;
     column-gap: 8px;
     justify-content: right;
 }
 
-.creation-module__form button[type="submit"] {
+.form-module__form button[type="submit"] {
     justify-self: right;
 
     width: max-content;
