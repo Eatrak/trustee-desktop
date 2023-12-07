@@ -57,6 +57,12 @@ const translation: Translation = {
         all: "All",
     },
     modules: {
+        walletUpdate: {
+            header: {
+                title: "Wallet update",
+                subTitle: "You are updating the wallet '{{name}}'.",
+            },
+        },
         walletCreation: {
             header: {
                 title: "Wallet creation",

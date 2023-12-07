@@ -18,6 +18,12 @@ export const createWalletFormSchema = z.object({
     [FieldName.UNTRACKED_BALANCE]: z.coerce.number().max(999999999999),
 });
 
+export const updateWalletFormSchema = z.object({
+    [FieldName.NAME]: createWalletFormSchema.shape[FieldName.NAME],
+    [FieldName.UNTRACKED_BALANCE]:
+        createWalletFormSchema.shape[FieldName.UNTRACKED_BALANCE],
+});
+
 export const updateWalletInputRules = {
     id: "required|string",
     userId: "required|string",
@@ -25,3 +31,8 @@ export const updateWalletInputRules = {
         name: "string",
     },
 };
+
+export const getWalletInputSchema = z.object({
+    id: z.string(),
+    userId: z.string(),
+});

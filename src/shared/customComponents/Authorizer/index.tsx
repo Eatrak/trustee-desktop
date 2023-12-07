@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import AuthService from "@/shared/services/auth";
-import LoadingPage from "@/shared/customComponents/LoadingPage";
+import LoadingView from "@/shared/customComponents/LoadingView";
 
 interface IProps {
     children: JSX.Element;
@@ -32,7 +32,17 @@ const Authorizer = ({ children: pageToRender, loadResources }: IProps) => {
         }, 500);
     }, []);
 
-    return <>{isChecked ? pageToRender : <LoadingPage />}</>;
+    return (
+        <>
+            {isChecked ? (
+                pageToRender
+            ) : (
+                <div className="page">
+                    <LoadingView />
+                </div>
+            )}
+        </>
+    );
 };
 
 export default Authorizer;

@@ -58,6 +58,12 @@ const translation: Translation = {
         all: "Tutti",
     },
     modules: {
+        walletUpdate: {
+            header: {
+                title: "Modifica portafoglio",
+                subTitle: "Stai modificando il portafoglio '{{name}}'.",
+            },
+        },
         walletCreation: {
             header: {
                 title: "Creazione portafoglio",

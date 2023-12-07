@@ -1,3 +1,9 @@
+import { z } from "zod";
+
+import { updateWalletFormSchema } from "@/shared/validatorRules/wallets";
+
+export type UpdateWalletFormSchema = z.infer<typeof updateWalletFormSchema>;
+
 export interface UpdateWalletPathParameters {
     id: string;
 }

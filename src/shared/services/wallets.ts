@@ -22,6 +22,8 @@ import {
     GetWalletsResponse,
 } from "@/shared/ts-types/APIs/output/transactions/getWallets";
 import { WalletTableRow, WalletViews } from "@/shared/ts-types/DTOs/wallets";
+import { GetWalletPathParameters } from "../ts-types/APIs/input/transactions/getWallet";
+import { GetWalletResponse } from "../ts-types/APIs/output/transactions/getWallet";
 
 export default class WalletsService {
     static instance: WalletsService = new WalletsService();
@@ -39,6 +41,41 @@ export default class WalletsService {
             TranslationKey.TOAST_MESSAGES,
             ...translationKeys,
         ]);
+    }
+
+    async getWallet(id: string): Promise<Wallet | null> {
+        try {
+            // Initialize query parameters
+            const pathParams: GetWalletPathParameters = {
+                id,
+            };
+
+            // Initialize request URL
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/wallets/${pathParams.id}`,
+            );
+
+            // Send request
+            const response = await fetch(requestURL, {
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
+
+            const { data, error }: GetWalletResponse = await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
+                return null;
+            }
+
+            return data.wallet;
+        } catch (err) {
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
+            return null;
+        }
     }
 
     async createWallet(

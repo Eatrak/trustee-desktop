@@ -27,8 +27,9 @@ import {
 import { Utils } from "@/shared/services/utils";
 import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
 import { TranslationKey } from "@/shared/ts-types/generic/translations";
-import { Skeleton } from "@/components/ui/skeleton";
 import TableSkeletonRow from "@/components/ui/table-skeleton-row";
+import { Icons } from "@/components/ui/icons";
+import { useNavigate } from "react-router-dom";
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
     return `${Utils.getInstance().getFormattedAmount(currencyCode, amount)}`;
@@ -53,13 +54,17 @@ export const columns: ColumnDef<WalletTableRow>[] = [
         accessorKey: "net",
         header: ({ column }) => {
             return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    {translate([TranslationKey.NET])}
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
+                <div className="text-right">
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                    >
+                        {translate([TranslationKey.NET])}
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                </div>
             );
         },
         cell: ({ row }) => {
@@ -120,6 +125,26 @@ export const columns: ColumnDef<WalletTableRow>[] = [
         cell: ({ row }) => (
             <div className="lowercase">{row.original.transactionsCount}</div>
         ),
+    },
+    {
+        accessorKey: "actions",
+        header: "",
+        maxSize: 50,
+        cell: ({ row }) => {
+            const navigate = useNavigate();
+
+            return (
+                <div className="d-flex flex-column space-x-2 text-right">
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => navigate(`/wallets/${row.original.id}`)}
+                    >
+                        <Icons.pencil />
+                    </Button>
+                </div>
+            );
+        },
     },
 ];
 
