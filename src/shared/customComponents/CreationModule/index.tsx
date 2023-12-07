@@ -20,14 +20,7 @@ interface IProps {
     onSubmit: SubmitHandler<any>;
 }
 
-const CreationModule = ({
-    title,
-    subTitle,
-    form,
-    formContent,
-    onExit,
-    onSubmit,
-}: IProps) => {
+const FormModule = ({ title, subTitle, form, formContent, onExit, onSubmit }: IProps) => {
     let [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const translate = (translationKeys: TranslationKey[], params?: Object) => {
@@ -90,4 +83,4 @@ const CreationModule = ({
     );
 };
 
-export default CreationModule;
+export default FormModule;

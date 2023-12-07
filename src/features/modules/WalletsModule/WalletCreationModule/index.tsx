@@ -10,7 +10,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import CreationModule from "@/shared/customComponents/CreationModule";
+import FormModule from "@/shared/customComponents/CreationModule";
 
 import { createWalletFormSchema } from "@/shared/validatorRules/wallets";
 import { CreateWalletFormSchema } from "@/shared/ts-types/APIs/input/transactions/createWallet";
@@ -60,7 +60,7 @@ const WalletCreationModule = () => {
     };
 
     return (
-        <CreationModule
+        <FormModule
             title={translate([TranslationKey.HEADER, TranslationKey.TITLE])}
             subTitle={translate([TranslationKey.HEADER, TranslationKey.SUB_TITLE])}
             onExit={goToWalletsModule}
@@ -110,7 +110,7 @@ const WalletCreationModule = () => {
                     />
                 </>
             }
-        ></CreationModule>
+        ></FormModule>
     );
 };
 
