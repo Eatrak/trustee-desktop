@@ -25,7 +25,7 @@ const WalletsHeader = ({ walletsCount }: IProps) => {
         );
     };
 
-    const goToWalletsModule = () => navigate("/wallets/new");
+    const goToWalletCreationModule = () => navigate("/wallets/new");
 
     return (
         <div className="flex flex-column space-x-4">
@@ -38,7 +38,7 @@ const WalletsHeader = ({ walletsCount }: IProps) => {
                 </p>
             </div>
             <div className="flex flex-column space-x-1">
-                <Button onClick={goToWalletsModule}>
+                <Button onClick={goToWalletCreationModule}>
                     <Icons.plus className="mr-2 h-4 w-4" />
                     {translate([TranslationKey.CREATION_BUTTON_TEXT])}
                 </Button>
