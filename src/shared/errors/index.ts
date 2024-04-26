@@ -10,7 +10,8 @@ export const getErrorType = (status: number, code: string) => {
 
 class Error {
     private error: ErrorType;
-    private id: string;
+    // Assertion used because the attribute is initialized with a method in the contructor
+    private id!: string;
 
     constructor(error: ErrorType) {
         this.setId(uuid());
