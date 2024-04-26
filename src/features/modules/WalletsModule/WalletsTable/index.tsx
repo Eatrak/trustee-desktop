@@ -217,7 +217,9 @@ export function WalletsTable({ wallets, isLoading = false }: IProps) {
                         {isLoading ? (
                             table
                                 .getRowModel()
-                                .rows.map((row) => <TableSkeletonRow row={row} />)
+                                .rows.map((row) => (
+                                    <TableSkeletonRow key={Math.random()} row={row} />
+                                ))
                         ) : table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
