@@ -10,4 +10,9 @@ export interface TransactionCategoryBalance extends TransactionCategory {
     expense: number;
 }
 
-export interface TransactionTableRow extends Transaction {}
+export interface TransactionTableRow extends Transaction {
+    currencyId: string;
+    currencyCode: string;
+    currencySymbol: string;
+    walletName: string;
+}

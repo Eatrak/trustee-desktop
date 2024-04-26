@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 import i18n from "@/shared/i18n";
 import { FieldName, TranslationKey } from "@/shared/ts-types/generic/translations";
+import dayjs from "dayjs";
 
 export class Utils {
     private static instance = new Utils();
@@ -68,5 +69,9 @@ export class Utils {
     translateFormFieldTitle(fieldName: FieldName) {
         const translatedFieldName = this.translateFieldName(fieldName);
         return translatedFieldName.charAt(0).toUpperCase() + translatedFieldName.slice(1);
+    }
+
+    getFormattedDateFromUnixTime(unixTime: number) {
+        return dayjs.unix(unixTime).format(dayjs.localeData().longDateFormat("L"));
     }
 }

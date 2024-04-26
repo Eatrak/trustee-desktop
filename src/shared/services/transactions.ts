@@ -29,7 +29,10 @@ import {
     GetTransactionCategoryBalancesInputMultiQueryParams,
     GetTransactionCategoryBalancesInputQueryParams,
 } from "@/shared/ts-types/APIs/input/transactions/getTransactionCategories";
-import { TransactionCategoryBalance } from "@/shared/ts-types/DTOs/transactions";
+import {
+    TransactionCategoryBalance,
+    TransactionTableRow,
+} from "@/shared/ts-types/DTOs/transactions";
 import ErrorType from "@/shared/errors/list";
 import Validator from "validatorjs";
 import { getTransactionCategoryBalancesInputRules } from "@/shared/validatorRules/transactions";
@@ -132,7 +135,7 @@ export default class TransactionsService {
         startCreationTimestamp: Dayjs,
         endCreationTimestamp: Dayjs,
         wallets: string[],
-    ): Promise<Result<Transaction[], ErrorResponseBodyAttributes | undefined>> {
+    ): Promise<Result<TransactionTableRow[], ErrorResponseBodyAttributes | undefined>> {
         try {
             const queryParams: GetTransactionsInputQueryParams = {
                 startCarriedOut: startCreationTimestamp.unix().toString(),

@@ -25,8 +25,8 @@ const TransactionsModule = () => {
             const getTransactionsResponse =
                 await TransactionsService.getInstance().getTransactionsByCurrencyAndCreationRange(
                     currency.id,
-                    dayjs(1713090112),
-                    dayjs(1713110112),
+                    dayjs.unix(1713090112),
+                    dayjs.unix(1713110112),
                     [],
                 );
 
@@ -83,10 +83,10 @@ const TransactionsModule = () => {
                     totalIncome={totalIncome}
                     totalExpense={totalExpense}
                 />
-                {/* <TransactionsTable
+                <TransactionsTable
                     transactions={transactions}
                     isLoading={isFetchingTransactions}
-                /> */}
+                />
             </div>
         </div>
     );

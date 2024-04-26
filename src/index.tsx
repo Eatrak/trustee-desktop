@@ -5,6 +5,7 @@ import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import dayjs from "dayjs";
 import localeData from "dayjs/plugin/localeData";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -17,6 +18,7 @@ import Authorizer from "@/shared/customComponents/Authorizer";
 import TransactionsService from "@/shared/services/transactions";
 import SignInPage from "./features/core/SignIn";
 
+dayjs.extend(localizedFormat);
 dayjs.extend(localeData);
 
 if (process.env.NODE_ENV === "production") {
