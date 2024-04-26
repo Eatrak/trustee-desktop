@@ -114,6 +114,9 @@ const translation: Translation = {
         transactions: {
             header: {
                 title: "Transactions",
+                subTitle_one: "{{count}} transaction",
+                subTitle_other: "{{count}} transactions",
+                creationButtonText: "Add new transaction",
             },
             summary: {
                 income: "Income",

@@ -173,6 +173,9 @@ export interface Translation {
         [TranslationKey.TRANSACTIONS]: {
             [TranslationKey.HEADER]: {
                 [TranslationKey.TITLE]: string;
+                [TranslationKey.SUB_TITLE_SINGULAR]: string;
+                [TranslationKey.SUB_TITLE_PLURAL]: string;
+                [TranslationKey.CREATION_BUTTON_TEXT]: string;
             };
             [TranslationKey.WALLETS_MULTI_SELECT]: {
                 [TranslationKey.TITLE]: string;

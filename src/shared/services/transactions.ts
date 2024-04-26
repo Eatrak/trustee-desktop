@@ -2,9 +2,12 @@ import { BehaviorSubject } from "rxjs";
 import { Dayjs } from "dayjs";
 import { Ok, Err, Result } from "ts-results";
 
-import { Currency } from "@/shared/schema";
+import { Currency, Transaction } from "@/shared/schema";
 import { Utils } from "@/shared/services/utils";
-import { GetTransactionsInputQueryParams } from "@/shared/ts-types/APIs/input/transactions/getTransactions";
+import {
+    GetTransactionsInputMultiQueryParams,
+    GetTransactionsInputQueryParams,
+} from "@/shared/ts-types/APIs/input/transactions/getTransactions";
 import { GetTransactionsResponse } from "@/shared/ts-types/APIs/output/transactions/getTransactions";
 import { GetCurrenciesResponse } from "@/shared/ts-types/APIs/output/transactions/getCurrencies";
 import {
@@ -16,7 +19,10 @@ import { CreateTransactionCategoryBody } from "@/shared/ts-types/APIs/input/tran
 import { CreateTransactionBody } from "@/shared/ts-types/APIs/input/transactions/createTransaction";
 import { CreateTransactionResponse } from "@/shared/ts-types/APIs/output/transactions/createTransaction";
 import { DeleteTransactionQueryParameters } from "@/shared/ts-types/APIs/input/transactions/deleteTransaction";
-import { GetBalanceResponse } from "@/shared/ts-types/APIs/output/transactions/getBalance";
+import {
+    GetBalanceResponse,
+    GetBalanceResponseData,
+} from "@/shared/ts-types/APIs/output/transactions/getBalance";
 import { DeleteTransactionResponse } from "@/shared/ts-types/APIs/output/transactions/deleteTransaction";
 import { ErrorResponseBodyAttributes } from "@/shared/errors/types";
 import {
@@ -125,16 +131,29 @@ export default class TransactionsService {
         currencyId: string,
         startCreationTimestamp: Dayjs,
         endCreationTimestamp: Dayjs,
-    ) {
+        wallets: string[],
+    ): Promise<Result<Transaction[], ErrorResponseBodyAttributes | undefined>> {
         try {
             const queryParams: GetTransactionsInputQueryParams = {
                 startCarriedOut: startCreationTimestamp.unix().toString(),
                 endCarriedOut: endCreationTimestamp.unix().toString(),
                 currencyId,
             };
-            const requestURL =
-                Utils.getInstance().getAPIEndpoint("/transactions?") +
-                new URLSearchParams({ ...queryParams });
+            const multiQueryParams: GetTransactionsInputMultiQueryParams = {
+                wallets,
+            };
+
+            const stringQueryParams = new URLSearchParams({
+                ...queryParams,
+            });
+            const stringMultiQueryParams = Utils.getInstance().getMultiQueryParams(
+                "wallets",
+                multiQueryParams.wallets,
+            );
+
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/transactions?${stringQueryParams}&${stringMultiQueryParams}`,
+            );
             const response = await fetch(requestURL, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("authToken"),
@@ -146,13 +165,14 @@ export default class TransactionsService {
                 Utils.getInstance().showErrorMessage(
                     getErrorType(data.status, data.code),
                 );
-                return;
+                return Err(data);
             }
 
             const { transactions } = data;
-            return transactions;
+            return Ok(transactions);
         } catch (err) {
             Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
+            return Err(undefined);
         }
     }
 
@@ -161,7 +181,7 @@ export default class TransactionsService {
         startCarriedOut: Dayjs,
         endCarriedOut: Dayjs,
         wallets: string[],
-    ) {
+    ): Promise<Result<GetBalanceResponseData, ErrorResponseBodyAttributes | undefined>> {
         try {
             const queryParams: GetBalanceInputQueryParams = {
                 startCarriedOut: startCarriedOut.unix().toString(),
@@ -194,14 +214,15 @@ export default class TransactionsService {
                 Utils.getInstance().showErrorMessage(
                     getErrorType(data.status, data.code),
                 );
-                return;
+                return Err(data);
             }
 
-            const balance = data;
-            return balance;
+            return Ok(data);
         } catch (err) {
             Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
         }
+
+        return Err(undefined);
     }
 
     async getCurrencies() {

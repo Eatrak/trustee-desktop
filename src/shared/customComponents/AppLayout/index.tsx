@@ -7,6 +7,7 @@ import { Navbar } from "../Navbar";
 import WalletsModule from "@/features/modules/WalletsModule";
 import WalletUpdateModule from "@/features/modules/WalletsModule/WalletUpdateModule";
 import WalletCreationModule from "@/features/modules/WalletsModule/WalletCreationModule";
+import TransactionsModule from "@/features/modules/TransactionsModule";
 
 const AppLayout = () => {
     return (
@@ -17,6 +18,7 @@ const AppLayout = () => {
                     <Route path="/wallets/:id" element={<WalletUpdateModule />} />
                     <Route path="/wallets/new" element={<WalletCreationModule />} />
                     <Route path="/wallets" element={<WalletsModule />} />
+                    <Route path="/transactions" element={<TransactionsModule />} />
                 </Routes>
             </div>
         </div>
