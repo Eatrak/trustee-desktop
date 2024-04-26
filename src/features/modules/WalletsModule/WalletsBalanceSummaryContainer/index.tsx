@@ -1,4 +1,4 @@
-import WalletsBalanceSummary from "../WalletsBalanceSummary";
+import BalanceSummary from "@/shared/customComponents/BalanceSummary";
 import { Utils } from "@/shared/services/utils";
 import { TranslationKey } from "@/shared/ts-types/generic/translations";
 
@@ -26,25 +26,25 @@ const WalletsBalanceSummaryContainer = ({
 
     return (
         <div className="flex flex-column flex-grow w-full space-x-2">
-            <WalletsBalanceSummary
+            <BalanceSummary
                 className="flex-grow"
                 title={translate([TranslationKey.TOTAL_NET])}
                 amount={totalIncome - totalExpense + totalUntrackedBalance}
                 currencyCode={currencyCode}
             />
-            <WalletsBalanceSummary
+            <BalanceSummary
                 className="flex-grow"
                 title={translate([TranslationKey.TOTAL_INCOME])}
                 amount={totalIncome}
                 currencyCode={currencyCode}
             />
-            <WalletsBalanceSummary
+            <BalanceSummary
                 className="flex-grow"
                 title={translate([TranslationKey.TOTAL_EXPENSE])}
                 amount={totalExpense}
                 currencyCode={currencyCode}
             />
-            <WalletsBalanceSummary
+            <BalanceSummary
                 className="flex-grow"
                 title={translate([TranslationKey.TOTAL_UNTRACKED_BALANCE])}
                 amount={totalUntrackedBalance}
