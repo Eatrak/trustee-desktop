@@ -121,7 +121,7 @@ export const columns: ColumnDef<WalletTableRow>[] = [
     },
     {
         accessorKey: "transactionsCount",
-        header: translate([TranslationKey.TRANSACTIONS_COUNT]),
+        header: () => <div>{translate([TranslationKey.TRANSACTIONS_COUNT])}</div>,
         cell: ({ row }) => (
             <div className="lowercase">{row.original.transactionsCount}</div>
         ),
