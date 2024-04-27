@@ -117,6 +117,10 @@ const translation: Translation = {
                 subTitle_one: "{{count}} transaction",
                 subTitle_other: "{{count}} transactions",
                 creationButtonText: "Add new transaction",
+                calendar: {
+                    startDate: "Choose a start date",
+                    endDate: "Choose an end date",
+                },
             },
             summary: {
                 income: "Income",

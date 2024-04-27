@@ -118,6 +118,10 @@ const translation: Translation = {
                 subTitle_one: "{{count}} transazione",
                 subTitle_other: "{{count}} transazioni",
                 creationButtonText: "Aggiungi nuova transazione",
+                calendar: {
+                    startDate: "Scegli una data di inizio",
+                    endDate: "Scegli una data di fine",
+                },
             },
             summary: {
                 income: "Entrata",

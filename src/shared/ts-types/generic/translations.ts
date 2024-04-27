@@ -99,6 +99,9 @@ export enum TranslationKey {
     FORM_MODULE = "formModule",
     WALLET_CREATION = "walletCreation",
     WALLET_UPDATE = "walletUpdate",
+    CALENDAR = "calendar",
+    START_DATE = "startDate",
+    END_DATE = "endDate",
 }
 
 // By using a dictionary where the keys are in the FieldName enum,
@@ -176,6 +179,10 @@ export interface Translation {
                 [TranslationKey.SUB_TITLE_SINGULAR]: string;
                 [TranslationKey.SUB_TITLE_PLURAL]: string;
                 [TranslationKey.CREATION_BUTTON_TEXT]: string;
+                [TranslationKey.CALENDAR]: {
+                    [TranslationKey.START_DATE]: string;
+                    [TranslationKey.END_DATE]: string;
+                };
             };
             [TranslationKey.WALLETS_MULTI_SELECT]: {
                 [TranslationKey.TITLE]: string;

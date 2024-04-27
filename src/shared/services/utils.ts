@@ -74,4 +74,8 @@ export class Utils {
     getFormattedDateFromUnixTime(unixTime: number) {
         return dayjs.unix(unixTime).format(dayjs.localeData().longDateFormat("L"));
     }
+
+    getFormattedDateFromDate(date: Date) {
+        return dayjs(date).format(dayjs.localeData().longDateFormat("L"));
+    }
 }
