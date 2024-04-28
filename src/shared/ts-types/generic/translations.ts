@@ -26,6 +26,8 @@ export enum FieldName {
     CURRENCY = "currency",
     LANGUAGE = "language",
     PASSWORD = "password",
+    IS_INCOME = "isIncome",
+    CARRIED_OUT = "carriedOut",
 }
 
 export enum TranslationKey {
@@ -102,6 +104,8 @@ export enum TranslationKey {
     CALENDAR = "calendar",
     START_DATE = "startDate",
     END_DATE = "endDate",
+    TRANSACTION_CREATION = "transactionCreation",
+    NO_OPTIONS = "noOptions",
 }
 
 // By using a dictionary where the keys are in the FieldName enum,
@@ -171,6 +175,12 @@ export interface Translation {
                 [TranslationKey.SUCCESSFUL_WALLET_CREATION]: string;
                 [TranslationKey.SUCCESSFUL_WALLET_UPDATE]: string;
                 [TranslationKey.SUCCESSFUL_WALLET_DELETION]: string;
+            };
+        };
+        [TranslationKey.TRANSACTION_CREATION]: {
+            [TranslationKey.HEADER]: {
+                [TranslationKey.TITLE]: string;
+                [TranslationKey.SUB_TITLE]: string;
             };
         };
         [TranslationKey.TRANSACTIONS]: {
@@ -283,6 +293,7 @@ export interface Translation {
     };
     [TranslationKey.GENERAL]: {
         [TranslationKey.ALL]: string;
+        [TranslationKey.NO_OPTIONS]: string;
     };
     [TranslationKey.NAVBAR]: {
         [TranslationKey.BUTTONS]: {

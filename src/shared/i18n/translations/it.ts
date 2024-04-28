@@ -19,6 +19,8 @@ const translation: Translation = {
         currency: "valuta",
         language: "lingua",
         password: "password",
+        carriedOut: "effettuato il",
+        isIncome: "è un'entrata",
     },
     errors: {
         [ErrorType.DUPLICATE_ENTRY]: "Risorsa già esistente",
@@ -56,6 +58,7 @@ const translation: Translation = {
     },
     general: {
         all: "Tutti",
+        noOptions: "Nessuna opzione disponibile",
     },
     modules: {
         walletUpdate: {
@@ -110,6 +113,12 @@ const translation: Translation = {
                 successfulWalletCreation: "Portafoglio creato con successo",
                 successfulWalletUpdate: "Portafoglio aggiornato con successo",
                 successfulWalletDeletion: "Portafoglio eliminato con successo",
+            },
+        },
+        transactionCreation: {
+            header: {
+                title: "Creazione transazione",
+                subTitle: "Crea una nuova transazione.",
             },
         },
         transactions: {
@@ -223,7 +232,9 @@ const translation: Translation = {
 
 let customZodTranslation = zodTranslation;
 customZodTranslation.errors.too_small.string.inclusive =
-    "Il campo {{path}} deve essere almeno {{minimum}} carattere/i";
+    'Il campo "{{path}}" deve essere almeno {{minimum}} carattere/i';
+customZodTranslation.errors.too_small.array.inclusive =
+    'Il campo "{{path}}" deve contenere almeno {{minimum}} elemento/i';
 
 const fieldNamesTranslation: FieldNamesTranslation = {
     email: "email",
@@ -237,6 +248,8 @@ const fieldNamesTranslation: FieldNamesTranslation = {
     surname: "cognome",
     untrackedBalance: "bilancio non tracciato",
     wallet: "portafoglio",
+    carriedOut: "effettuato il",
+    isIncome: "è un'entrata",
 };
 
 export default {

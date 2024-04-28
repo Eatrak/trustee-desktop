@@ -1,3 +1,7 @@
+import { z } from "zod";
+
+import { FieldName } from "../ts-types/generic/translations";
+
 export const createTransactionCategoryRules = {
     name: "required|string",
 };
@@ -10,6 +14,15 @@ export const createTransactionBodyRules = {
     amount: "required|numeric|min:0.01",
     isIncome: "required|boolean",
 };
+
+export const createTransactionFormSchema = z.object({
+    [FieldName.NAME]: z.string().min(1).max(50),
+    [FieldName.WALLET]: z.string().min(1),
+    [FieldName.CATEGORIES]: z.array(z.string()).min(1),
+    [FieldName.AMOUNT]: z.coerce.number().min(0.01).max(999999999999),
+    [FieldName.IS_INCOME]: z.boolean(),
+    [FieldName.CARRIED_OUT]: z.date(),
+});
 
 export const deleteTransactionBodyRules = {
     id: "required|string",

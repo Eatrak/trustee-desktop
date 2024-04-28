@@ -72,7 +72,9 @@ export default class TransactionsService {
      * @param input Input used to create new transaction.
      * @returns Is new transaction created.
      */
-    async createTransaction(input: CreateTransactionBody) {
+    async createTransaction(
+        input: CreateTransactionBody,
+    ): Promise<Result<Transaction, ErrorResponseBodyAttributes | undefined>> {
         try {
             const requestURL = Utils.getInstance().getAPIEndpoint("/transactions");
             const response = await fetch(requestURL, {
@@ -88,7 +90,7 @@ export default class TransactionsService {
                 Utils.getInstance().showErrorMessage(
                     getErrorType(data.status, data.code),
                 );
-                return false;
+                return Err(data);
             }
 
             toast.success(
@@ -97,9 +99,10 @@ export default class TransactionsService {
 
             const { createdTransaction } = data;
 
-            return createdTransaction;
+            return Ok(createdTransaction);
         } catch (err) {
             Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
+            return Err(undefined);
         }
     }
 
