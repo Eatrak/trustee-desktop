@@ -133,6 +133,7 @@ const TransactionCreationModule = () => {
 
         if (wallets.ok) {
             setWallets(wallets.val);
+            wallets.val.length > 0 && form.setValue(FieldName.WALLET, wallets.val[0].id);
         }
     };
 
