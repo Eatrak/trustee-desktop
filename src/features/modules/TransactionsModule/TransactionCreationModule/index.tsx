@@ -38,7 +38,6 @@ import MultiSelect from "@/shared/customComponents/MultiSelect";
 import { createTransactionFormSchema } from "@/shared/validatorRules/transactions";
 import WalletsService from "@/shared/services/wallets";
 import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
-import i18n from "@/shared/i18n";
 
 const TransactionCreationModule = () => {
     const navigate = useNavigate();
