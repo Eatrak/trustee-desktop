@@ -128,7 +128,7 @@ const translation: Translation = {
                 },
             },
             categoriesMultiSelect: {
-                filterPlaceHolder: "Search or create a wallet by typing a name",
+                filterPlaceHolder: "Search or create a category by typing a name",
                 creationButtonText: 'Create "{{name}}"',
             },
         },

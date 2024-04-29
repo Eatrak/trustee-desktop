@@ -129,7 +129,7 @@ const translation: Translation = {
                 },
             },
             categoriesMultiSelect: {
-                filterPlaceHolder: "Cerca o crea un portafoglio inserendo un nome",
+                filterPlaceHolder: "Cerca o crea una categoria inserendo un nome",
                 creationButtonText: 'Crea "{{name}}"',
             },
         },
