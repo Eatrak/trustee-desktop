@@ -213,7 +213,7 @@ const TransactionCreationModule = () => {
                                         <SelectContent>
                                             {wallets.length > 0 ? (
                                                 wallets.map(({ name, id }) => (
-                                                    <SelectItem value={id}>
+                                                    <SelectItem key={id} value={id}>
                                                         {name}
                                                     </SelectItem>
                                                 ))
