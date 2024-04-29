@@ -127,6 +127,10 @@ const translation: Translation = {
                     name: "The name must be at least of 1 character.",
                 },
             },
+            categoriesMultiSelect: {
+                filterPlaceHolder: "Search or create a wallet by typing a name",
+                creationButtonText: 'Create "{{name}}"',
+            },
         },
         transactions: {
             header: {

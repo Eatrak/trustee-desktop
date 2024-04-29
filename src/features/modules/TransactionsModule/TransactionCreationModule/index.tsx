@@ -260,6 +260,24 @@ const TransactionCreationModule = () => {
                                                 value: tC.id,
                                             }))}
                                             text=""
+                                            createNewOption={(newCategory) => {
+                                                console.log(newCategory);
+                                            }}
+                                            filterInputPlaceholder={translate([
+                                                TranslationKey.CATEGORIES_MULTI_SELECT,
+                                                TranslationKey.FILTER_PLACEHOLDER,
+                                            ])}
+                                            creationErrorMessage=""
+                                            creationValidatorRule="string|min:1|max:30"
+                                            getCreateNewOptionButtonText={(filterValue) =>
+                                                translate(
+                                                    [
+                                                        TranslationKey.CATEGORIES_MULTI_SELECT,
+                                                        TranslationKey.CREATION_BUTTON_TEXT,
+                                                    ],
+                                                    { name: filterValue },
+                                                )
+                                            }
                                         />
                                     </FormControl>
                                     {form.formState.errors.categories && (

@@ -128,6 +128,10 @@ const translation: Translation = {
                     name: "Il nome deve essere di almeno 1 carattere.",
                 },
             },
+            categoriesMultiSelect: {
+                filterPlaceHolder: "Cerca o crea un portafoglio inserendo un nome",
+                creationButtonText: 'Crea "{{name}}"',
+            },
         },
         transactions: {
             header: {

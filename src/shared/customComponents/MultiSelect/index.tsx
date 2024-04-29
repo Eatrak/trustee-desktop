@@ -7,15 +7,15 @@ import React, {
     useState,
     forwardRef,
 } from "react";
-import { MdAdd } from "react-icons/md";
 import Validator from "validatorjs";
 import { ChevronDown } from "lucide-react";
 
-import TextButton from "@/shared/customComponents/TextButton";
 import Chip from "@/shared/customComponents/Chip";
 import MultiSelectOption from "./MultiSelectOption";
 import { Utils } from "@/shared/services/utils";
 import { TranslationKey } from "@/shared/ts-types/generic/translations";
+import { Button } from "@/components/ui/button";
+import LoadingIcon from "../LoadingIcon";
 
 export interface MultiSelectOptionProprieties {
     name: string;
@@ -178,13 +178,13 @@ const MultiSelect = forwardRef<IHandle, IProps>(
             if (!creationValidation || creationValidation.passes()) return [];
 
             return [
-                <p key={id++} className="paragraph--small text--error">
+                <p key={id++} className="text-sm font-medium text-destructive">
                     {creationErrorMessage || ""}
                 </p>,
                 ...errors.map((error) => {
                     return (
-                        <p key={id++} className="paragraph--small text--error">
-                            - {error}
+                        <p key={id++} className="text-sm font-medium text-destructive">
+                            {error}
                         </p>
                     );
                 }),
@@ -221,7 +221,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
 
             return errors.map((error) => {
                 return (
-                    <p key={id++} className="paragraph--small text--error">
+                    <p key={id++} className="text-sm font-medium text-destructive">
                         {error}
                     </p>
                 );
@@ -302,7 +302,6 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                     </div>
                     <ChevronDown className={"h-4 w-4 opacity-50"} />
                 </div>
-                {getErrorsToShow()}
                 <div
                     className={
                         "bg-background border-input rounded-md overflow-hidden border multi-select__options-panel multi-select__options-panel--" +
@@ -327,18 +326,21 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                         <div className="multi-select__options-panel__create-new-option-button-container bg-background">
                             {filterValue != "" && !filteredOptionExists() && (
                                 <>
-                                    <TextButton
-                                        Icon={MdAdd}
-                                        text={
-                                            getCreateNewOptionButtonText
-                                                ? getCreateNewOptionButtonText(
-                                                      filterValue,
-                                                  )
-                                                : ""
-                                        }
-                                        isLoading={isCreatingNewOption}
-                                        clickEvent={startOptionCreation}
-                                    />
+                                    <Button
+                                        className="w-full relative"
+                                        variant="secondary"
+                                        onClick={startOptionCreation}
+                                    >
+                                        <p className="truncate absolute w-full">
+                                            {isCreatingNewOption ? (
+                                                <LoadingIcon />
+                                            ) : getCreateNewOptionButtonText ? (
+                                                getCreateNewOptionButtonText(filterValue)
+                                            ) : (
+                                                ""
+                                            )}
+                                        </p>
+                                    </Button>
                                     <div className="multi-select__options-panel__create-new-option-button-container__errors">
                                         {getCreationErrorsToShow()}
                                     </div>

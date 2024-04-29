@@ -191,6 +191,10 @@ export interface Translation {
                     [FieldName.AMOUNT]: string;
                 };
             };
+            [TranslationKey.CATEGORIES_MULTI_SELECT]: {
+                [TranslationKey.FILTER_PLACEHOLDER]: string;
+                [TranslationKey.CREATION_BUTTON_TEXT]: string;
+            };
         };
         [TranslationKey.TRANSACTIONS]: {
             [TranslationKey.HEADER]: {
