@@ -119,6 +119,14 @@ const translation: Translation = {
                 title: "Create transaction",
                 subTitle: "Create a new transaction.",
             },
+            form: {
+                errors: {
+                    wallet: "A wallet must be selected.",
+                    categories: "At least a category must be selected.",
+                    amount: "The amount must be at least of 0.01.",
+                    name: "The name must be at least of 1 character.",
+                },
+            },
         },
         transactions: {
             header: {

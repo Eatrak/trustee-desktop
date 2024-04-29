@@ -58,7 +58,10 @@ export class Utils {
         return toast.error(this.translate([ERRORS, errorType]));
     }
 
-    translate(translationKeys: (TranslationKey | ErrorType)[], params?: Object) {
+    translate(
+        translationKeys: (TranslationKey | ErrorType | FieldName)[],
+        params?: Object,
+    ) {
         return i18n.t(translationKeys.join("."), params);
     }
 

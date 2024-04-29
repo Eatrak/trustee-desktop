@@ -38,6 +38,7 @@ import MultiSelect from "@/shared/customComponents/MultiSelect";
 import { createTransactionFormSchema } from "@/shared/validatorRules/transactions";
 import WalletsService from "@/shared/services/wallets";
 import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
+import i18n from "@/shared/i18n";
 
 const TransactionCreationModule = () => {
     const navigate = useNavigate();
@@ -64,7 +65,10 @@ const TransactionCreationModule = () => {
         },
     });
 
-    const translate = (translationKeys: TranslationKey[], params?: Object) => {
+    const translate = (
+        translationKeys: (TranslationKey | FieldName)[],
+        params?: Object,
+    ) => {
         return Utils.getInstance().translate(
             [
                 TranslationKey.MODULES,
@@ -133,7 +137,7 @@ const TransactionCreationModule = () => {
 
         if (wallets.ok) {
             setWallets(wallets.val);
-            wallets.val.length > 0 && form.setValue(FieldName.WALLET, wallets.val[0].id);
+            // wallets.val.length > 0 && form.setValue(FieldName.WALLET, wallets.val[0].id);
         }
     };
 
@@ -176,7 +180,15 @@ const TransactionCreationModule = () => {
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
-                                <FormMessage />
+                                {form.formState.errors.name && (
+                                    <p className="text-sm font-medium text-destructive">
+                                        {translate([
+                                            TranslationKey.FORM,
+                                            TranslationKey.ERRORS,
+                                            FieldName.NAME,
+                                        ])}
+                                    </p>
+                                )}
                             </FormItem>
                         )}
                     />
@@ -215,7 +227,16 @@ const TransactionCreationModule = () => {
                                             )}
                                         </SelectContent>
                                     </Select>
-                                    <FormMessage />
+
+                                    {form.formState.errors.wallet && (
+                                        <p className="text-sm font-medium text-destructive">
+                                            {translate([
+                                                TranslationKey.FORM,
+                                                TranslationKey.ERRORS,
+                                                FieldName.WALLET,
+                                            ])}
+                                        </p>
+                                    )}
                                 </FormItem>
                             )}
                         />
@@ -241,7 +262,15 @@ const TransactionCreationModule = () => {
                                             text=""
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    {form.formState.errors.categories && (
+                                        <p className="text-sm font-medium text-destructive">
+                                            {translate([
+                                                TranslationKey.FORM,
+                                                TranslationKey.ERRORS,
+                                                FieldName.CATEGORIES,
+                                            ])}
+                                        </p>
+                                    )}
                                 </FormItem>
                             )}
                         />
@@ -312,7 +341,15 @@ const TransactionCreationModule = () => {
                                             }}
                                         />
                                     </FormControl>
-                                    <FormMessage />
+                                    {form.formState.errors.amount && (
+                                        <p className="text-sm font-medium text-destructive">
+                                            {translate([
+                                                TranslationKey.FORM,
+                                                TranslationKey.ERRORS,
+                                                FieldName.AMOUNT,
+                                            ])}
+                                        </p>
+                                    )}
                                 </FormItem>
                             )}
                         />

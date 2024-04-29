@@ -120,6 +120,14 @@ const translation: Translation = {
                 title: "Creazione transazione",
                 subTitle: "Crea una nuova transazione.",
             },
+            form: {
+                errors: {
+                    wallet: "Un portafoglio deve essere selezionato.",
+                    categories: "Almeno una categoria deve essere selezionata.",
+                    amount: "L'importo deve essere di almeno 0.01.",
+                    name: "Il nome deve essere di almeno 1 carattere.",
+                },
+            },
         },
         transactions: {
             header: {

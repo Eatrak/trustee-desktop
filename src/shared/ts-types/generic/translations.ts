@@ -106,6 +106,7 @@ export enum TranslationKey {
     END_DATE = "endDate",
     TRANSACTION_CREATION = "transactionCreation",
     NO_OPTIONS = "noOptions",
+    FORM = "form",
 }
 
 // By using a dictionary where the keys are in the FieldName enum,
@@ -181,6 +182,14 @@ export interface Translation {
             [TranslationKey.HEADER]: {
                 [TranslationKey.TITLE]: string;
                 [TranslationKey.SUB_TITLE]: string;
+            };
+            [TranslationKey.FORM]: {
+                [TranslationKey.ERRORS]: {
+                    [FieldName.WALLET]: string;
+                    [FieldName.CATEGORIES]: string;
+                    [FieldName.NAME]: string;
+                    [FieldName.AMOUNT]: string;
+                };
             };
         };
         [TranslationKey.TRANSACTIONS]: {
