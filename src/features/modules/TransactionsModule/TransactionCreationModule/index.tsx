@@ -44,6 +44,8 @@ const TransactionCreationModule = () => {
     let personalInfoSubscription: Subscription;
 
     const [isFetchingData, setIsFetchingData] = useState(true);
+    const [isCreatingTransactionCategory, setIsCreatingTransactionCategory] =
+        useState(false);
     const [transactionCategories, setTransactionCategories] = useState<
         TransactionCategory[]
     >([]);
@@ -138,6 +140,24 @@ const TransactionCreationModule = () => {
             setWallets(wallets.val);
             // wallets.val.length > 0 && form.setValue(FieldName.WALLET, wallets.val[0].id);
         }
+    };
+
+    const createTransactionCategory = async (name: string) => {
+        setIsCreatingTransactionCategory(true);
+
+        const createdTransactionCategory =
+            await TransactionsService.getInstance().createTransactionCategory({
+                name,
+            });
+
+        if (createdTransactionCategory) {
+            setTransactionCategories([
+                ...transactionCategories,
+                createdTransactionCategory,
+            ]);
+        }
+
+        setIsCreatingTransactionCategory(false);
     };
 
     useEffect(() => {
@@ -259,9 +279,10 @@ const TransactionCreationModule = () => {
                                                 value: tC.id,
                                             }))}
                                             text=""
-                                            createNewOption={(newCategory) => {
-                                                console.log(newCategory);
-                                            }}
+                                            isCreatingNewOption={
+                                                isCreatingTransactionCategory
+                                            }
+                                            createNewOption={createTransactionCategory}
                                             filterInputPlaceholder={translate([
                                                 TranslationKey.CATEGORIES_MULTI_SELECT,
                                                 TranslationKey.FILTER_PLACEHOLDER,

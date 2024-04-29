@@ -328,6 +328,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                                 <>
                                     <Button
                                         className="w-full relative"
+                                        disabled={isCreatingNewOption ? true : false}
                                         variant="secondary"
                                         onClick={(e) => {
                                             e.preventDefault();
@@ -336,7 +337,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                                     >
                                         <p className="truncate absolute w-full">
                                             {isCreatingNewOption ? (
-                                                <LoadingIcon />
+                                                <LoadingIcon className="m-auto w-6 h-6" />
                                             ) : getCreateNewOptionButtonText ? (
                                                 getCreateNewOptionButtonText(filterValue)
                                             ) : (
