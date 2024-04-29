@@ -6,7 +6,7 @@ interface IProps {
 
 const Chip = ({ text }: IProps) => {
     return (
-        <div className="chip">
+        <div className="chip rounded-lg bg-secondary">
             <p className="paragraph--small chip__text">{text}</p>
         </div>
     );

@@ -271,7 +271,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                     {text}
                 </p> */}
                 <div
-                    className="multi-select__body px-3 py-2 h-[40px] bg-background overflow-hidden rounded-md"
+                    className="multi-select__body px-3 h-[40px] bg-background overflow-hidden rounded-md"
                     onTimeUpdate={showPanel}
                     onClick={showPanel}
                 >
