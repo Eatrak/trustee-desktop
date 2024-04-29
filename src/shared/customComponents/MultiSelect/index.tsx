@@ -275,7 +275,7 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                     onTimeUpdate={showPanel}
                     onClick={showPanel}
                 >
-                    <div className="multi-select__body__chip-container">
+                    <div className="multi-select__body__chip-container flex flex-row space-x-2">
                         {
                             // Show the all-selected chip if there is at least an option
                             // and all the options are selected
