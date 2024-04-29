@@ -329,7 +329,10 @@ const MultiSelect = forwardRef<IHandle, IProps>(
                                     <Button
                                         className="w-full relative"
                                         variant="secondary"
-                                        onClick={startOptionCreation}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            startOptionCreation();
+                                        }}
                                     >
                                         <p className="truncate absolute w-full">
                                             {isCreatingNewOption ? (
