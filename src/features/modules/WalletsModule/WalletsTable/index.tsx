@@ -151,6 +151,7 @@ export const columns: ColumnDef<WalletTableRow>[] = [
 interface IProps {
     wallets: WalletTableRow[];
     isLoading?: boolean;
+    columnClassNames?: string[];
 }
 
 const skeletonWallets: WalletTableRow[] = Array.from(Array(5).keys()).map((id) => ({
@@ -166,7 +167,11 @@ const skeletonWallets: WalletTableRow[] = Array.from(Array(5).keys()).map((id) =
     untrackedBalance: 0,
 }));
 
-export function WalletsTable({ wallets, isLoading = false }: IProps) {
+export function WalletsTable({
+    wallets,
+    isLoading = false,
+    columnClassNames = [],
+}: IProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -198,9 +203,15 @@ export function WalletsTable({ wallets, isLoading = false }: IProps) {
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
+                                {headerGroup.headers.map((header, index) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead
+                                            key={header.id}
+                                            className={
+                                                columnClassNames[index] &&
+                                                columnClassNames[index]
+                                            }
+                                        >
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(

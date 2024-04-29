@@ -137,6 +137,7 @@ const TransactionsModule = () => {
                 <TransactionsTable
                     transactions={transactions}
                     isLoading={isFetchingTransactions}
+                    columnClassNames={["", "", "w-48"]}
                 />
             </div>
         </div>

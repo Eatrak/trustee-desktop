@@ -73,7 +73,11 @@ const WalletsModule = () => {
                     totalExpense={getTotalExpense()}
                     totalUntrackedBalance={getTotalUntrackedBalance()}
                 />
-                <WalletsTable wallets={wallets} isLoading={isFetchingWallets} />
+                <WalletsTable
+                    wallets={wallets}
+                    isLoading={isFetchingWallets}
+                    columnClassNames={["", "", "", "", "", "w-48"]}
+                />
             </div>
         </div>
     );
