@@ -43,7 +43,7 @@ const translate = (translationKeys: TranslationKey[]) => {
 export const columns: ColumnDef<TransactionTableRow>[] = [
     {
         accessorKey: "name",
-        header: translate([TranslationKey.NAME]),
+        header: () => <div>{translate([TranslationKey.NAME])}</div>,
         cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
     },
     {
@@ -61,7 +61,7 @@ export const columns: ColumnDef<TransactionTableRow>[] = [
     },
     {
         accessorKey: "carriedOut",
-        header: translate([TranslationKey.CREATION_DATE]),
+        header: () => <div>{translate([TranslationKey.CREATION_DATE])}</div>,
         cell: ({ row }) => (
             <div className="capitalize">
                 {Utils.getInstance().getFormattedDateFromUnixTime(

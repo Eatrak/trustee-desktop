@@ -47,7 +47,7 @@ const translate = (translationKeys: TranslationKey[]) => {
 export const columns: ColumnDef<WalletTableRow>[] = [
     {
         accessorKey: "name",
-        header: translate([TranslationKey.NAME]),
+        header: () => <div>{translate([TranslationKey.NAME])}</div>,
         cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
     },
     {
