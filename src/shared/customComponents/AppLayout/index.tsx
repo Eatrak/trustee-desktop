@@ -1,7 +1,7 @@
 import "./style.css";
 
 import { withTranslation } from "react-i18next";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import { Navbar } from "../Navbar";
 import WalletsModule from "@/features/modules/WalletsModule";
@@ -24,6 +24,7 @@ const AppLayout = () => {
                         path="/transactions/new"
                         element={<TransactionCreationModule />}
                     />
+                    <Route path="/*" element={<Navigate to="/wallets" />} />
                 </Routes>
             </div>
         </div>
