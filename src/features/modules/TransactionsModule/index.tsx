@@ -138,6 +138,10 @@ const TransactionsModule = () => {
                     transactions={transactions}
                     isLoading={isFetchingTransactions}
                     columnClassNames={["", "", "w-48"]}
+                    refreshData={() => {
+                        fetchBalance();
+                        fetchTransactions();
+                    }}
                 />
             </div>
         </div>

@@ -157,6 +157,13 @@ const translation: Translation = {
                 name: "Nome",
                 creationDate: "Data di creazione",
                 amount: "Importo",
+                deletionDialog: {
+                    title: "Eliminazione transazione",
+                    description:
+                        'Sei sicuro di voler eliminare la transazione "{{name}}"?',
+                    cancel: "Esci",
+                    confirm: "Conferma",
+                },
             },
             creationDialog: {
                 title: "Creazione transazione",
@@ -175,12 +182,6 @@ const translation: Translation = {
                     amount: "Importo",
                     itIsIncome: "È un'entrata",
                 },
-                cancel: "Esci",
-                confirm: "Conferma",
-            },
-            deletionDialog: {
-                title: "Eliminazione transazione",
-                description: "Sei sicuro di voler eliminare la transazione?",
                 cancel: "Esci",
                 confirm: "Conferma",
             },

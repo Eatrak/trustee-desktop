@@ -13,6 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import { Trash } from "lucide-react";
 
 import {
     Table,
@@ -26,21 +27,27 @@ import { Utils } from "@/shared/services/utils";
 import { TransactionTableRow } from "@/shared/ts-types/DTOs/transactions";
 import { TranslationKey } from "@/shared/ts-types/generic/translations";
 import TableSkeletonRow from "@/components/ui/table-skeleton-row";
+import { Button } from "@/components/ui/button";
+import TransactionsService from "@/shared/services/transactions";
+import { ConfirmationDialog } from "@/shared/customComponents/ConfirmationDialog";
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
     return `${Utils.getInstance().getFormattedAmount(currencyCode, amount)}`;
 };
 
-const translate = (translationKeys: TranslationKey[]) => {
-    return Utils.getInstance().translate([
-        TranslationKey.MODULES,
-        TranslationKey.TRANSACTIONS,
-        TranslationKey.TABLE,
-        ...translationKeys,
-    ]);
+const translate = (translationKeys: TranslationKey[], params?: Object) => {
+    return Utils.getInstance().translate(
+        [
+            TranslationKey.MODULES,
+            TranslationKey.TRANSACTIONS,
+            TranslationKey.TABLE,
+            ...translationKeys,
+        ],
+        params,
+    );
 };
 
-export const columns: ColumnDef<TransactionTableRow>[] = [
+export const getColumns = (refreshData: Function): ColumnDef<TransactionTableRow>[] => [
     {
         accessorKey: "name",
         header: () => <div>{translate([TranslationKey.NAME])}</div>,
@@ -70,12 +77,46 @@ export const columns: ColumnDef<TransactionTableRow>[] = [
             </div>
         ),
     },
+    {
+        accessorKey: "actions",
+        header: "",
+        maxSize: 50,
+        cell: ({ row }) => {
+            return (
+                <div className="d-flex flex-column space-x-2 text-right">
+                    <ConfirmationDialog
+                        title={translate([
+                            TranslationKey.DELETION_DIALOG,
+                            TranslationKey.TITLE,
+                        ])}
+                        description={translate(
+                            [TranslationKey.DELETION_DIALOG, TranslationKey.DESCRIPTION],
+                            { name: row.original.name },
+                        )}
+                        onConfirm={async () => {
+                            await TransactionsService.getInstance().deleteTransaction(
+                                row.original.id,
+                            );
+
+                            refreshData();
+                        }}
+                        trigger={
+                            <Button variant="outline" size="icon">
+                                <Trash className="w-4 h-4" />
+                            </Button>
+                        }
+                    />
+                </div>
+            );
+        },
+    },
 ];
 
 interface IProps {
     transactions: TransactionTableRow[];
     isLoading?: boolean;
     columnClassNames?: string[];
+    refreshData: Function;
 }
 
 const skeletonTransactions: TransactionTableRow[] = Array.from(Array(5).keys()).map(
@@ -99,6 +140,7 @@ export function TransactionsTable({
     transactions,
     isLoading = false,
     columnClassNames = [],
+    refreshData,
 }: IProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -107,7 +149,7 @@ export function TransactionsTable({
 
     const table = useReactTable({
         data: isLoading ? skeletonTransactions : transactions,
-        columns,
+        columns: getColumns(refreshData),
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         getCoreRowModel: getCoreRowModel(),
@@ -178,7 +220,7 @@ export function TransactionsTable({
                         ) : (
                             <TableRow>
                                 <TableCell
-                                    colSpan={columns.length}
+                                    colSpan={getColumns(refreshData).length}
                                     className="h-24 text-center"
                                 >
                                     No results.

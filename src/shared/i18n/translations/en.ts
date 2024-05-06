@@ -156,6 +156,12 @@ const translation: Translation = {
                 name: "Name",
                 creationDate: "Creation date",
                 amount: "Amount",
+                deletionDialog: {
+                    title: "Transaction deletion",
+                    description: 'Are you sure to delete the transaction "{{name}}"?',
+                    cancel: "Exit",
+                    confirm: "Confirm",
+                },
             },
             creationDialog: {
                 title: "Transaction creation",
@@ -174,12 +180,6 @@ const translation: Translation = {
                     amount: "Amount",
                     itIsIncome: "It's income",
                 },
-                cancel: "Exit",
-                confirm: "Confirm",
-            },
-            deletionDialog: {
-                title: "Transaction deletion",
-                description: "Are you sure to delete the transaction?",
                 cancel: "Exit",
                 confirm: "Confirm",
             },

@@ -220,12 +220,12 @@ export interface Translation {
                 [TranslationKey.NAME]: string;
                 [TranslationKey.CREATION_DATE]: string;
                 [TranslationKey.AMOUNT]: string;
-            };
-            [TranslationKey.DELETION_DIALOG]: {
-                [TranslationKey.TITLE]: string;
-                [TranslationKey.DESCRIPTION]: string;
-                [TranslationKey.CANCEL]: string;
-                [TranslationKey.CONFIRM]: string;
+                [TranslationKey.DELETION_DIALOG]: {
+                    [TranslationKey.TITLE]: string;
+                    [TranslationKey.DESCRIPTION]: string;
+                    [TranslationKey.CANCEL]: string;
+                    [TranslationKey.CONFIRM]: string;
+                };
             };
             [TranslationKey.CREATION_DIALOG]: {
                 [TranslationKey.TITLE]: string;
