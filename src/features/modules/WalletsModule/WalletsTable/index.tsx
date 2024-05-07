@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Edit } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +28,6 @@ import { Utils } from "@/shared/services/utils";
 import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
 import { TranslationKey } from "@/shared/ts-types/generic/translations";
 import TableSkeletonRow from "@/components/ui/table-skeleton-row";
-import { Icons } from "@/components/ui/icons";
 import { useNavigate } from "react-router-dom";
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
@@ -140,7 +139,7 @@ export const columns: ColumnDef<WalletTableRow>[] = [
                         size="icon"
                         onClick={() => navigate(`/wallets/${row.original.id}`)}
                     >
-                        <Icons.pencil />
+                        <Edit className="w-4 h-4" />
                     </Button>
                 </div>
             );
