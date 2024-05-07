@@ -24,6 +24,17 @@ export const createTransactionFormSchema = z.object({
     [FieldName.CARRIED_OUT]: z.date(),
 });
 
+export const updateTransactionFormSchema = createTransactionFormSchema;
+
+export const getTransactionPathParametersSchema = z.object({
+    id: z.string().min(1),
+});
+
+export const getTransactionInputSchema = z.object({
+    pathParameters: getTransactionPathParametersSchema,
+    userId: z.string().min(1),
+});
+
 export const deleteTransactionBodyRules = {
     id: "required|string",
 };

@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 
 import {
     Table,
@@ -30,6 +30,7 @@ import TableSkeletonRow from "@/components/ui/table-skeleton-row";
 import { Button } from "@/components/ui/button";
 import TransactionsService from "@/shared/services/transactions";
 import { ConfirmationDialog } from "@/shared/customComponents/ConfirmationDialog";
+import { useNavigate } from "react-router-dom";
 
 const getAmountToDisplay = (amount: number, currencyCode: string) => {
     return `${Utils.getInstance().getFormattedAmount(currencyCode, amount)}`;
@@ -82,8 +83,17 @@ export const getColumns = (refreshData: Function): ColumnDef<TransactionTableRow
         header: "",
         maxSize: 50,
         cell: ({ row }) => {
+            const navigate = useNavigate();
+
             return (
                 <div className="d-flex flex-column space-x-2 text-right">
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => navigate(`/transactions/${row.original.id}`)}
+                    >
+                        <Edit className="w-4 h-4" />
+                    </Button>
                     <ConfirmationDialog
                         title={translate([
                             TranslationKey.DELETION_DIALOG,

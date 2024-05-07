@@ -43,6 +43,19 @@ import {
 import { getErrorType } from "@/shared/errors";
 import { TranslationKey } from "@/shared/ts-types/generic/translations";
 import { toast } from "react-toastify";
+import {
+    UpdateTransactionBody,
+    UpdateTransactionPathParameters,
+} from "../ts-types/APIs/input/transactions/updateTransaction";
+import {
+    UpdateTransactionResponse,
+    UpdateTransactionResponseData,
+} from "../ts-types/APIs/output/transactions/updateTransaction";
+import { GetTransactionPathParameters } from "../ts-types/APIs/input/transactions/getTransaction";
+import {
+    GetTransactionResponse,
+    GetTransactionResponseData,
+} from "../ts-types/APIs/output/transactions/getTransaction";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -106,32 +119,64 @@ export default class TransactionsService {
         }
     }
 
-    // /**
-    //  * Update transaction.
-    //  *
-    //  * @param input Input used to update transaction.
-    //  * @returns The transaction has been updated.
-    //  */
-    // async updateTransaction(input: UpdateTransactionBody): Promise<boolean> {
-    //     try {
-    //         const requestURL = Utils.getInstance().getAPIEndpoint("/transactions");
-    //         const response = await fetch(requestURL, {
-    //             method: "PUT",
-    //             headers: {
-    //                 Authorization: "Bearer " + localStorage.getItem("authToken"),
-    //             },
-    //             body: JSON.stringify(input),
-    //         });
+    async getTransaction({
+        id,
+    }: GetTransactionPathParameters): Promise<
+        Result<GetTransactionResponseData, ErrorResponseBodyAttributes | undefined>
+    > {
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint(`/transactions/${id}`);
+            const response = await fetch(requestURL, {
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
+            const { data, error }: GetTransactionResponse = await response.json();
 
-    //         if (!response.ok) {
-    //             return false;
-    //         }
+            if (error) {
+                return Err(data);
+            }
 
-    //         return true;
-    //     } catch (err) {
-    //         return false;
-    //     }
-    // }
+            return Ok(data);
+        } catch (err) {
+            return Err(undefined);
+        }
+    }
+
+    /**
+     * Update transaction.
+     *
+     * @param pathParameters Path parameters used to update transaction.
+     * @param input Input used to update transaction.
+     * @returns The transaction has been updated.
+     */
+    async updateTransaction(
+        { id }: UpdateTransactionPathParameters,
+        input: UpdateTransactionBody,
+    ): Promise<
+        Result<UpdateTransactionResponseData, ErrorResponseBodyAttributes | undefined>
+    > {
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint(`/transactions/${id}`);
+            const response = await fetch(requestURL, {
+                method: "PUT",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+                body: JSON.stringify(input),
+            });
+            const { data, error }: UpdateTransactionResponse = await response.json();
+
+            if (error) {
+                return Err(data);
+            }
+
+            return Ok(data);
+        } catch (err) {
+            return Err(undefined);
+        }
+    }
 
     async getTransactionsByCurrencyAndCreationRange(
         currencyId: string,

@@ -9,6 +9,7 @@ import WalletUpdateModule from "@/features/modules/WalletsModule/WalletUpdateMod
 import WalletCreationModule from "@/features/modules/WalletsModule/WalletCreationModule";
 import TransactionsModule from "@/features/modules/TransactionsModule";
 import TransactionCreationModule from "@/features/modules/TransactionsModule/TransactionCreationModule";
+import TransactionUpdateModule from "@/features/modules/TransactionsModule/TransactionUpdateModule";
 
 const AppLayout = () => {
     return (
@@ -20,6 +21,10 @@ const AppLayout = () => {
                     <Route path="/wallets/new" element={<WalletCreationModule />} />
                     <Route path="/wallets" element={<WalletsModule />} />
                     <Route path="/transactions" element={<TransactionsModule />} />
+                    <Route
+                        path="/transactions/:id"
+                        element={<TransactionUpdateModule />}
+                    />
                     <Route
                         path="/transactions/new"
                         element={<TransactionCreationModule />}

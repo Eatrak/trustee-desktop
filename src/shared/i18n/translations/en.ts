@@ -115,6 +115,24 @@ const translation: Translation = {
                 successfulWalletDeletion: "Wallet successfully deleted",
             },
         },
+        transactionUpdate: {
+            header: {
+                title: "Transaction update",
+                subTitle: 'You are updating the transaction "{{name}}".',
+            },
+            form: {
+                errors: {
+                    wallet: "A wallet must be selected.",
+                    categories: "At least a category must be selected.",
+                    amount: "The amount must be at least of 0.01.",
+                    name: "The name must be at least of 1 character.",
+                },
+            },
+            categoriesMultiSelect: {
+                filterPlaceHolder: "Search or create a category by typing a name",
+                creationButtonText: 'Create "{{name}}"',
+            },
+        },
         transactionCreation: {
             header: {
                 title: "Create transaction",

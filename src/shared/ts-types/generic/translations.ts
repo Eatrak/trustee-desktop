@@ -108,6 +108,7 @@ export enum TranslationKey {
     NO_OPTIONS = "noOptions",
     FORM = "form",
     NO_RESULTS = "noResults",
+    TRANSACTION_UPDATE = "transactionUpdate",
 }
 
 // By using a dictionary where the keys are in the FieldName enum,
@@ -177,6 +178,24 @@ export interface Translation {
                 [TranslationKey.SUCCESSFUL_WALLET_CREATION]: string;
                 [TranslationKey.SUCCESSFUL_WALLET_UPDATE]: string;
                 [TranslationKey.SUCCESSFUL_WALLET_DELETION]: string;
+            };
+        };
+        [TranslationKey.TRANSACTION_UPDATE]: {
+            [TranslationKey.HEADER]: {
+                [TranslationKey.TITLE]: string;
+                [TranslationKey.SUB_TITLE]: string;
+            };
+            [TranslationKey.FORM]: {
+                [TranslationKey.ERRORS]: {
+                    [FieldName.WALLET]: string;
+                    [FieldName.CATEGORIES]: string;
+                    [FieldName.NAME]: string;
+                    [FieldName.AMOUNT]: string;
+                };
+            };
+            [TranslationKey.CATEGORIES_MULTI_SELECT]: {
+                [TranslationKey.FILTER_PLACEHOLDER]: string;
+                [TranslationKey.CREATION_BUTTON_TEXT]: string;
             };
         };
         [TranslationKey.TRANSACTION_CREATION]: {
