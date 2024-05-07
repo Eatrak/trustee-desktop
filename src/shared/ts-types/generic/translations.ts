@@ -107,6 +107,7 @@ export enum TranslationKey {
     TRANSACTION_CREATION = "transactionCreation",
     NO_OPTIONS = "noOptions",
     FORM = "form",
+    NO_RESULTS = "noResults",
 }
 
 // By using a dictionary where the keys are in the FieldName enum,
@@ -307,6 +308,7 @@ export interface Translation {
     [TranslationKey.GENERAL]: {
         [TranslationKey.ALL]: string;
         [TranslationKey.NO_OPTIONS]: string;
+        [TranslationKey.NO_RESULTS]: string;
     };
     [TranslationKey.NAVBAR]: {
         [TranslationKey.BUTTONS]: {

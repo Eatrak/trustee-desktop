@@ -58,6 +58,7 @@ const translation: Translation = {
     general: {
         all: "All",
         noOptions: "No options available",
+        noResults: "No results",
     },
     modules: {
         walletUpdate: {

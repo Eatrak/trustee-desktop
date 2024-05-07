@@ -253,7 +253,10 @@ export function WalletsTable({
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    {Utils.getInstance().translate([
+                                        TranslationKey.GENERAL,
+                                        TranslationKey.NO_RESULTS,
+                                    ])}
                                 </TableCell>
                             </TableRow>
                         )}
