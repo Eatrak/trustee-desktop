@@ -88,7 +88,39 @@ const TransactionUpdateModule = () => {
 
     const goToTransactionsModule = () => navigate("/transactions");
 
-    const confirm = async (formData: UpdateTransactionFormSchema) => {};
+    const confirm = async (formData: UpdateTransactionFormSchema) => {
+        await updateTransaction(formData);
+    };
+
+    const updateTransaction = async ({
+        name,
+        wallet,
+        categories,
+        carriedOut,
+        amount,
+        isIncome,
+    }: UpdateTransactionFormSchema) => {
+        if (!openedTransaction) return;
+
+        const updateTransactionRequest =
+            await TransactionsService.getInstance().updateTransaction(
+                { id: openedTransaction.id },
+                {
+                    updateInfo: {
+                        name,
+                        amount,
+                        carriedOut: dayjs(carriedOut).unix(),
+                        categoryIds: categories,
+                        isIncome,
+                        walletId: wallet,
+                    },
+                },
+            );
+
+        if (!updateTransactionRequest.err) {
+            goToTransactionsModule();
+        }
+    };
 
     const fetchData = async () => {
         setIsFetchingData(true);
