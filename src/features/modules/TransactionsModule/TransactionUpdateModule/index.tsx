@@ -30,11 +30,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import AuthService from "@/shared/services/auth";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Subscription } from "rxjs";
 import { Transaction, TransactionCategory } from "@/shared/schema";
 import LoadingPage from "@/shared/customComponents/LoadingPage";
-import MultiSelect from "@/shared/customComponents/MultiSelect";
+import MultiSelect, {
+    MultiSelectOptionProprieties,
+} from "@/shared/customComponents/MultiSelect";
 import { updateTransactionFormSchema } from "@/shared/validatorRules/transactions";
 import WalletsService from "@/shared/services/wallets";
 import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
@@ -50,6 +52,9 @@ const TransactionUpdateModule = () => {
         useState(false);
     const [transactionCategories, setTransactionCategories] = useState<
         TransactionCategory[]
+    >([]);
+    const [categoriesOfTransaction, setCategoriesOfTransaction] = useState<
+        MultiSelectOptionProprieties[]
     >([]);
     const [wallets, setWallets] = useState<WalletTableRow[]>([]);
     const [currency, setCurrency] = useState(
@@ -128,6 +133,7 @@ const TransactionUpdateModule = () => {
         await Promise.all([
             fetchOpenedTransaction(),
             fetchTransactionCategories(),
+            fetchCategoriesOfTransaction(),
             fetchWallets(),
         ]);
 
@@ -155,6 +161,21 @@ const TransactionUpdateModule = () => {
         form.setValue(FieldName.AMOUNT, amount);
 
         setOpenedTransaction(getTransactionResult.val.transaction);
+    };
+
+    const fetchCategoriesOfTransaction = async () => {
+        if (!params.id) return;
+
+        const transactionCategories =
+            await TransactionsService.getInstance().getCategoriesOfTransaction({
+                id: params.id,
+            });
+
+        if (transactionCategories.ok) {
+            setCategoriesOfTransaction(
+                transactionCategories.val.map(({ id, name }) => ({ value: id, name })),
+            );
+        }
     };
 
     const fetchTransactionCategories = async () => {
@@ -306,6 +327,10 @@ const TransactionUpdateModule = () => {
                                     </FormLabel>
                                     <FormControl>
                                         <MultiSelect
+                                            selectedOptions={categoriesOfTransaction}
+                                            setSelectedOptions={(options) =>
+                                                setCategoriesOfTransaction(options)
+                                            }
                                             onSelect={(categories) => {
                                                 field.onChange(
                                                     categories.map(({ value }) => value),

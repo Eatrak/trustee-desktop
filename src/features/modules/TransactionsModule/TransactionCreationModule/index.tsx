@@ -34,7 +34,9 @@ import { useEffect, useState } from "react";
 import { Subscription } from "rxjs";
 import { TransactionCategory, Wallet } from "@/shared/schema";
 import LoadingPage from "@/shared/customComponents/LoadingPage";
-import MultiSelect from "@/shared/customComponents/MultiSelect";
+import MultiSelect, {
+    MultiSelectOptionProprieties,
+} from "@/shared/customComponents/MultiSelect";
 import { createTransactionFormSchema } from "@/shared/validatorRules/transactions";
 import WalletsService from "@/shared/services/wallets";
 import { WalletTableRow } from "@/shared/ts-types/DTOs/wallets";
@@ -46,6 +48,9 @@ const TransactionCreationModule = () => {
     const [isFetchingData, setIsFetchingData] = useState(true);
     const [isCreatingTransactionCategory, setIsCreatingTransactionCategory] =
         useState(false);
+    const [categoriesOfTransaction, setCategoriesOfTransaction] = useState<
+        MultiSelectOptionProprieties[]
+    >([]);
     const [transactionCategories, setTransactionCategories] = useState<
         TransactionCategory[]
     >([]);
@@ -269,6 +274,10 @@ const TransactionCreationModule = () => {
                                     </FormLabel>
                                     <FormControl>
                                         <MultiSelect
+                                            selectedOptions={categoriesOfTransaction}
+                                            setSelectedOptions={(newOptions) =>
+                                                setCategoriesOfTransaction(newOptions)
+                                            }
                                             onSelect={(categories) => {
                                                 field.onChange(
                                                     categories.map(({ value }) => value),

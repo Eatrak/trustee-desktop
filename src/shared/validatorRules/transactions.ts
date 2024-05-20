@@ -48,3 +48,12 @@ export const getTransactionCategoryBalancesInputRules = {
 export const getTransactionCategoriesInputRules = {
     userId: "required|string",
 };
+
+export const getCategoriesOfTransactionPathParametersSchema = z.object({
+    id: z.string().min(1),
+});
+
+export const getCategoriesOfTransactionInputSchema = z.object({
+    pathParameters: getCategoriesOfTransactionPathParametersSchema,
+    userId: z.string().min(1),
+});

@@ -2,7 +2,7 @@ import { BehaviorSubject } from "rxjs";
 import { Dayjs } from "dayjs";
 import { Ok, Err, Result } from "ts-results";
 
-import { Currency, Transaction } from "@/shared/schema";
+import { Currency, Transaction, TransactionCategory } from "@/shared/schema";
 import { Utils } from "@/shared/services/utils";
 import {
     GetTransactionsInputMultiQueryParams,
@@ -56,6 +56,8 @@ import {
     GetTransactionResponse,
     GetTransactionResponseData,
 } from "../ts-types/APIs/output/transactions/getTransaction";
+import { GetCategoriesOfTransactionResponse } from "../ts-types/APIs/output/transactions/getCategoriesOfTransaction";
+import { GetCategoriesOfTransactionPathParameters } from "../ts-types/APIs/input/transactions/getCategoriesOfTransaction";
 
 export default class TransactionsService {
     static instance: TransactionsService = new TransactionsService();
@@ -302,6 +304,39 @@ export default class TransactionsService {
 
     getCurrency(id: string): Currency | undefined {
         return this.currencies$.getValue().find((currency) => currency.id === id);
+    }
+
+    async getCategoriesOfTransaction({
+        id,
+    }: GetCategoriesOfTransactionPathParameters): Promise<
+        Result<TransactionCategory[], ErrorResponseBodyAttributes | undefined>
+    > {
+        try {
+            const requestURL = Utils.getInstance().getAPIEndpoint(
+                `/transactions/${id}/categories`,
+            );
+            const response = await fetch(requestURL, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("authToken"),
+                },
+            });
+
+            const { data, error }: GetCategoriesOfTransactionResponse =
+                await response.json();
+            if (error) {
+                Utils.getInstance().showErrorMessage(
+                    getErrorType(data.status, data.code),
+                );
+                return Err(data);
+            }
+
+            const { transactionCategories } = data;
+
+            return Ok(transactionCategories);
+        } catch (err) {
+            Utils.getInstance().showErrorMessage(ErrorType.UNKNOWN);
+            return Err(undefined);
+        }
     }
 
     async getTransactionCategories() {
